@@ -1,0 +1,500 @@
+/* ===== ЕДИНАЯ ПЛАТФОРМА «ФИЗИКА-КВЕСТ» (7–9 КЛАССЫ): ШАПКА И АККАУНТ ===== */
+
+:root {
+    --pq-bar-h: 44px;
+}
+
+/* Компактная сквозная панель в play.html (скрывается во время самого аркадного боя) */
+.pq-topbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: var(--pq-bar-h);
+    z-index: 120;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    padding: 0 14px;
+    background: rgba(255, 255, 255, 0.92);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(0, 184, 212, 0.25);
+    box-shadow: 0 2px 14px rgba(15, 35, 70, 0.06);
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    transition: transform 0.22s ease, opacity 0.22s ease;
+}
+
+body.pq-in-gameplay .pq-topbar {
+    transform: translateY(-110%);
+    opacity: 0;
+    pointer-events: none;
+}
+
+/* Смещаем скроллящиеся экраны чуть ниже сквозной шапки, чтобы ничего не перекрывалось */
+body.pq-has-topbar #level-screen,
+body.pq-has-topbar #profile-screen,
+body.pq-has-topbar #teacher-screen .teacher-inner {
+    padding-top: calc(var(--pq-bar-h) + 18px) !important;
+}
+
+body.pq-has-topbar #menu-screen .menu-content {
+    margin-top: calc(var(--pq-bar-h) * 0.5);
+}
+
+.pq-topbar-left,
+.pq-topbar-center,
+.pq-topbar-right {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.pq-portal-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: 800;
+    color: #0d2b45;
+    background: #f0f7fb;
+    border: 1px solid rgba(0, 184, 212, 0.35);
+    padding: 5px 11px;
+    border-radius: 999px;
+    transition: all 0.16s ease;
+    white-space: nowrap;
+}
+
+.pq-portal-link:hover {
+    background: #e0f4fa;
+    border-color: #00b8d4;
+    color: #006978;
+}
+
+.pq-grade-switcher {
+    display: inline-flex;
+    align-items: center;
+    background: #eef4fa;
+    border: 1px solid rgba(26, 41, 66, 0.12);
+    border-radius: 999px;
+    padding: 2px;
+    gap: 2px;
+}
+
+.pq-grade-pill {
+    text-decoration: none;
+    border: 0;
+    background: transparent;
+    color: #4a5d78;
+    font: inherit;
+    font-size: 12.5px;
+    font-weight: 800;
+    padding: 4px 11px;
+    border-radius: 999px;
+    cursor: pointer;
+    transition: all 0.16s ease;
+    white-space: nowrap;
+}
+
+.pq-grade-pill:hover {
+    color: #0a1a38;
+    background: rgba(255, 255, 255, 0.7);
+}
+
+.pq-grade-pill.active[data-g="7"] {
+    background: linear-gradient(135deg, #00b8d4, #008ba3);
+    color: #fff;
+    box-shadow: 0 2px 8px rgba(0, 184, 212, 0.35);
+}
+
+.pq-grade-pill.active[data-g="8"] {
+    background: linear-gradient(135deg, #ff8a00, #e65100);
+    color: #fff;
+    box-shadow: 0 2px 8px rgba(255, 138, 0, 0.35);
+}
+
+.pq-grade-pill.active[data-g="9"] {
+    background: linear-gradient(135deg, #7c4dff, #512da8);
+    color: #fff;
+    box-shadow: 0 2px 8px rgba(124, 77, 255, 0.35);
+}
+
+.pq-account-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    border: 1px solid rgba(0, 184, 212, 0.38);
+    background: #ffffff;
+    color: #10253e;
+    border-radius: 999px;
+    padding: 4px 11px;
+    font: inherit;
+    font-size: 12.5px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.16s ease;
+    max-width: 280px;
+}
+
+.pq-account-btn:hover {
+    border-color: #00b8d4;
+    background: #f4fcff;
+}
+
+.pq-account-btn.is-teacher {
+    border-color: rgba(216, 27, 96, 0.4);
+    background: #fff5f8;
+    color: #880e4f;
+}
+
+.pq-account-name {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    max-width: 130px;
+}
+
+.pq-code-tag {
+    display: inline-block;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    font-size: 12px;
+    font-weight: 900;
+    letter-spacing: 0.08em;
+    padding: 1px 7px;
+    border-radius: 6px;
+    background: #e0f7fa;
+    color: #006064;
+    border: 1px solid rgba(0, 184, 212, 0.35);
+}
+
+/* ===== МОДАЛЬНОЕ ОКНО АККАУНТА (УЧЕНИК / УЧИТЕЛЬ) ===== */
+.pq-acc-backdrop {
+    position: fixed;
+    inset: 0;
+    z-index: 900;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 16px;
+    background: rgba(8, 20, 42, 0.72);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+}
+
+.pq-acc-backdrop.open {
+    display: flex;
+}
+
+.pq-acc-card {
+    position: relative;
+    width: min(540px, 100%);
+    max-height: 94vh;
+    overflow-y: auto;
+    background: #ffffff;
+    color: #142741;
+    border-radius: 24px;
+    border: 2px solid rgba(0, 184, 212, 0.42);
+    box-shadow: 0 28px 80px rgba(5, 16, 36, 0.42);
+    padding: 24px 24px 22px;
+    animation: pqAccIn 0.22s ease;
+}
+
+@keyframes pqAccIn {
+    from { opacity: 0; transform: translateY(10px) scale(0.98); }
+    to { opacity: 1; transform: none; }
+}
+
+.pq-acc-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    margin-bottom: 10px;
+}
+
+.pq-acc-kicker {
+    font-size: 11px;
+    font-weight: 900;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: #008ba3;
+}
+
+.pq-acc-langs {
+    display: inline-flex;
+    gap: 4px;
+    background: #f0f5fb;
+    padding: 3px;
+    border-radius: 999px;
+}
+
+.pq-acc-langs button {
+    border: 0;
+    background: transparent;
+    color: #4f627d;
+    font: inherit;
+    font-size: 11.5px;
+    font-weight: 800;
+    padding: 4px 9px;
+    border-radius: 999px;
+    cursor: pointer;
+}
+
+.pq-acc-langs button.active {
+    background: #00b8d4;
+    color: #fff;
+}
+
+.pq-acc-close {
+    border: 1px solid #d5e2ee;
+    background: #f7fafc;
+    color: #475a75;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    font-size: 15px;
+    font-weight: 800;
+    cursor: pointer;
+}
+
+.pq-acc-title {
+    margin: 2px 0 6px;
+    font-size: clamp(20px, 3.8vw, 25px);
+    color: #0b1d36;
+    line-height: 1.2;
+}
+
+.pq-acc-sub {
+    margin: 0 0 16px;
+    font-size: 13.5px;
+    color: #546681;
+    line-height: 1.5;
+}
+
+.pq-role-tabs {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    margin-bottom: 18px;
+}
+
+.pq-role-tab {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 12px 10px;
+    border-radius: 14px;
+    border: 2px solid #dce7f2;
+    background: #f8fbff;
+    color: #2c405e;
+    font: inherit;
+    font-size: 14px;
+    font-weight: 800;
+    cursor: pointer;
+    transition: all 0.16s ease;
+}
+
+.pq-role-tab:hover {
+    border-color: #9adbea;
+}
+
+.pq-role-tab.active[data-role="student"] {
+    border-color: #00b8d4;
+    background: linear-gradient(135deg, rgba(0, 184, 212, 0.13), rgba(0, 184, 212, 0.03));
+    color: #006978;
+}
+
+.pq-role-tab.active[data-role="teacher"] {
+    border-color: #d81b60;
+    background: linear-gradient(135deg, rgba(216, 27, 96, 0.12), rgba(216, 27, 96, 0.03));
+    color: #880e4f;
+}
+
+.pq-acc-field {
+    margin-bottom: 14px;
+}
+
+.pq-acc-field label {
+    display: block;
+    font-size: 12.5px;
+    font-weight: 800;
+    color: #243854;
+    margin-bottom: 6px;
+}
+
+.pq-acc-input {
+    width: 100%;
+    padding: 11px 13px;
+    font: inherit;
+    font-size: 15px;
+    color: #0f233d;
+    background: #f9fcff;
+    border: 1.5px solid #cbd9e8;
+    border-radius: 12px;
+    box-sizing: border-box;
+    outline: none;
+    transition: border-color 0.16s ease, box-shadow 0.16s ease;
+}
+
+.pq-acc-input:focus {
+    border-color: #00b8d4;
+    box-shadow: 0 0 0 3px rgba(0, 184, 212, 0.16);
+    background: #fff;
+}
+
+.pq-acc-row {
+    display: grid;
+    grid-template-columns: 1.2fr 1fr;
+    gap: 10px;
+}
+
+.pq-code-box {
+    background: linear-gradient(135deg, #ecfcff 0%, #f4f8ff 100%);
+    border: 1.5px solid rgba(0, 184, 212, 0.45);
+    border-radius: 16px;
+    padding: 13px 15px;
+    margin-bottom: 14px;
+}
+
+.pq-code-box-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.pq-code-big {
+    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    font-size: 26px;
+    font-weight: 900;
+    letter-spacing: 0.16em;
+    color: #006978;
+    background: #ffffff;
+    border: 1.5px dashed #00b8d4;
+    border-radius: 11px;
+    padding: 5px 14px;
+    user-select: all;
+}
+
+.pq-code-copy {
+    border: 1px solid #00b8d4;
+    background: #ffffff;
+    color: #007c91;
+    border-radius: 10px;
+    padding: 7px 12px;
+    font: inherit;
+    font-size: 12.5px;
+    font-weight: 800;
+    cursor: pointer;
+}
+
+.pq-code-copy:hover {
+    background: #e0f7fa;
+}
+
+.pq-code-note {
+    margin: 8px 0 0;
+    font-size: 12px;
+    color: #46607d;
+    line-height: 1.45;
+}
+
+.pq-code-custom-toggle {
+    display: inline-block;
+    margin-top: 7px;
+    padding: 0;
+    border: 0;
+    background: none;
+    color: #008ba3;
+    font: inherit;
+    font-size: 12px;
+    font-weight: 800;
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+.pq-acc-error {
+    display: none;
+    padding: 9px 12px;
+    border-radius: 10px;
+    background: #ffebee;
+    border: 1px solid #ef9a9a;
+    color: #b71c1c;
+    font-size: 12.5px;
+    font-weight: 700;
+    margin-bottom: 12px;
+}
+
+.pq-acc-error.show {
+    display: block;
+}
+
+.pq-acc-submit {
+    width: 100%;
+    padding: 13px 18px;
+    border: 0;
+    border-radius: 14px;
+    background: linear-gradient(135deg, #00b8d4, #008ba3);
+    color: #ffffff;
+    font: inherit;
+    font-size: 15.5px;
+    font-weight: 900;
+    cursor: pointer;
+    box-shadow: 0 8px 22px rgba(0, 184, 212, 0.32);
+    transition: transform 0.14s ease, box-shadow 0.14s ease;
+}
+
+.pq-acc-submit.teacher-btn {
+    background: linear-gradient(135deg, #d81b60, #ad1457);
+    box-shadow: 0 8px 22px rgba(216, 27, 96, 0.28);
+}
+
+.pq-acc-submit:hover {
+    transform: translateY(-1px);
+}
+
+.pq-acc-foot {
+    margin-top: 10px;
+    text-align: center;
+    font-size: 12px;
+    color: #6b7d96;
+}
+
+.pq-acc-link {
+    border: 0;
+    background: none;
+    color: #008ba3;
+    font: inherit;
+    font-size: 12px;
+    font-weight: 700;
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+@media (max-width: 640px) {
+    .pq-topbar {
+        padding: 0 8px;
+        gap: 5px;
+    }
+    .pq-portal-link span.pq-portal-txt {
+        display: none;
+    }
+    .pq-grade-pill {
+        padding: 4px 8px;
+        font-size: 11.5px;
+    }
+    .pq-account-name {
+        max-width: 78px;
+    }
+    .pq-acc-row {
+        grid-template-columns: 1fr;
+    }
+    .pq-acc-card {
+        padding: 18px 16px;
+    }
+}
