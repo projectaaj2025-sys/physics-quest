@@ -79,6 +79,15 @@
     }
     .worlds-lead { color: var(--muted); font-size: 13px; line-height: 1.55; margin: 8px 0 14px; max-width: 900px; }
     .worlds-img { width: 100%; border-radius: 14px; display: block; border: 1px solid rgba(120,200,255,.2); }
+    .field7 { margin: 22px 0 6px; padding: 18px; border-radius: 22px; border: 1px solid var(--line); background: rgba(10, 23, 44, .62); }
+    .f7-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 10px; margin-top: 6px; }
+    .f7-item {
+        display: flex; align-items: center; gap: 10px; padding: 10px 12px; border-radius: 13px;
+        border: 1px solid rgba(120, 200, 255, .16); background: rgba(13, 31, 58, .7);
+        font-size: 12.5px; font-weight: 700; color: #d7e8ff;
+    }
+    .f7-item span.ico { font-size: 18px; }
+    .f7-item small { display: block; font-weight: 600; color: #8ba2bf; font-size: 10.5px; }
     .overview { margin: 22px 0 0; }
     .overview img { width: 100%; border-radius: 16px; display: block; border: 1px solid rgba(120,200,255,.22); }
     .overview figcaption { margin-top: 8px; font-size: 12.5px; color: var(--muted); }
@@ -175,6 +184,18 @@
         <figcaption data-i18n="overview">Шесть новых лабораторий одним взглядом: полный интерфейс опыта, телеметрия и задание.</figcaption>
     </figure>
 
+    <section class="field7">
+        <div class="worlds-head">
+            <div>
+                <div class="kicker" data-i18n="f7Kicker">7 КЛАСС · ПОЛЕВОЙ ЖУРНАЛ</div>
+                <h2 data-i18n="f7Title">15 полевых симуляторов</h2>
+            </div>
+            <span class="worlds-count">15</span>
+        </div>
+        <p class="worlds-lead" data-i18n="f7Lead">Отдельный набор опытов для 7 класса: измерения, плотность, давление, Архимед, рычаг и энергия. Полностью на трёх языках.</p>
+        <div class="f7-grid" id="f7-grid"></div>
+    </section>
+
     <section class="grid" id="grid"></section>
 
     <div class="foot">
@@ -198,6 +219,8 @@
             lead: "33 симулятора внутри игры: 15 полевых опытов для 7 класса и 18 canvas-лабораторий для 8 и 9 классов. Каждый опыт — это реальная установка: меняй параметры, следи за телеметрией, выводи установку в целевой режим и вводи расчётное значение. Ниже — 12 кадров из игры.",
             sLabs: "симулятора в игре", sNew: "новых опытов в этой версии", sLangs: "языка интерфейса", sReward: "за каждый подтверждённый опыт",
             newBadge: "новый", grade: "класс",
+            f7Kicker: "7 КЛАСС · ПОЛЕВОЙ ЖУРНАЛ", f7Title: "15 полевых симуляторов",
+            f7Lead: "Отдельный набор опытов для 7 класса: измерения, плотность, давление, Архимед, рычаг и энергия. Полностью на трёх языках.",
             overview: "Шесть новых лабораторий одним взглядом: полный интерфейс опыта, телеметрия и задание.",
             worldsKicker: "ОФОРМЛЕНИЕ УРОВНЕЙ", worldsTitle: "Шесть разных миров внутри игры",
             worldsLead: "Фон уровня больше не один и тот же: каждая глава получает свой мир — небо, силуэты, частицы и свечение. Ниже — реальные кадры фонов, которые рисует движок.",
@@ -224,6 +247,8 @@
             lead: "Ойын ішінде 18 зертхана бар: 7 сыныпқа арналған 15 өріс симуляторы және 8–9 сыныптарға арналған 9 canvas-симулятор. Әр тәжірибе — нақты қондырғы: параметрлерді өзгерт, телеметрияны бақыла, қондырғыны мақсатты режимге шығарып, есептік мәнді енгіз. Төменде — ойыннан алынған нақты кадрлар.",
             sLabs: "симулятор мен зертхана", sNew: "осы нұсқадағы жаңа тәжірибе", sLangs: "интерфейс тілі", sReward: "әр расталған тәжірибе үшін",
             newBadge: "жаңа", grade: "сынып",
+            f7Kicker: "7 СЫНЫП · ДАЛАЛЫҚ ЖУРНАЛ", f7Title: "15 далалық симулятор",
+            f7Lead: "7 сыныпқа арналған жеке тәжірибелер жинағы: өлшеу, тығыздық, қысым, Архимед, иінтірек және энергия. Үш тілде толық.",
             overview: "Алты жаңа зертхана бір қарағанда: тәжірибенің толық интерфейсі, телеметрия және тапсырма.",
             worldsKicker: "ДЕҢГЕЙЛЕРДІҢ РӘСІМДЕЛУІ", worldsTitle: "Ойын ішіндегі алты түрлі әлем",
             worldsLead: "Деңгей фоны енді бірдей емес: әр тарау өз әлемін алады — аспан, сұлбалар, бөлшектер және жарық. Төменде — қозғалтқыш салатын нақты фон кадрлары.",
@@ -250,6 +275,8 @@
             lead: "18 labs inside the game: 15 field simulators for Grade 7 and 9 canvas simulators for Grades 8 and 9. Each experiment is a real setup: change parameters, watch telemetry, bring it into the target regime and enter the calculated value. Below are genuine frames from the game.",
             sLabs: "simulators and labs", sNew: "new experiments in this version", sLangs: "interface languages", sReward: "for every confirmed experiment",
             newBadge: "new", grade: "grade",
+            f7Kicker: "GRADE 7 · FIELD LOG", f7Title: "15 field simulators",
+            f7Lead: "A dedicated experiment set for Grade 7: measurement, density, pressure, buoyancy, lever and energy. Fully trilingual.",
             overview: "Six new labs at a glance: the full experiment interface, telemetry and its task.",
             worldsKicker: "LEVEL ART", worldsTitle: "Six different worlds inside the game",
             worldsLead: "The level background is no longer the same: every chapter gets its own world — sky, silhouettes, particles and glow. Below are real background frames drawn by the engine.",
@@ -286,6 +313,24 @@
         { id: "sim-g9-quantum", file: "sim-g9-quantum.png", grade: 9, para: "§ 36–43", formula: "hν = A + E_к" }
     ];
 
+    const FIELD7 = [
+        ["📏", "§3", { ru: "Перевод единиц", kk: "Бірліктерді түрлендіру", en: "Unit conversion" }],
+        ["📐", "§5", { ru: "Метрологический пост", kk: "Метрологиялық бекет", en: "Metrology post" }],
+        ["🚌", "§7", { ru: "Дождь в автобусе", kk: "Автобустағы жаңбыр", en: "Rain in a bus" }],
+        ["🛰️", "§8–9", { ru: "Относительность движения", kk: "Қозғалыстың салыстырмалылығы", en: "Relative motion" }],
+        ["⚖️", "§13", { ru: "Плотность вещества", kk: "Заттың тығыздығы", en: "Density" }],
+        ["🪐", "§15", { ru: "Сила тяжести", kk: "Ауырлық күші", en: "Gravity" }],
+        ["🛞", "§19", { ru: "Сила трения", kk: "Үйкеліс күші", en: "Friction" }],
+        ["🧱", "§22", { ru: "Давление тела", kk: "Дененің қысымы", en: "Pressure of a body" }],
+        ["🌡️", "§24", { ru: "Давление жидкости", kk: "Сұйықтық қысымы", en: "Liquid pressure" }],
+        ["🦾", "§25", { ru: "Гидравлический пресс", kk: "Гидравликалық пресс", en: "Hydraulic press" }],
+        ["🧪", "§26", { ru: "Сообщающиеся сосуды", kk: "Кеңейткіш ыдыстар", en: "Communicating vessels" }],
+        ["🌊", "§28", { ru: "Сила Архимеда", kk: "Архимед күші", en: "Buoyancy" }],
+        ["⚡", "§30", { ru: "Мощность", kk: "Қуат", en: "Power" }],
+        ["🔋", "§32", { ru: "Энергия", kk: "Энергия", en: "Energy" }],
+        ["⚙️", "§35", { ru: "Рычаг и момент", kk: "Иінтірек және момент", en: "Lever & moment" }]
+    ];
+
     let lang = localStorage.getItem("pq_lang") || "ru";
     if (!I18N[lang]) lang = "ru";
 
@@ -296,6 +341,11 @@
             const key = el.getAttribute("data-i18n");
             if (dict[key]) el.textContent = dict[key];
         });
+        const f7 = document.getElementById("f7-grid");
+        if (f7) {
+            f7.innerHTML = FIELD7.map(([icon, para, name]) => `
+                <div class="f7-item"><span class="ico">${icon}</span><div>${name[lang] || name.ru}<small>${para}</small></div></div>`).join("");
+        }
         document.getElementById("grid").innerHTML = CARDS.map((c) => {
             const item = dict.items[c.id] || { t: c.id, d: "" };
             return `
