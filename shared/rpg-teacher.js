@@ -480,9 +480,9 @@ const TeacherHQ = {
         const assignCode = entry.assignmentCode
             ? String(Storage.normalizeAssignmentCode(entry.assignmentCode) || "").replace(/[^A-Z0-9]/g, "").slice(0, 8)
             : "";
-        // R2 — новый формат: внутри кода есть код назначения.
-        // R1 — старый формат (без назначения) — остаётся совместимым.
-        const version = assignCode ? "R2" : "R1";
+        // R2 — новый формат кода результата (код назначения — необязательный сегмент).
+        // R1 — старый формат, по-прежнему принимается parseCode ради совместимости.
+        const version = "R2";
         const payloadParts = [version, studentCode, nameHash, lvl, win, solved, attempted, score, date];
         if (runToken) payloadParts.push(runToken);
         if (assignCode) payloadParts.push("A" + assignCode);

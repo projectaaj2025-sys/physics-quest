@@ -29,6 +29,7 @@
             siCol: "СИ",
             noData: "В условии нет числовых данных — это качественная задача. Разбери формулу и объясни явление.",
             noDataShort: "числовых данных нет",
+            noDataNumeric: "В условии нет числовых значений с единицами — это задание на знание. Вспомни определение или постоянную величину и запиши ответ.",
             convertNone: "все величины уже в СИ",
             convert: "Перевод единиц",
             stepFormula: "Записываем формулу в буквенном виде",
@@ -69,6 +70,7 @@
             siCol: "ХБ",
             noData: "Шартта сандық мәлімет жоқ — бұл сапалық есеп. Формуланы талдап, құбылысты түсіндір.",
             noDataShort: "сандық мәлімет жоқ",
+            noDataNumeric: "Шартта бірліктері бар сандық мәндер жоқ — бұл білімге арналған тапсырма. Анықтаманы немесе тұрақты шаманы еске түсіріп, жауапты жаз.",
             convertNone: "барлық шамалар ХБ-де",
             convert: "Өлшем бірліктерін түрлендіру",
             stepFormula: "Формуланы әріп түрінде жазамыз",
@@ -109,6 +111,7 @@
             siCol: "SI",
             noData: "There are no numbers in the statement — this is a qualitative task. Analyse the formula and explain the phenomenon.",
             noDataShort: "no numerical data",
+            noDataNumeric: "There are no numeric values with units in the statement — this is a knowledge question. Recall the definition or constant and write the answer.",
             convertNone: "all values are already in SI",
             convert: "Unit conversion",
             stepFormula: "Write the formula in symbols",
@@ -951,6 +954,27 @@
 
         const answer = data.answerText || (isFinite(data.numeric) ? fmt(data.numeric) : "");
 
+        // Задание на знание: числа в условии есть, но без единиц (например, «заряд альфа-частицы»)
+        const knowledgeOnly = !data.givens.length && data.task && data.task.type === "numeric";
+        if (knowledgeOnly) {
+            return `
+            <div class="pq-solver-grid">
+                <section class="pq-solver-block pq-solver-wide">
+                    <h4>📋 ${esc(pack.given)}</h4>
+                    <p class="pq-solver-empty">${esc(pack.noDataNumeric)}</p>
+                </section>
+                <section class="pq-solver-block pq-solver-wide">
+                    <h4>✏️ ${esc(pack.solution)}</h4>
+                    <ol class="pq-steps"><li>${esc({ ru: "Вспоминаем нужное определение или постоянную.", kk: "Қажетті анықтаманы немесе тұрақтыны еске түсіреміз.", en: "Recall the needed definition or constant." }[lang])}</li>
+                    <li>${esc({ ru: "Записываем ответ с единицей измерения.", kk: "Жауапты өлшем бірлігімен жазамыз.", en: "Write the answer with a unit." }[lang])}</li></ol>
+                    <div class="pq-answer-slot">
+                        <button type="button" class="pq-solver-reveal" id="pq-solver-reveal">${esc(pack.showAnswer)}</button>
+                        <div class="pq-answer-value" id="pq-answer-value" hidden><span class="pq-answer-label">${esc(pack.answer)}</span><b>${esc(answer)}</b></div>
+                    </div>
+                </section>
+            </div>`;
+        }
+
         return `
             <div class="pq-solver-grid">
                 <section class="pq-solver-block pq-block-given">
@@ -1144,6 +1168,7 @@
         state.open = false;
         state.revealed = false;
         state.autoOpened = false;
+        state.lastLang = currentLang();
         const panel = document.getElementById("pq-solver-panel");
         if (panel) { panel.hidden = true; panel.innerHTML = ""; }
         const bar = document.getElementById("pq-solver-bar");
@@ -1182,6 +1207,7 @@
             Game.renderTaskBody = function (task) {
                 const result = origRenderBody.apply(this, arguments);
                 try {
+                    if (state.lastLang && state.lastLang !== currentLang()) reset();
                     ensureBar();
                     if (state.open) render();
                 } catch (e) {}

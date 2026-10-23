@@ -79,6 +79,9 @@
     }
     .worlds-lead { color: var(--muted); font-size: 13px; line-height: 1.55; margin: 8px 0 14px; max-width: 900px; }
     .worlds-img { width: 100%; border-radius: 14px; display: block; border: 1px solid rgba(120,200,255,.2); }
+    .overview { margin: 22px 0 0; }
+    .overview img { width: 100%; border-radius: 16px; display: block; border: 1px solid rgba(120,200,255,.22); }
+    .overview figcaption { margin-top: 8px; font-size: 12.5px; color: var(--muted); }
     .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 18px; margin-top: 26px; }
     .card {
         border-radius: 20px; overflow: hidden; border: 1px solid var(--line);
@@ -167,6 +170,11 @@
         <img class="worlds-img" src="./assets/screenshots/level-worlds.png" alt="Миры уровней" loading="lazy">
     </section>
 
+    <figure class="overview">
+        <img src="./assets/screenshots/new-labs-overview.png" alt="Новые мини-игры" loading="lazy">
+        <figcaption data-i18n="overview">Шесть новых лабораторий одним взглядом: полный интерфейс опыта, телеметрия и задание.</figcaption>
+    </figure>
+
     <section class="grid" id="grid"></section>
 
     <div class="foot">
@@ -190,6 +198,7 @@
             lead: "33 симулятора внутри игры: 15 полевых опытов для 7 класса и 18 canvas-лабораторий для 8 и 9 классов. Каждый опыт — это реальная установка: меняй параметры, следи за телеметрией, выводи установку в целевой режим и вводи расчётное значение. Ниже — 12 кадров из игры.",
             sLabs: "симулятора в игре", sNew: "новых опытов в этой версии", sLangs: "языка интерфейса", sReward: "за каждый подтверждённый опыт",
             newBadge: "новый", grade: "класс",
+            overview: "Шесть новых лабораторий одним взглядом: полный интерфейс опыта, телеметрия и задание.",
             worldsKicker: "ОФОРМЛЕНИЕ УРОВНЕЙ", worldsTitle: "Шесть разных миров внутри игры",
             worldsLead: "Фон уровня больше не один и тот же: каждая глава получает свой мир — небо, силуэты, частицы и свечение. Ниже — реальные кадры фонов, которые рисует движок.",
             footNote: "Все изображения получены автоматической отрисовкой реальных canvas-сцен игры при заданных параметрах.",
@@ -215,6 +224,7 @@
             lead: "Ойын ішінде 18 зертхана бар: 7 сыныпқа арналған 15 өріс симуляторы және 8–9 сыныптарға арналған 9 canvas-симулятор. Әр тәжірибе — нақты қондырғы: параметрлерді өзгерт, телеметрияны бақыла, қондырғыны мақсатты режимге шығарып, есептік мәнді енгіз. Төменде — ойыннан алынған нақты кадрлар.",
             sLabs: "симулятор мен зертхана", sNew: "осы нұсқадағы жаңа тәжірибе", sLangs: "интерфейс тілі", sReward: "әр расталған тәжірибе үшін",
             newBadge: "жаңа", grade: "сынып",
+            overview: "Алты жаңа зертхана бір қарағанда: тәжірибенің толық интерфейсі, телеметрия және тапсырма.",
             worldsKicker: "ДЕҢГЕЙЛЕРДІҢ РӘСІМДЕЛУІ", worldsTitle: "Ойын ішіндегі алты түрлі әлем",
             worldsLead: "Деңгей фоны енді бірдей емес: әр тарау өз әлемін алады — аспан, сұлбалар, бөлшектер және жарық. Төменде — қозғалтқыш салатын нақты фон кадрлары.",
             footNote: "Барлық суреттер ойынның нақты canvas-сахналарын берілген параметрлермен автоматты түрде салу арқылы алынған.",
@@ -240,6 +250,7 @@
             lead: "18 labs inside the game: 15 field simulators for Grade 7 and 9 canvas simulators for Grades 8 and 9. Each experiment is a real setup: change parameters, watch telemetry, bring it into the target regime and enter the calculated value. Below are genuine frames from the game.",
             sLabs: "simulators and labs", sNew: "new experiments in this version", sLangs: "interface languages", sReward: "for every confirmed experiment",
             newBadge: "new", grade: "grade",
+            overview: "Six new labs at a glance: the full experiment interface, telemetry and its task.",
             worldsKicker: "LEVEL ART", worldsTitle: "Six different worlds inside the game",
             worldsLead: "The level background is no longer the same: every chapter gets its own world — sky, silhouettes, particles and glow. Below are real background frames drawn by the engine.",
             footNote: "All images are produced by automatically rendering the game's real canvas scenes with the given parameters.",

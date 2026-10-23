@@ -50,6 +50,7 @@ window.PQ_OFFLINE_FILES = [
     "assets/pdf/grade9-kk.pdf",
     "assets/pdf/grade9-ru.pdf",
     "assets/screenshots/level-worlds.png",
+    "assets/screenshots/new-labs-overview.png",
     "assets/screenshots/sim-g8-archimedes.png",
     "assets/screenshots/sim-g8-calorimeter.png",
     "assets/screenshots/sim-g8-echo.png",
