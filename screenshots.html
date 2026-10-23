@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Физика-Квест — скриншоты симуляторов</title>
+<meta name="theme-color" content="#050b18">
+<link rel="icon" type="image/png" sizes="192x192" href="./assets/icons/icon-192.png">
+<style>
+    :root {
+        --bg: #050b18;
+        --panel: #0a172c;
+        --panel-2: #0d1f3a;
+        --line: rgba(96, 165, 250, .22);
+        --text: #eaf4ff;
+        --muted: #93a9c7;
+        --accent: #38bdf8;
+        --gold: #ffd479;
+    }
+    * { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; }
+    body {
+        font-family: "Trebuchet MS", "Segoe UI", system-ui, sans-serif;
+        background:
+            radial-gradient(1200px 700px at 50% -10%, rgba(56, 189, 248, .18), transparent 60%),
+            radial-gradient(900px 600px at 90% 20%, rgba(179, 136, 255, .12), transparent 55%),
+            var(--bg);
+        color: var(--text);
+        min-height: 100vh;
+    }
+    a { color: inherit; }
+    .wrap { max-width: 1240px; margin: 0 auto; padding: 26px 22px 60px; }
+    .topbar { display: flex; justify-content: space-between; align-items: center; gap: 14px; flex-wrap: wrap; }
+    .brand { display: flex; align-items: center; gap: 10px; font-weight: 900; letter-spacing: .04em; }
+    .brand .logo {
+        width: 38px; height: 38px; border-radius: 12px;
+        background: linear-gradient(135deg, #0ea5e9, #6d28d9);
+        display: grid; place-items: center; font-size: 19px;
+        box-shadow: 0 8px 22px rgba(14, 165, 233, .35);
+    }
+    .topbar-actions { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+    .langs { display: flex; gap: 4px; padding: 4px; border-radius: 12px; background: rgba(13, 31, 58, .8); border: 1px solid var(--line); }
+    .langs button {
+        border: 0; background: transparent; color: var(--muted); font-weight: 800; font-size: 12px;
+        padding: 7px 10px; border-radius: 9px; cursor: pointer;
+    }
+    .langs button.active { background: #16375c; color: #eaf6ff; }
+    .btn {
+        display: inline-flex; align-items: center; gap: 8px; text-decoration: none;
+        padding: 10px 16px; border-radius: 12px; font-weight: 800; font-size: 13px;
+        border: 1px solid var(--line); background: rgba(13, 31, 58, .8); color: var(--text);
+        cursor: pointer; transition: transform .15s ease, border-color .15s ease;
+    }
+    .btn:hover { transform: translateY(-1px); border-color: rgba(56, 189, 248, .6); }
+    .btn.primary { background: linear-gradient(135deg, #0ea5e9, #2563eb); border-color: transparent; color: #fff; }
+    .hero { margin: 34px 0 22px; }
+    .kicker { font-size: 12px; letter-spacing: .18em; color: var(--accent); font-weight: 900; }
+    h1 {
+        font-size: clamp(30px, 4.6vw, 54px); line-height: 1.04; margin: 10px 0 12px;
+        background: linear-gradient(110deg, #fff, #9fe8ff 45%, var(--gold));
+        -webkit-background-clip: text; background-clip: text; color: transparent;
+    }
+    .lead { max-width: 860px; color: var(--muted); font-size: clamp(13.5px, 1.5vw, 17px); line-height: 1.6; }
+    .stats { display: flex; flex-wrap: wrap; gap: 10px; margin: 20px 0 6px; }
+    .stat {
+        padding: 10px 14px; border-radius: 14px; border: 1px solid var(--line);
+        background: rgba(13, 31, 58, .72); font-size: 12.5px; font-weight: 700; color: #cfe6ff;
+    }
+    .stat b { color: var(--gold); }
+    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 18px; margin-top: 26px; }
+    .card {
+        border-radius: 20px; overflow: hidden; border: 1px solid var(--line);
+        background: linear-gradient(180deg, rgba(15, 32, 60, .82), rgba(8, 18, 36, .95));
+        box-shadow: 0 24px 60px rgba(0, 0, 0, .38);
+        display: flex; flex-direction: column;
+        transition: transform .18s ease, border-color .18s ease;
+    }
+    .card:hover { transform: translateY(-3px); border-color: rgba(56, 189, 248, .5); }
+    .shot { position: relative; aspect-ratio: 1200 / 860; overflow: hidden; cursor: zoom-in; background: #050b18; }
+    .shot img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .badge {
+        position: absolute; top: 12px; right: 12px; padding: 6px 10px; border-radius: 999px;
+        font-size: 10.5px; font-weight: 900; letter-spacing: .08em; text-transform: uppercase;
+        background: rgba(34, 197, 94, .92); color: #052012;
+    }
+    .badge.grade { left: 12px; right: auto; background: rgba(2, 132, 199, .9); color: #e0f6ff; }
+    .meta { padding: 15px 17px 17px; display: flex; flex-direction: column; gap: 6px; flex: 1; }
+    .meta-top { display: flex; justify-content: space-between; gap: 12px; align-items: baseline; }
+    .meta h3 { margin: 0; font-size: 16px; }
+    .para { font-size: 11.5px; color: var(--muted); font-weight: 800; white-space: nowrap; }
+    .formula {
+        display: inline-block; align-self: flex-start; margin-top: 2px;
+        font-family: "Cambria Math", Georgia, serif; font-size: 14px; color: var(--gold);
+        background: rgba(255, 212, 121, .08); border-left: 3px solid var(--gold);
+        padding: 5px 10px; border-radius: 8px;
+    }
+    .desc { color: var(--muted); font-size: 12.5px; line-height: 1.5; margin: 2px 0 0; }
+    .foot { margin-top: 46px; display: flex; justify-content: space-between; gap: 14px; flex-wrap: wrap; align-items: center; color: var(--muted); font-size: 12.5px; }
+    .lightbox {
+        position: fixed; inset: 0; background: rgba(2, 6, 14, .92); display: none;
+        align-items: center; justify-content: center; padding: 20px; z-index: 999;
+    }
+    .lightbox.open { display: flex; }
+    .lightbox img { max-width: 100%; max-height: 100%; border-radius: 16px; box-shadow: 0 30px 90px rgba(0,0,0,.7); }
+    .lightbox .x {
+        position: absolute; top: 18px; right: 22px; width: 42px; height: 42px; border-radius: 50%;
+        border: 1px solid rgba(255,255,255,.3); background: rgba(10,20,40,.8); color: #fff;
+        font-size: 20px; cursor: pointer;
+    }
+    @media (max-width: 560px) {
+        .wrap { padding: 18px 14px 40px; }
+        .grid { grid-template-columns: 1fr; }
+    }
+</style>
+</head>
+<body>
+<div class="wrap">
+    <div class="topbar">
+        <a class="brand" href="./index.html" style="text-decoration:none">
+            <span class="logo">⚛️</span>
+            <span>ФИЗИКА-КВЕСТ</span>
+        </a>
+        <div class="topbar-actions">
+            <div class="langs" role="group" aria-label="Language">
+                <button type="button" data-lang="ru" class="active">RU</button>
+                <button type="button" data-lang="kk">ҚАЗ</button>
+                <button type="button" data-lang="en">EN</button>
+            </div>
+            <a class="btn" href="./play.html?grade=8">🎮 <span data-i18n="openGame">Открыть игру</span></a>
+            <a class="btn primary" href="./index.html">🏠 <span data-i18n="toPortal">На портал</span></a>
+        </div>
+    </div>
+
+    <header class="hero">
+        <div class="kicker" data-i18n="kicker">ИНТЕРАКТИВНЫЕ СИМУЛЯТОРЫ · 7–9 КЛАССЫ</div>
+        <h1 data-i18n="title">Скриншоты мини-игр «Физика-Квест»</h1>
+        <p class="lead" data-i18n="lead">18 лабораторий внутри игры: 15 полевых симуляторов для 7 класса и 9 canvas-симуляторов для 8 и 9 классов. Каждый опыт — это реальная установка: меняй параметры, следи за телеметрией, выводи установку в целевой режим и вводи расчётное значение. Ниже — настоящие кадры из игры.</p>
+        <div class="stats">
+            <div class="stat"><b>33</b> <span data-i18n="sLabs">симуляторов и лабораторий</span></div>
+            <div class="stat"><b>6</b> <span data-i18n="sNew">новых опытов в этой версии</span></div>
+            <div class="stat"><b>3</b> <span data-i18n="sLangs">языка интерфейса</span></div>
+            <div class="stat"><b>+30 XP</b> <span data-i18n="sReward">за каждый подтверждённый опыт</span></div>
+        </div>
+    </header>
+
+    <section class="grid" id="grid"></section>
+
+    <div class="foot">
+        <span data-i18n="footNote">Все изображения получены автоматической отрисовкой реальных canvas-сцен игры при заданных параметрах.</span>
+        <span>© Физика-Квест · 7–9</span>
+    </div>
+</div>
+
+<div class="lightbox" id="lightbox">
+    <button type="button" class="x" id="lightbox-x" aria-label="Закрыть">✕</button>
+    <img id="lightbox-img" alt="">
+</div>
+
+<script>
+(function () {
+    const I18N = {
+        ru: {
+            openGame: "Открыть игру", toPortal: "На портал",
+            kicker: "ИНТЕРАКТИВНЫЕ СИМУЛЯТОРЫ · 7–9 КЛАССЫ",
+            title: "Скриншоты мини-игр «Физика-Квест»",
+            lead: "33 симулятора внутри игры: 15 полевых опытов для 7 класса и 18 canvas-лабораторий для 8 и 9 классов. Каждый опыт — это реальная установка: меняй параметры, следи за телеметрией, выводи установку в целевой режим и вводи расчётное значение. Ниже — 12 кадров из игры.",
+            sLabs: "симулятора в игре", sNew: "новых опытов в этой версии", sLangs: "языка интерфейса", sReward: "за каждый подтверждённый опыт",
+            newBadge: "новый", grade: "класс",
+            footNote: "Все изображения получены автоматической отрисовкой реальных canvas-сцен игры при заданных параметрах.",
+            items: {
+                "sim-g8-calorimeter": { t: "Калориметр: тепловой баланс", d: "Горячий цилиндр опускают в воду. Нужно вывести смесь в рабочий коридор 32–45 °C и рассчитать теплоту Q = cmΔt." },
+                "sim-g8-hydraulic": { t: "Гидравлический пресс", d: "Малый поршень давит с силой F₁ — большой поднимает 800-килограммовый блок щита. Проверяем выигрыш в силе." },
+                "sim-g8-archimedes": { t: "Плавучесть батискафа", d: "Подбираем объём, жидкость и массу так, чтобы сила Архимеда удержала батискаф на плаву." },
+                "sim-g8-echo": { t: "Эхолот и ультразвук", d: "Импульс уходит ко дну и возвращается. По времени эха и скорости звука находим глубину h = v·t/2." },
+                "sim-g9-coulomb": { t: "Закон Кулона: два заряда", d: "Два заряда удерживают магнитный парус «Беркута». Сила должна попасть в коридор 0,8–2,5 Н." },
+                "sim-g9-decay": { t: "Радиоактивный распад", d: "Энергоячейка Орбиты-9: оставляем 10–25 % ядер, подбирая период полураспада и время." },
+                "sim-g9-induction": { t: "ЭДС индукции в катушке", d: "Магнитное поле исчезает за время Δt и наводит ЭДС. Нужно получить 4–30 В." },
+                "sim-g9-quantum": { t: "Фотоэлемент Эйнштейна", d: "Подбираем металл катода и длину волны, чтобы фотоэлектроны получили E_к = 0,8–2,5 эВ." },
+                "sim-g8-phase": { t: "Фазовые переходы", d: "Плавление и парообразование: сколько тепла нужно, чтобы лёд стал водой, а вода — паром." },
+                "sim-g8-optics": { t: "Линза и изображение", d: "Собирающая линза строит изображение: найди фокус и расстояние до изображения." },
+                "sim-g9-ballistics": { t: "Баллистика «Беркута»", d: "Подбираем угол и скорость, чтобы корабль попал в посадочный коридор." },
+                "sim-g9-oscillator": { t: "Маятник «Тулпар»", d: "Период колебаний зависит от длины подвеса и ускорения свободного падения." }
+            }
+        },
+        kk: {
+            openGame: "Ойынды ашу", toPortal: "Порталға",
+            kicker: "ИНТЕРАКТИВТІ СИМУЛЯТОРЛАР · 7–9 СЫНЫП",
+            title: "«Физика-Квест» мини-ойындарының скриншоттары",
+            lead: "Ойын ішінде 18 зертхана бар: 7 сыныпқа арналған 15 өріс симуляторы және 8–9 сыныптарға арналған 9 canvas-симулятор. Әр тәжірибе — нақты қондырғы: параметрлерді өзгерт, телеметрияны бақыла, қондырғыны мақсатты режимге шығарып, есептік мәнді енгіз. Төменде — ойыннан алынған нақты кадрлар.",
+            sLabs: "симулятор мен зертхана", sNew: "осы нұсқадағы жаңа тәжірибе", sLangs: "интерфейс тілі", sReward: "әр расталған тәжірибе үшін",
+            newBadge: "жаңа", grade: "сынып",
+            footNote: "Барлық суреттер ойынның нақты canvas-сахналарын берілген параметрлермен автоматты түрде салу арқылы алынған.",
+            items: {
+                "sim-g8-calorimeter": { t: "Калориметр: жылу балансы", d: "Ыстық цилиндр суға батырылады. Қоспаны 32–45 °C дәлізіне шығарып, Q = cmΔt есептеу керек." },
+                "sim-g8-hydraulic": { t: "Гидравликалық пресс", d: "Кіші поршень F₁ күшімен басады — үлкен поршень 800 кг қалқан блогын көтереді." },
+                "sim-g8-archimedes": { t: "Батискафтың қалқуы", d: "Архимед күші батискафты ұстап тұруы үшін көлем, сұйықтық және массаны таңдаймыз." },
+                "sim-g8-echo": { t: "Эхолот және ультрадыбыс", d: "Импульс түбке жетіп қайтады. Жаңғырық уақыты мен дыбыс жылдамдығы бойынша h = v·t/2 табамыз." },
+                "sim-g9-coulomb": { t: "Кулон заңы: екі заряд", d: "Екі заряд «Беркут» желкенін ұстап тұр. Күш 0,8–2,5 Н дәлізіне түсуі керек." },
+                "sim-g9-decay": { t: "Радиоактивті ыдырау", d: "Орбита-9 энергия ұяшығы: период пен уақытты таңдап, ядролардың 10–25 % қалдырамыз." },
+                "sim-g9-induction": { t: "Орамадағы индукция ЭҚК", d: "Магнит өрісі Δt уақытта жоғалып, ЭҚК тудырады. 4–30 В алу қажет." },
+                "sim-g9-quantum": { t: "Эйнштейн фотоэлементі", d: "Фотоэлектрондар E_к = 0,8–2,5 эВ алуы үшін катод металы мен толқын ұзындығын таңдаймыз." },
+                "sim-g8-phase": { t: "Фазалық ауысулар", d: "Балқу және булану: мұзды суға, суды буды айналдыру үшін қанша жылу керек." },
+                "sim-g8-optics": { t: "Линза және кескін", d: "Жинағыш линза кескін салады: фокус пен кескін қашықтығын тап." },
+                "sim-g9-ballistics": { t: "«Бүркіт» баллистикасы", d: "Кеме қону дәлізіне түсуі үшін бұрыш пен жылдамдықты таңдаймыз." },
+                "sim-g9-oscillator": { t: "«Тұлпар» маятнигі", d: "Тербеліс периоды ілу ұзындығы мен еркін түсу үдеуіне тәуелді." }
+            }
+        },
+        en: {
+            openGame: "Open the game", toPortal: "Portal",
+            kicker: "INTERACTIVE SIMULATORS · GRADES 7–9",
+            title: "Physics Quest mini-game screenshots",
+            lead: "18 labs inside the game: 15 field simulators for Grade 7 and 9 canvas simulators for Grades 8 and 9. Each experiment is a real setup: change parameters, watch telemetry, bring it into the target regime and enter the calculated value. Below are genuine frames from the game.",
+            sLabs: "simulators and labs", sNew: "new experiments in this version", sLangs: "interface languages", sReward: "for every confirmed experiment",
+            newBadge: "new", grade: "grade",
+            footNote: "All images are produced by automatically rendering the game's real canvas scenes with the given parameters.",
+            items: {
+                "sim-g8-calorimeter": { t: "Calorimeter: thermal balance", d: "A hot cylinder is lowered into water. Bring the mixture to 32–45 °C and compute Q = cmΔt." },
+                "sim-g8-hydraulic": { t: "Hydraulic press", d: "The small piston pushes with F₁ — the large one lifts an 800 kg shield block." },
+                "sim-g8-archimedes": { t: "Bathyscaphe buoyancy", d: "Tune volume, liquid and mass so the buoyant force keeps the bathyscaphe afloat." },
+                "sim-g8-echo": { t: "Sonar & ultrasound", d: "A pulse travels to the seabed and back. From echo time and sound speed we find h = v·t/2." },
+                "sim-g9-coulomb": { t: "Coulomb's law: two charges", d: "Two charges hold the Berkut magnetic sail. The force must land within 0.8–2.5 N." },
+                "sim-g9-decay": { t: "Radioactive decay", d: "An Orbit-9 power cell: leave 10–25 % of the nuclei by tuning half-life and time." },
+                "sim-g9-induction": { t: "Induced EMF in a coil", d: "The field collapses in Δt and induces an EMF. Reach 4–30 V." },
+                "sim-g9-quantum": { t: "Einstein photocell", d: "Choose the cathode metal and wavelength so photoelectrons get E_k = 0.8–2.5 eV." },
+                "sim-g8-phase": { t: "Phase transitions", d: "Melting and vaporisation: how much heat turns ice into water and water into steam." },
+                "sim-g8-optics": { t: "Lens and image", d: "A converging lens forms an image: find the focal point and image distance." },
+                "sim-g9-ballistics": { t: "Berkut ballistics", d: "Tune the angle and speed so the ship enters the landing corridor." },
+                "sim-g9-oscillator": { t: "Tulpar pendulum", d: "The period depends on the suspension length and free-fall acceleration." }
+            }
+        }
+    };
+
+    const CARDS = [
+        { id: "sim-g8-calorimeter", file: "sim-g8-calorimeter.png", grade: 8, para: "§ 7–9", formula: "Q = cmΔt" },
+        { id: "sim-g8-hydraulic", file: "sim-g8-hydraulic.png", grade: 8, para: "§ 24–28", formula: "F₂ = F₁·S₂/S₁", isNew: true },
+        { id: "sim-g8-archimedes", file: "sim-g8-archimedes.png", grade: 8, para: "§ 46–49", formula: "F_A = ρ·g·V", isNew: true },
+        { id: "sim-g8-echo", file: "sim-g8-echo.png", grade: 8, para: "§ 30–33", formula: "h = v·t / 2", isNew: true },
+        { id: "sim-g9-coulomb", file: "sim-g9-coulomb.png", grade: 9, para: "§ 1–8", formula: "F = k·q₁q₂/r²", isNew: true },
+        { id: "sim-g9-decay", file: "sim-g9-decay.png", grade: 9, para: "§ 29–36", formula: "N = N₀·2^(−t/T)", isNew: true },
+        { id: "sim-g9-induction", file: "sim-g9-induction.png", grade: 9, para: "§ 37–44", formula: "ε = N·B·S/Δt", isNew: true },
+        { id: "sim-g8-phase", file: "sim-g8-phase.png", grade: 8, para: "§ 12–15", formula: "Q = λ·m" },
+        { id: "sim-g8-optics", file: "sim-g8-optics.png", grade: 8, para: "§ 38–42", formula: "1/F = 1/d + 1/f" },
+        { id: "sim-g9-ballistics", file: "sim-g9-ballistics.png", grade: 9, para: "§ 9–16", formula: "L = v²·sin2α / g" },
+        { id: "sim-g9-oscillator", file: "sim-g9-oscillator.png", grade: 9, para: "§ 20–28", formula: "T = 2π√(l/g)" },
+        { id: "sim-g9-quantum", file: "sim-g9-quantum.png", grade: 9, para: "§ 36–43", formula: "hν = A + E_к" }
+    ];
+
+    let lang = localStorage.getItem("pq_lang") || "ru";
+    if (!I18N[lang]) lang = "ru";
+
+    function render() {
+        const dict = I18N[lang];
+        document.documentElement.lang = lang;
+        document.querySelectorAll("[data-i18n]").forEach((el) => {
+            const key = el.getAttribute("data-i18n");
+            if (dict[key]) el.textContent = dict[key];
+        });
+        document.getElementById("grid").innerHTML = CARDS.map((c) => {
+            const item = dict.items[c.id] || { t: c.id, d: "" };
+            return `
+                <article class="card">
+                    <div class="shot" data-img="./assets/screenshots/${c.file}">
+                        <img src="./assets/screenshots/${c.file}" alt="${item.t}" loading="lazy">
+                        ${c.isNew ? `<span class="badge">${dict.newBadge}</span>` : ""}
+                        <span class="badge grade">${c.grade} ${dict.grade}</span>
+                    </div>
+                    <div class="meta">
+                        <div class="meta-top">
+                            <h3>${item.t}</h3>
+                            <span class="para">${c.para}</span>
+                        </div>
+                        <span class="formula">${c.formula}</span>
+                        <p class="desc">${item.d}</p>
+                    </div>
+                </article>`;
+        }).join("");
+        bind();
+    }
+
+    function bind() {
+        document.querySelectorAll(".shot").forEach((el) => {
+            el.addEventListener("click", () => {
+                const img = document.getElementById("lightbox-img");
+                img.src = el.getAttribute("data-img");
+                document.getElementById("lightbox").classList.add("open");
+            });
+        });
+    }
+
+    document.querySelectorAll(".langs button").forEach((btn) => {
+        btn.addEventListener("click", () => {
+            lang = btn.dataset.lang;
+            try { localStorage.setItem("pq_lang", lang); } catch (_) {}
+            document.querySelectorAll(".langs button").forEach((b) => b.classList.toggle("active", b === btn));
+            render();
+        });
+    });
+    document.querySelector('.langs button[data-lang="' + lang + '"]')?.classList.add("active");
+    document.querySelectorAll(".langs button").forEach((b) => b.classList.toggle("active", b.dataset.lang === lang));
+
+    document.getElementById("lightbox-x").addEventListener("click", () => document.getElementById("lightbox").classList.remove("open"));
+    document.getElementById("lightbox").addEventListener("click", (e) => {
+        if (e.target.id === "lightbox") e.currentTarget.classList.remove("open");
+    });
+    document.addEventListener("keydown", (e) => {
+        if (e.key === "Escape") document.getElementById("lightbox").classList.remove("open");
+    });
+
+    render();
+})();
+</script>
+</body>
+</html>

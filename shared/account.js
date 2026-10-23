@@ -222,6 +222,32 @@
                 loggedIn: !!(saved && saved.teacher && saved.teacher.loggedIn)
             }
         };
+        // Вход по QR-коду с распечатанной карточки ученика:
+        // play.html?grade=8&code=K7M2&name=Айдана  (или #s=K7M2~Айдана)
+        try {
+            const params = new URLSearchParams(window.location.search);
+            let linkCode = String(params.get("code") || "").trim();
+            let linkName = String(params.get("name") || "").trim();
+            const hashMatch = String(window.location.hash || "").match(/[#&]s=([A-Za-z0-9]{4,6})(?:~([^&]*))?/);
+            if (!linkCode && hashMatch) {
+                linkCode = hashMatch[1];
+                linkName = decodeURIComponent(hashMatch[2] || "");
+            }
+            linkCode = normalizeShortCode(linkCode);
+            if (linkCode.length >= 4 && !(saved && saved.onboarded)) {
+                const gParam = Number(params.get("grade"));
+                acc.student.studentCode = linkCode;
+                if (linkName) acc.student.name = linkName.slice(0, 60);
+                if ([7, 8, 9].includes(gParam)) acc.student.grade = gParam;
+                acc.onboarded = true;
+                acc.role = "student";
+                if (window.history && history.replaceState) {
+                    const keep = [7, 8, 9].includes(gParam) ? "?grade=" + gParam : location.pathname;
+                    history.replaceState(null, "", keep);
+                }
+            }
+        } catch (_) {}
+
         safeJsonSave(ACCOUNT_KEY, acc);
         return acc;
     }

@@ -1615,17 +1615,21 @@ const Game = {
             );
         }
 
-        // Фон — звёзды
-        ctx.fillStyle = "#050818";
-        ctx.fillRect(-50, -50, this.width + 100, this.height + 100);
+        // Фон — тематический мир уровня (shared/level-themes.js).
+        // Если темы недоступны, рисуем классическое звёздное небо.
         const time = Date.now() / 1000;
-        this.stars.forEach(s => {
-            const alpha = 0.4 + Math.sin(time * 2 + s.twinkle) * 0.3;
-            ctx.fillStyle = `rgba(255, 255, 255, ${alpha})`;
-            ctx.beginPath();
-            ctx.arc(s.x % this.width, s.y % this.height, s.size, 0, Math.PI * 2);
-            ctx.fill();
-        });
+        const themed = !!(window.LevelThemes && window.LevelThemes.drawBackground(ctx, this));
+        if (!themed) {
+            ctx.fillStyle = "#050818";
+            ctx.fillRect(-50, -50, this.width + 100, this.height + 100);
+            this.stars.forEach(s => {
+                const alpha = 0.4 + Math.sin(time * 2 + s.twinkle) * 0.3;
+                ctx.fillStyle = `rgba(255, 255, 255, ${alpha})`;
+                ctx.beginPath();
+                ctx.arc(s.x % this.width, s.y % this.height, s.size, 0, Math.PI * 2);
+                ctx.fill();
+            });
+        }
 
         // Город (внизу)
         this.drawCity(ctx);

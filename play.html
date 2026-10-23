@@ -706,8 +706,9 @@
         if (window.PQAccount) {
             window.PQAccount.mountTopbar(grade);
         }
+        // Комикс трилогии перенесён в раздел «Лор и сюжет» (кнопка внутри #story-modal)
         const diaryBtn = document.getElementById("btn-diary");
-        if (diaryBtn) diaryBtn.style.display = "inline-flex";
+        if (diaryBtn) diaryBtn.style.display = "none";
 
         const scripts = [
             `./${grade}/tasks.js`,
@@ -726,6 +727,15 @@
             "./shared/rpg-extra.js",
             "./shared/rpg-teacher.js",
             "./shared/rpg-assign.js",
+            "./shared/conspect-examples.js",
+            "./shared/level-themes.js",
+            "./shared/problem-solver.js",
+            "./shared/sound.js",
+            "./shared/team-battle.js",
+            "./shared/print-cards.js",
+            "./shared/certificate.js",
+            "./shared/offline-manifest.js",
+            "./shared/offline.js",
             "./shared/rpg-boot.js"
         ];
         if (grade === 7) {
@@ -761,6 +771,14 @@
                 if ((grade === 8 || grade === 9) && typeof Simulators89 !== "undefined") {
                     try { Simulators89.init(); } catch (e) { console.error(e); }
                 }
+                // Новые модули трилогии: миры уровней, разбор задач, звук, битва команд,
+                // карточки класса, сертификаты и офлайн-режим.
+                ["LevelThemes", "PQProblemSolver", "PQSound", "PQTeamBattle", "PQPrintCards", "PQCertificate", "PQOffline"].forEach((name) => {
+                    const mod = window[name];
+                    if (mod && typeof mod.init === "function") {
+                        try { mod.init(); } catch (e) { console.error(name, e); }
+                    }
+                });
                 return;
             }
             const s = document.createElement("script");

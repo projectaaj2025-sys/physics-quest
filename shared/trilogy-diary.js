@@ -18,7 +18,10 @@
             close: "🚀 Вернуться",
             physKey: "⚛️ Физический ключ главы:",
             levelsRange: "Миссии #{0}–#{1}",
-            diaryBtn: "Комикс трилогии"
+            diaryBtn: "Комикс трилогии",
+            nextHint: "Намёк на следующее приключение:",
+            storyBtn: "📖 Комикс трилогии",
+            storyHint: "Сюжет всех трёх игр в одном комиксе"
         },
         kk: {
             modalTitle: "📖 «Физика-Квест» трилогиясының комикс-күнделігі",
@@ -31,7 +34,10 @@
             close: "🚀 Оралу",
             physKey: "⚛️ Тараудың физикалық кілті:",
             levelsRange: "Миссиялар #{0}–#{1}",
-            diaryBtn: "Трилогия комиксі"
+            diaryBtn: "Трилогия комиксі",
+            nextHint: "Келесі оқиғаға нұсқау:",
+            storyBtn: "📖 Трилогия комиксі",
+            storyHint: "Үш ойынның сюжеті бір комиксте"
         },
         en: {
             modalTitle: "📖 Physics Quest Trilogy Comic Diary",
@@ -44,7 +50,10 @@
             close: "🚀 Continue",
             physKey: "⚛️ Physics Key of the Chapter:",
             levelsRange: "Missions #{0}–#{1}",
-            diaryBtn: "Trilogy Comic"
+            diaryBtn: "Trilogy Comic",
+            nextHint: "A hint at the next adventure:",
+            storyBtn: "📖 Trilogy comic",
+            storyHint: "The story of all three games in one comic"
         }
     };
 
@@ -534,7 +543,7 @@
                 }
             },
             {
-                ep: 5, from: 38, to: 44, img: "./assets/comics/g8-ep5.svg",
+                ep: 5, from: 38, to: 44, img: "./assets/comics/g8-ep5.jpg",
                 formula: "n₁ sinα = n₂ sinβ · 1/F = 1/d + 1/f",
                 title: {
                     ru: "Глава 5. Хрустальная обсерватория света",
@@ -582,7 +591,7 @@
                 }
             },
             {
-                ep: 6, from: 45, to: 55, img: "./assets/comics/g8-ep6.svg",
+                ep: 6, from: 45, to: 55, img: "./assets/comics/g8-ep6.jpg",
                 formula: "Q = cmΔt · I = U/R · 1/F = 1/d + 1/f",
                 title: {
                     ru: "Глава 6. Ответ с орбиты",
@@ -633,7 +642,7 @@
 
         9: [
             {
-                ep: 1, from: 1, to: 8, img: "./assets/comics/g9-ep1.svg",
+                ep: 1, from: 1, to: 8, img: "./assets/comics/g9-ep1.jpg",
                 formula: "x = x₀ + v₀ₓt + aₓt²/2 · vₓ = v₀ₓ + aₓt",
                 title: {
                     ru: "Глава 1. Пробуждение «Орбиты-9»",
@@ -681,7 +690,7 @@
                 }
             },
             {
-                ep: 2, from: 9, to: 20, img: "./assets/comics/g9-ep2.svg",
+                ep: 2, from: 9, to: 20, img: "./assets/comics/g9-ep2.jpg",
                 formula: "F = Gm₁m₂/R² · v₁ = √(GM/R) ≈ 7,9 км/с",
                 title: {
                     ru: "Глава 2. Крылья «Беркута» и гравитация",
@@ -729,7 +738,7 @@
                 }
             },
             {
-                ep: 3, from: 21, to: 24, img: "./assets/comics/g9-ep3.svg",
+                ep: 3, from: 21, to: 24, img: "./assets/comics/g9-ep3.jpg",
                 formula: "m₁v⃗₁ + m₂v⃗₂ = const · E_к = mv²/2",
                 title: {
                     ru: "Глава 3. Импульсный щит против болида",
@@ -777,7 +786,7 @@
                 }
             },
             {
-                ep: 4, from: 25, to: 35, img: "./assets/comics/g9-ep4.svg",
+                ep: 4, from: 25, to: 35, img: "./assets/comics/g9-ep4.jpg",
                 formula: "T = 2π√(l/g) · λ = v / ν · c = 3·10⁸ м/с",
                 title: {
                     ru: "Глава 4. Резонансная волна",
@@ -923,6 +932,29 @@
         ]
     };
 
+    // Намёки на продолжение в конце комикса каждого класса (связка трилогии)
+    const TEASERS = {
+        7: {
+            ru: "В финале Астерии КВАНТ ловит сигнал с замёрзшей станции «Эквилибриум»: её реактор остыл, теплосеть молчит, а город ждёт новый экипаж. Продолжение — в 8 классе: тепловые и электрические явления.",
+            kk: "Астерия финалында КВАНТ мұздаған «Эквилибриум» станциясынан сигнал қабылдайды: реакторы суып, жылу желісі үнсіз, қала жаңа экипажды күтеді. Жалғасы — 8 сыныпта: жылу және электр құбылыстары.",
+            en: "In the Asteria finale KVANT picks up a signal from the frozen Equilibrium station: its reactor has cooled, the heat grid is silent, and the city awaits a new crew. The story continues in Grade 8 with thermal and electrical phenomena."
+        },
+        8: {
+            ru: "С орбиты приходит ответ: станция «Орбита-9» теряет управление, а её щит должен прикрыть Землю. Продолжение — в 9 классе: механика, колебания и волны, электромагнетизм и квантовая физика.",
+            kk: "Орбитадан жауап келеді: «Орбита-9» станциясы басқаруды жоғалтып, оның қалқаны Жерді жабуы керек. Жалғасы — 9 сыныпта: механика, тербелістер мен толқындар, электромагнетизм және кванттық физика.",
+            en: "An answer comes from orbit: the Orbit-9 station is losing control, and its shield must cover the Earth. The story continues in Grade 9 with mechanics, oscillations and waves, electromagnetism and quantum physics."
+        },
+        9: {
+            ru: "Три щита соединяются в один: Астерия, Эквилибриум и Орбита-9. Но КВАНТ оставляет координаты нового задания — значит, история продолжается.",
+            kk: "Үш қалқан бірігеді: Астерия, Эквилибриум және Орбита-9. Бірақ КВАНТ жаңа тапсырманың координаттарын қалдырады — демек, тарих жалғасады.",
+            en: "Three shields merge into one: Asteria, Equilibrium and Orbit-9. But KVANT leaves the coordinates of a new mission — the story goes on."
+        }
+    };
+    Object.keys(TEASERS).forEach(function (g) {
+        const list = TRILOGY_BOOKS[g];
+        if (list && list.length) list[list.length - 1].teaser = TEASERS[g];
+    });
+
     function getLang() {
         if (typeof I18n !== "undefined" && I18n.currentLang) return I18n.currentLang;
         if (window.PQAccount) return window.PQAccount.getLang();
@@ -956,6 +988,18 @@
         const st = document.createElement("style");
         st.id = "pq-trilogy-diary-css";
         st.textContent = `
+            .pq-td-teaser {
+                display: flex; gap: 12px; align-items: flex-start;
+                margin: 12px 18px 4px; padding: 13px 16px;
+                border-radius: 14px; border: 1px dashed rgba(255, 213, 79, 0.5);
+                background: linear-gradient(135deg, rgba(255, 213, 79, 0.12), rgba(56, 189, 248, 0.08));
+                color: #e8f2ff; font-size: 13.5px; line-height: 1.5;
+            }
+            .pq-td-teaser strong { color: #ffd54f; display: block; margin-bottom: 3px; }
+            .pq-td-teaser-icon { font-size: 22px; line-height: 1; }
+            .pq-story-comics { display: inline-flex; flex-direction: column; align-items: flex-start; gap: 2px; }
+            .pq-story-comics small { font-weight: 500; opacity: .75; font-size: 11.5px; }
+
             #pq-trilogy-modal {
                 position: fixed;
                 inset: 0;
@@ -1187,10 +1231,11 @@
             this.grade = [7, 8, 9].includes(g) ? g : 7;
             const oldBtn = document.getElementById("btn-diary");
             if (oldBtn) {
-                // Клонируем узел, чтобы снять обработчики, навешанные extras.js 9 класса
+                // Комикс переехал в раздел «Лор и сюжет»: кнопку меню скрываем,
+                // но оставляем узел для совместимости со старыми обработчиками.
                 const btn = oldBtn.cloneNode(true);
                 oldBtn.parentNode.replaceChild(btn, oldBtn);
-                btn.style.display = "inline-flex";
+                btn.style.display = "none";
                 const span = btn.querySelector("[data-i18n]");
                 if (span) span.textContent = ui("diaryBtn");
                 btn.onclick = (e) => {
@@ -1198,12 +1243,41 @@
                     this.open(Number(window.CURRENT_GRADE) || 7, 0);
                 };
             }
+            this.injectStoryButton();
             window.addEventListener("pq:lang-changed", () => {
                 const b = document.getElementById("btn-diary")?.querySelector("[data-i18n]");
                 if (b) b.textContent = ui("diaryBtn");
+                this.updateStoryButton();
                 const modal = document.getElementById("pq-trilogy-modal");
                 if (modal && modal.classList.contains("open")) this.render();
             });
+        },
+
+        injectStoryButton() {
+            const story = document.getElementById("story-modal");
+            if (!story) return;
+            const content = story.querySelector(".modal-content") || story;
+            let btn = document.getElementById("pq-story-comics");
+            if (!btn) {
+                btn = document.createElement("button");
+                btn.type = "button";
+                btn.id = "pq-story-comics";
+                btn.className = "btn btn-primary pq-story-comics";
+                const actions = content.querySelector(".modal-actions");
+                if (actions) actions.insertBefore(btn, actions.firstChild);
+                else content.appendChild(btn);
+                btn.addEventListener("click", (e) => {
+                    e.preventDefault();
+                    this.open(Number(window.CURRENT_GRADE) || 7, 0);
+                });
+            }
+            this.updateStoryButton();
+        },
+
+        updateStoryButton() {
+            const btn = document.getElementById("pq-story-comics");
+            if (!btn) return;
+            btn.innerHTML = `<span>${esc(ui("storyBtn"))}</span><small>${esc(ui("storyHint"))}</small>`;
         },
 
         ensureModal() {
@@ -1305,6 +1379,15 @@
                         <div><strong>${esc(ui("physKey"))}</strong> ${esc(loc(item.note))}</div>
                         <span class="pq-td-formula">${esc(item.formula)}</span>
                     </div>
+
+                    ${item.teaser ? `
+                    <div class="pq-td-teaser">
+                        <div class="pq-td-teaser-icon">🔭</div>
+                        <div>
+                            <strong>${esc(ui("nextHint"))}</strong>
+                            <div>${esc(loc(item.teaser))}</div>
+                        </div>
+                    </div>` : ""}
 
                     <div class="pq-td-foot">
                         <div style="display:flex;gap:8px;">

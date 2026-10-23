@@ -279,6 +279,131 @@
                         readout: `f = ${f.toFixed(1)} cm · Γ = ${mag.toFixed(2)}× · ${blur <= 1.5 ? tr("✨ Чёткий фокус!", "✨ Анық фокус!", "✨ Sharp focus!") : tr(`Размытие: ${blur.toFixed(1)} см`, `Бұлдырау: ${blur.toFixed(1)} см`, `Defocus: ${blur.toFixed(1)} cm`)}`
                     };
                 }
+            },
+            {
+                id: "g8_hydraulic",
+                icon: "🛠️",
+                para: "§ 24–28",
+                title: { ru: "Гидравлический пресс", kk: "Гидравликалық пресс", en: "Hydraulic Press" },
+                chapter: { ru: "Давление и сила · F₂ = F₁·S₂/S₁", kk: "Қысым және күш · F₂ = F₁·S₂/S₁", en: "Pressure and force · F₂ = F₁·S₂/S₁" },
+                story: {
+                    ru: "В ремонтном ангаре Эквилибриума нужно поднять 800-килограммовый блок щита. Малый поршень пресса давит с силой F₁, а большой должен поднять груз весом ≈ 7,8 кН. Подбери силу и площади поршней!",
+                    kk: "Эквилибриум жөндеу ангарында 800 кг салмақтағы қалқан блогын көтеру керек. Кіші поршень F₁ күшімен басады, үлкен поршень ≈ 7,8 кН жүкті көтеруі тиіс. Күш пен поршень аудандарын таңда!",
+                    en: "A 800 kg shield block must be lifted in the Equilibrium repair hangar. The small piston applies F₁, the large one must lift ≈ 7.8 kN. Tune the force and piston areas!"
+                },
+                goal: {
+                    ru: "Добейся F₂ ≥ 7,8 кН и введи F₂ в кН.",
+                    kk: "F₂ ≥ 7,8 кН болуын қамтамасыз етіп, F₂ мәнін кН-мен енгіз.",
+                    en: "Reach F₂ ≥ 7.8 kN and enter F₂ in kN."
+                },
+                unit: "kN",
+                tol: 0.25,
+                defaults: { F1: 300, S1: 8, S2: 60 },
+                controls: [
+                    { id: "F1", type: "range", min: 100, max: 800, step: 50, unit: { ru: "Н", kk: "Н", en: "N" }, label: { ru: "Сила на малый поршень F₁", kk: "Кіші поршеньге күш F₁", en: "Force on small piston F₁" } },
+                    { id: "S1", type: "range", min: 2, max: 20, step: 1, unit: { ru: "см²", kk: "см²", en: "cm²" }, label: { ru: "Площадь малого поршня S₁", kk: "Кіші поршень ауданы S₁", en: "Small piston area S₁" } },
+                    { id: "S2", type: "range", min: 20, max: 200, step: 10, unit: { ru: "см²", kk: "см²", en: "cm²" }, label: { ru: "Площадь большого поршня S₂", kk: "Үлкен поршень ауданы S₂", en: "Large piston area S₂" } }
+                ],
+                compute(p) {
+                    const F2 = p.F1 * p.S2 / p.S1;
+                    const need = 7848;
+                    return {
+                        expected: Number((F2 / 1000).toFixed(2)),
+                        pass: F2 >= need,
+                        F2, need,
+                        readout: tr(
+                            `F₂ = ${(F2 / 1000).toFixed(2)} кН · груз 800 кг требует ${(need / 1000).toFixed(2)} кН`,
+                            `F₂ = ${(F2 / 1000).toFixed(2)} кН · 800 кг жүк ${(need / 1000).toFixed(2)} кН қажет`,
+                            `F₂ = ${(F2 / 1000).toFixed(2)} kN · an 800 kg load needs ${(need / 1000).toFixed(2)} kN`
+                        )
+                    };
+                }
+            },
+            {
+                id: "g8_archimedes",
+                icon: "🚢",
+                para: "§ 46–49",
+                title: { ru: "Плавучесть батискафа", kk: "Батискафтың қалқуы", en: "Bathyscaphe Buoyancy" },
+                chapter: { ru: "Сила Архимеда · F_A = ρ_ж·g·V", kk: "Архимед күші · F_A = ρ_с·g·V", en: "Buoyancy · F_A = ρ·g·V" },
+                story: {
+                    ru: "Глубинный шлюз Астерии заполнен жидкостью. Батискаф массой m и объёмом V должен держаться на плаву (F_A ≥ mg), иначе он либо утонет, либо взлетит к куполу. Подбери объём, жидкость и массу!",
+                    kk: "Астерияның тереңдік шлюзі сұйықтыққа толы. Массасы m, көлемі V батискаф қалқып тұруы керек (F_A ≥ mg). Көлем, сұйықтық және массаны таңда!",
+                    en: "Asteria's deep lock is filled with liquid. A bathyscaphe of mass m and volume V must stay afloat (F_A ≥ mg). Tune volume, liquid and mass!"
+                },
+                goal: {
+                    ru: "Добейся F_A ≥ mg и введи F_A в кН.",
+                    kk: "F_A ≥ mg болуын қамтамасыз етіп, F_A мәнін кН-мен енгіз.",
+                    en: "Reach F_A ≥ mg and enter F_A in kN."
+                },
+                unit: "kN",
+                tol: 0.2,
+                defaults: { V: 1, liquid: "water", m: 1500 },
+                controls: [
+                    { id: "V", type: "range", min: 0.5, max: 4, step: 0.5, unit: { ru: "м³", kk: "м³", en: "m³" }, label: { ru: "Объём батискафа V", kk: "Батискаф көлемі V", en: "Bathyscaphe volume V" } },
+                    { id: "liquid", type: "select", label: { ru: "Жидкость", kk: "Сұйықтық", en: "Liquid" }, options: [
+                        { value: "water", label: { ru: "Вода (ρ = 1000 кг/м³)", kk: "Су (ρ = 1000 кг/м³)", en: "Water (ρ = 1000 kg/m³)" } },
+                        { value: "sea", label: { ru: "Морская вода (ρ = 1030 кг/м³)", kk: "Теңіз суы (ρ = 1030 кг/м³)", en: "Sea water (ρ = 1030 kg/m³)" } },
+                        { value: "oil", label: { ru: "Нефть (ρ = 900 кг/м³)", kk: "Мұнай (ρ = 900 кг/м³)", en: "Oil (ρ = 900 kg/m³)" } }
+                    ] },
+                    { id: "m", type: "range", min: 200, max: 3000, step: 100, unit: { ru: "кг", kk: "кг", en: "kg" }, label: { ru: "Масса батискафа m", kk: "Батискаф массасы m", en: "Bathyscaphe mass m" } }
+                ],
+                compute(p) {
+                    const rho = p.liquid === "sea" ? 1030 : p.liquid === "oil" ? 900 : 1000;
+                    const FA = rho * 9.8 * p.V;
+                    const W = p.m * 9.8;
+                    return {
+                        expected: Number((FA / 1000).toFixed(1)),
+                        pass: FA >= W,
+                        FA, W, rho,
+                        readout: tr(
+                            `F_A = ${(FA / 1000).toFixed(2)} кН · вес ${(W / 1000).toFixed(2)} кН · ${FA >= W ? "держится на плаву" : "тонет"}`,
+                            `F_A = ${(FA / 1000).toFixed(2)} кН · салмақ ${(W / 1000).toFixed(2)} кН · ${FA >= W ? "қалқып тұр" : "батып кетеді"}`,
+                            `F_A = ${(FA / 1000).toFixed(2)} kN · weight ${(W / 1000).toFixed(2)} kN · ${FA >= W ? "afloat" : "sinking"}`
+                        )
+                    };
+                }
+            },
+            {
+                id: "g8_echo",
+                icon: "📡",
+                para: "§ 30–33",
+                title: { ru: "Эхолот и ультразвук", kk: "Эхолот және ультрадыбыс", en: "Sonar & Ultrasound" },
+                chapter: { ru: "Звук и эхо · h = v·t/2", kk: "Дыбыс және жаңғырық · h = v·t/2", en: "Sound and echo · h = v·t/2" },
+                story: {
+                    ru: "Корабль «Гидра» сканирует дно океана. Импульс уходит вниз, отражается и возвращается через время t. Скорость звука зависит от среды. Найди глубину h под килем!",
+                    kk: "«Гидра» кемесі мұхит түбін сканерлейді. Импульс төмен түсіп, t уақыттан кейін қайтады. Дыбыс жылдамдығы ортаға байланысты. Киль астындағы h тереңдікті тап!",
+                    en: "The ship Hydra scans the ocean floor. A pulse travels down and returns after time t. Sound speed depends on the medium. Find the depth h!"
+                },
+                goal: {
+                    ru: "Получи глубину 30–150 м и введи h (м).",
+                    kk: "30–150 м тереңдікке жетіп, h мәнін енгіз (м).",
+                    en: "Get a depth of 30–150 m and enter h (m)."
+                },
+                unit: "m",
+                tol: 1.5,
+                defaults: { t: 0.3, medium: "water" },
+                controls: [
+                    { id: "t", type: "range", min: 0.02, max: 0.6, step: 0.02, unit: { ru: "с", kk: "с", en: "s" }, label: { ru: "Время возврата эха t", kk: "Жаңғырық қайту уақыты t", en: "Echo return time t" } },
+                    { id: "medium", type: "select", label: { ru: "Среда", kk: "Орта", en: "Medium" }, options: [
+                        { value: "water", label: { ru: "Вода (v = 1500 м/с)", kk: "Су (v = 1500 м/с)", en: "Water (v = 1500 m/s)" } },
+                        { value: "steel", label: { ru: "Сталь (v = 5000 м/с)", kk: "Болат (v = 5000 м/с)", en: "Steel (v = 5000 m/s)" } },
+                        { value: "air", label: { ru: "Воздух (v = 340 м/с)", kk: "Ауа (v = 340 м/с)", en: "Air (v = 340 m/s)" } }
+                    ] }
+                ],
+                compute(p) {
+                    const v = p.medium === "steel" ? 5000 : p.medium === "air" ? 340 : 1500;
+                    const h = v * p.t / 2;
+                    return {
+                        expected: Number(h.toFixed(1)),
+                        pass: h >= 30 && h <= 150,
+                        h, v,
+                        readout: tr(
+                            `h = v·t/2 = ${h.toFixed(1)} м · скорость ${v} м/с`,
+                            `h = v·t/2 = ${h.toFixed(1)} м · жылдамдық ${v} м/с`,
+                            `h = v·t/2 = ${h.toFixed(1)} m · speed ${v} m/s`
+                        )
+                    };
+                }
             }
         ],
 
@@ -522,6 +647,123 @@
                         readout: active
                             ? `E_ф = ${Eph.toFixed(2)} eV · E_к = ${Ek.toFixed(2)} eV · ⚡ Фототок идёт!`
                             : tr(`E_ф = ${Eph.toFixed(2)} эВ < A_вых (${W} эВ) — красная граница не пройдена!`, `E_ф = ${Eph.toFixed(2)} эВ < A_шығ (${W} эВ) — фотоэффект жоқ!`, `E_ph = ${Eph.toFixed(2)} eV < W (${W} eV) — below threshold!`)
+                    };
+                }
+            },
+            {
+                id: "g9_coulomb",
+                icon: "⚡",
+                para: "§ 1–8",
+                title: { ru: "Закон Кулона: два заряда", kk: "Кулон заңы: екі заряд", en: "Coulomb's Law: Two Charges" },
+                chapter: { ru: "Электростатика · F = k·q₁q₂/r²", kk: "Электростатика · F = k·q₁q₂/r²", en: "Electrostatics · F = k·q₁q₂/r²" },
+                story: {
+                    ru: "Два заряда удерживают магнитный парус «Беркута». Слишком большая сила разорвёт крепления, слишком малая — парус не раскроется. Подбери заряды и расстояние так, чтобы сила Кулона попала в рабочий диапазон 0,8–2,5 Н!",
+                    kk: "Екі заряд «Беркут» магнит желкенін ұстап тұр. Тым үлкен күш бекітпелерді жыртады, тым аз күш желкенді ашпайды. Кулон күші 0,8–2,5 Н диапазонына түсуі үшін зарядтар мен қашықтықты таңда!",
+                    en: "Two charges hold the Berkut magnetic sail. Too much force tears the mounts, too little and the sail will not open. Tune charges and distance so the Coulomb force lands in 0.8–2.5 N!"
+                },
+                goal: {
+                    ru: "Получи F = 0,8–2,5 Н и введи F (Н).",
+                    kk: "F = 0,8–2,5 Н алып, F мәнін енгіз (Н).",
+                    en: "Reach F = 0.8–2.5 N and enter F (N)."
+                },
+                unit: "N",
+                tol: 0.04,
+                defaults: { q1: 2, q2: 3, r: 0.3 },
+                controls: [
+                    { id: "q1", type: "range", min: 1, max: 10, step: 1, unit: { ru: "мкКл", kk: "мкКл", en: "μC" }, label: { ru: "Заряд q₁", kk: "Заряд q₁", en: "Charge q₁" } },
+                    { id: "q2", type: "range", min: 1, max: 10, step: 1, unit: { ru: "мкКл", kk: "мкКл", en: "μC" }, label: { ru: "Заряд q₂", kk: "Заряд q₂", en: "Charge q₂" } },
+                    { id: "r", type: "range", min: 0.05, max: 0.5, step: 0.05, unit: { ru: "м", kk: "м", en: "m" }, label: { ru: "Расстояние r", kk: "Қашықтық r", en: "Distance r" } }
+                ],
+                compute(p) {
+                    const F = 9e9 * (p.q1 * 1e-6) * (p.q2 * 1e-6) / (p.r * p.r);
+                    return {
+                        expected: Number(F.toFixed(2)),
+                        pass: F >= 0.8 && F <= 2.5,
+                        F, q1: p.q1, q2: p.q2, r: p.r,
+                        readout: tr(
+                            `F = 9·10⁹ · ${p.q1}·10⁻⁶ · ${p.q2}·10⁻⁶ / ${p.r}² = ${F.toFixed(2)} Н`,
+                            `F = 9·10⁹ · ${p.q1}·10⁻⁶ · ${p.q2}·10⁻⁶ / ${p.r}² = ${F.toFixed(2)} Н`,
+                            `F = 9·10⁹ · ${p.q1}·10⁻⁶ · ${p.q2}·10⁻⁶ / ${p.r}² = ${F.toFixed(2)} N`
+                        )
+                    };
+                }
+            },
+            {
+                id: "g9_decay",
+                icon: "☢️",
+                para: "§ 29–36",
+                title: { ru: "Радиоактивный распад", kk: "Радиоактивті ыдырау", en: "Radioactive Decay" },
+                chapter: { ru: "Ядерная физика · N = N₀·2^(−t/T)", kk: "Ядролық физика · N = N₀·2^(−t/T)", en: "Nuclear physics · N = N₀·2^(−t/T)" },
+                story: {
+                    ru: "Изотоп в энергоячейке Орбиты-9 распадается. Нужно оставить 10–25 % ядер — это рабочий режим реактора. Подбери период полураспада T и время t при заданном N₀!",
+                    kk: "Орбита-9 энергия ұяшығындағы изотоп ыдырайды. Ядролардың 10–25 % қалуы керек — бұл реактордың жұмыс режимі. N₀ берілгенде T жартылай ыдырау периоды мен t уақытты таңда!",
+                    en: "The isotope in an Orbit-9 power cell decays. 10–25 % of the nuclei must remain for the reactor's working mode. Tune half-life T and time t for a given N₀!"
+                },
+                goal: {
+                    ru: "Оставь 10–25 % ядер и введи N (шт.).",
+                    kk: "Ядролардың 10–25 % қалдырып, N мәнін енгіз (дана).",
+                    en: "Leave 10–25 % of the nuclei and enter N (count)."
+                },
+                unit: "pcs",
+                tol: 15,
+                defaults: { N0: 4000, T: 6, t: 6 },
+                controls: [
+                    { id: "N0", type: "range", min: 1000, max: 10000, step: 500, unit: { ru: "шт.", kk: "дана", en: "pcs" }, label: { ru: "Начальное число ядер N₀", kk: "Бастапқы ядро саны N₀", en: "Initial nuclei N₀" } },
+                    { id: "T", type: "range", min: 2, max: 20, step: 1, unit: { ru: "сут", kk: "тәул", en: "days" }, label: { ru: "Период полураспада T", kk: "Жартылай ыдырау периоды T", en: "Half-life T" } },
+                    { id: "t", type: "range", min: 2, max: 40, step: 1, unit: { ru: "сут", kk: "тәул", en: "days" }, label: { ru: "Время t", kk: "Уақыт t", en: "Time t" } }
+                ],
+                compute(p) {
+                    const N = p.N0 * Math.pow(2, -p.t / p.T);
+                    const frac = N / p.N0;
+                    return {
+                        expected: Math.round(N),
+                        pass: frac >= 0.10 && frac <= 0.25,
+                        N, frac, halves: p.t / p.T,
+                        readout: tr(
+                            `N = ${Math.round(N)} из ${p.N0} (${(frac * 100).toFixed(1)} %) · прошло ${(p.t / p.T).toFixed(2)} периода`,
+                            `N = ${Math.round(N)} / ${p.N0} (${(frac * 100).toFixed(1)} %) · ${(p.t / p.T).toFixed(2)} период өтті`,
+                            `N = ${Math.round(N)} of ${p.N0} (${(frac * 100).toFixed(1)} %) · ${(p.t / p.T).toFixed(2)} half-lives`
+                        )
+                    };
+                }
+            },
+            {
+                id: "g9_induction",
+                icon: "🧲",
+                para: "§ 37–44",
+                title: { ru: "ЭДС индукции в катушке", kk: "Орамадағы индукция ЭҚК", en: "Induced EMF in a Coil" },
+                chapter: { ru: "Электромагнитная индукция · ε = N·B·S/Δt", kk: "Электромагниттік индукция · ε = N·B·S/Δt", en: "Electromagnetic induction · ε = N·B·S/Δt" },
+                story: {
+                    ru: "Генератор аварийного щита Орбиты-9 наводит ЭДС в катушке: магнитное поле B исчезает за время Δt. Подбери индукцию, площадь витка, число витков и время так, чтобы ЭДС была 4–30 В!",
+                    kk: "Орбита-9 апаттық қалқанының генераторы орамада ЭҚК тудырады: B магнит өрісі Δt уақытта жоғалады. ЭҚК 4–30 В болуы үшін индукция, виток ауданы, виток саны мен уақытты таңда!",
+                    en: "The Orbit-9 emergency shield generator induces EMF in a coil: field B collapses in time Δt. Tune induction, turn area, number of turns and time so the EMF is 4–30 V!"
+                },
+                goal: {
+                    ru: "Получи ε = 4–30 В и введи ЭДС (В).",
+                    kk: "ε = 4–30 В алып, ЭҚК мәнін енгіз (В).",
+                    en: "Reach ε = 4–30 V and enter the EMF (V)."
+                },
+                unit: "V",
+                tol: 0.2,
+                defaults: { B: 0.5, S: 40, N: 50, dt: 0.5 },
+                controls: [
+                    { id: "B", type: "range", min: 0.1, max: 1.2, step: 0.1, unit: { ru: "Тл", kk: "Тл", en: "T" }, label: { ru: "Магнитная индукция B", kk: "Магнит индукциясы B", en: "Magnetic field B" } },
+                    { id: "S", type: "range", min: 10, max: 100, step: 10, unit: { ru: "см²", kk: "см²", en: "cm²" }, label: { ru: "Площадь витка S", kk: "Виток ауданы S", en: "Turn area S" } },
+                    { id: "N", type: "range", min: 10, max: 100, step: 10, unit: { ru: "вит.", kk: "вит.", en: "turns" }, label: { ru: "Число витков N", kk: "Виток саны N", en: "Number of turns N" } },
+                    { id: "dt", type: "range", min: 0.1, max: 1, step: 0.1, unit: { ru: "с", kk: "с", en: "s" }, label: { ru: "Время исчезновения поля Δt", kk: "Өріс жоғалу уақыты Δt", en: "Field collapse time Δt" } }
+                ],
+                compute(p) {
+                    const S = p.S * 1e-4;
+                    const emf = p.N * p.B * S / p.dt;
+                    return {
+                        expected: Number(emf.toFixed(2)),
+                        pass: emf >= 4 && emf <= 30,
+                        emf, flux: p.B * S,
+                        readout: tr(
+                            `ε = ${p.N} · ${p.B} · ${p.S}·10⁻⁴ / ${p.dt} = ${emf.toFixed(2)} В`,
+                            `ε = ${p.N} · ${p.B} · ${p.S}·10⁻⁴ / ${p.dt} = ${emf.toFixed(2)} В`,
+                            `ε = ${p.N} · ${p.B} · ${p.S}·10⁻⁴ / ${p.dt} = ${emf.toFixed(2)} V`
+                        )
                     };
                 }
             }
@@ -1008,6 +1250,339 @@
                 }
             }
         }
+        else if (id === "g8_hydraulic") {
+            const fluidY = h * 0.72;
+            // Соединительная трубка и жидкость
+            ctx.fillStyle = "rgba(56, 189, 248, 0.22)";
+            ctx.fillRect(w * 0.22, fluidY, w * 0.56, h * 0.16);
+            ctx.strokeStyle = "rgba(125, 211, 252, 0.6)";
+            ctx.lineWidth = 2;
+            ctx.strokeRect(w * 0.22, fluidY, w * 0.56, h * 0.16);
+
+            const smallX = w * 0.2, bigX = w * 0.72;
+            // Малый цилиндр
+            ctx.fillStyle = "rgba(56, 189, 248, 0.16)";
+            ctx.fillRect(smallX, h * 0.36, w * 0.1, fluidY - h * 0.36 + h * 0.1);
+            ctx.strokeStyle = "#38bdf8"; ctx.strokeRect(smallX, h * 0.36, w * 0.1, fluidY - h * 0.36 + h * 0.1);
+            // Большой цилиндр
+            ctx.fillStyle = "rgba(56, 189, 248, 0.16)";
+            ctx.fillRect(bigX, h * 0.22, w * 0.2, fluidY - h * 0.22 + h * 0.1);
+            ctx.strokeStyle = "#38bdf8"; ctx.strokeRect(bigX, h * 0.22, w * 0.2, fluidY - h * 0.22 + h * 0.1);
+
+            // Поршни
+            ctx.fillStyle = "#94a3b8";
+            ctx.fillRect(smallX - 4, h * 0.36, w * 0.1 + 8, 10);
+            ctx.fillRect(bigX - 4, h * 0.22, w * 0.2 + 8, 10);
+            // Груз
+            ctx.fillStyle = "#fbbf24";
+            ctx.fillRect(bigX + w * 0.05, h * 0.1, w * 0.1, h * 0.08);
+            ctx.fillStyle = "#fde68a";
+            ctx.font = "bold 11px system-ui, sans-serif";
+            ctx.textAlign = "center";
+            ctx.fillText("800 kg", bigX + w * 0.1, h * 0.075);
+
+            // Стрелки сил
+            const arrow = (x, y1, y2, color) => {
+                ctx.strokeStyle = color; ctx.fillStyle = color; ctx.lineWidth = 3;
+                ctx.beginPath(); ctx.moveTo(x, y1); ctx.lineTo(x, y2); ctx.stroke();
+                ctx.beginPath(); ctx.moveTo(x, y2); ctx.lineTo(x - 6, y2 - 8); ctx.lineTo(x + 6, y2 - 8); ctx.closePath(); ctx.fill();
+            };
+            arrow(smallX + w * 0.05, h * 0.2, h * 0.35, "#f87171");
+            arrow(bigX + w * 0.1, h * 0.19, h * 0.11, "#4ade80");
+
+            ctx.textAlign = "left";
+            ctx.font = "bold 12px system-ui, sans-serif";
+            ctx.fillStyle = "#fca5a5";
+            ctx.fillText(`F₁ = ${params.F1} Н`, 18, h * 0.18);
+            ctx.fillStyle = "#86efac";
+            ctx.fillText(`F₂ = ${(calc.F2 / 1000).toFixed(2)} кН`, w * 0.68, h * 0.08);
+            ctx.fillStyle = "#7dd3fc";
+            ctx.fillText(`S₁ = ${params.S1} см²`, smallX, h * 0.94);
+            ctx.fillText(`S₂ = ${params.S2} см²`, bigX, h * 0.94);
+            // Уровень жидкости
+            ctx.fillStyle = "rgba(56, 189, 248, 0.35)";
+            ctx.fillRect(w * 0.22, fluidY + 8, w * 0.56, h * 0.08);
+        }
+        else if (id === "g8_archimedes") {
+            // Вода
+            const waterTop = h * 0.3;
+            const water = ctx.createLinearGradient(0, waterTop, 0, h);
+            water.addColorStop(0, "rgba(14, 116, 144, 0.45)");
+            water.addColorStop(1, "rgba(8, 47, 73, 0.85)");
+            ctx.fillStyle = water;
+            ctx.fillRect(0, waterTop, w, h - waterTop);
+            ctx.strokeStyle = "rgba(103, 232, 249, 0.6)";
+            ctx.lineWidth = 2;
+            ctx.beginPath(); ctx.moveTo(0, waterTop); ctx.lineTo(w, waterTop); ctx.stroke();
+            for (let i = 0; i < 8; i++) {
+                ctx.beginPath();
+                ctx.moveTo(0, waterTop + 8 + i * 26);
+                for (let x = 0; x < w; x += 20) ctx.lineTo(x, waterTop + 8 + i * 26 + Math.sin((x + tick * 2) / 40 + i) * 3);
+                ctx.strokeStyle = "rgba(125, 211, 252, 0.12)";
+                ctx.stroke();
+            }
+
+            // Батискаф
+            const cx = w * 0.5, cy = h * 0.52;
+            ctx.fillStyle = "#fbbf24";
+            ctx.beginPath(); ctx.ellipse(cx, cy, 92, 40, 0, 0, Math.PI * 2); ctx.fill();
+            ctx.fillStyle = "#0f172a";
+            ctx.beginPath(); ctx.arc(cx - 40, cy - 4, 14, 0, Math.PI * 2); ctx.fill();
+            ctx.beginPath(); ctx.arc(cx - 5, cy - 4, 14, 0, Math.PI * 2); ctx.fill();
+            ctx.fillStyle = "#fbbf24";
+            ctx.fillRect(cx - 6, cy - 62, 12, 24);
+            ctx.beginPath(); ctx.arc(cx, cy - 64, 8, 0, Math.PI * 2); ctx.fill();
+
+            // Силы
+            const drawArrow = (x, y1, y2, color) => {
+                ctx.strokeStyle = color; ctx.fillStyle = color; ctx.lineWidth = 4;
+                ctx.beginPath(); ctx.moveTo(x, y1); ctx.lineTo(x, y2); ctx.stroke();
+                ctx.beginPath(); ctx.moveTo(x, y2); ctx.lineTo(x - 8, y2 + (y2 > y1 ? -12 : 12)); ctx.lineTo(x + 8, y2 + (y2 > y1 ? -12 : 12)); ctx.closePath(); ctx.fill();
+            };
+            drawArrow(cx + 118, cy + 30, cy - 30, "#4ade80");
+            drawArrow(cx - 118, cy - 30, cy + 30, "#f87171");
+
+            ctx.textAlign = "left";
+            ctx.font = "bold 12px system-ui, sans-serif";
+            ctx.fillStyle = "#86efac";
+            ctx.fillText(`F_A = ${(calc.FA / 1000).toFixed(2)} кН`, cx + 130, cy - 34);
+            ctx.fillStyle = "#fca5a5";
+            ctx.fillText(`mg = ${(calc.W / 1000).toFixed(2)} кН`, cx - 230, cy + 44);
+            ctx.fillStyle = "#7dd3fc";
+            ctx.fillText(`ρ = ${calc.rho} кг/м³ · V = ${params.V} м³ · m = ${params.m} кг`, 16, h - 14);
+            ctx.fillStyle = calc.pass ? "#4ade80" : "#f87171";
+            ctx.font = "bold 13px system-ui, sans-serif";
+            ctx.fillText(calc.pass ? "● НА ПЛАВУ" : "● ТОНЕТ", 16, h * 0.14);
+        }
+        else if (id === "g8_echo") {
+            // Море
+            ctx.fillStyle = "rgba(8, 47, 73, 0.65)";
+            ctx.fillRect(0, h * 0.22, w, h * 0.7);
+            // Дно
+            ctx.fillStyle = "#0b2a1e";
+            const depthPx = Math.min(h * 0.62, 40 + calc.h * 1.4);
+            ctx.beginPath();
+            ctx.moveTo(0, h);
+            for (let x = 0; x <= w; x += 30) ctx.lineTo(x, h * 0.22 + depthPx + Math.sin(x / 60) * 6);
+            ctx.lineTo(w, h); ctx.closePath(); ctx.fill();
+
+            // Корабль
+            const sx = w * 0.5;
+            ctx.fillStyle = "#cbd5e1";
+            ctx.beginPath();
+            ctx.moveTo(sx - 70, h * 0.16);
+            ctx.lineTo(sx + 80, h * 0.16);
+            ctx.lineTo(sx + 58, h * 0.22);
+            ctx.lineTo(sx - 50, h * 0.22);
+            ctx.closePath(); ctx.fill();
+            ctx.fillStyle = "#38bdf8";
+            ctx.fillRect(sx - 24, h * 0.1, 48, h * 0.06);
+            ctx.fillStyle = "#0f172a";
+            ctx.fillRect(sx - 12, h * 0.115, 8, 8);
+            ctx.fillRect(sx + 4, h * 0.115, 8, 8);
+
+            // Луч эхолота
+            const bottomY = h * 0.22 + depthPx;
+            ctx.strokeStyle = "rgba(56, 189, 248, 0.35)";
+            ctx.lineWidth = 2;
+            ctx.beginPath(); ctx.moveTo(sx, h * 0.22); ctx.lineTo(sx - 40, bottomY); ctx.moveTo(sx, h * 0.22); ctx.lineTo(sx + 40, bottomY); ctx.stroke();
+            // Волны импульса
+            for (let i = 0; i < 4; i++) {
+                const prog = ((tick * 0.012 + i * 0.25) % 1);
+                const y = h * 0.24 + prog * (bottomY - h * 0.24);
+                ctx.strokeStyle = `rgba(125, 211, 252, ${0.5 - prog * 0.4})`;
+                ctx.lineWidth = 3;
+                ctx.beginPath();
+                ctx.arc(sx, y, 10 + prog * 26, Math.PI * 0.15, Math.PI * 0.85);
+                ctx.stroke();
+            }
+            // Отметка глубины
+            ctx.strokeStyle = "#fbbf24";
+            ctx.setLineDash([6, 6]);
+            ctx.beginPath(); ctx.moveTo(w * 0.86, h * 0.22); ctx.lineTo(w * 0.86, bottomY); ctx.stroke();
+            ctx.setLineDash([]);
+            ctx.fillStyle = "#fde68a";
+            ctx.font = "bold 13px system-ui, sans-serif";
+            ctx.textAlign = "center";
+            ctx.fillText(`${calc.h.toFixed(1)} м`, w * 0.86, (h * 0.22 + bottomY) / 2);
+            ctx.textAlign = "left";
+            ctx.fillStyle = "#7dd3fc";
+            ctx.font = "bold 12px system-ui, sans-serif";
+            ctx.fillText(`t = ${params.t.toFixed(2)} с · v = ${calc.v} м/с`, 16, h - 16);
+        }
+        else if (id === "g9_coulomb") {
+            const cx1 = w * 0.26, cx2 = w * 0.74, cy = h * 0.5;
+            // Поле между зарядами
+            for (let i = 0; i < 7; i++) {
+                const yy = cy - 78 + i * 26;
+                ctx.strokeStyle = "rgba(56, 189, 248, 0.18)";
+                ctx.lineWidth = 1.5;
+                ctx.beginPath();
+                ctx.moveTo(cx1 + 30, yy);
+                ctx.bezierCurveTo(cx1 + 120, yy - 26, cx2 - 120, yy - 26, cx2 - 30, yy);
+                ctx.stroke();
+            }
+            // Заряды
+            const drawCharge = (x, label, r, color) => {
+                const g = ctx.createRadialGradient(x, cy, 2, x, cy, r);
+                g.addColorStop(0, "#fff");
+                g.addColorStop(0.4, color);
+                g.addColorStop(1, "rgba(0,0,0,0)");
+                ctx.fillStyle = g;
+                ctx.beginPath(); ctx.arc(x, cy, r, 0, Math.PI * 2); ctx.fill();
+                ctx.strokeStyle = color; ctx.lineWidth = 3;
+                ctx.beginPath(); ctx.arc(x, cy, r * 0.62, 0, Math.PI * 2); ctx.stroke();
+                ctx.fillStyle = "#0f172a";
+                ctx.font = "bold 20px system-ui, sans-serif";
+                ctx.textAlign = "center";
+                ctx.fillText("+", x, cy + 7);
+                ctx.fillStyle = color;
+                ctx.font = "bold 13px system-ui, sans-serif";
+                ctx.fillText(label, x, cy + r + 22);
+            };
+            drawCharge(cx1, `q₁ = ${params.q1} мкКл`, 44, "#f472b6");
+            drawCharge(cx2, `q₂ = ${params.q2} мкКл`, 44, "#38bdf8");
+
+            // Силы
+            const drawForce = (x1, x2, color) => {
+                ctx.strokeStyle = color; ctx.fillStyle = color; ctx.lineWidth = 4;
+                ctx.beginPath(); ctx.moveTo(x1, cy); ctx.lineTo(x2, cy); ctx.stroke();
+                const dir = x2 > x1 ? 1 : -1;
+                ctx.beginPath(); ctx.moveTo(x2, cy); ctx.lineTo(x2 - 12 * dir, cy - 8); ctx.lineTo(x2 - 12 * dir, cy + 8); ctx.closePath(); ctx.fill();
+            };
+            // Одноимённые заряды отталкиваются: стрелки направлены наружу
+            drawForce(cx1 - 62, cx1 - 122, "#fbbf24");
+            drawForce(cx2 + 62, cx2 + 122, "#fbbf24");
+
+            // Расстояние
+            ctx.strokeStyle = "#94a3b8"; ctx.setLineDash([5, 5]);
+            ctx.beginPath(); ctx.moveTo(cx1, h * 0.84); ctx.lineTo(cx2, h * 0.84); ctx.stroke();
+            ctx.setLineDash([]);
+            ctx.fillStyle = "#cbd5e1";
+            ctx.font = "bold 12px system-ui, sans-serif";
+            ctx.textAlign = "center";
+            ctx.fillText(`r = ${params.r} м`, (cx1 + cx2) / 2, h * 0.84 + 18);
+            // Результат
+            ctx.textAlign = "left";
+            ctx.fillStyle = calc.pass ? "#4ade80" : "#f87171";
+            ctx.font = "bold 15px system-ui, sans-serif";
+            ctx.fillText(`F = ${calc.F.toFixed(2)} Н`, 16, 28);
+            ctx.fillStyle = "#94a3b8";
+            ctx.font = "12px system-ui, sans-serif";
+            ctx.fillText(tr("рабочий диапазон 0,8–2,5 Н", "жұмыс диапазоны 0,8–2,5 Н", "working range 0.8–2.5 N"), 16, 48);
+        }
+        else if (id === "g9_decay") {
+            const cols = 12, rows = 6;
+            const total = cols * rows;
+            const alive = Math.round(total * calc.frac);
+            const cellW = 34, cellH = 24;
+            const startX = (w - cols * cellW) / 2, startY = h * 0.22;
+            for (let i = 0; i < total; i++) {
+                const col = i % cols, row = Math.floor(i / cols);
+                const x = startX + col * cellW + cellW / 2;
+                const y = startY + row * cellH;
+                const isAlive = i < alive;
+                const pulse = 0.6 + Math.abs(Math.sin(tick * 0.05 + i)) * 0.4;
+                if (isAlive) {
+                    ctx.fillStyle = `rgba(74, 222, 128, ${pulse})`;
+                    ctx.shadowColor = "#4ade80"; ctx.shadowBlur = 8;
+                } else {
+                    ctx.fillStyle = "rgba(148, 163, 184, 0.18)";
+                    ctx.shadowBlur = 0;
+                }
+                ctx.beginPath(); ctx.arc(x, y, 6, 0, Math.PI * 2); ctx.fill();
+            }
+            ctx.shadowBlur = 0;
+            // Полоса доли
+            const barY = h * 0.82;
+            ctx.fillStyle = "rgba(148,163,184,0.2)";
+            ctx.fillRect(w * 0.2, barY, w * 0.6, 12);
+            ctx.fillStyle = calc.pass ? "#4ade80" : "#fbbf24";
+            ctx.fillRect(w * 0.2, barY, w * 0.6 * calc.frac, 12);
+            ctx.fillStyle = "#0f172a";
+            ctx.font = "bold 10px system-ui, sans-serif";
+            ctx.textAlign = "center";
+            ctx.fillText("10 %", w * 0.2 + w * 0.06, barY + 26);
+            ctx.fillText("25 %", w * 0.2 + w * 0.15, barY + 26);
+
+            ctx.textAlign = "left";
+            ctx.fillStyle = "#e2e8f0";
+            ctx.font = "bold 13px system-ui, sans-serif";
+            ctx.fillText(`N = ${Math.round(calc.N)} / ${params.N0} · ${(calc.frac * 100).toFixed(1)} %`, 16, 26);
+            ctx.fillStyle = "#7dd3fc";
+            ctx.font = "12px system-ui, sans-serif";
+            ctx.fillText(`T = ${params.T} сут · t = ${params.t} сут · ${calc.halves.toFixed(2)} T`, 16, 46);
+            const status = calc.pass
+                ? tr("● рабочий режим", "● жұмыс режимі", "● working mode")
+                : tr("● вне рабочего режима", "● жұмыс режимінен тыс", "● outside working mode");
+            ctx.fillStyle = calc.pass ? "#4ade80" : "#f87171";
+            ctx.font = "bold 13px system-ui, sans-serif";
+            ctx.fillText(status, 16, 68);
+        }
+        else if (id === "g9_induction") {
+            const cx = w * 0.62, cy = h * 0.5;
+            // Магнит
+            ctx.fillStyle = "#ef4444";
+            ctx.fillRect(w * 0.1, cy - 26, 54, 52);
+            ctx.fillStyle = "#3b82f6";
+            ctx.fillRect(w * 0.1, cy, 54, 26);
+            ctx.fillStyle = "#fff";
+            ctx.font = "bold 14px system-ui, sans-serif";
+            ctx.textAlign = "center";
+            ctx.fillText("N", w * 0.1 + 27, cy - 6);
+            ctx.fillText("S", w * 0.1 + 27, cy + 20);
+
+            // Силовые линии
+            for (let i = 0; i < 4; i++) {
+                const y = cy - 20 + i * 13;
+                ctx.strokeStyle = "rgba(56, 189, 248, 0.35)";
+                ctx.lineWidth = 1.5;
+                ctx.beginPath();
+                ctx.moveTo(w * 0.1 + 54, y);
+                ctx.bezierCurveTo(w * 0.32, y - 16, w * 0.42, y + 16, cx - 60, y);
+                ctx.stroke();
+            }
+            // Катушка
+            for (let i = 0; i < 7; i++) {
+                ctx.strokeStyle = "#fbbf24";
+                ctx.lineWidth = 4;
+                ctx.beginPath();
+                ctx.ellipse(cx - 30 + i * 16, cy, 12, 44, 0, 0, Math.PI * 2);
+                ctx.stroke();
+            }
+            // Провода к гальванометру
+            ctx.strokeStyle = "#94a3b8"; ctx.lineWidth = 3;
+            ctx.beginPath();
+            ctx.moveTo(cx - 30, cy + 44); ctx.lineTo(cx - 30, h * 0.86); ctx.lineTo(w * 0.9, h * 0.86); ctx.lineTo(w * 0.9, h * 0.62);
+            ctx.stroke();
+            ctx.beginPath();
+            ctx.moveTo(cx + 66, cy + 44); ctx.lineTo(cx + 66, h * 0.72); ctx.lineTo(w * 0.9, h * 0.72);
+            ctx.stroke();
+
+            // Гальванометр
+            ctx.fillStyle = "#0f172a";
+            ctx.beginPath(); ctx.arc(w * 0.9, h * 0.44, 32, 0, Math.PI * 2); ctx.fill();
+            ctx.strokeStyle = "#38bdf8"; ctx.lineWidth = 3;
+            ctx.beginPath(); ctx.arc(w * 0.9, h * 0.44, 32, 0, Math.PI * 2); ctx.stroke();
+            const angle = -Math.PI / 2 + Math.max(-0.9, Math.min(0.9, calc.emf / 30)) * 1.2;
+            ctx.strokeStyle = "#f87171"; ctx.lineWidth = 3;
+            ctx.beginPath();
+            ctx.moveTo(w * 0.9, h * 0.44);
+            ctx.lineTo(w * 0.9 + Math.cos(angle) * 24, h * 0.44 + Math.sin(angle) * 24);
+            ctx.stroke();
+
+            ctx.textAlign = "left";
+            ctx.fillStyle = "#e2e8f0";
+            ctx.font = "bold 14px system-ui, sans-serif";
+            ctx.fillText(`ε = ${calc.emf.toFixed(2)} В`, 16, 28);
+            ctx.fillStyle = "#7dd3fc";
+            ctx.font = "12px system-ui, sans-serif";
+            ctx.fillText(`B = ${params.B} Тл · S = ${params.S} см² · N = ${params.N}`, 16, 48);
+            ctx.fillText(`Δt = ${params.dt} с`, 16, 66);
+            ctx.fillStyle = calc.pass ? "#4ade80" : "#f87171";
+            ctx.font = "bold 12px system-ui, sans-serif";
+            ctx.fillText(calc.pass ? tr("● генератор в норме", "● генератор қалыпты", "● generator nominal") : tr("● недопустимое напряжение", "● рұқсат етілмеген кернеу", "● voltage out of range"), 16, 88);
+        }
     }
 
     function injectStyles() {
@@ -1458,5 +2033,8 @@
         }
     };
 
+    // Экспорт для страницы галереи скриншотов и инструментов предпросмотра
+    Simulators89._drawFrame = drawCanvasFrame;
+    Simulators89._labs = LABS_BY_GRADE;
     window.Simulators89 = Simulators89;
 })();

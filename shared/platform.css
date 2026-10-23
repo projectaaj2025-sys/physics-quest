@@ -498,3 +498,436 @@ body.pq-has-topbar #menu-screen .menu-content {
         padding: 18px 16px;
     }
 }
+
+/* ============================================================
+   ТРИЛОГИЯ 2.0 — звук, миры уровней, разбор задач, битва команд,
+   карточки класса, сертификаты и офлайн-режим
+   ============================================================ */
+
+/* ---------- звук ---------- */
+.pq-sound-toggle {
+    width: 38px; height: 38px; border-radius: 12px;
+    border: 1px solid rgba(120, 190, 255, 0.35);
+    background: rgba(10, 22, 44, 0.75);
+    color: #dff1ff; font-size: 17px; cursor: pointer;
+    display: inline-flex; align-items: center; justify-content: center;
+    transition: transform .15s ease, background .15s ease;
+}
+.pq-sound-toggle:hover { transform: translateY(-1px); background: rgba(20, 40, 74, 0.9); }
+.pq-sound-toggle.is-muted { opacity: .65; }
+.pq-sound-fab {
+    position: fixed; right: 16px; bottom: 16px; z-index: 9500;
+    width: 44px; height: 44px; border-radius: 50%;
+    border: 1px solid rgba(120, 190, 255, 0.4);
+    background: rgba(8, 18, 36, 0.88); color: #eaf6ff; font-size: 19px;
+    cursor: pointer; box-shadow: 0 10px 26px rgba(0, 0, 0, .45);
+}
+body.pq-in-gameplay .pq-sound-fab { display: none; }
+
+/* ---------- мир уровня ---------- */
+.pq-world-chip {
+    display: inline-flex; align-items: center; gap: 7px;
+    padding: 7px 12px; border-radius: 999px;
+    border: 1px solid color-mix(in srgb, var(--pq-world-accent, #00d9ff) 45%, transparent);
+    background: rgba(6, 14, 30, 0.62);
+    font-size: 12px; font-weight: 800; letter-spacing: .02em; color: #e6f2ff;
+    white-space: nowrap; backdrop-filter: blur(6px);
+}
+.pq-world-dot { width: 9px; height: 9px; border-radius: 50%; display: inline-block; }
+#game-screen.active { --hud-accent: var(--pq-level-accent, #00d9ff); }
+
+/* ---------- разбор задачи ---------- */
+.pq-solver-bar {
+    display: flex; flex-wrap: wrap; gap: 8px;
+    margin: 10px 0 4px;
+}
+.pq-solver-btn {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 9px 14px; border-radius: 12px; cursor: pointer;
+    border: 1px solid rgba(0, 217, 255, 0.4);
+    background: linear-gradient(135deg, rgba(0, 150, 199, 0.22), rgba(20, 40, 80, 0.5));
+    color: #dff6ff; font-weight: 800; font-size: 13px;
+    transition: transform .15s ease, border-color .15s ease;
+}
+.pq-solver-btn:hover { transform: translateY(-1px); border-color: rgba(0, 217, 255, 0.75); }
+.pq-solver-btn.ghost { border-color: rgba(179, 136, 255, 0.45); background: linear-gradient(135deg, rgba(120, 80, 220, 0.2), rgba(24, 22, 60, 0.55)); }
+.pq-solver-btn.active { box-shadow: 0 0 0 2px rgba(0, 217, 255, 0.25) inset; }
+.pq-solver-panel {
+    margin: 6px 0 10px; padding: 14px;
+    border-radius: 16px; border: 1px solid rgba(96, 165, 250, 0.3);
+    background: linear-gradient(160deg, rgba(12, 24, 48, 0.94), rgba(7, 14, 30, 0.96));
+    color: #e8f2ff; max-height: 46vh; overflow: auto;
+}
+.pq-solver-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.pq-solver-wide { grid-column: 1 / -1; }
+.pq-solver-block {
+    border-radius: 13px; padding: 12px 14px;
+    background: rgba(255, 255, 255, 0.035);
+    border: 1px solid rgba(255, 255, 255, 0.07);
+}
+.pq-solver-block h4 {
+    margin: 0 0 8px; font-size: 12px; letter-spacing: .08em;
+    text-transform: uppercase; color: #7fd7ff;
+}
+.pq-given-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+.pq-given-table th {
+    text-align: left; font-size: 10.5px; letter-spacing: .06em; text-transform: uppercase;
+    color: #8ea8c9; font-weight: 700; padding: 2px 6px 6px; border-bottom: 1px solid rgba(255,255,255,.08);
+}
+.pq-given-table td { padding: 6px; border-bottom: 1px dashed rgba(255, 255, 255, 0.07); }
+.pq-given-table .pq-sym { font-weight: 800; color: #ffd479; font-family: "Cambria Math", Georgia, serif; font-size: 15px; width: 24%; }
+.pq-given-table .pq-val { color: #eaf6ff; }
+.pq-given-table .pq-si { color: #8fe3b0; }
+.pq-solver-note { margin: 8px 0 0; font-size: 11.5px; line-height: 1.45; color: #93a9c7; }
+.pq-solver-empty { margin: 0; font-size: 12.5px; line-height: 1.5; color: #9fb3cf; }
+.pq-formula-big {
+    font-family: "Cambria Math", Georgia, serif; font-size: 22px; color: #ffe6a3;
+    padding: 8px 12px; border-radius: 10px; background: rgba(255, 213, 79, 0.08);
+    border-left: 3px solid #ffd479; margin-bottom: 8px;
+}
+.pq-subst { font-family: "Cambria Math", Georgia, serif; font-size: 15px; color: #9fe8ff; }
+.pq-formula-list { display: flex; flex-direction: column; gap: 4px; margin-top: 8px; }
+.pq-formula-list span { font-size: 11.5px; color: #a8bdd8; font-family: "Cambria Math", Georgia, serif; }
+.pq-steps { margin: 0 0 10px; padding-left: 20px; font-size: 12.8px; line-height: 1.55; color: #d7e6fb; }
+.pq-steps li { margin-bottom: 4px; }
+.pq-answer-row { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+.pq-show-answer { font-size: 12.5px; padding: 8px 12px; }
+.pq-answer-box {
+    padding: 10px 14px; border-radius: 11px; font-size: 15px;
+    background: rgba(72, 214, 148, 0.12); border: 1px solid rgba(72, 214, 148, 0.4); color: #d8ffe9;
+}
+.pq-answer-box strong { color: #7dffb4; font-size: 17px; }
+.pq-solver-help-note { margin: 10px 0 0; font-size: 11px; color: #8ba2bf; line-height: 1.5; }
+
+.pq-formula-card { display: flex; flex-direction: column; gap: 10px; }
+.pq-fc-head { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; flex-wrap: wrap; }
+.pq-fc-kicker { font-size: 12px; letter-spacing: .06em; text-transform: uppercase; color: #7fd7ff; font-weight: 800; }
+.pq-fc-sub { font-size: 11.5px; color: #8ea8c9; margin-top: 3px; }
+.pq-fc-conspekt { font-size: 12px; padding: 8px 12px; }
+.pq-fc-list { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.pq-fc-list li {
+    display: flex; flex-direction: column; gap: 3px;
+    padding: 9px 12px; border-radius: 11px;
+    background: rgba(255, 255, 255, 0.04); border: 1px solid rgba(255, 255, 255, 0.07);
+}
+.pq-fc-formula { font-family: "Cambria Math", Georgia, serif; font-size: 15px; color: #ffe6a3; }
+.pq-fc-desc { font-size: 11px; color: #9fb3cf; line-height: 1.4; }
+.pq-fc-legend h5 { margin: 2px 0 6px; font-size: 10.5px; letter-spacing: .07em; text-transform: uppercase; color: #8ea8c9; }
+.pq-fc-chips { display: flex; flex-wrap: wrap; gap: 6px; }
+.pq-fc-chip {
+    font-size: 11.5px; padding: 5px 9px; border-radius: 999px;
+    background: rgba(0, 217, 255, 0.08); border: 1px solid rgba(0, 217, 255, 0.22); color: #cdeeff;
+}
+.pq-fc-chip b { color: #ffd479; }
+
+/* ---------- битва команд ---------- */
+.btn-battle {
+    border: 1px solid rgba(255, 183, 77, 0.45) !important;
+    background: linear-gradient(135deg, rgba(255, 152, 0, 0.22), rgba(120, 40, 10, 0.45)) !important;
+    color: #ffe9c9 !important;
+}
+.pq-battle-teacher { margin: 8px 0 4px; }
+body.pq-battle-open { overflow: hidden; }
+.pq-battle {
+    position: fixed; inset: 0; z-index: 12000;
+    background:
+        radial-gradient(1200px 700px at 50% -10%, rgba(64, 120, 255, 0.28), transparent 65%),
+        radial-gradient(900px 600px at 10% 110%, rgba(255, 120, 40, 0.18), transparent 60%),
+        #040912;
+    color: #eef6ff; overflow: auto;
+    font-family: "Trebuchet MS", "Segoe UI", system-ui, sans-serif;
+    display: flex; flex-direction: column;
+}
+.pq-battle-setup, .pq-battle-results {
+    margin: auto; padding: clamp(24px, 4vw, 56px);
+    max-width: 1100px; width: 100%; text-align: center;
+}
+.pq-battle-kicker { font-size: clamp(11px, 1.2vw, 15px); letter-spacing: .22em; color: #7fd7ff; font-weight: 800; margin-bottom: 12px; }
+.pq-battle-setup h1, .pq-battle-results h1 {
+    font-size: clamp(34px, 5.5vw, 76px); line-height: 1.02; margin: 0 0 18px;
+    background: linear-gradient(120deg, #fff, #9fe8ff 45%, #ffd479);
+    -webkit-background-clip: text; background-clip: text; color: transparent;
+}
+.pq-battle-lead { font-size: clamp(14px, 1.6vw, 21px); line-height: 1.55; color: #c6d7ee; max-width: 900px; margin: 0 auto 26px; }
+.pq-battle-form { display: flex; flex-wrap: wrap; gap: 16px; justify-content: center; margin-bottom: 20px; }
+.pq-battle-field { display: flex; flex-direction: column; gap: 7px; text-align: left; min-width: 210px; }
+.pq-battle-field label { font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: #8fb2d8; font-weight: 800; }
+.pq-battle-field select, .pq-battle-crew-input input {
+    background: rgba(12, 24, 46, 0.9); border: 1px solid rgba(120, 190, 255, 0.3);
+    color: #eaf6ff; border-radius: 12px; padding: 12px 14px; font-size: 15px; font-weight: 700;
+}
+.pq-battle-seg { display: flex; gap: 8px; }
+.pq-battle-seg button {
+    flex: 1; padding: 12px 22px; border-radius: 12px; cursor: pointer; font-size: 17px; font-weight: 800;
+    background: rgba(12, 24, 46, 0.9); color: #cfe6ff; border: 1px solid rgba(120, 190, 255, 0.3);
+}
+.pq-battle-seg button.active { background: linear-gradient(135deg, #1d9bf0, #0a6cb5); color: #fff; border-color: #6cc6ff; }
+.pq-battle-crew-inputs { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; margin-bottom: 24px; }
+.pq-battle-crew-input { display: flex; flex-direction: column; gap: 6px; text-align: left; border-top: 3px solid var(--crew-color); padding-top: 10px; }
+.pq-battle-crew-input span { font-size: 12px; font-weight: 800; color: #a9c6e6; }
+.pq-battle-actions { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; margin-top: 8px; }
+.pq-battle-start { font-size: clamp(16px, 1.5vw, 22px); padding: 16px 34px; }
+.pq-battle-rules { margin-top: 18px; font-size: 12.5px; color: #7f97b5; letter-spacing: .04em; }
+.pq-battle-toast {
+    position: fixed; left: 50%; bottom: 28px; transform: translateX(-50%);
+    background: rgba(255, 120, 40, 0.95); color: #1a0b03; font-weight: 800;
+    padding: 12px 20px; border-radius: 12px; z-index: 13000;
+}
+
+.pq-battle-top {
+    display: flex; align-items: center; gap: 16px; padding: 14px clamp(14px, 2vw, 28px);
+    border-bottom: 1px solid rgba(120, 190, 255, 0.18);
+    background: rgba(4, 10, 22, 0.72); position: relative; flex-wrap: wrap;
+}
+.pq-battle-brand { font-size: clamp(14px, 1.5vw, 19px); font-weight: 900; letter-spacing: .04em; }
+.pq-battle-brand span { display: block; font-size: 11.5px; font-weight: 700; color: #8fb2d8; letter-spacing: .1em; margin-top: 2px; }
+.pq-battle-crews { display: flex; gap: 10px; flex: 1; justify-content: center; flex-wrap: wrap; }
+.pq-battle-crew {
+    min-width: 170px; padding: 8px 13px; border-radius: 14px;
+    border: 1px solid rgba(255, 255, 255, 0.1); background: rgba(10, 20, 40, 0.65);
+    opacity: .62; transition: .2s ease;
+}
+.pq-battle-crew.active {
+    opacity: 1; border-color: var(--crew-color);
+    box-shadow: 0 0 0 1px var(--crew-color), 0 0 26px color-mix(in srgb, var(--crew-color) 45%, transparent);
+}
+.pq-battle-crew-head { display: flex; justify-content: space-between; gap: 10px; font-size: 13px; font-weight: 800; }
+.pq-battle-crew-head b { color: var(--crew-color); font-size: 17px; }
+.pq-battle-shield { height: 7px; border-radius: 99px; background: rgba(255, 255, 255, 0.12); margin: 6px 0 4px; overflow: hidden; }
+.pq-battle-shield i { display: block; height: 100%; background: linear-gradient(90deg, #43e97b, #38f9d7); transition: width .35s ease; }
+.pq-battle-crew-sub { font-size: 10.5px; color: #8fb2d8; letter-spacing: .04em; }
+.pq-battle-close {
+    width: 40px; height: 40px; border-radius: 12px; cursor: pointer;
+    background: rgba(255, 255, 255, 0.06); border: 1px solid rgba(255, 255, 255, 0.16);
+    color: #dbeaff; font-size: 20px;
+}
+.pq-battle-progress { height: 3px; background: rgba(255, 255, 255, 0.08); }
+.pq-battle-progress i { display: block; height: 100%; background: linear-gradient(90deg, #00d9ff, #b388ff); transition: width .3s ease; }
+.pq-battle-stage {
+    flex: 1; display: flex; flex-direction: column; justify-content: center;
+    padding: clamp(18px, 3vw, 44px) clamp(18px, 4vw, 70px); max-width: 1500px; width: 100%; margin: 0 auto;
+}
+.pq-battle-turn { font-size: clamp(13px, 1.4vw, 18px); font-weight: 800; color: var(--crew-color); margin-bottom: 12px; letter-spacing: .04em; }
+.pq-battle-turn span { color: #8fb2d8; text-transform: uppercase; letter-spacing: .12em; font-size: .82em; }
+.pq-battle-question {
+    font-size: clamp(22px, 3.1vw, 44px); line-height: 1.25; font-weight: 700;
+    margin-bottom: clamp(18px, 2.4vw, 34px); text-wrap: balance;
+}
+.pq-battle-answers { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(10px, 1.4vw, 18px); }
+.pq-battle-answers.single { grid-template-columns: 1fr; max-width: 640px; }
+.pq-battle-answer {
+    display: flex; align-items: center; gap: 16px; text-align: left;
+    padding: clamp(14px, 1.8vw, 24px) clamp(16px, 2vw, 26px);
+    border-radius: 18px; cursor: pointer; font-size: clamp(16px, 1.9vw, 26px); font-weight: 600;
+    background: linear-gradient(150deg, rgba(16, 32, 60, 0.9), rgba(8, 16, 32, 0.94));
+    color: #eaf6ff; border: 1px solid rgba(120, 190, 255, 0.24);
+    transition: transform .14s ease, border-color .14s ease, background .14s ease;
+}
+.pq-battle-answer:hover:not(:disabled) { transform: translateY(-2px); border-color: var(--crew-color); }
+.pq-battle-answer:disabled { opacity: .55; cursor: default; }
+.pq-battle-letter {
+    width: clamp(34px, 3vw, 46px); height: clamp(34px, 3vw, 46px); flex: none;
+    display: inline-flex; align-items: center; justify-content: center;
+    border-radius: 12px; background: rgba(0, 217, 255, 0.14); color: #7fd7ff;
+    font-weight: 900; font-size: .8em;
+}
+.pq-battle-numeric { display: flex; gap: 12px; flex-wrap: wrap; }
+.pq-battle-numeric input {
+    flex: 1; min-width: 220px; font-size: clamp(20px, 2.4vw, 32px); font-weight: 800;
+    padding: 14px 18px; border-radius: 16px; border: 1px solid rgba(120, 190, 255, 0.35);
+    background: rgba(10, 20, 40, 0.9); color: #eaf6ff;
+}
+.pq-battle-feedback { margin-top: 22px; }
+.pq-battle-result { display: flex; flex-wrap: wrap; gap: 14px; align-items: center; font-size: clamp(15px, 1.6vw, 21px); font-weight: 700; margin-bottom: 14px; }
+.pq-battle-result.good { color: #7dffb4; }
+.pq-battle-result.bad { color: #ff9b9b; }
+.pq-battle-result span { color: #cfe6ff; font-weight: 600; }
+.pq-battle-next { font-size: clamp(15px, 1.5vw, 20px); padding: 12px 26px; }
+.pq-battle-bottom { padding: 0 clamp(18px, 4vw, 70px) 18px; display: flex; align-items: center; gap: 14px; }
+.pq-battle-timer { flex: 1; height: 8px; border-radius: 99px; background: rgba(255, 255, 255, 0.1); overflow: hidden; }
+.pq-battle-timer i { display: block; height: 100%; width: 100%; background: linear-gradient(90deg, #43e97b, #ffd479, #ff5f6d); transition: width .12s linear; }
+.pq-battle-time { font-size: 13px; font-weight: 800; color: #9fb3cf; min-width: 72px; text-align: right; }
+.pq-battle-podium { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; margin: 26px 0 30px; }
+.pq-battle-place {
+    min-width: 220px; padding: 22px; border-radius: 20px;
+    border: 1px solid color-mix(in srgb, var(--crew-color) 55%, transparent);
+    background: linear-gradient(160deg, rgba(14, 28, 52, 0.94), rgba(6, 12, 26, 0.96));
+}
+.pq-battle-place.place-1 { transform: scale(1.06); box-shadow: 0 0 40px color-mix(in srgb, var(--crew-color) 35%, transparent); }
+.place-medal { font-size: 34px; }
+.place-name { font-size: 18px; font-weight: 900; margin: 6px 0; }
+.place-score { font-size: 26px; font-weight: 900; color: var(--crew-color); }
+.place-shield { font-size: 12px; color: #9fb3cf; margin-top: 6px; }
+
+/* ---------- карточки класса (печать) ---------- */
+body.pq-print-open { overflow: hidden; }
+.pq-print-overlay {
+    position: fixed; inset: 0; z-index: 14000; overflow: auto;
+    background: #0a1220; padding: 18px;
+}
+.pq-print-toolbar {
+    position: sticky; top: 0; z-index: 2; display: flex; justify-content: space-between; align-items: center;
+    gap: 12px; flex-wrap: wrap; margin-bottom: 16px;
+    padding: 12px 16px; border-radius: 14px; background: rgba(12, 24, 44, 0.96);
+    border: 1px solid rgba(120, 190, 255, 0.25); color: #eaf6ff;
+}
+.pq-print-title { font-weight: 800; }
+.pq-print-actions { display: flex; gap: 8px; }
+.pq-print-pages { display: flex; flex-direction: column; gap: 18px; align-items: center; }
+.pq-sheet {
+    width: 210mm; min-height: 297mm; background: #fff; color: #0b1528;
+    padding: 9mm; box-shadow: 0 20px 50px rgba(0, 0, 0, .45);
+    display: flex; flex-direction: column; gap: 4mm;
+}
+.pq-sheet-head, .pq-sheet-foot {
+    display: flex; justify-content: space-between; font-size: 8.5pt; font-weight: 700;
+    color: #5b6b85; letter-spacing: .04em;
+}
+.pq-sheet-foot { margin-top: auto; }
+.pq-card-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 3mm; }
+.pq-card {
+    border: 1.4px dashed #98a8bd; border-radius: 4mm; padding: 4mm;
+    display: flex; flex-direction: column; gap: 2.4mm; position: relative;
+    background: linear-gradient(160deg, #fbfdff, #eef4fb);
+    min-height: 84mm; break-inside: avoid;
+}
+.pq-card-top { display: flex; justify-content: space-between; align-items: flex-start; gap: 3mm; }
+.pq-card-kicker { font-size: 5.6pt; font-weight: 800; letter-spacing: .1em; color: #5b7ba8; }
+.pq-card-class { font-size: 8pt; font-weight: 800; color: #0b1528; margin-top: .6mm; }
+.pq-card-emblem { font-size: 14pt; }
+.pq-card-name { font-size: 13pt; font-weight: 900; line-height: 1.1; }
+.pq-card-code-row { display: flex; justify-content: space-between; align-items: center; gap: 3mm; margin-top: auto; }
+.pq-card-label { font-size: 5.8pt; letter-spacing: .08em; text-transform: uppercase; color: #6b7f9c; font-weight: 800; }
+.pq-card-code { font-family: "Courier New", monospace; font-size: 22pt; font-weight: 900; letter-spacing: .08em; color: #0b3b82; }
+.pq-card-qr { display: flex; flex-direction: column; align-items: center; gap: 1mm; }
+.pq-card-qr svg { display: block; }
+.pq-card-qr span { font-size: 5pt; color: #6b7f9c; letter-spacing: .06em; text-transform: uppercase; }
+.pq-card-hint { font-size: 5.6pt; line-height: 1.35; color: #40536e; }
+.pq-card-cut { position: absolute; right: 2mm; bottom: 1mm; font-size: 5pt; color: #b6c3d3; }
+@media print {
+    @page { size: A4 portrait; margin: 5mm; }
+    body.pq-printing-cards > *:not(.pq-print-overlay) { display: none !important; }
+    body.pq-printing-cards .pq-print-overlay { position: static; inset: auto; padding: 0; background: #fff; overflow: visible; }
+    body.pq-printing-cards .no-print { display: none !important; }
+    body.pq-printing-cards .pq-sheet { box-shadow: none; width: auto; min-height: auto; page-break-after: always; }
+    body.pq-printing-cards .pq-sheet:last-child { page-break-after: auto; }
+}
+
+/* ---------- сертификат ---------- */
+.pq-cert-open { display: inline-flex; gap: 8px; }
+.pq-cert-content { max-width: 1180px; width: 96vw; }
+.pq-cert-head { display: flex; justify-content: space-between; gap: 14px; align-items: flex-start; }
+.pq-cert-title { margin: 0 0 6px; font-size: 22px; }
+.pq-cert-sub { margin: 0; font-size: 12.5px; color: #9fb3cf; max-width: 640px; line-height: 1.5; }
+.pq-cert-body { display: grid; grid-template-columns: 300px 1fr; gap: 18px; margin-top: 14px; }
+.pq-cert-controls { display: flex; flex-direction: column; gap: 10px; }
+.pq-cert-tabs { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
+.pq-cert-tab {
+    padding: 9px 10px; border-radius: 10px; cursor: pointer; font-size: 12px; font-weight: 800;
+    background: rgba(255, 255, 255, 0.05); color: #cfe6ff; border: 1px solid rgba(120, 190, 255, 0.22);
+}
+.pq-cert-tab.active { background: linear-gradient(135deg, #1d9bf0, #0a6cb5); border-color: #6cc6ff; color: #fff; }
+.pq-cert-label { display: flex; flex-direction: column; gap: 4px; font-size: 11.5px; font-weight: 800; letter-spacing: .06em; text-transform: uppercase; color: #8fb2d8; }
+.pq-cert-label input {
+    padding: 10px 12px; border-radius: 10px; font-size: 15px; font-weight: 700;
+    background: rgba(10, 20, 40, 0.9); color: #eaf6ff; border: 1px solid rgba(120, 190, 255, 0.3);
+}
+.pq-cert-label input.pq-invalid { border-color: #ff6b6b; box-shadow: 0 0 0 2px rgba(255, 107, 107, .2); }
+.pq-cert-get { margin-top: 4px; }
+.pq-cert-row { display: flex; gap: 8px; flex-wrap: wrap; }
+.pq-cert-row .btn { flex: 1; font-size: 12.5px; }
+.pq-cert-note { font-size: 11px; color: #8ba2bf; line-height: 1.5; margin: 2px 0 0; }
+.pq-cert-preview { border-radius: 14px; overflow: hidden; border: 1px solid rgba(120, 190, 255, 0.22); background: #05080f; }
+.pq-cert-preview canvas { display: block; width: 100%; height: auto; }
+
+/* ---------- офлайн ---------- */
+.pq-offline-open { display: inline-flex; gap: 8px; }
+.pq-offline-content { max-width: 640px; width: 94vw; }
+.pq-offline-head { display: flex; justify-content: space-between; gap: 12px; align-items: flex-start; }
+.pq-offline-head h2 { margin: 0 0 6px; font-size: 21px; }
+.pq-offline-head p { margin: 0; font-size: 12.5px; line-height: 1.5; color: #9fb3cf; }
+.pq-offline-status {
+    margin: 14px 0; padding: 11px 14px; border-radius: 12px; font-size: 12.5px; line-height: 1.5;
+    background: rgba(72, 214, 148, 0.1); border: 1px solid rgba(72, 214, 148, 0.35); color: #c9ffdf;
+}
+.pq-offline-status.wait { background: rgba(255, 183, 77, 0.1); border-color: rgba(255, 183, 77, 0.35); color: #ffe3b3; }
+.pq-offline-actions { display: flex; flex-direction: column; gap: 8px; }
+.pq-offline-actions .btn { justify-content: center; }
+.pq-offline-hint, .pq-offline-note { font-size: 11.5px; color: #8ba2bf; line-height: 1.5; margin: 8px 0 0; }
+.pq-offline-progress { margin-top: 12px; }
+.pq-offline-bar { height: 8px; border-radius: 99px; background: rgba(255, 255, 255, 0.1); overflow: hidden; }
+.pq-offline-bar i { display: block; height: 100%; width: 0%; background: linear-gradient(90deg, #00d9ff, #43e97b); transition: width .2s ease; }
+#pq-offline-progress-text { display: block; margin-top: 6px; font-size: 11.5px; color: #9fb3cf; }
+.pq-offline-foot { display: flex; justify-content: space-between; align-items: center; gap: 10px; margin-top: 16px; }
+.pq-net-badge {
+    font-size: 11px; font-weight: 800; padding: 5px 10px; border-radius: 999px;
+    background: rgba(72, 214, 148, 0.12); border: 1px solid rgba(72, 214, 148, 0.35); color: #b9ffd4;
+}
+.pq-net-badge.is-offline { background: rgba(255, 107, 107, 0.12); border-color: rgba(255, 107, 107, 0.4); color: #ffc9c9; }
+
+@media (max-width: 900px) {
+    .pq-solver-grid { grid-template-columns: 1fr; }
+    .pq-fc-list { grid-template-columns: 1fr; }
+    .pq-cert-body { grid-template-columns: 1fr; }
+    .pq-battle-answers { grid-template-columns: 1fr; }
+    .pq-card-grid { grid-template-columns: repeat(2, 1fr); }
+    .pq-sheet { width: 100%; min-height: auto; }
+}
+@media (max-width: 620px) {
+    .pq-card-grid { grid-template-columns: 1fr; }
+    .pq-battle-crew { min-width: 130px; }
+}
+
+/* ===== Problem Solver 2.0 — вкладки, таблица «Дано», ответ ===== */
+.pq-solver-btn-text { display: flex; flex-direction: column; align-items: flex-start; line-height: 1.15; }
+.pq-solver-btn-text small { font-size: 10px; font-weight: 600; color: #8fc7e6; letter-spacing: .02em; }
+.pq-solver-btn-icon { font-size: 17px; }
+.pq-solver-tabs {
+    display: flex; align-items: center; gap: 6px; flex-wrap: wrap;
+    margin: -2px 0 12px; padding-bottom: 10px; border-bottom: 1px solid rgba(255,255,255,.08);
+}
+.pq-solver-tab {
+    padding: 7px 12px; border-radius: 10px; cursor: pointer; font-size: 12px; font-weight: 800;
+    color: #9fc0dd; background: rgba(255,255,255,.04); border: 1px solid rgba(255,255,255,.08);
+}
+.pq-solver-tab.active { color: #041018; background: linear-gradient(135deg, #67e8f9, #38bdf8); border-color: transparent; }
+.pq-solver-collapse {
+    margin-left: auto; width: 30px; height: 30px; border-radius: 50%; cursor: pointer;
+    background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.12); color: #cfdff3; font-size: 16px;
+}
+.pq-solver-auto {
+    margin: 0 0 12px; padding: 9px 12px; border-radius: 11px; font-size: 12px; line-height: 1.45;
+    color: #ffe7a8; background: rgba(255, 212, 121, .08); border: 1px solid rgba(255, 212, 121, .28);
+}
+.pq-given-table .pq-g-sym { font-weight: 800; color: #ffd479; font-family: "Cambria Math", Georgia, serif; font-size: 15px; width: 15%; }
+.pq-given-table .pq-g-name { color: #a9c1dd; font-size: 11.5px; line-height: 1.3; }
+.pq-given-table .pq-g-val { color: #eaf6ff; white-space: nowrap; }
+.pq-given-table .pq-g-si { color: #8fe3b0; white-space: nowrap; }
+.pq-solver-hint { margin: 8px 0 0; font-size: 10.8px; line-height: 1.45; color: #7e97b6; }
+.pq-si-note { margin: 0 0 4px; font-size: 12.5px; line-height: 1.5; color: #bfe9ff; }
+.pq-formula-inline { font-family: "Cambria Math", Georgia, serif; color: #ffe6a3; font-size: 14.5px; }
+.pq-solver-unknown { margin: 6px 0 0; font-size: 11.5px; color: #ffb3b3; }
+.pq-answer-slot { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin-top: 10px; }
+.pq-solver-reveal {
+    padding: 8px 14px; border-radius: 11px; cursor: pointer; font-size: 12.5px; font-weight: 800;
+    color: #04121f; border: 0; background: linear-gradient(135deg, #7dffb4, #34d399);
+    box-shadow: 0 8px 20px rgba(52, 211, 153, .25);
+}
+.pq-answer-value {
+    display: inline-flex; align-items: baseline; gap: 8px; padding: 9px 14px; border-radius: 11px;
+    background: rgba(72, 214, 148, .12); border: 1px solid rgba(72, 214, 148, .4); color: #d8ffe9;
+}
+.pq-answer-label { font-size: 10.5px; letter-spacing: .08em; text-transform: uppercase; color: #8ff0bd; }
+.pq-answer-value b { font-size: 17px; color: #7dffb4; }
+.pq-fc-count {
+    min-width: 34px; height: 34px; border-radius: 50%; display: grid; place-items: center;
+    background: rgba(56,189,248,.14); border: 1px solid rgba(56,189,248,.4); color: #9fe8ff; font-weight: 900; font-size: 13px;
+}
+.pq-fc-f { font-family: "Cambria Math", Georgia, serif; font-size: 16px; color: #ffe6a3; }
+.pq-fc-legend { font-size: 10.8px; line-height: 1.4; color: #93a9c7; }
+.pq-fc-note { margin: 2px 0 0; font-size: 11px; color: #8ba2bf; line-height: 1.45; }
+@media (max-width: 720px) {
+    .pq-solver-btn-text small { display: none; }
+    .pq-solver-collapse { margin-left: 0; }
+    .pq-given-table .pq-g-name { display: none; }
+}

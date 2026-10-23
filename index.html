@@ -660,6 +660,25 @@
             }
             .hub-nav { padding: 10px 14px; }
         }
+
+        .hub-features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+            gap: 14px;
+            margin: 26px 0 8px;
+        }
+        .hub-feature-link { text-decoration: none; color: inherit; border-color: rgba(56, 189, 248, .45); }
+        .hub-feature-link:hover { transform: translateY(-2px); border-color: rgba(56, 189, 248, .8); }
+        .hub-feature {
+            background: linear-gradient(160deg, rgba(17, 30, 58, 0.9), rgba(9, 18, 38, 0.94));
+            border: 1px solid rgba(96, 165, 250, 0.22);
+            border-radius: 18px;
+            padding: 16px 18px;
+            box-shadow: 0 16px 40px rgba(2, 8, 22, 0.35);
+        }
+        .hf-icon { font-size: 26px; margin-bottom: 6px; }
+        .hf-title { font-weight: 800; font-size: 15px; color: #eaf3ff; margin-bottom: 4px; }
+        .hf-desc { font-size: 12.8px; line-height: 1.5; color: #9fb3cf; }
     </style>
 </head>
 <body>
@@ -687,6 +706,9 @@
     <script src="./shared/catalog-789.js"></script>
     <script src="./shared/levels.js"></script>
     <script src="./shared/storage.js"></script>
+    <script src="./shared/offline-manifest.js"></script>
+    <script src="./shared/sound.js"></script>
+    <script src="./shared/offline.js"></script>
     <script>
     (function () {
         // Если на главную страницу пришли со ссылкой #a=… или #res=… — сразу направляем в нужную параллель!
@@ -711,7 +733,7 @@
                 heroLead: "Защищай научно-технические города и орбитальные станции с помощью законов физики! Три сюжетные кампании по школьной программе 7, 8 и 9 классов в единой игровой экосистеме с общим профилем ученика и сквозным журналом учителя.",
                 mLevels: "<b>153</b> игровых уровня",
                 mTasks: "<b>3 294</b> задачи по программе",
-                mLabs: "<b>37</b> лаб. работ и интерактивных симуляторов",
+                mLabs: "<b>43</b> лаб. работ и интерактивных симуляторов",
                 mLangs: "<b>3 языка</b> (RU · ҚАЗ · EN)",
                 permCodeLabel: "Постоянный код ученика (7–9 кл.)",
                 copyBtn: "📋 Копировать",
@@ -731,11 +753,11 @@
                 g8Title: "Хроники щита Эквилибриума",
                 g8World: "⚡ Мегаполис Эквилибриум · Сердце купола",
                 g8Desc: "Тепловые явления и термодинамика, агрегатные состояния, электростатика, законы постоянного тока, электромагнитные явления и геометрическая оптика.",
-                g8Tags: ["55 уровней", "1 210 заданий", "6 визуальных симуляторов", "Интерактивный конспект", "PDF-конспект (52–54 стр.)"],
+                g8Tags: ["55 уровней", "1 210 заданий", "9 визуальных симуляторов", "Интерактивный конспект", "PDF-конспект (52–54 стр.)"],
                 g9Title: "Орбита-9: Щит Земли",
                 g9World: "🛰 Орбитальная станция «Орбита-9» · Финал",
                 g9Desc: "Векторная кинематика, основы астрономии, законы динамики и сохранения, механические и электромагнитные колебания, волны, квантовая и ядерная физика.",
-                g9Tags: ["48 уровней", "1 009 заданий", "6 canvas-симуляторов", "Комикс-трилогия (18 глав)", "PDF-конспект (57 стр.)"],
+                g9Tags: ["48 уровней", "1 009 заданий", "9 canvas-симуляторов", "Комикс-трилогия (18 глав)", "PDF-конспект (57 стр.)"],
                 completedLabel: "Пройдено миссий",
                 playStart: "▶ Начать кампанию",
                 playContinue: "▶ Продолжить (уровень #{0})",
@@ -775,7 +797,7 @@
                 heroLead: "Физика заңдарының көмегімен ғылыми қалалар мен орбиталық станцияларды қорға! 7, 8 және 9-сынып бағдарламасы бойынша үш сюжеттік кампания бірыңғай оқушы профилімен және ортақ мұғалім журналымен біріктірілген.",
                 mLevels: "<b>153</b> ойын деңгейі",
                 mTasks: "<b>3 294</b> оқу есебі",
-                mLabs: "<b>37</b> зертханалық жұмыс пен интерактивті симулятор",
+                mLabs: "<b>43</b> зертханалық жұмыс пен интерактивті симулятор",
                 mLangs: "<b>3 тіл</b> (ҚАЗ · RU · EN)",
                 permCodeLabel: "Оқушының тұрақты коды (7–9 сын.)",
                 copyBtn: "📋 Көшіру",
@@ -795,11 +817,11 @@
                 g8Title: "Эквилибриум қалқанының шежіресі",
                 g8World: "⚡ Эквилибриум мегаполисі · Күмбез жүрегі",
                 g8Desc: "Жылу құбылыстары мен термодинамика, агрегаттық күйлер, электростатика, тұрақты ток заңдары, электромагниттік құбылыстар және геометриялық оптика.",
-                g8Tags: ["55 деңгей", "1 210 тапсырма", "6 визуалды симулятор", "Интерактивті конспект", "PDF-конспект (52–54 бет)"],
+                g8Tags: ["55 деңгей", "1 210 тапсырма", "9 визуалды симулятор", "Интерактивті конспект", "PDF-конспект (52–54 бет)"],
                 g9Title: "Орбита-9: Жер қалқаны",
                 g9World: "🛰 «Орбита-9» станциясы · Финал",
                 g9Desc: "Векторлық кинематика, астрономия негіздері, динамика және сақталу заңдары, тербелістер мен толқындар, кванттық және ядролық физика.",
-                g9Tags: ["48 деңгей", "1 009 тапсырма", "6 canvas-симулятор", "Комикс-трилогия (18 тарау)", "PDF-конспект (58 бет)"],
+                g9Tags: ["48 деңгей", "1 009 тапсырма", "9 canvas-симулятор", "Комикс-трилогия (18 тарау)", "PDF-конспект (58 бет)"],
                 completedLabel: "Өтілген миссиялар",
                 playStart: "▶ Кампанияны бастау",
                 playContinue: "▶ Жалғастыру (#{0}-деңгей)",
@@ -839,7 +861,7 @@
                 heroLead: "Defend scientific cities and orbital stations using the laws of physics! Three story-driven campaigns covering the full Grade 7, 8, and 9 curriculum inside one unified platform with a permanent student ID and cross-grade teacher journal.",
                 mLevels: "<b>153</b> playable missions",
                 mTasks: "<b>3,294</b> physics problems",
-                mLabs: "<b>37</b> lab works & interactive simulators",
+                mLabs: "<b>43</b> lab works & interactive simulators",
                 mLangs: "<b>3 languages</b> (RU · ҚАЗ · EN)",
                 permCodeLabel: "Permanent Student Code (Gr. 7–9)",
                 copyBtn: "📋 Copy",
@@ -859,11 +881,11 @@
                 g8Title: "Chronicles of Equilibrium's Shield",
                 g8World: "⚡ Metropolis Equilibrium · Part II",
                 g8Desc: "Thermal physics & thermodynamics, phase transitions, electrostatics, DC circuits & Ohm's law, electromagnetism, and geometrical optics.",
-                g8Tags: ["55 missions", "1,210 tasks", "6 visual simulators", "Interactive Study Guide", "PDF Guide (52–54 pp.)"],
+                g8Tags: ["55 missions", "1,210 tasks", "9 visual simulators", "Interactive Study Guide", "PDF Guide (52–54 pp.)"],
                 g9Title: "Orbita-9: Shield of Earth",
                 g9World: "🛰 Orbital Station Orbita-9 · Finale",
                 g9Desc: "Vector kinematics, astronomy, Newtonian dynamics, conservation laws, mechanical & EM oscillations, waves, quantum and nuclear physics.",
-                g9Tags: ["48 missions", "1,009 tasks", "6 canvas simulators", "Trilogy Comic (18 chapters)", "PDF Study Guide (56 pp.)"],
+                g9Tags: ["48 missions", "1,009 tasks", "9 canvas simulators", "Trilogy Comic (18 chapters)", "PDF Study Guide (56 pp.)"],
                 completedLabel: "Missions completed",
                 playStart: "▶ Start Campaign",
                 playContinue: "▶ Continue (Mission #{0})",
@@ -1136,6 +1158,26 @@
                             <p>${esc(tr("ab3Text"))}</p>
                         </div>
                     </div>
+                </section>
+
+                <section class="hub-features" id="pq-hub-features">
+                    ${[
+                        { icon: "🧮", t: { ru: "Умный разбор задач", kk: "Есептерді ақылды талдау", en: "Smart problem solver" },
+                          d: { ru: "Дано → СИ → Формула → Решение и карточка формул параграфа прямо в окне задачи.", kk: "Берілгені → ХБ → Формула → Шешуі және параграф формулаларының карточкасы тапсырма терезесінде.", en: "Given → SI → Formula → Solution plus a chapter formula card right inside the task window." } },
+                        { icon: "🏟", t: { ru: "Битва экипажей", kk: "Экипаждар сайысы", en: "Crew battle" },
+                          d: { ru: "Режим интерактивной доски: 2–3 команды защищают щит города у проектора.", kk: "Интерактивті тақта режимі: 2–3 команда проекторда қала қалқанын қорғайды.", en: "Interactive whiteboard mode: 2–3 teams defend the city shield on the projector." } },
+                        { icon: "🎖", t: { ru: "Паспорт пилота", kk: "Пилот паспорты", en: "Pilot passport" },
+                          d: { ru: "Именной сертификат с рангами по 7, 8 и 9 классам — PNG или PDF для портфолио.", kk: "7, 8 және 9 сынып рангылары бар атаулы сертификат — портфолио үшін PNG немесе PDF.", en: "A personalised certificate with ranks for Grades 7, 8 and 9 — PNG or PDF for your portfolio." } },
+                        { icon: "📥", t: { ru: "Офлайн-режим", kk: "Офлайн режим", en: "Offline mode" },
+                          d: { ru: "PWA-кэш и скачивание ZIP: игра работает даже без интернета в кабинете.", kk: "PWA кэші және ZIP жүктеу: ойын кабинетте интернетсіз де жұмыс істейді.", en: "PWA caching and ZIP download: the game works even without internet in the classroom." } },
+                        { icon: "🖼", href: "./screenshots.html", t: { ru: "Скриншоты симуляторов", kk: "Симуляторлар скриншоттары", en: "Simulator screenshots" },
+                          d: { ru: "18 мини-игр и лабораторий: кадры реальных сцен, формулы и задания к каждому опыту.", kk: "18 мини-ойын мен зертхана: нақты сахналардың кадрлары, формулалар мен тапсырмалар.", en: "18 mini-games and labs: real scene frames, formulas and a task for every experiment." } }
+                    ].map(f => `
+                        <${f.href ? "a" : "article"} class="hub-feature${f.href ? " hub-feature-link" : ""}" ${f.href ? `href="${f.href}"` : ""}>
+                            <div class="hf-icon">${f.icon}</div>
+                            <div class="hf-title">${esc(f.t[L] || f.t.ru)}</div>
+                            <div class="hf-desc">${esc(f.d[L] || f.d.ru)}</div>
+                        </${f.href ? "a" : "article"}>`).join("")}
                 </section>
 
                 <footer class="hub-footer">${esc(tr("footer"))}</footer>
