@@ -67,6 +67,18 @@
         background: rgba(13, 31, 58, .72); font-size: 12.5px; font-weight: 700; color: #cfe6ff;
     }
     .stat b { color: var(--gold); }
+    .worlds {
+        margin: 28px 0 6px; padding: 18px; border-radius: 22px;
+        border: 1px solid var(--line); background: rgba(10, 23, 44, .72);
+    }
+    .worlds-head { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; }
+    .worlds h2 { margin: 8px 0 0; font-size: clamp(20px, 2.6vw, 30px); }
+    .worlds-count {
+        min-width: 46px; height: 46px; border-radius: 50%; display: grid; place-items: center;
+        background: rgba(56,189,248,.14); border: 1px solid rgba(56,189,248,.4); color: #9fe8ff; font-weight: 900;
+    }
+    .worlds-lead { color: var(--muted); font-size: 13px; line-height: 1.55; margin: 8px 0 14px; max-width: 900px; }
+    .worlds-img { width: 100%; border-radius: 14px; display: block; border: 1px solid rgba(120,200,255,.2); }
     .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 18px; margin-top: 26px; }
     .card {
         border-radius: 20px; overflow: hidden; border: 1px solid var(--line);
@@ -143,6 +155,18 @@
         </div>
     </header>
 
+    <section class="worlds">
+        <div class="worlds-head">
+            <div>
+                <div class="kicker" data-i18n="worldsKicker">ОФОРМЛЕНИЕ УРОВНЕЙ</div>
+                <h2 data-i18n="worldsTitle">Шесть разных миров внутри игры</h2>
+            </div>
+            <span class="worlds-count">14</span>
+        </div>
+        <p class="worlds-lead" data-i18n="worldsLead">Фон уровня больше не один и тот же: каждая глава получает свой мир — небо, силуэты, частицы и свечение. Ниже — реальные кадры фонов, которые рисует движок.</p>
+        <img class="worlds-img" src="./assets/screenshots/level-worlds.png" alt="Миры уровней" loading="lazy">
+    </section>
+
     <section class="grid" id="grid"></section>
 
     <div class="foot">
@@ -166,6 +190,8 @@
             lead: "33 симулятора внутри игры: 15 полевых опытов для 7 класса и 18 canvas-лабораторий для 8 и 9 классов. Каждый опыт — это реальная установка: меняй параметры, следи за телеметрией, выводи установку в целевой режим и вводи расчётное значение. Ниже — 12 кадров из игры.",
             sLabs: "симулятора в игре", sNew: "новых опытов в этой версии", sLangs: "языка интерфейса", sReward: "за каждый подтверждённый опыт",
             newBadge: "новый", grade: "класс",
+            worldsKicker: "ОФОРМЛЕНИЕ УРОВНЕЙ", worldsTitle: "Шесть разных миров внутри игры",
+            worldsLead: "Фон уровня больше не один и тот же: каждая глава получает свой мир — небо, силуэты, частицы и свечение. Ниже — реальные кадры фонов, которые рисует движок.",
             footNote: "Все изображения получены автоматической отрисовкой реальных canvas-сцен игры при заданных параметрах.",
             items: {
                 "sim-g8-calorimeter": { t: "Калориметр: тепловой баланс", d: "Горячий цилиндр опускают в воду. Нужно вывести смесь в рабочий коридор 32–45 °C и рассчитать теплоту Q = cmΔt." },
@@ -189,6 +215,8 @@
             lead: "Ойын ішінде 18 зертхана бар: 7 сыныпқа арналған 15 өріс симуляторы және 8–9 сыныптарға арналған 9 canvas-симулятор. Әр тәжірибе — нақты қондырғы: параметрлерді өзгерт, телеметрияны бақыла, қондырғыны мақсатты режимге шығарып, есептік мәнді енгіз. Төменде — ойыннан алынған нақты кадрлар.",
             sLabs: "симулятор мен зертхана", sNew: "осы нұсқадағы жаңа тәжірибе", sLangs: "интерфейс тілі", sReward: "әр расталған тәжірибе үшін",
             newBadge: "жаңа", grade: "сынып",
+            worldsKicker: "ДЕҢГЕЙЛЕРДІҢ РӘСІМДЕЛУІ", worldsTitle: "Ойын ішіндегі алты түрлі әлем",
+            worldsLead: "Деңгей фоны енді бірдей емес: әр тарау өз әлемін алады — аспан, сұлбалар, бөлшектер және жарық. Төменде — қозғалтқыш салатын нақты фон кадрлары.",
             footNote: "Барлық суреттер ойынның нақты canvas-сахналарын берілген параметрлермен автоматты түрде салу арқылы алынған.",
             items: {
                 "sim-g8-calorimeter": { t: "Калориметр: жылу балансы", d: "Ыстық цилиндр суға батырылады. Қоспаны 32–45 °C дәлізіне шығарып, Q = cmΔt есептеу керек." },
@@ -212,6 +240,8 @@
             lead: "18 labs inside the game: 15 field simulators for Grade 7 and 9 canvas simulators for Grades 8 and 9. Each experiment is a real setup: change parameters, watch telemetry, bring it into the target regime and enter the calculated value. Below are genuine frames from the game.",
             sLabs: "simulators and labs", sNew: "new experiments in this version", sLangs: "interface languages", sReward: "for every confirmed experiment",
             newBadge: "new", grade: "grade",
+            worldsKicker: "LEVEL ART", worldsTitle: "Six different worlds inside the game",
+            worldsLead: "The level background is no longer the same: every chapter gets its own world — sky, silhouettes, particles and glow. Below are real background frames drawn by the engine.",
             footNote: "All images are produced by automatically rendering the game's real canvas scenes with the given parameters.",
             items: {
                 "sim-g8-calorimeter": { t: "Calorimeter: thermal balance", d: "A hot cylinder is lowered into water. Bring the mixture to 32–45 °C and compute Q = cmΔt." },
