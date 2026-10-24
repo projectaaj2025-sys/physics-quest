@@ -6,7 +6,7 @@
 (function () {
     "use strict";
 
-    const VERSION = "1.1";
+    const VERSION = "1.2";
     const LW = 760, LH = 270;          // логический размер сцены
 
     /* ---------------- палитра ---------------- */
@@ -59,6 +59,10 @@
         return g;
     }
     function rad(ctx, x, y, r0, r1, stops) {
+        // Радиусы не бывают отрицательными: при мигании/ресайзе сцена может
+        // прийти к нулевому размеру, а исключение обрывает всю отрисовку кадра.
+        r0 = Math.max(0, r0);
+        r1 = Math.max(r0, r1);
         const g = ctx.createRadialGradient(x, y, r0, x, y, r1);
         stops.forEach((s) => g.addColorStop(s[0], s[1]));
         return g;

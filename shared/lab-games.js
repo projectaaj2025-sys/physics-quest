@@ -25,6 +25,26 @@ const LabGames = {
             }
         });
         document.getElementById("lab-close")?.addEventListener("click", () => this.hide(false));
+        // Смена языка не должна оставлять открытую мини-игру на прежнем языке.
+        const rerender = () => {
+            const overlay = document.getElementById("lab-overlay");
+            if (!overlay || !overlay.classList.contains("active") || !this.activeCfg) return;
+            const values = {};
+            this.activeCfg.sliders?.forEach(s => {
+                const inp = document.getElementById("lab-" + s.id);
+                if (inp) values[s.id] = parseFloat(inp.value);
+            });
+            if (this.activeCfg.type === "circuit") {
+                values.on = [...document.querySelectorAll("#lab-circuit .circuit-cell.on")].map(c => Number(c.getAttribute("data-idx")));
+            }
+            const game = this.activeGame;
+            this.activeGame = null;
+            this.show(this.activeCfg, game, values);
+        };
+        ["pq:lang-changed", "pq-lang-change"].forEach((name) => {
+            document.addEventListener(name, rerender);
+            window.addEventListener(name, rerender);
+        });
         // В 8–9 классах кнопкой «🔬 Лаб» управляет роутер Simulators89
         // (он открывает мини-игру уровня либо галерею симуляторов) — второй обработчик не нужен.
         if (typeof window.Simulators89 === "undefined") {
@@ -47,9 +67,10 @@ const LabGames = {
         this.shownThisLevel = false;
         this.activeLevel = null;
     },
-    show(cfg, game) {
+    show(cfg, game, values) {
         this.init();
         this.activeGame = game;
+        this.activeCfg = cfg;
         if (game) game.paused = true;
         const overlay = document.getElementById("lab-overlay");
         if (!overlay) return;
@@ -64,6 +85,8 @@ const LabGames = {
         const pick = (o, k) => L === "kk" ? (o[k + "Kk"] || o[k]) : L === "en" ? (o[k + "En"] || o[k]) : o[k];
         // Единицы измерения тоже локализуем: unit / unitKk / unitEn
         const unitOf = (cfg) => L === "kk" ? (cfg.unitKk || cfg.unit || "") : L === "en" ? (cfg.unitEn || cfg.unit || "") : (cfg.unit || "");
+        // Десятичный разделитель как в остальной игре: в RU/KK — запятая, в EN — точка.
+        const numTxt = (v) => String(v).replace(".", L === "en" ? "." : ",");
         if (title) title.textContent = pick(cfg, "title");
         if (desc) desc.textContent = pick(cfg, "desc");
         if (hintEl) hintEl.textContent = pick(cfg, "hint") || "";
@@ -72,7 +95,7 @@ const LabGames = {
             const goalPrefix = (typeof I18n !== "undefined" && I18n.t("labGoalPrefix") !== "labGoalPrefix")
                 ? I18n.t("labGoalPrefix")
                 : (L === "kk" ? "→ мақсат:" : L === "en" ? "→ goal:" : "→ цель:");
-            if (cfg.formulaStr) formulaEl.textContent = cfg.formulaStr + "  " + goalPrefix + " " + cfg.target + " " + unitOf(cfg);
+            if (cfg.formulaStr) formulaEl.textContent = cfg.formulaStr + "  " + goalPrefix + " " + numTxt(cfg.target) + (unitOf(cfg) ? " " + unitOf(cfg) : "");
         }
         if (resultEl) resultEl.style.display = "none";
         if (circuitEl) circuitEl.style.display = "none";
@@ -81,8 +104,8 @@ const LabGames = {
             content.innerHTML = cfg.sliders.map(s => `
                 <div class="lab-slider-row">
                     <label>${pick(s, "label")}</label>
-                    <input type="range" id="lab-${s.id}" min="${s.min}" max="${s.max}" step="${s.step}" value="${s.val}">
-                    <span class="lab-value" id="lab-v-${s.id}">${s.val}</span>
+                    <input type="range" id="lab-${s.id}" min="${s.min}" max="${s.max}" step="${s.step}" value="${(values && values[s.id] != null) ? values[s.id] : s.val}">
+                    <span class="lab-value" id="lab-v-${s.id}">${numTxt((values && values[s.id] != null) ? values[s.id] : s.val)}</span>
                 </div>
             `).join("");
             const update = () => {
@@ -92,13 +115,15 @@ const LabGames = {
                     const out = document.getElementById("lab-v-" + s.id);
                     const v = parseFloat(inp.value);
                     vals[s.id] = v;
-                    if (out) out.textContent = v;
+                    if (out) out.textContent = numTxt(v);
                 });
                 const res = cfg.formula(vals);
                 resultEl.style.display = "";
                 const resWord = L === "kk" ? "Нәтиже" : L === "en" ? "Result" : "Результат";
                 const goalWord = L === "kk" ? "мақсат" : L === "en" ? "target" : "цель";
-                resultEl.textContent = `${resWord}: ${res.toFixed(2)} ${unitOf(cfg)} (${goalWord} ${cfg.target} ±${cfg.tol})`;
+                // Безразмерные величины (показатель преломления) печатаем без лишнего пробела.
+                const uTxt = unitOf(cfg) ? " " + unitOf(cfg) : "";
+                resultEl.textContent = `${resWord}: ${numTxt(res.toFixed(2))}${uTxt} (${goalWord} ${numTxt(cfg.target)} ±${numTxt(cfg.tol)})`;
                 const ok = Math.abs(res - cfg.target) <= cfg.tol;
                 resultEl.className = "lab-result " + (ok ? "ok" : "bad");
                 resultEl._ok = ok;
@@ -118,23 +143,30 @@ const LabGames = {
             circuitEl.style.display = "grid";
             circuitEl.innerHTML = items.map((it, idx) => `<div class="circuit-cell" data-idx="${idx}" title="${it.name}">${it.i}<small>${it.name}</small></div>`).join("");
             resultEl.style.display = "";
-            resultEl.textContent = L === "kk" ? "Барлық элементтерді қос (0/4)" : L === "en" ? "Enable all elements (0/4)" : "Включи все элементы цепи (0/4)";
-            resultEl.className = "lab-result bad";
-            resultEl._ok = false;
+            // Состояние цепи живёт в разметке; при смене языка перерисовываем и возвращаем его.
+            const paintResult = () => {
+                const onCount = circuitEl.querySelectorAll(".circuit-cell.on").length;
+                if (onCount === 4) {
+                    circuitEl.querySelectorAll(".circuit-cell").forEach(c => c.classList.add("done"));
+                    resultEl.textContent = L === "kk" ? "⚡ Тізбек жиналды!" : L === "en" ? "⚡ Circuit complete!" : "⚡ Цепь собрана!";
+                    resultEl.className = "lab-result ok";
+                    resultEl._ok = true;
+                } else {
+                    resultEl.textContent = onCount
+                        ? (L === "kk" ? "Қосылды " : L === "en" ? "Enabled " : "Включено ") + onCount + "/4"
+                        : (L === "kk" ? "Барлық элементтерді қос (0/4)" : L === "en" ? "Enable all elements (0/4)" : "Включи все элементы цепи (0/4)");
+                    resultEl.className = "lab-result bad";
+                    resultEl._ok = false;
+                }
+            };
+            (values && Array.isArray(values.on) ? values.on : []).forEach((idx) => {
+                circuitEl.querySelector(`.circuit-cell[data-idx="${idx}"]`)?.classList.add("on");
+            });
+            paintResult();
             circuitEl.querySelectorAll(".circuit-cell").forEach(cell => {
                 cell.addEventListener("click", () => {
                     cell.classList.toggle("on");
-                    const onCount = circuitEl.querySelectorAll(".circuit-cell.on").length;
-                    if (onCount === 4) {
-                        circuitEl.querySelectorAll(".circuit-cell").forEach(c => c.classList.add("done"));
-                        resultEl.textContent = L === "kk" ? "⚡ Тізбек жиналды!" : L === "en" ? "⚡ Circuit complete!" : "⚡ Цепь собрана!";
-                        resultEl.className = "lab-result ok";
-                        resultEl._ok = true;
-                    } else {
-                        resultEl.textContent = (L === "kk" ? "Қосылды " : L === "en" ? "Enabled " : "Включено ") + onCount + "/4";
-                        resultEl.className = "lab-result bad";
-                        resultEl._ok = false;
-                    }
+                    paintResult();
                 });
             });
         }

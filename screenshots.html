@@ -91,7 +91,10 @@
     .f7-cap { display: flex; align-items: center; gap: 9px; padding: 9px 11px; font-size: 12.5px; font-weight: 700; }
     .f7-cap .ico { font-size: 17px; }
     .f7-item small { display: block; font-weight: 600; color: #8ba2bf; font-size: 10.5px; }
+    .mg-grid { grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); }
     .mg-grid .f7-item img { aspect-ratio: 712 / 475; object-fit: contain; background: #0b1626; }
+    .mg-grid .f7-cap { align-items: flex-start; }
+    .mg-grid .f7-cap small { margin-top: 2px; }
     .overview { margin: 22px 0 0; }
     .overview img { width: 100%; border-radius: 16px; display: block; border: 1px solid rgba(120,200,255,.22); }
     .overview figcaption { margin-top: 8px; font-size: 12.5px; color: var(--muted); }
@@ -209,10 +212,10 @@
     <section class="field7" id="minigames">
         <div class="worlds-head">
             <div>
-                <div class="kicker" data-i18n="mgKicker">8–9 КЛАССЫ · МИНИ-ИГРА НА ЛАБОРАТОРНОМ УРОВНЕ</div>
-                <h2 data-i18n="mgTitle">Мини-игра уровня: как в 7 классе, но по своей теме</h2>
+                <div class="kicker" data-i18n="mgKicker">8–9 КЛАССЫ · МИНИ-ИГРЫ ЛАБОРАТОРНЫХ УРОВНЕЙ</div>
+                <h2 data-i18n="mgTitle">Все 15 мини-игр уровней: как в 7 классе, но по своей теме</h2>
             </div>
-            <span class="worlds-count">3</span>
+            <span class="worlds-count">15</span>
         </div>
         <p class="worlds-lead" data-i18n="mgLead">На каждом лабораторном уровне 8 и 9 класса открывается своя мини-игра: приборы со слайдерами или сборка электрической цепи. Нужно вывести установку в целевой режим, увидеть зелёный результат и подтвердить расчёт — за это уровень даёт бонус. Ниже — реальные экраны трёх мини-игр.</p>
         <div class="f7-grid mg-grid" id="mg-grid"></div>
@@ -262,9 +265,9 @@
             galTitle: "Мини-игры 8 и 9 класса собраны по темам",
             galLead: "Как и в 7 классе, лаборатории сгруппированы по темам курса: у каждой темы свой набор опытов и своя карточка с параграфом, целью и подсказкой. Всего 35 лабораторий — по одной на каждый смысловой блок §§ 1–43.",
             galG8: "Галерея лабораторий 8 класса по темам", galG9: "Галерея лабораторий 9 класса по темам",
-            mgKicker: "8–9 КЛАССЫ · МИНИ-ИГРА НА ЛАБОРАТОРНОМ УРОВНЕ",
-            mgTitle: "Мини-игра уровня: как в 7 классе, но по своей теме",
-            mgLead: "На каждом лабораторном уровне 8 и 9 класса открывается своя мини-игра: приборы со слайдерами или сборка электрической цепи. Нужно вывести установку в целевой режим, увидеть зелёный результат и подтвердить расчёт — за это уровень даёт бонус. Ниже — реальные экраны трёх мини-игр.",
+            mgKicker: "8–9 КЛАССЫ · МИНИ-ИГРЫ ЛАБОРАТОРНЫХ УРОВНЕЙ",
+            mgTitle: "Все 15 мини-игр уровней: как в 7 классе, но по своей теме",
+            mgLead: "На каждом лабораторном уровне 8 и 9 класса открывается своя мини-игра: приборы со слайдерами или сборка электрической цепи. Нужно вывести установку в целевой режим, увидеть зелёный результат и подтвердить расчёт — за это уровень даёт бонус. Ниже — реальные экраны всех 15 мини-игр: 11 в 8 классе (уровни 45–55) и 4 в 9 классе (уровни 45–48), каждая с формулой и целевым значением.",
             footNote: "Все изображения получены автоматической отрисовкой реальных canvas-сцен игры: светлая «фотореалистичная» графика, предметы можно тянуть мышью.",
             items: {
                 "sim-g8-calorimeter": { t: "Калориметр: тепловой баланс", d: "Горячий цилиндр опускают в воду. Нужно вывести смесь в рабочий коридор 32–45 °C и рассчитать теплоту Q = cmΔt." },
@@ -297,9 +300,9 @@
             galTitle: "8 және 9 сынып мини-ойындары тақырыптар бойынша жиналған",
             galLead: "7 сыныптағыдай, зертханалар курс тақырыптары бойынша топтастырылған: әр тақырыптың өз тәжірибелері мен параграфы, мақсаты және кеңесі бар карточкасы бар. Барлығы 35 зертхана — §§ 1–43 мазмұндық блоктарына біреуден.",
             galG8: "8 сынып зертханаларының галереясы", galG9: "9 сынып зертханаларының галереясы",
-            mgKicker: "8–9 СЫНЫПТАР · ЗЕРТХАНАЛЫҚ ДЕҢГЕЙДЕГІ МИНИ-ОЙЫН",
-            mgTitle: "Деңгейдің мини-ойыны: 7 сыныптағыдай, бірақ өз тақырыбы бойынша",
-            mgLead: "8 және 9 сыныптың әр зертханалық деңгейінде өз мини-ойыны ашылады: слайдері бар аспаптар немесе электр тізбегін жинау. Қондырғыны мақсатты режимге шығарып, жасыл нәтижені көріп, есепті растау керек — соған деңгей бонус береді. Төменде — үш мини-ойынның нақты кадрлары.",
+            mgKicker: "8–9 СЫНЫПТАР · ЗЕРТХАНАЛЫҚ ДЕҢГЕЙЛЕРДІҢ МИНИ-ОЙЫНДАРЫ",
+            mgTitle: "Барлық 15 деңгейлік мини-ойын: 7 сыныптағыдай, бірақ өз тақырыбы бойынша",
+            mgLead: "8 және 9 сыныптың әр зертханалық деңгейінде өз мини-ойыны ашылады: слайдері бар аспаптар немесе электр тізбегін жинау. Қондырғыны мақсатты режимге шығарып, жасыл нәтижені көріп, есепті растау керек — соған деңгей бонус береді. Төменде — барлық 15 мини-ойынның нақты кадрлары: 8 сыныпта 11 (45–55 деңгейлер), 9 сыныпта 4 (45–48 деңгейлер), әрқайсысы формуласы мен мақсатты мәнімен.",
             footNote: "Барлық суреттер ойынның нақты canvas-сахналарын берілген параметрлермен автоматты түрде салу арқылы алынған.",
             items: {
                 "sim-g8-calorimeter": { t: "Калориметр: жылу балансы", d: "Ыстық цилиндр суға батырылады. Қоспаны 32–45 °C дәлізіне шығарып, Q = cmΔt есептеу керек." },
@@ -332,9 +335,9 @@
             galTitle: "Grade 8–9 mini-games are grouped by topic",
             galLead: "As in Grade 7, the labs are grouped by course topic: each topic has its own trials and its own card with a paragraph, goal and hint. 35 labs in total — one for every content block of §§ 1–43.",
             galG8: "Grade 8 lab gallery by topic", galG9: "Grade 9 lab gallery by topic",
-            mgKicker: "GRADES 8–9 · MINI-GAME ON A LAB LEVEL",
-            mgTitle: "A mini-game per level: like Grade 7, but on its own topic",
-            mgLead: "Every lab level in Grades 8 and 9 opens its own mini-game: slider-driven apparatus or an electrical circuit to assemble. Bring the setup into the target regime, see the green result and confirm the calculation — the level rewards it with a bonus. Below are real frames of three mini-games.",
+            mgKicker: "GRADES 8–9 · MINI-GAMES OF LAB LEVELS",
+            mgTitle: "All 15 level mini-games: like Grade 7, but on their own topics",
+            mgLead: "Every lab level in Grades 8 and 9 opens its own mini-game: slider-driven apparatus or an electrical circuit to assemble. Bring the setup into the target regime, see the green result and confirm the calculation — the level rewards it with a bonus. Below are real frames of all 15 mini-games: 11 in Grade 8 (levels 45–55) and 4 in Grade 9 (levels 45–48), each with its formula and target value.",
             footNote: "All images are produced by automatically rendering the game's real canvas scenes with the given parameters.",
             items: {
                 "sim-g8-calorimeter": { t: "Calorimeter: thermal balance", d: "A hot cylinder is lowered into water. Bring the mixture to 32–45 °C and compute Q = cmΔt." },
@@ -822,31 +825,247 @@
 };
 
     const MINI_GAMES = [
-        ["🧪", { ru: "8 кл. · §4–5", kk: "8 сын. · §4–5", en: "Grade 8 · §§4–5" }, "lab-g8-45-heat.png", {
-            ru: "Смешивание воды: Q = c·m·Δt",
-            kk: "Суды араластыру: Q = c·m·Δt",
-            en: "Water mixing: Q = c·m·Δt",
-            d: { ru: "Два слайдера — масса воды и нагрев. Нужно получить Q = 42 ±1 кДж и подтвердить расчёт.",
-                 kk: "Екі слайдер — су массасы мен қыздыру. Q = 42 ±1 кДж алып, есепті растау керек.",
-                 en: "Two sliders — water mass and heating. Reach Q = 42 ±1 kJ and confirm the calculation." }
-        }],
-        ["🔌", { ru: "8 кл. · §22–26", kk: "8 сын. · §22–26", en: "Grade 8 · §§22–26" }, "lab-g8-47-circuit.png", {
-            ru: "Сборка цепи: батарея, ключ, резистор, лампа",
-            kk: "Тізбекті жинау: батарея, кілт, резистор, шам",
-            en: "Circuit assembly: battery, switch, resistor, lamp",
-            d: { ru: "Четыре элемента цепи: включи все — и цепь замкнётся, а лампа загорится.",
-                 kk: "Тізбектің төрт элементі: бәрін қос — тізбек тұйықталып, шам жаңады.",
-                 en: "Four circuit elements: enable all of them — the circuit closes and the lamp lights up." }
-        }],
-        ["📏", { ru: "9 кл. · §3", kk: "9 сын. · §3", en: "Grade 9 · §3" }, "lab-g9-45-accel.png", {
-            ru: "Желоб: ускорение a = 2s / t²",
-            kk: "Науа: үдеу a = 2s / t²",
-            en: "Ramp: acceleration a = 2s / t²",
-            d: { ru: "Шарик катится по желобу: подбери путь s и время t, чтобы попасть в a = 1,4 ±0,15 м/с².",
-                 kk: "Шарик науамен домалайды: a = 1,4 ±0,15 м/с² мәніне түсу үшін s жолы мен t уақытын таңда.",
-                 en: "A ball rolls down the ramp: tune the distance s and time t to hit a = 1.4 ±0.15 m/s²." }
-        }]
-    ];
+    {
+        icon: "🧪",
+        grade: 8,
+        level: 45,
+        file: "lab-g8-45.png",
+        t: {
+            ru: "Смешивание воды — тепловой баланс",
+            kk: "Суды араластыру — жылу балансы",
+            en: "Water mixing — heat balance"
+        },
+        goal: {
+            ru: "Q = c·m·Δt → цель 42 ±1 кДж",
+            kk: "Q = c·m·Δt → мақсат 42 ±1 кДж",
+            en: "Q = c·m·Δt → target 42 ±1 kJ"
+        }
+    },
+    {
+        icon: "🧊",
+        grade: 8,
+        level: 46,
+        file: "lab-g8-46.png",
+        t: {
+            ru: "Плавление льда — удельная теплота",
+            kk: "Мұздың балқуы — меншікті жылу",
+            en: "Melting ice — specific heat"
+        },
+        goal: {
+            ru: "λ = Q / m → цель 334 ±8 кДж/кг",
+            kk: "λ = Q / m → мақсат 334 ±8 кДж/кг",
+            en: "λ = Q / m → target 334 ±8 kJ/kg"
+        }
+    },
+    {
+        icon: "🔌",
+        grade: 8,
+        level: 47,
+        file: "lab-g8-47.png",
+        t: {
+            ru: "Сборка электрической цепи",
+            kk: "Электр тізбегін құрастыру",
+            en: "Assembling the electric circuit"
+        },
+        goal: {
+            ru: "собери цепь из 4 элементов",
+            kk: "тізбекті 4 элементтен жина",
+            en: "assemble a 4-element circuit"
+        }
+    },
+    {
+        icon: "⚡",
+        grade: 8,
+        level: 48,
+        file: "lab-g8-48.png",
+        t: {
+            ru: "Закон Ома — сила тока от напряжения",
+            kk: "Ом заңы — ток күшінің кернеуге тәуелділігі",
+            en: "Ohm's law — current vs voltage"
+        },
+        goal: {
+            ru: "I = U / R → цель 1,5 ±0,02 А",
+            kk: "I = U / R → мақсат 1,5 ±0,02 А",
+            en: "I = U / R → target 1.5 ±0.02 A"
+        }
+    },
+    {
+        icon: "🔗",
+        grade: 8,
+        level: 49,
+        file: "lab-g8-49.png",
+        t: {
+            ru: "Последовательное соединение",
+            kk: "Тізбектей жалғау",
+            en: "Series connection"
+        },
+        goal: {
+            ru: "R = R₁ + R₂ + R₃ → цель 17 ±0,1 Ом",
+            kk: "R = R₁ + R₂ + R₃ → мақсат 17 ±0,1 Ом",
+            en: "R = R₁ + R₂ + R₃ → target 17 ±0.1 Ω"
+        }
+    },
+    {
+        icon: "🔀",
+        grade: 8,
+        level: 50,
+        file: "lab-g8-50.png",
+        t: {
+            ru: "Параллельное соединение",
+            kk: "Параллель жалғау",
+            en: "Parallel connection"
+        },
+        goal: {
+            ru: "R = R₁·R₂ / (R₁+R₂) → цель 2,4 ±0,05 Ом",
+            kk: "R = R₁·R₂ / (R₁+R₂) → мақсат 2,4 ±0,05 Ом",
+            en: "R = R₁·R₂ / (R₁+R₂) → target 2.4 ±0.05 Ω"
+        }
+    },
+    {
+        icon: "💡",
+        grade: 8,
+        level: 51,
+        file: "lab-g8-51.png",
+        t: {
+            ru: "Работа и мощность тока",
+            kk: "Токтың жұмысы мен қуаты",
+            en: "Work and power of current"
+        },
+        goal: {
+            ru: "P = U · I → цель 36 ±0,1 Вт",
+            kk: "P = U · I → мақсат 36 ±0,1 Вт",
+            en: "P = U · I → target 36 ±0.1 W"
+        }
+    },
+    {
+        icon: "🧲",
+        grade: 8,
+        level: 52,
+        file: "lab-g8-52.png",
+        t: {
+            ru: "Магнитное поле — сила Ампера",
+            kk: "Магнит өрісі — Ампер күші",
+            en: "Magnetic field — Ampère force"
+        },
+        goal: {
+            ru: "F = B · I · L → цель 0,3 ±0,01 Н",
+            kk: "F = B · I · L → мақсат 0,3 ±0,01 Н",
+            en: "F = B · I · L → target 0.3 ±0.01 N"
+        }
+    },
+    {
+        icon: "🧲",
+        grade: 8,
+        level: 53,
+        file: "lab-g8-53.png",
+        t: {
+            ru: "Электромагнит — индукция катушки",
+            kk: "Электромагнит — катушка индукциясы",
+            en: "Electromagnet — coil induction"
+        },
+        goal: {
+            ru: "B = μ₀·N·I / L → цель 3 ±0,05 мТл",
+            kk: "B = μ₀·N·I / L → мақсат 3 ±0,05 мТл",
+            en: "B = μ₀·N·I / L → target 3 ±0.05 mT"
+        }
+    },
+    {
+        icon: "📐",
+        grade: 8,
+        level: 54,
+        file: "lab-g8-54.png",
+        t: {
+            ru: "Показатель преломления стекла",
+            kk: "Әйнектің сыну көрсеткіші",
+            en: "Refractive index of glass"
+        },
+        goal: {
+            ru: "n = sin α / sin β → цель 1,5 ±0,03",
+            kk: "n = sin α / sin β → мақсат 1,5 ±0,03",
+            en: "n = sin α / sin β → target 1.5 ±0.03"
+        }
+    },
+    {
+        icon: "🔍",
+        grade: 8,
+        level: 55,
+        file: "lab-g8-55.png",
+        t: {
+            ru: "Фокусное расстояние линзы",
+            kk: "Жұқа линзаның фокус аралығы",
+            en: "Focal length of a thin lens"
+        },
+        goal: {
+            ru: "1/F = 1/d + 1/o → цель 15 ±0,5 см",
+            kk: "1/F = 1/d + 1/o → мақсат 15 ±0,5 см",
+            en: "1/F = 1/d + 1/o → target 15 ±0.5 cm"
+        }
+    },
+    {
+        icon: "📏",
+        grade: 9,
+        level: 45,
+        file: "lab-g9-45.png",
+        t: {
+            ru: "Желоб — ускорение",
+            kk: "Науа — үдеу",
+            en: "Ramp — acceleration"
+        },
+        goal: {
+            ru: "a = 2·s / t² → цель 1,4 ±0,15 м/с²",
+            kk: "a = 2·s / t² → мақсат 1,4 ±0,15 м/с²",
+            en: "a = 2·s / t² → target 1.4 ±0.15 m/s²"
+        }
+    },
+    {
+        icon: "🎯",
+        grade: 9,
+        level: 46,
+        file: "lab-g9-46.png",
+        t: {
+            ru: "Полет со стола",
+            kk: "Үстелден ұшу",
+            en: "Flight off the table"
+        },
+        goal: {
+            ru: "v₀ = s·√(g/2h) → цель 2,2 ±0,2 м/с",
+            kk: "v₀ = s·√(g/2h) → мақсат 2,2 ±0,2 м/с",
+            en: "v₀ = s·√(g/2h) → target 2.2 ±0.2 m/s"
+        }
+    },
+    {
+        icon: "⏱️",
+        grade: 9,
+        level: 47,
+        file: "lab-g9-47.png",
+        t: {
+            ru: "Маятник — измерь g",
+            kk: "Маятник — g өлшеу",
+            en: "Pendulum — measure g"
+        },
+        goal: {
+            ru: "T = 2π·√(L/g) → цель 1,42 ±0,1 с",
+            kk: "T = 2π·√(L/g) → мақсат 1,42 ±0,1 с",
+            en: "T = 2π·√(L/g) → target 1.42 ±0.1 s"
+        }
+    },
+    {
+        icon: "🌊",
+        grade: 9,
+        level: 48,
+        file: "lab-g9-48.png",
+        t: {
+            ru: "Волны на воде",
+            kk: "Судағы толқындар",
+            en: "Waves on water"
+        },
+        goal: {
+            ru: "v = λ·ν → цель 0,45 ±0,06 м/с",
+            kk: "v = λ·ν → мақсат 0,45 ±0,06 м/с",
+            en: "v = λ·ν → target 0.45 ±0.06 m/s"
+        }
+    }
+];
 
     const FIELD7 = [
         ["📏", "§3", "sim7-units.png", { ru: "Перевод единиц", kk: "Бірліктерді түрлендіру", en: "Unit conversion" }],
@@ -882,10 +1101,12 @@
         });
         const mg = document.getElementById("mg-grid");
         if (mg) {
-            mg.innerHTML = MINI_GAMES.map(([icon, para, file, info]) => `
-                <button type="button" class="f7-item" data-img="./assets/screenshots/${file}">
-                    <img src="./assets/screenshots/${file}" alt="${info[lang] || info.ru}" loading="lazy">
-                    <span class="f7-cap"><span class="ico">${icon}</span><span>${info[lang] || info.ru}<small>${para[lang] || para.ru} · ${(info.d && (info.d[lang] || info.d.ru)) || ""}</small></span></span>
+            const lvlWord = { ru: "уровень", kk: "деңгей", en: "level" };
+            const gradeWord = (g) => lang === "en" ? `Grade ${g}` : lang === "kk" ? `${g} сынып` : `${g} класс`;
+            mg.innerHTML = MINI_GAMES.map((g) => `
+                <button type="button" class="f7-item" data-img="./assets/screenshots/${g.file}">
+                    <img src="./assets/screenshots/${g.file}" alt="${g.t[lang] || g.t.ru}" loading="lazy">
+                    <span class="f7-cap"><span class="ico">${g.icon}</span><span>${g.t[lang] || g.t.ru}<small>${gradeWord(g.grade)} · ${lvlWord[lang] || lvlWord.ru} ${g.level} · ${g.goal[lang] || g.goal.ru}</small></span></span>
                 </button>`).join("");
         }
         const f7 = document.getElementById("f7-grid");
