@@ -1180,12 +1180,9 @@ function showAbout() {
         <p>${I18n.t("aboutContent")}</p>
         <h3>${I18n.t("aboutFeatures")}</h3>
         <ul>
-            <li>${I18n.t("aboutFeature1")}</li>
-            <li>${I18n.t("aboutFeature2")}</li>
-            <li>${I18n.t("aboutFeature3")}</li>
-            <li>${I18n.t("aboutFeature4")}</li>
-            <li>${I18n.t("aboutFeature5")}</li>
-            <li>${I18n.t("aboutFeature6")}</li>
+            ${[1, 2, 3, 4, 5, 6, 7, 8]
+                .map(n => `<li>${I18n.t("aboutFeature" + n)}</li>`)
+                .join("")}
         </ul>
         <h3>${I18n.t("aboutTech")}</h3>
         <p>${I18n.t("aboutTechText")}</p>
