@@ -883,9 +883,9 @@ function closeTheory() {
 // ============ ПРОФИЛЬ ПИЛОТА (РПГ) ============
 // PDF-файлы, прикреплённые к игре: кнопка выбирает файл по текущему языку интерфейса.
 const PROFILE_NOTES_FILES = {
-    ru: "uploads/Fizika_8_klass_konspekt_russkiy.pdf",
-    en: "uploads/Physics_Grade_8_Notes_English.pdf",
-    kk: "uploads/Fizika_8_synyp_konspekt_kazaksha.pdf"
+    ru: "assets/pdf/grade8-ru.pdf",
+    en: "assets/pdf/grade8-en.pdf",
+    kk: "assets/pdf/grade8-kk.pdf"
 };
 const PROFILE_NOTES_LANG_NAMES = {
     ru: "Русский",
@@ -893,9 +893,9 @@ const PROFILE_NOTES_LANG_NAMES = {
     kk: "Қазақша"
 };
 const PROFILE_NOTES_V2_FILES = {
-    ru: "uploads/Физика_8_класс_Конспект_РУС.pdf",
-    en: "uploads/Physics_Grade8_Notes_ENG.pdf",
-    kk: "uploads/Физика_8_сынып_Конспект_ҚАЗ.pdf"
+    ru: "assets/pdf/grade8-ru.pdf",
+    en: "assets/pdf/grade8-en.pdf",
+    kk: "assets/pdf/grade8-kk.pdf"
 };
 
 function updateProfileNotesDownload() {
