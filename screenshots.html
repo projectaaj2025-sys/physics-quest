@@ -92,6 +92,9 @@
     .f7-cap .ico { font-size: 17px; }
     .f7-item small { display: block; font-weight: 600; color: #8ba2bf; font-size: 10.5px; }
     .mg-grid { grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); }
+    .cert-grid { grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); }
+    .cert-grid .f7-item img { aspect-ratio: 1600 / 1120; object-fit: contain; background: #0b1626; }
+    .cert-ui-lead { margin-top: 18px; }
     .mg-grid .f7-item img { aspect-ratio: 712 / 475; object-fit: contain; background: #0b1626; }
     .mg-grid .f7-cap { align-items: flex-start; }
     .mg-grid .f7-cap small { margin-top: 2px; }
@@ -221,6 +224,20 @@
         <div class="f7-grid mg-grid" id="mg-grid"></div>
     </section>
 
+    <section class="field7" id="certificates">
+        <div class="worlds-head">
+            <div>
+                <div class="kicker" data-i18n="certKicker">СЕРТИФИКАТЫ · 4 ОФОРМЛЕНИЯ</div>
+                <h2 data-i18n="certTitle">Сертификат пилота: на выбор, с печатью</h2>
+            </div>
+            <span class="worlds-count">4</span>
+        </div>
+        <p class="worlds-lead" data-i18n="certLead">Сертификат за любой класс и за всю трилогию: имя и фамилия вводятся отдельно, внизу — код пилота, дата и круглая печать с номером класса. Четыре оформления: «Космос» — тёмный сгенерированный фон, «Светлый», «Пергамент» и «Небо» — рисуются кодом на белом фоне и печатаются на обычной бумаге без тёмной заливки. Выбор оформления запоминается.</p>
+        <div class="f7-grid mg-grid cert-grid" id="cert-grid"></div>
+        <p class="worlds-lead cert-ui-lead" data-i18n="certUiLead">Так выглядит окно выбора: вкладки класса, плитки оформления, отдельные поля «Фамилия» и «Имя», скачивание в PNG и печать в PDF.</p>
+        <img class="worlds-img" src="./assets/screenshots/cert-ui.jpg" alt="Окно сертификата" loading="lazy">
+    </section>
+
     <section class="field7">
         <div class="worlds-head">
             <div>
@@ -266,6 +283,10 @@
             galLead: "Как и в 7 классе, лаборатории сгруппированы по темам курса: у каждой темы свой набор опытов и своя карточка с параграфом, целью и подсказкой. Всего 35 лабораторий — по одной на каждый смысловой блок §§ 1–43.",
             galG8: "Галерея лабораторий 8 класса по темам", galG9: "Галерея лабораторий 9 класса по темам",
             mgKicker: "8–9 КЛАССЫ · МИНИ-ИГРЫ ЛАБОРАТОРНЫХ УРОВНЕЙ",
+            certKicker: "СЕРТИФИКАТЫ · 4 ОФОРМЛЕНИЯ",
+            certTitle: "Сертификат пилота: на выбор, с печатью",
+            certLead: "Сертификат за любой класс и за всю трилогию: имя и фамилия вводятся отдельно, внизу — код пилота, дата и круглая печать с номером класса. Четыре оформления: «Космос» — тёмный сгенерированный фон, «Светлый», «Пергамент» и «Небо» — рисуются кодом на белом фоне и печатаются на обычной бумаге без тёмной заливки. Выбор оформления запоминается.",
+            certUiLead: "Так выглядит окно выбора: вкладки класса, плитки оформления, отдельные поля «Фамилия» и «Имя», скачивание в PNG и печать в PDF.",
             mgTitle: "Все 15 мини-игр уровней: как в 7 классе, но по своей теме",
             mgLead: "На каждом лабораторном уровне 8 и 9 класса открывается своя мини-игра: приборы со слайдерами или сборка электрической цепи. Нужно вывести установку в целевой режим, увидеть зелёный результат и подтвердить расчёт — за это уровень даёт бонус. Ниже — реальные экраны всех 15 мини-игр: 11 в 8 классе (уровни 45–55) и 4 в 9 классе (уровни 45–48), каждая с формулой и целевым значением.",
             footNote: "Все изображения получены автоматической отрисовкой реальных canvas-сцен игры: светлая «фотореалистичная» графика, предметы можно тянуть мышью.",
@@ -301,6 +322,10 @@
             galLead: "7 сыныптағыдай, зертханалар курс тақырыптары бойынша топтастырылған: әр тақырыптың өз тәжірибелері мен параграфы, мақсаты және кеңесі бар карточкасы бар. Барлығы 35 зертхана — §§ 1–43 мазмұндық блоктарына біреуден.",
             galG8: "8 сынып зертханаларының галереясы", galG9: "9 сынып зертханаларының галереясы",
             mgKicker: "8–9 СЫНЫПТАР · ЗЕРТХАНАЛЫҚ ДЕҢГЕЙЛЕРДІҢ МИНИ-ОЙЫНДАРЫ",
+            certKicker: "СЕРТИФИКАТТАР · 4 БЕЗЕНДІРУ",
+            certTitle: "Пилот сертификаты: таңдауға, мөрмен",
+            certLead: "Кез келген сынып үшін және бүкіл трилогия үшін сертификат: тегі мен аты бөлек енгізіледі, төменде — пилот коды, күні және сынып нөмірі бар дөңгелек мөр. Төрт безендіру: «Ғарыш» — қараңғы генерацияланған фон, «Ашық», «Пергамент» және «Аспан» — кодпен ақ фонда салынады және қараңғы толтырусыз қарапайым қағазға басылады. Таңдалған безендіру есте сақталады.",
+            certUiLead: "Таңдау терезесі осылай көрінеді: сынып қойындылары, безендіру плиткалары, «Тегі» мен «Аты» бөлек өрістері, PNG жүктеу және PDF басып шығару.",
             mgTitle: "Барлық 15 деңгейлік мини-ойын: 7 сыныптағыдай, бірақ өз тақырыбы бойынша",
             mgLead: "8 және 9 сыныптың әр зертханалық деңгейінде өз мини-ойыны ашылады: слайдері бар аспаптар немесе электр тізбегін жинау. Қондырғыны мақсатты режимге шығарып, жасыл нәтижені көріп, есепті растау керек — соған деңгей бонус береді. Төменде — барлық 15 мини-ойынның нақты кадрлары: 8 сыныпта 11 (45–55 деңгейлер), 9 сыныпта 4 (45–48 деңгейлер), әрқайсысы формуласы мен мақсатты мәнімен.",
             footNote: "Барлық суреттер ойынның нақты canvas-сахналарын берілген параметрлермен автоматты түрде салу арқылы алынған.",
@@ -336,6 +361,10 @@
             galLead: "As in Grade 7, the labs are grouped by course topic: each topic has its own trials and its own card with a paragraph, goal and hint. 35 labs in total — one for every content block of §§ 1–43.",
             galG8: "Grade 8 lab gallery by topic", galG9: "Grade 9 lab gallery by topic",
             mgKicker: "GRADES 8–9 · MINI-GAMES OF LAB LEVELS",
+            certKicker: "CERTIFICATES · 4 DESIGNS",
+            certTitle: "Pilot certificate: pick your design, sealed",
+            certLead: "A certificate for any grade and for the whole trilogy: first name and surname are entered separately, with the pilot code, date and a round seal carrying the grade. Four designs: “Space” uses the dark generated background, while “Light”, “Parchment” and “Sky” are drawn in code on white and print on plain paper without a dark fill. Your choice is remembered.",
+            certUiLead: "This is the picker: grade tabs, design tiles, separate “Surname” and “First name” fields, PNG download and PDF printing.",
             mgTitle: "All 15 level mini-games: like Grade 7, but on their own topics",
             mgLead: "Every lab level in Grades 8 and 9 opens its own mini-game: slider-driven apparatus or an electrical circuit to assemble. Bring the setup into the target regime, see the green result and confirm the calculation — the level rewards it with a bonus. Below are real frames of all 15 mini-games: 11 in Grade 8 (levels 45–55) and 4 in Grade 9 (levels 45–48), each with its formula and target value.",
             footNote: "All images are produced by automatically rendering the game's real canvas scenes with the given parameters.",
@@ -1067,6 +1096,33 @@
     }
 ];
 
+    const CERT_CARDS = [
+        ["🌌", "space", "cert-space.jpg", {
+            ru: "Космос", kk: "Ғарыш", en: "Space",
+            d: { ru: "тёмный фон с реактором Эквилибриума, золотая рамка и печать на подложке",
+                 kk: "Эквилибриум реакторы бар қараңғы фон, алтын жиек және мөр",
+                 en: "dark reactor background, gold frame and seal on a dark plate" }
+        }],
+        ["☀️", "light", "cert-light.jpg", {
+            ru: "Светлый", kk: "Ашық", en: "Light",
+            d: { ru: "белый лист с тонкой сеткой, тёмно-синий текст, экономит краску при печати",
+                 kk: "ақ парақ, жіңішке тор, күңгірт көк мәтін — басып шығарғанда сия аз кетеді",
+                 en: "white sheet with a fine grid, navy text — saves ink when printed" }
+        }],
+        ["📜", "paper", "cert-paper.jpg", {
+            ru: "Пергамент", kk: "Пергамент", en: "Parchment",
+            d: { ru: "тёплый кремовый фон с фактурой бумаги и виньеткой",
+                 kk: "жылы кремді фон, қағаз фактурасы және виньетка",
+                 en: "warm cream paper texture with a soft vignette" }
+        }],
+        ["🛰️", "sky", "cert-sky.jpg", {
+            ru: "Небо", kk: "Аспан", en: "Sky",
+            d: { ru: "голубые орбитальные дуги и солнце — отсылка к «Орбите-9»",
+                 kk: "көгілдір орбиталық доғалар мен күн — «Орбита-9»-ға сілтеме",
+                 en: "blue orbital arcs and a sun — a nod to Orbita-9" }
+        }]
+    ];
+
     const FIELD7 = [
         ["📏", "§3", "sim7-units.png", { ru: "Перевод единиц", kk: "Бірліктерді түрлендіру", en: "Unit conversion" }],
         ["📐", "§5", "sim7-lab-measure.png", { ru: "Метрологический пост", kk: "Метрологиялық бекет", en: "Metrology post" }],
@@ -1107,6 +1163,14 @@
                 <button type="button" class="f7-item" data-img="./assets/screenshots/${g.file}">
                     <img src="./assets/screenshots/${g.file}" alt="${g.t[lang] || g.t.ru}" loading="lazy">
                     <span class="f7-cap"><span class="ico">${g.icon}</span><span>${g.t[lang] || g.t.ru}<small>${gradeWord(g.grade)} · ${lvlWord[lang] || lvlWord.ru} ${g.level} · ${g.goal[lang] || g.goal.ru}</small></span></span>
+                </button>`).join("");
+        }
+        const cg = document.getElementById("cert-grid");
+        if (cg) {
+            cg.innerHTML = CERT_CARDS.map(([icon, id, file, info]) => `
+                <button type="button" class="f7-item" data-img="./assets/screenshots/${file}">
+                    <img src="./assets/screenshots/${file}" alt="${info[lang] || info.ru}" loading="lazy">
+                    <span class="f7-cap"><span class="ico">${icon}</span><span>${info[lang] || info.ru}<small>${(info.d && (info.d[lang] || info.d.ru)) || ""}</small></span></span>
                 </button>`).join("");
         }
         const f7 = document.getElementById("f7-grid");
