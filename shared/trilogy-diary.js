@@ -21,7 +21,8 @@
             diaryBtn: "Комикс трилогии",
             nextHint: "Намёк на следующее приключение:",
             storyBtn: "📖 Комикс трилогии",
-            storyHint: "Сюжет всех трёх игр в одном комиксе"
+            storyHint: "Сюжет всех трёх игр в одном комиксе",
+            actLabel: "Акт сюжета"
         },
         kk: {
             modalTitle: "📖 «Физика-Квест» трилогиясының комикс-күнделігі",
@@ -38,6 +39,7 @@
             nextHint: "Келесі оқиғаға нұсқау:",
             storyBtn: "📖 Трилогия комиксі",
             storyHint: "Үш ойынның сюжеті бір комиксте",
+            actLabel: "Сюжет актісі",
             lockedTitle: "Тарау әзірге жабық",
             lockedText: "Комикс #{0}-миссияға жеткенде ашылады. Әзірге өткен тараулар қолжетімді.",
             lockedHint: "#{0}-миссиядан ашылады"
@@ -57,6 +59,7 @@
             nextHint: "A hint at the next adventure:",
             storyBtn: "📖 Trilogy comic",
             storyHint: "The story of all three games in one comic",
+            actLabel: "Story act",
             lockedTitle: "This chapter is still locked",
             lockedText: "The comic unlocks when you reach mission #{0}. Chapters you have already passed are available.",
             lockedHint: "Unlocks from mission #{0}"
@@ -67,6 +70,7 @@
         7: [
             {
                 ep: 1, from: 1, to: 6, img: "./assets/comics/g7-ep1.jpg",
+                act: {"ru": "Акт I. Датчики купола Астерии", "kk": "I акт. Астерия күмбезінің датчиктері", "en": "Act I. Sensors of Dome Asteria"},
                 formula: "Δx = |x − x₀| · СИ: м, кг, с",
                 title: {
                     ru: "Глава 1. Звездопад над Астерией",
@@ -115,6 +119,7 @@
             },
             {
                 ep: 2, from: 7, to: 14, img: "./assets/comics/g7-ep2.jpg",
+                act: {"ru": "Акт II. Траектории и сплавы", "kk": "II акт. Траекториялар мен қорытпалар", "en": "Act II. Trajectories & Alloys"},
                 formula: "v = s / t · ρ = m / V",
                 title: {
                     ru: "Глава 2. Код вещества и траекторий",
@@ -163,6 +168,7 @@
             },
             {
                 ep: 3, from: 15, to: 21, img: "./assets/comics/g7-ep3.jpg",
+                act: {"ru": "Акт III. Силы горного хребта", "kk": "III акт. Тау жотасының күштері", "en": "Act III. Forces of the Mountain Ridge"},
                 formula: "F_тяж = mg · F_упр = kx · F_тр = μN",
                 title: {
                     ru: "Глава 3. Рейд сквозь бурю хребта",
@@ -211,6 +217,7 @@
             },
             {
                 ep: 4, from: 22, to: 30, img: "./assets/comics/g7-ep4.jpg",
+                act: {"ru": "Акт IV. Глубинный шлюз Паскаля", "kk": "IV акт. Паскальдың терең шлюзі", "en": "Act IV. Pascal's Deepwater Lock"},
                 formula: "p = ρgh · F₁/S₁ = F₂/S₂ · F_А = ρ_ж g V",
                 title: {
                     ru: "Глава 4. Глубинный шлюз Паскаля",
@@ -259,6 +266,7 @@
             },
             {
                 ep: 5, from: 31, to: 37, img: "./assets/comics/g7-ep5.jpg",
+                act: {"ru": "Акт V. Рычаг Титанов и КПД", "kk": "V акт. Титандар иінтірегі және ПӘК", "en": "Act V. Lever of Titans & Efficiency"},
                 formula: "A = Fs · N = A/t · F₁l₁ = F₂l₂ · η = A_п/A_з",
                 title: {
                     ru: "Глава 5. Рычаг Титанов и ядро энергии",
@@ -307,6 +315,7 @@
             },
             {
                 ep: 6, from: 38, to: 50, img: "./assets/comics/g7-ep6.jpg",
+                act: {"ru": "Акт VI. Солнечный рубеж и сигнал Эквилибриуму", "kk": "VI акт. Күн шебі және Эквилибриумға сигнал", "en": "Act VI. Solar Frontier & Signal to Equilibrium"},
                 formula: "E_мех = E_к + E_п = const",
                 title: {
                     ru: "Глава 6. Щит Астерии и луч на Север",
@@ -358,6 +367,7 @@
         8: [
             {
                 ep: 1, from: 1, to: 10, img: "./assets/comics/g8-ep1.jpg",
+                act: {"ru": "Акт I. Искра в термоядре", "en": "Act I. The Spark in the Thermal Core", "kk": "I акт. Жылу өзегіндегі ұшқын"},
                 formula: "Q = cm(t₂ − t₁) · ΣQ = 0",
                 title: {
                     ru: "Глава 1. Замёрзшее сердце Эквилибриума",
@@ -406,6 +416,7 @@
             },
             {
                 ep: 2, from: 11, to: 18, img: "./assets/comics/g8-ep2.jpg",
+                act: {"ru": "Акт II. Город под давлением", "en": "Act II. The City Under Pressure", "kk": "II акт. Қысымдағы қала"},
                 formula: "Q_пл = λm · Q_пар = Lm · η = (Q₁ − Q₂)/Q₁",
                 title: {
                     ru: "Глава 2. Паровой пульс турбин",
@@ -454,6 +465,7 @@
             },
             {
                 ep: 3, from: 19, to: 31, img: "./assets/comics/g8-ep3.jpg",
+                act: {"ru": "Акт III. Электрическая сеть", "en": "Act III. The Electrical Grid", "kk": "III акт. Электр желісі"},
                 formula: "I = U / R · P = UI · Q = I²Rt",
                 title: {
                     ru: "Глава 3. Пробуждение энергосети",
@@ -502,6 +514,7 @@
             },
             {
                 ep: 4, from: 32, to: 37, img: "./assets/comics/g8-ep4.jpg",
+                act: {"ru": "Акт IV. Магнитный мост", "en": "Act IV. The Magnetic Bridge", "kk": "IV акт. Магниттік көпір"},
                 formula: "F_А = BIL sinα · Φ = BS cosα",
                 title: {
                     ru: "Глава 4. Магнитный мост над каньоном",
@@ -550,6 +563,7 @@
             },
             {
                 ep: 5, from: 38, to: 44, img: "./assets/comics/g8-ep5.jpg",
+                act: {"ru": "Акт V. Маяк света", "en": "Act V. The Beacon of Light", "kk": "V акт. Жарық маяғы"},
                 formula: "n₁ sinα = n₂ sinβ · 1/F = 1/d + 1/f",
                 title: {
                     ru: "Глава 5. Хрустальная обсерватория света",
@@ -598,6 +612,7 @@
             },
             {
                 ep: 6, from: 45, to: 55, img: "./assets/comics/g8-ep6.jpg",
+                act: {"ru": "Акт VI. Последний протокол", "en": "Act VI. The Final Protocol", "kk": "VI акт. Соңғы хаттама"},
                 formula: "Q = cmΔt · I = U/R · 1/F = 1/d + 1/f",
                 title: {
                     ru: "Глава 6. Ответ с орбиты",
@@ -649,6 +664,7 @@
         9: [
                         {
                 ep: 1, from: 1, to: 1, img: "./assets/comics/g9-ch01.jpg",
+                act: {"ru": "ДОПУСК К ПОЛЁТАМ", "en": "FLIGHT CLEARANCE", "kk": "ҰШУҒА РҰҚСАТ"},
                 formula: "v = s / t · правила ТБ = допуск к полёту",
                 title: {
                     ru: "Глава 1. Допуск к полётам",
@@ -697,6 +713,7 @@
             },
             {
                 ep: 2, from: 2, to: 8, img: "./assets/comics/g9-ch02.jpg",
+                act: {"ru": "ЛЁТНАЯ ШКОЛА: КИНЕМАТИКА", "en": "FLIGHT SCHOOL: KINEMATICS", "kk": "ҰШУ МЕКТЕБІ: КИНЕМАТИКА"},
                 formula: "x = x₀ + v₀ₓt + aₓt²/2 · vₓ = v₀ₓ + aₓt",
                 title: {
                     ru: "Глава 2. Пробуждение «Орбиты-9»",
@@ -745,6 +762,7 @@
             },
                         {
                 ep: 3, from: 9, to: 13, img: "./assets/comics/g9-ch03.jpg",
+                act: {"ru": "ЗВЁЗДНАЯ КАРТА: АСТРОНОМИЯ", "en": "STAR MAP: ASTRONOMY", "kk": "ЖҰЛДЫЗ КАРТАСЫ: АСТРОНОМИЯ"},
                 formula: "M = F · d · sin α · звёздная карта = навигация",
                 title: {
                     ru: "Глава 3. Звёздная карта: астрономия",
@@ -793,6 +811,7 @@
             },
             {
                 ep: 4, from: 14, to: 20, img: "./assets/comics/g9-ch04.jpg",
+                act: {"ru": "ГРАВИТАЦИЯ: ДИНАМИКА", "en": "GRAVITATION: DYNAMICS", "kk": "ГРАВИТАЦИЯ: ДИНАМИКА"},
                 formula: "F = Gm₁m₂/R² · v₁ = √(GM/R) ≈ 7,9 км/с",
                 title: {
                     ru: "Глава 4. Крылья «Беркута» и гравитация",
@@ -841,6 +860,7 @@
             },
             {
                 ep: 5, from: 21, to: 24, img: "./assets/comics/g9-ch05.jpg",
+                act: {"ru": "ЭНЕРГЕТИЧЕСКОЕ ЯДРО: ЗАКОНЫ СОХРАНЕНИЯ", "en": "ENERGY CORE: LAWS OF CONSERVATION", "kk": "ЭНЕРГИЯЛЫҚ ЯДРО: САҚТАУ ЗАҢДАРЫ"},
                 formula: "m₁v⃗₁ + m₂v⃗₂ = const · E_к = mv²/2",
                 title: {
                     ru: "Глава 5. Импульсный щит против болида",
@@ -889,6 +909,7 @@
             },
             {
                 ep: 6, from: 25, to: 32, img: "./assets/comics/g9-ch06.jpg",
+                act: {"ru": "СИГНАЛ: КОЛЕБАНИЯ И ВОЛНЫ", "en": "SIGNAL: OSCILLATIONS AND WAVES", "kk": "СИГНАЛ: ТЕРБЕЛІСТЕР МЕН ТОЛҚЫНДАР"},
                 formula: "T = 2π√(l/g) · λ = v / ν · c = 3·10⁸ м/с",
                 title: {
                     ru: "Глава 6. Резонансная волна",
@@ -937,6 +958,7 @@
             },
                         {
                 ep: 7, from: 33, to: 37, img: "./assets/comics/g9-ch07.jpg",
+                act: {"ru": "АТОМНЫЙ РУБЕЖ: СТРОЕНИЕ АТОМА", "en": "ATOMIC FRONTIER: THE STRUCTURE OF THE ATOM", "kk": "АТОМДЫҚ ШЕП: АТОМ ҚҰРЫЛЫСЫ"},
                 formula: "hν = A + E_к · E = mc² · закон радиоактивного распада",
                 title: {
                     ru: "Глава 7. Атомный рубеж",
@@ -985,6 +1007,7 @@
             },
             {
                 ep: 8, from: 38, to: 42, img: "./assets/comics/g9-ch08.jpg",
+                act: {"ru": "СЕРДЦЕ ЯДРА: АТОМНОЕ ЯДРО", "en": "HEART OF THE CORE: THE ATOMIC NUCLEUS", "kk": "ЯДРОНЫҢ ЖҮРЕГІ: АТОМ ЯДРОСЫ"},
                 formula: "hν = A_вых + E_к · E = Δmc² · N = N₀·2^(−t/T)",
                 title: {
                     ru: "Глава 8. Квантовое сердце станции",
@@ -1033,6 +1056,7 @@
             },
             {
                 ep: 9, from: 43, to: 44, img: "./assets/comics/g9-ch09.jpg",
+                act: {"ru": "ЭПИЛОГ: КАРТИНА МИРА", "en": "EPILOGUE: THE PICTURE OF THE WORLD", "kk": "ЭПИЛОГ: ӘЛЕМ БЕЙНЕСІ"},
                 formula: "Астерия (7) → Эквилибриум (8) → Орбита-9 (9)",
                 title: {
                     ru: "Глава 9. Единый щит Земли",
@@ -1081,6 +1105,7 @@
             },
             {
                 ep: 10, from: 45, to: 48, img: "./assets/comics/g9-ch10.jpg",
+                act: {"ru": "КОСМОЛАБОРАТОРИЯ", "en": "SPACE LABORATORY", "kk": "КОСМОЛАБОРАТОРИЯ"},
                 formula: "T = 2π√(l/g) · λ = v/ν · ε = NΔΦ/Δt · F = kq₁q₂/r²",
                 title: {
                     ru: "Глава 10. Космолаборатория",
@@ -1171,6 +1196,15 @@
         let s = (TRILOGY_UI[L] && TRILOGY_UI[L][key]) || TRILOGY_UI.ru[key] || key;
         args.forEach((a, i) => { s = s.replace("{" + i + "}", a); });
         return s;
+    }
+
+    // Названия актов 9 класса набраны капсом — в дневнике показываем их как обычный заголовок.
+    function softTitle(str) {
+        const t = String(str || "");
+        if (t.length < 8) return t;
+        if (/[a-zа-яё]/.test(t.replace(/ё/g, "е"))) return t;
+        const lower = t.toLowerCase();
+        return lower.charAt(0).toUpperCase() + lower.slice(1);
     }
 
     function esc(s) {
@@ -1419,6 +1453,16 @@
                 50% { transform: translateX(4px); }
                 75% { transform: translateX(-3px); }
             }
+            .pq-td-act {
+                margin: 0 18px 4px;
+                padding: 8px 12px;
+                border-radius: 10px;
+                font-size: 12.5px;
+                font-weight: 700;
+                color: #a5d8ff;
+                background: rgba(56, 189, 248, 0.1);
+                border: 1px solid rgba(56, 189, 248, 0.24);
+            }
             .pq-td-locked {
                 display: flex; gap: 14px; align-items: center;
                 margin: 14px 18px; padding: 26px 20px;
@@ -1625,6 +1669,7 @@
                             </div>
                             <span class="pq-td-range">${esc(ui("levelsRange", item.from, item.to))}</span>
                         </div>
+                        ${item.act ? `<div class="pq-td-act">🎬 ${esc(ui("actLabel"))}: ${esc(softTitle(loc(item.act)))}</div>` : ""}
                     </div>
 
                     <div class="pq-td-bubbles">
