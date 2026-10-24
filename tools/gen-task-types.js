@@ -356,6 +356,9 @@ const FB_HINT_UNIT = {
 /* Готовые варианты пропусков по разделам: строятся один раз на класс,
    каждый текст достаётся ровно одному уровню. */
 const FB_POOLS = { 7: null, 8: null, 9: null };
+/* Какие величины уже попали в пропуски класса: пока есть неспрошенные,
+   один и тот же путь / скорость / масса в пропусках не повторяются. */
+const FB_USED_NAMES = { 7: null, 8: null, 9: null };
 /* Какие величины уже спрошены коротким ответом — чтобы один и тот же
    вопрос «в чём измеряется …» не повторялся на разных уровнях. */
 const SA_USES = { 7: {}, 8: {}, 9: {} };
@@ -479,11 +482,29 @@ function buildFillPools(grade, units) {
 /* Берём вариант из раздела уровня; если там пусто — из самого полного раздела. */
 function takeFillVariant(grade, units, section) {
     if (!FB_POOLS[grade]) FB_POOLS[grade] = buildFillPools(grade, units);
+    if (!FB_USED_NAMES[grade]) FB_USED_NAMES[grade] = new Set();
+    const used = FB_USED_NAMES[grade];
     const pools = FB_POOLS[grade];
-    if (pools[section] && pools[section].length) return pools[section].pop();
-    const keys = Object.keys(pools).filter(k => pools[k].length)
+    const freshIdx = (bucket) => (bucket || []).findIndex(v => !used.has(v._name));
+    const grab = (bucket, idx) => {
+        const v = idx >= 0 ? bucket.splice(idx, 1)[0] : bucket.pop();
+        used.add(v._name);
+        return v;
+    };
+    // 1) свежая величина из раздела уровня
+    const own = pools[section] || [];
+    let i = freshIdx(own);
+    if (i >= 0) return grab(own, i);
+    // 2) свежая величина из любого другого раздела (сначала из самого полного)
+    const keys = Object.keys(pools).filter(k => k !== section && pools[k].length)
         .sort((a, b) => pools[b].length - pools[a].length);
-    return keys.length ? pools[keys[0]].pop() : null;
+    for (const k of keys) {
+        i = freshIdx(pools[k]);
+        if (i >= 0) return grab(pools[k], i);
+    }
+    // 3) все величины класса уже спрошены — берём из своего раздела, иначе из самого полного
+    if (own.length) return grab(own, -1);
+    return keys.length ? grab(pools[keys[0]], -1) : null;
 }
 
 /* ---------- 4. Генерация ---------- */
