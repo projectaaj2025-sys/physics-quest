@@ -191,6 +191,8 @@ const TeacherHQ = {
         if (create && create.parentElement) create.parentElement.insertBefore(panel, create);
         else document.querySelector(".teacher-inner").appendChild(panel);
 
+        this.injectGuideTab();
+
         // Модальное окно карточки ученика
         if (!document.getElementById("hq-student-modal")) {
             const modal = document.createElement("div");
@@ -228,6 +230,178 @@ const TeacherHQ = {
             </div>
             <p class="hq-sync-note" data-hq-key="hqSyncNote">${escapeHtml(rpgT("hqSyncNote"))}</p>
             <div id="hq-body"></div>`;
+    },
+
+    /* ---------- РЕКОМЕНДАЦИИ ПО ПРИМЕНЕНИЮ ---------- */
+
+    guideData() {
+        const lang = (typeof I18n !== "undefined" && I18n.currentLang) || "ru";
+        return HQ_GUIDE[lang] || HQ_GUIDE.ru;
+    },
+
+    injectGuideTab() {
+        const tabs = document.querySelector(".teacher-tabs");
+        if (!tabs || document.getElementById("hq-tab-guide")) return;
+        const btn = document.createElement("button");
+        btn.type = "button";
+        btn.className = "tab-btn";
+        btn.id = "hq-tab-guide";
+        btn.dataset.tab = "guide";
+        btn.dataset.hqKey = "hqTabGuide";
+        btn.textContent = rpgT("hqTabGuide");
+        btn.addEventListener("click", () => {
+            try { Teacher.switchTab("guide"); } catch (e) { console.warn("HQ guide tab", e); }
+        });
+        tabs.appendChild(btn);
+
+        const panel = document.createElement("div");
+        panel.className = "tab-content";
+        panel.id = "tab-guide";
+        panel.appendChild(this.guideNode());
+        const stats = document.getElementById("tab-stats");
+        if (stats && stats.parentElement) stats.parentElement.insertBefore(panel, stats.nextSibling);
+        else (document.querySelector(".teacher-inner") || tabs.parentElement).appendChild(panel);
+        this.injectGuideStyles();
+    },
+
+    guideNode() {
+        const data = this.guideData();
+        const wrap = document.createElement("div");
+        wrap.className = "hq-guide";
+        wrap.innerHTML = this.guideHtml(data);
+        return wrap;
+    },
+
+    guideHtml(data) {
+        const chips = (items) => (items || []).map((item) => `<span class="hq-guide-chip">${escapeHtml(item)}</span>`).join("");
+        const actionBtn = (kind) => {
+            const map = {
+                class: { label: data.goClass, tab: "class" },
+                assign: { label: data.goAssign, tab: "assignments" },
+                stats: { label: data.goStats, tab: "stats" }
+            };
+            const item = map[kind];
+            if (!item) return "";
+            return `<button type="button" class="btn btn-secondary hq-guide-go" data-hq-action="guide-tab" data-tab="${item.tab}">${escapeHtml(item.label)}</button>`;
+        };
+        const cards = data.scenarios.map((sc, index) => `
+            <article class="hq-guide-card" data-guide="${escapeHtml(sc.id)}">
+                <div class="hq-guide-card-head">
+                    <span class="hq-guide-icon" aria-hidden="true">${sc.icon}</span>
+                    <div class="hq-guide-head-text">
+                        <h3>${escapeHtml(sc.title)}</h3>
+                        <p>${escapeHtml(sc.goal)}</p>
+                    </div>
+                    <span class="hq-guide-time">${escapeHtml(data.timeLabel)}: ${escapeHtml(sc.time)}</span>
+                </div>
+                <div class="hq-guide-block">
+                    <h4>${index + 1}. ${escapeHtml(data.stepsLabel)}</h4>
+                    <ol class="hq-guide-steps">${sc.steps.map((step) => `<li>${escapeHtml(step)}</li>`).join("")}</ol>
+                </div>
+                <div class="hq-guide-foot">
+                    <div class="hq-guide-tools">
+                        <span class="hq-guide-tools-label">${escapeHtml(data.toolsLabel)}:</span>
+                        ${chips(sc.tools)}
+                    </div>
+                    <div class="hq-guide-actions">${(sc.actions || []).map(actionBtn).join("")}</div>
+                </div>
+                <p class="hq-guide-tip"><b>${escapeHtml(data.noteLabel)}:</b> ${escapeHtml(sc.tip)}</p>
+            </article>`).join("");
+        return `
+            <section class="hq-section hq-guide-hero">
+                <div class="hq-section-head">
+                    <h3>${escapeHtml(data.title)}</h3>
+                    <p>${escapeHtml(data.hint)}</p>
+                </div>
+                <p class="hq-guide-intro">${escapeHtml(data.intro)}</p>
+            </section>
+            <div class="hq-guide-grid">${cards}</div>`;
+    },
+
+    renderGuide() {
+        const panel = document.getElementById("tab-guide");
+        if (!panel) return;
+        panel.innerHTML = this.guideHtml(this.guideData());
+    },
+
+    injectGuideStyles() {
+        if (document.getElementById("hq-guide-style")) return;
+        const style = document.createElement("style");
+        style.id = "hq-guide-style";
+        style.textContent = `
+            .hq-guide-hero { border-left: 4px solid var(--primary); }
+            .hq-guide-intro { margin: 0; font-size: 14px; line-height: 1.55; color: var(--text); }
+            .hq-guide-grid {
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+                gap: 14px;
+            }
+            .hq-guide-card {
+                display: flex;
+                flex-direction: column;
+                gap: 12px;
+                background: #fff;
+                border: 1px solid var(--border);
+                border-radius: 14px;
+                padding: 16px 18px;
+                box-shadow: var(--shadow);
+            }
+            .hq-guide-card-head { display: flex; align-items: flex-start; gap: 12px; }
+            .hq-guide-icon {
+                flex: 0 0 auto;
+                width: 40px; height: 40px;
+                display: grid; place-items: center;
+                font-size: 20px;
+                border-radius: 12px;
+                background: rgba(0, 184, 212, .1);
+                border: 1px solid rgba(0, 184, 212, .22);
+            }
+            .hq-guide-head-text { flex: 1; min-width: 0; }
+            .hq-guide-head-text h3 { margin: 0 0 4px; font-size: 16px; color: var(--text-bright); line-height: 1.3; }
+            .hq-guide-head-text p { margin: 0; font-size: 13px; color: var(--text-dim); line-height: 1.45; }
+            .hq-guide-time {
+                flex: 0 0 auto;
+                font-size: 12px;
+                font-weight: 700;
+                color: var(--primary-dark);
+                background: rgba(0, 184, 212, .1);
+                border-radius: 999px;
+                padding: 4px 10px;
+                white-space: nowrap;
+            }
+            .hq-guide-block h4 { margin: 0 0 6px; font-size: 13px; text-transform: uppercase; letter-spacing: .04em; color: var(--text-dim); }
+            .hq-guide-steps { margin: 0; padding-left: 20px; display: flex; flex-direction: column; gap: 6px; }
+            .hq-guide-steps li { font-size: 13.5px; line-height: 1.45; color: var(--text); }
+            .hq-guide-foot { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; justify-content: space-between; }
+            .hq-guide-tools { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
+            .hq-guide-tools-label { font-size: 12px; color: var(--text-dim); }
+            .hq-guide-chip {
+                font-size: 12px;
+                font-weight: 600;
+                color: var(--primary-dark);
+                background: rgba(0, 184, 212, .1);
+                border: 1px solid rgba(0, 184, 212, .2);
+                border-radius: 999px;
+                padding: 3px 10px;
+            }
+            .hq-guide-actions { display: flex; gap: 6px; flex-wrap: wrap; }
+            .hq-guide-go { font-size: 12.5px; padding: 7px 12px; }
+            .hq-guide-tip {
+                margin: 0;
+                font-size: 12.5px;
+                line-height: 1.45;
+                color: var(--text-dim);
+                border-top: 1px dashed var(--border-light);
+                padding-top: 10px;
+            }
+            .hq-guide-tip b { color: var(--text); }
+            html[data-theme="dark"] .hq-guide-card { background: var(--bg-card); }
+            @media (max-width: 640px) {
+                .hq-guide-grid { grid-template-columns: 1fr; }
+                .hq-guide-time { align-self: flex-start; }
+                .hq-guide-card-head { flex-wrap: wrap; }
+            }`;
+        document.head.appendChild(style);
     },
 
     /** Мобильные правки для базовых элементов кабинета (E9). */
@@ -271,6 +445,7 @@ const TeacherHQ = {
             const result = origSwitch.apply(this, arguments);
             try {
                 if (tabName === "class") TeacherHQ.render();
+                if (tabName === "guide") TeacherHQ.renderGuide();
                 if (tabName === "assignments" || tabName === "stats") TeacherHQ.render(true);
             } catch (e) { console.warn("HQ switchTab", e); }
             return result;
@@ -297,6 +472,7 @@ const TeacherHQ = {
                     if (document.getElementById("teacher-screen")?.classList.contains("active")) {
                         const active = document.querySelector(".tab-content.active");
                         if (active && active.id === "tab-class") TeacherHQ.render();
+                        if (active && active.id === "tab-guide") TeacherHQ.renderGuide();
                     }
                 } catch (e) {}
                 return result;
@@ -1307,6 +1483,10 @@ const TeacherHQ = {
     handleAction(action, target, event) {
         const key = target.getAttribute("data-key") || "";
         switch (action) {
+            case "guide-tab": {
+                Teacher.switchTab(target.getAttribute("data-tab") || "class");
+                break;
+            }
             case "class":
                 this.setView({ classId: target.getAttribute("data-class") || "all" });
                 break;

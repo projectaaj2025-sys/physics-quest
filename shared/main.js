@@ -736,9 +736,64 @@ function levelTitleText(levelId) {
 }
 
 function levelDescriptionText(level) {
-    const key = `level${level.id}Desc`;
-    const localized = I18n.t(key);
-    return localized !== key ? localized : (level.desc || "");
+    if (!level) return "";
+    const langKey = I18n.currentLang || "ru";
+    const keys = [];
+    if (level.description && typeof level.description === "object" && level.description.key) {
+        keys.push(level.description.key);
+    }
+    keys.push(`level${level.id}Desc`);
+    for (const key of keys) {
+        const localized = I18n.t(key);
+        if (localized !== key && localized) return decorateLevelDesc(localized, level);
+    }
+    if (level.kind === "safety") {
+        const safety = I18n.t("levelSafetyDesc");
+        if (safety !== "levelSafetyDesc" && safety) return decorateLevelDesc(safety, level);
+    }
+    if (typeof LEVEL_DESC_TR !== "undefined" && LEVEL_DESC_TR && LEVEL_DESC_TR[level.id]) {
+        const tr = LEVEL_DESC_TR[level.id][langKey] || LEVEL_DESC_TR[level.id].ru;
+        if (tr) return decorateLevelDesc(tr, level);
+    }
+    const descMaps = {
+        ru: typeof LEVEL_DESCRIPTIONS_RU !== "undefined" ? LEVEL_DESCRIPTIONS_RU : null,
+        en: typeof LEVEL_DESCRIPTIONS_EN !== "undefined" ? LEVEL_DESCRIPTIONS_EN : null,
+        kk: typeof LEVEL_DESCRIPTIONS_KK !== "undefined" ? LEVEL_DESCRIPTIONS_KK : null
+    };
+    const map = descMaps[langKey];
+    if (map && map[level.id]) return decorateLevelDesc(map[level.id], level);
+    const labText = labGoalLine(level, langKey);
+    if (labText) return labText;
+    const plain = typeof level.desc === "string" ? level.desc : (typeof level.description === "string" ? level.description : "");
+    return decorateLevelDesc(plain, level);
+}
+
+// Единый вид описания на карточке уровня: ⚠ безопасность, 🔬 лаборатория, 📖 теория
+function decorateLevelDesc(text, level) {
+    const clean = String(text == null ? "" : text).trim();
+    if (!clean) return "";
+    if (/^[\u26A0\uD83D\uDCD6\uD83D\uDD2C\uD83D\uDCDD\uD83D\uDEE1]/.test(clean)) return clean;
+    const kind = String((level && level.kind) || "");
+    const icon = kind === "safety" ? "\u26A0 " : kind.indexOf("lab") === 0 ? "\uD83D\uDD2C " : "\uD83D\uDCD6 ";
+    return icon + clean;
+}
+
+// Лабораторные уровни: короткое описание берём из цели работы
+function labGoalLine(level, langKey) {
+    const kind = String(level.kind || "");
+    if (kind.indexOf("lab") !== 0) return "";
+    if (typeof LAB_INFO !== "undefined" && LAB_INFO && LAB_INFO[kind]) {
+        const goal = LAB_INFO[kind].goal;
+        const text = typeof goal === "string" ? goal : (goal && (goal[langKey] || goal.ru));
+        if (text) return "🔬 " + text;
+    }
+    if (typeof LAB_WORKS !== "undefined" && LAB_WORKS && LAB_WORKS[kind]) {
+        const entry = LAB_WORKS[kind];
+        const md = entry[langKey] || entry.ru || "";
+        const match = String(md).match(/## [^\n]*\n• ([^\n]+)/);
+        if (match) return "🔬 " + match[1].trim();
+    }
+    return "";
 }
 
 function renderTheoryText(text) {

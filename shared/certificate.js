@@ -33,14 +33,15 @@
             passport: "ПАСПОРТ ПИЛОТА ТРИЛОГИИ",
             awarded: "награждается за прохождение образовательной RPG-трилогии",
             trilogy: "Физика-Квест · Астерия → Эквилибриум → Орбита-9",
+            kicker: "ФИЗИКА-КВЕСТ · ОБРАЗОВАТЕЛЬНАЯ RPG · 7–9",
             progress: "Прогресс",
             saved: "Сертификат сохранён",
             none: "Пока нет данных — пройди хотя бы один уровень.",
             titles: {
-                7: "СЕРТИФИКАТ ПИЛОТА · АСТЕРИЯ",
-                8: "СЕРТИФИКАТ ПИЛОТА · ЭКВИЛИБРИУМ",
-                9: "СЕРТИФИКАТ ПИЛОТА · ОРБИТА-9",
-                all: "ПАСПОРТ ПИЛОТА ТРИЛОГИИ"
+                7: "АСТЕРИЯ · 7 КЛАСС",
+                8: "ЭКВИЛИБРИУМ · 8 КЛАСС",
+                9: "ОРБИТА-9 · 9 КЛАСС",
+                all: "ВСЯ ТРИЛОГИЯ · 7–9 КЛАССЫ"
             }
         },
         en: {
@@ -69,14 +70,15 @@
             passport: "TRILOGY PILOT PASSPORT",
             awarded: "is awarded for completing the educational RPG trilogy",
             trilogy: "Physics Quest · Asteria → Equilibrium → Orbit-9",
+            kicker: "PHYSICS QUEST · EDUCATIONAL RPG · 7–9",
             progress: "Progress",
             saved: "Certificate saved",
             none: "No data yet — complete at least one level.",
             titles: {
-                7: "PILOT CERTIFICATE · ASTERIA",
-                8: "PILOT CERTIFICATE · EQUILIBRIUM",
-                9: "PILOT CERTIFICATE · ORBIT-9",
-                all: "TRILOGY PILOT PASSPORT"
+                7: "ASTERIA · GRADE 7",
+                8: "EQUILIBRIUM · GRADE 8",
+                9: "ORBIT-9 · GRADE 9",
+                all: "WHOLE TRILOGY · GRADES 7–9"
             }
         },
         kk: {
@@ -105,14 +107,15 @@
             passport: "ТРИЛОГИЯ ПИЛОТЫНЫҢ ПАСПОРТЫ",
             awarded: "білім беру RPG-трилогиясын өткені үшін марапатталады",
             trilogy: "Физика-Квест · Астерия → Эквилибриум → Орбита-9",
+            kicker: "ФИЗИКА-КВЕСТ · БІЛІМ БЕРУ RPG · 7–9",
             progress: "Прогресс",
             saved: "Сертификат сақталды",
             none: "Әзірге дерек жоқ — кемінде бір деңгейді өтіңіз.",
             titles: {
-                7: "ПИЛОТ СЕРТИФИКАТЫ · АСТЕРИЯ",
-                8: "ПИЛОТ СЕРТИФИКАТЫ · ЭКВИЛИБРИУМ",
-                9: "ПИЛОТ СЕРТИФИКАТЫ · ОРБИТА-9",
-                all: "ТРИЛОГИЯ ПИЛОТЫНЫҢ ПАСПОРТЫ"
+                7: "АСТЕРИЯ · 7 СЫНЫП",
+                8: "ЭКВИЛИБРИУМ · 8 СЫНЫП",
+                9: "ОРБИТА-9 · 9 СЫНЫП",
+                all: "БҮКІЛ ТРИЛОГИЯ · 7–9 СЫНЫП"
             }
         }
     };
@@ -403,15 +406,19 @@
                 ctx.textAlign = "left";
                 ctx.fillStyle = "rgba(255,255,255,0.68)";
                 ctx.font = "600 20px 'Trebuchet MS', Arial, sans-serif";
-                ctx.fillText("ФИЗИКА-КВЕСТ · ОБРАЗОВАТЕЛЬНАЯ RPG · 7–9", 92, 108);
+                ctx.fillText(t("kicker"), 92, 108);
 
                 ctx.fillStyle = accent;
                 ctx.font = "700 30px Georgia, 'Times New Roman', serif";
-                ctx.fillText(isAll ? t("passport") : titles(grade), 92, 168);
+                ctx.fillText(titles(isAll ? "all" : grade), 92, 168);
 
                 ctx.fillStyle = "#ffffff";
-                ctx.font = "700 78px Georgia, 'Times New Roman', serif";
-                ctx.fillText(t("certificate"), 92, 268);
+                if (isAll) {
+                    this.fitText(ctx, t("passport"), 92, 268, w - 500);
+                } else {
+                    ctx.font = "700 78px Georgia, 'Times New Roman', serif";
+                    ctx.fillText(t("certificate"), 92, 268);
+                }
                 if (!isAll) {
                     ctx.font = "700 78px Georgia, 'Times New Roman', serif";
                     ctx.fillStyle = accent;

@@ -2038,6 +2038,7 @@ const RPG_KK = {
 /* ---------------- КАБИНЕТ УЧИТЕЛЯ 2.0 ---------------- */
 Object.assign(UI.ru, {
     hqTabClass: "Класс",
+    hqTabGuide: "Рекомендации",
     hqDaysShort: "дн.",
     hqPeriodDays: "{0} дней",
     hqPeriodAll: "Всё время",
@@ -2168,6 +2169,7 @@ Object.assign(UI.ru, {
 
 Object.assign(UI.en, {
     hqTabClass: "Class",
+    hqTabGuide: "Guidance",
     hqDaysShort: "d",
     hqPeriodDays: "{0} days",
     hqPeriodAll: "All time",
@@ -2298,6 +2300,7 @@ Object.assign(UI.en, {
 
 Object.assign(UI.kk, {
     hqTabClass: "Сынып",
+    hqTabGuide: "Ұсыныстар",
     hqDaysShort: "күн",
     hqPeriodDays: "{0} күн",
     hqPeriodAll: "Барлық уақыт",
@@ -2425,6 +2428,362 @@ Object.assign(UI.kk, {
     hqNotDone: "Тапсырмады",
     hqHowToOpen: "Қалай ашу: ойын → «Бастау» → «Тағайындау кодын енгізу»."
 });
+
+
+/* ============================================================
+   РЕКОМЕНДАЦИИ ПО ПРИМЕНЕНИЮ — сценарии для кабинета учителя
+   Один блок данных на три языка: RU / KZ / EN.
+   ============================================================ */
+const HQ_GUIDE = {
+    ru: {
+        title: "Рекомендации по применению",
+        intro: "Шесть готовых сценариев: от короткой пятиминутки до проекта и итогового портфолио. Всё работает в 7, 8 и 9 классах, а после загрузки игры интернет не нужен — достаточно компьютера, проектора или телефонов учеников.",
+        hint: "Шаги идут по порядку — можно проводить как есть или сократить под свой класс.",
+        timeLabel: "Время",
+        stepsLabel: "Как провести",
+        toolsLabel: "Что использовать",
+        noteLabel: "Совет",
+        goClass: "Открыть «Класс»",
+        goAssign: "Создать назначение",
+        goStats: "Открыть статистику",
+        scenarios: [
+            {
+                id: "lesson",
+                icon: "⏱",
+                time: "45 минут",
+                title: "Урок 45 минут: объяснение → практика → разбор",
+                goal: "Закрепить новую тему, когда в кабинете один компьютер и проектор.",
+                steps: [
+                    "Выбери параллель на вкладке «Класс» и открой «Полный конспект» по параграфу.",
+                    "Разбери с классом одну формулу в окне задания: «Дано → СИ → Формула → Решение».",
+                    "Дай 12–15 минут на 1–2 миссии по теме — фронтально с проектором или на телефонах.",
+                    "Сверь результат: «Класс» → точность и проблемные темы за период.",
+                    "Закрой урок вопросом из «Карточки формул» и коротким выводом."
+                ],
+                tools: ["Полный конспект", "Миссии", "Карточка формул"],
+                tip: "Слабым ученикам включай «Разбор задачи» после второй попытки — он объясняет ход решения по шагам.",
+                actions: ["class"]
+            },
+            {
+                id: "battle",
+                icon: "⚔️",
+                time: "20–25 минут",
+                title: "Командная битва: повторение в формате соревнования",
+                goal: "Повторить 2–3 темы и поднять интерес перед контрольной.",
+                steps: [
+                    "Раздели класс на две команды и назначь капитанов.",
+                    "Открой «Битву команд» на главном экране игры.",
+                    "Команды отвечают по очереди; за верный ответ — очки, за ошибку — переход хода.",
+                    "Покажи таблицу очков и разбери 2–3 самых частых ошибки.",
+                    "Награди команду-победителя и отметь активных в «Классе»."
+                ],
+                tools: ["Битва команд", "Очки", "Разбор ошибок"],
+                tip: "Битва хорошо работает как разминка в начале урока и как повторение в конце четверти.",
+                actions: []
+            },
+            {
+                id: "homework",
+                icon: "🏠",
+                time: "15–20 минут",
+                title: "Домашнее задание с проверкой по коду",
+                goal: "Отработать тему дома и увидеть, кто реально выполнил работу.",
+                steps: [
+                    "Открой «Назначения» → «Создать задание» и выбери тему миссии.",
+                    "Получи код назначения и отправь его в чат класса.",
+                    "Ученик на главной странице игры нажимает «Ввести код назначения» и проходит миссию.",
+                    "Поставь срок — игра сама подсветит просроченные задания.",
+                    "На следующем уроке проверь «Класс» → «Не сдали» и разбери работу."
+                ],
+                tools: ["Назначения", "Код", "Срок"],
+                tip: "Один код можно выдать нескольким классам — отчёт по каждому классу останется отдельным.",
+                actions: ["assign"]
+            },
+            {
+                id: "lab",
+                icon: "🧪",
+                time: "45–60 минут",
+                title: "Лаборатория и проект: исследование своими руками",
+                goal: "Сформировать исследовательские навыки: измерение, вывод, защита работы.",
+                steps: [
+                    "Выбери лабораторную миссию по теме и покажи цель работы.",
+                    "Ученики проходят симулятор: меняют параметры и записывают наблюдения.",
+                    "Соберите таблицу результатов и сравните значения в классе.",
+                    "Каждая пара формулирует вывод и одну причину расхождения.",
+                    "Оформите карточку проекта и добавьте её в портфолио класса."
+                ],
+                tools: ["Лаборатории", "Симуляторы", "Комикс"],
+                tip: "Комикс по главе хорошо идёт как вводная история перед лабораторией — он объясняет, зачем нужен опыт.",
+                actions: []
+            },
+            {
+                id: "diagnostics",
+                icon: "📊",
+                time: "25–30 минут",
+                title: "Диагностика перед СОР и СОЧ",
+                goal: "Найти реальные пробелы до контрольной, а не после неё.",
+                steps: [
+                    "Назначь 8–10 миссий по 2–3 темам четверти.",
+                    "Открой «Класс» и посмотри точность, активность и проблемные темы.",
+                    "Выгрузи CSV или сводку класса для отчёта.",
+                    "Разбери две самые слабые темы через «Разбор задачи».",
+                    "Дай повторную попытку — сравнение покажет рост."
+                ],
+                tools: ["Диагностика", "CSV", "Слабые темы"],
+                tip: "Пробные миссии не влияют на оценки — ученики отвечают спокойнее и показывают реальный уровень.",
+                actions: ["stats"]
+            },
+            {
+                id: "portfolio",
+                icon: "🎖",
+                time: "10 минут",
+                title: "Итог года и портфолио: паспорт пилота",
+                goal: "Показать прогресс за год и дать ученику награду, которую хочется сохранить.",
+                steps: [
+                    "Проверьте прогресс по параллелям 7, 8 и 9 в «Классе».",
+                    "Открой «Паспорт пилота» на экране профиля.",
+                    "Введи фамилию и имя — они подставятся в сертификат автоматически.",
+                    "Скачай PNG или распечатай PDF для портфолио.",
+                    "Для выпускников выбери «Вся трилогия» — паспорт со всеми тремя рангами."
+                ],
+                tools: ["Паспорт пилота", "PNG/PDF", "Портфолио"],
+                tip: "Сертификат подписывается датой и кодом пилота — удобно для школьного портфолио и родительского собрания.",
+                actions: []
+            }
+        ]
+    },
+    kk: {
+        title: "Қолдану бойынша ұсыныстар",
+        intro: "Алты дайын сценарий: қысқа бес минуттан бастап жоба мен қорытынды портфолиоға дейін. Барлығы 7, 8 және 9 сыныптарда жұмыс істейді, ал ойын жүктелгеннен кейін интернет қажет емес — компьютер, проектор немесе оқушылардың телефоны жеткілікті.",
+        hint: "Қадамдар ретімен берілген — сол күйінде өткізуге немесе сыныпқа қарай қысқартуға болады.",
+        timeLabel: "Уақыт",
+        stepsLabel: "Қалай өткізу",
+        toolsLabel: "Нені пайдалану",
+        noteLabel: "Кеңес",
+        goClass: "«Сынып» ашу",
+        goAssign: "Тапсырма құру",
+        goStats: "Статистиканы ашу",
+        scenarios: [
+            {
+                id: "lesson",
+                icon: "⏱",
+                time: "45 минут",
+                title: "45 минуттық сабақ: түсіндіру → практика → талдау",
+                goal: "Кабинетте бір компьютер мен проектор болғанда жаңа тақырыпты бекіту.",
+                steps: [
+                    "«Сынып» қойындысында параллельді таңдап, параграф бойынша «Толық конспектіні» аш.",
+                    "Тапсырма терезесінде бір формуланы сыныппен талда: «Берілгені → ХБ → Формула → Шешуі».",
+                    "Тақырып бойынша 1–2 миссияға 12–15 минут бер — проектормен фронтальды немесе телефондарда.",
+                    "Нәтижені салыстыр: «Сынып» → дәлдік және проблемалы тақырыптар.",
+                    "Сабақты «Формулалар карточкасынан» сұрақпен және қысқа қорытындымен аяқта."
+                ],
+                tools: ["Толық конспект", "Миссиялар", "Формулалар карточкасы"],
+                tip: "Нашар оқушыларға екінші әрекеттен кейін «Есепті талдауды» қос — ол шешім жолын қадам-қадаммен түсіндіреді.",
+                actions: ["class"]
+            },
+            {
+                id: "battle",
+                icon: "⚔️",
+                time: "20–25 минут",
+                title: "Командалық шайқас: жарыс түрінде қайталау",
+                goal: "2–3 тақырыпты қайталап, бақылау жұмысы алдында қызығушылықты арттыру.",
+                steps: [
+                    "Сыныпты екі командаға бөліп, капитандарды тағайында.",
+                    "Ойынның басты экранында «Командалық шайқасты» аш.",
+                    "Командалар кезекпен жауап береді; дұрыс жауап — ұпай, қате — кезектің өтуі.",
+                    "Ұпай кестесін көрсетіп, ең жиі кездесетін 2–3 қатені талда.",
+                    "Жеңімпаз команданы марапаттап, белсенділерді «Сыныпта» белгіле."
+                ],
+                tools: ["Командалық шайқас", "Ұпайлар", "Қателерді талдау"],
+                tip: "Шайқас сабақтың басындағы қыздыру ретінде және тоқсан соңындағы қайталау ретінде жақсы жұмыс істейді.",
+                actions: []
+            },
+            {
+                id: "homework",
+                icon: "🏠",
+                time: "15–20 минут",
+                title: "Код бойынша тексерілетін үй тапсырмасы",
+                goal: "Тақырыпты үйде пысықтап, кімнің шынымен орындағанын көру.",
+                steps: [
+                    "«Тағайындаулар» → «Тапсырма құру» бөлімін ашып, миссия тақырыбын таңда.",
+                    "Тағайындау кодын алып, сынып чатына жібер.",
+                    "Оқушы ойынның басты бетінде «Тағайындау кодын енгізу» түймесін басып, миссияны өтеді.",
+                    "Мерзім қой — ойын мерзімі өткен тапсырмаларды өзі белгілейді.",
+                    "Келесі сабақта «Сынып» → «Тапсырмағандар» бөлімін тексеріп, жұмысты талда."
+                ],
+                tools: ["Тағайындаулар", "Код", "Мерзім"],
+                tip: "Бір кодты бірнеше сыныпқа беруге болады — әр сыныптың есебі бөлек қалады.",
+                actions: ["assign"]
+            },
+            {
+                id: "lab",
+                icon: "🧪",
+                time: "45–60 минут",
+                title: "Зертхана және жоба: өз қолыңмен зерттеу",
+                goal: "Зерттеу дағдыларын қалыптастыру: өлшеу, қорытынды, жұмысты қорғау.",
+                steps: [
+                    "Тақырып бойынша зертханалық миссияны таңдап, жұмыстың мақсатын көрсет.",
+                    "Оқушылар симуляторды өтеді: параметрлерді өзгертіп, бақылауларын жазады.",
+                    "Нәтижелер кестесін жинап, мәндерді сынып ішінде салыстырыңдар.",
+                    "Әр жұп қорытынды мен айырманың бір себебін тұжырымдайды.",
+                    "Жоба карточкасын рәсімдеп, сынып портфолиосына қос."
+                ],
+                tools: ["Зертханалар", "Симуляторлар", "Комикс"],
+                tip: "Тарау бойынша комикс зертхана алдындағы кіріспе әңгіме ретінде жақсы жүреді — тәжірибенің не үшін керегін түсіндіреді.",
+                actions: []
+            },
+            {
+                id: "diagnostics",
+                icon: "📊",
+                time: "25–30 минут",
+                title: "БЖБ және ТЖБ алдындағы диагностика",
+                goal: "Бақылау жұмысына дейін нақты олқылықтарды табу.",
+                steps: [
+                    "Тоқсанның 2–3 тақырыбы бойынша 8–10 миссия тағайында.",
+                    "«Сынып» бөлімін ашып, дәлдік, белсенділік және проблемалы тақырыптарды қара.",
+                    "Есеп үшін CSV немесе сыныптық қорытындыны жүкте.",
+                    "Ең әлсіз екі тақырыпты «Есепті талдау» арқылы бірге талда.",
+                    "Қайта әрекет бер — салыстыру өсімді көрсетеді."
+                ],
+                tools: ["Диагностика", "CSV", "Әлсіз тақырыптар"],
+                tip: "Байқау миссиялары бағаға әсер етпейді — оқушылар сабырлы жауап беріп, нақты деңгейін көрсетеді.",
+                actions: ["stats"]
+            },
+            {
+                id: "portfolio",
+                icon: "🎖",
+                time: "10 минут",
+                title: "Жыл қорытындысы және портфолио: пилот паспорты",
+                goal: "Жылдық өсімді көрсетіп, оқушыға сақтағысы келетін марапат беру.",
+                steps: [
+                    "«Сынып» бөлімінде 7, 8 және 9 параллельдерінің үлгерімін тексеріңдер.",
+                    "Профиль экранында «Пилот паспортын» аш.",
+                    "Тегі мен атын енгіз — олар сертификатқа автоматты түрде қойылады.",
+                    "Портфолио үшін PNG жүкте немесе PDF басып шығар.",
+                    "Түлектер үшін «Бүкіл трилогияны» таңда — үш рангі бар паспорт."
+                ],
+                tools: ["Пилот паспорты", "PNG/PDF", "Портфолио"],
+                tip: "Сертификат күнімен және пилот кодымен қол қойылады — мектеп портфолиосы мен ата-аналар жиналысына ыңғайлы.",
+                actions: []
+            }
+        ]
+    },
+    en: {
+        title: "Recommended ways to use it",
+        intro: "Six ready-made scenarios: from a five-minute warm-up to a project and a year-end portfolio. Everything works in Grades 7, 8 and 9, and no internet is needed once the game has loaded — a computer, a projector or the students' phones are enough.",
+        hint: "The steps are in order — run them as they are or shorten them for your class.",
+        timeLabel: "Time",
+        stepsLabel: "How to run it",
+        toolsLabel: "What to use",
+        noteLabel: "Tip",
+        goClass: "Open «Class»",
+        goAssign: "Create an assignment",
+        goStats: "Open statistics",
+        scenarios: [
+            {
+                id: "lesson",
+                icon: "⏱",
+                time: "45 minutes",
+                title: "A 45-minute lesson: explain → practise → review",
+                goal: "Consolidate a new topic when the classroom has one computer and a projector.",
+                steps: [
+                    "Pick the grade on the «Class» tab and open the «Full conspectus» for the paragraph.",
+                    "Work through one formula as a class in the task window: «Given → SI → Formula → Solution».",
+                    "Give 12–15 minutes for 1–2 missions on the topic — frontally with the projector or on phones.",
+                    "Check the result: «Class» → accuracy and problem topics for the period.",
+                    "Close the lesson with a question from the «Formula card» and a short summary."
+                ],
+                tools: ["Full conspectus", "Missions", "Formula card"],
+                tip: "For weaker students, turn on «Problem breakdown» after the second attempt — it explains the solution step by step.",
+                actions: ["class"]
+            },
+            {
+                id: "battle",
+                icon: "⚔️",
+                time: "20–25 minutes",
+                title: "Team battle: revision as a competition",
+                goal: "Revise 2–3 topics and raise engagement before a test.",
+                steps: [
+                    "Split the class into two teams and appoint captains.",
+                    "Open «Team battle» on the game's main screen.",
+                    "Teams answer in turn; a correct answer scores points, a mistake passes the turn.",
+                    "Show the scoreboard and review the 2–3 most common mistakes.",
+                    "Award the winning team and mark active students in «Class»."
+                ],
+                tools: ["Team battle", "Points", "Mistake review"],
+                tip: "The battle works well as a warm-up at the start of a lesson and as revision at the end of a term.",
+                actions: []
+            },
+            {
+                id: "homework",
+                icon: "🏠",
+                time: "15–20 minutes",
+                title: "Homework checked by code",
+                goal: "Practise the topic at home and see who actually did the work.",
+                steps: [
+                    "Open «Assignments» → «Create assignment» and choose the mission topic.",
+                    "Get the assignment code and send it to the class chat.",
+                    "On the game's home page the student taps «Enter assignment code» and completes the mission.",
+                    "Set a due date — the game highlights overdue assignments itself.",
+                    "Next lesson, check «Class» → «Not submitted» and review the work."
+                ],
+                tools: ["Assignments", "Code", "Due date"],
+                tip: "One code can be given to several classes — each class keeps its own report.",
+                actions: ["assign"]
+            },
+            {
+                id: "lab",
+                icon: "🧪",
+                time: "45–60 minutes",
+                title: "Lab and project: hands-on investigation",
+                goal: "Build research skills: measuring, concluding, presenting the work.",
+                steps: [
+                    "Choose a lab mission on the topic and show the aim of the work.",
+                    "Students work through the simulator: change parameters and record observations.",
+                    "Collect the results table and compare values as a class.",
+                    "Each pair states a conclusion and one reason for any difference.",
+                    "Fill in a project card and add it to the class portfolio."
+                ],
+                tools: ["Labs", "Simulators", "Comic"],
+                tip: "The chapter comic works well as an intro story before a lab — it explains why the experiment matters.",
+                actions: []
+            },
+            {
+                id: "diagnostics",
+                icon: "📊",
+                time: "25–30 minutes",
+                title: "Diagnostics before the term assessment",
+                goal: "Find the real gaps before the test, not after it.",
+                steps: [
+                    "Assign 8–10 missions across 2–3 topics of the term.",
+                    "Open «Class» and look at accuracy, activity and problem topics.",
+                    "Export the CSV or the class summary for your report.",
+                    "Review the two weakest topics together with «Problem breakdown».",
+                    "Give a second attempt — the comparison shows the growth."
+                ],
+                tools: ["Diagnostics", "CSV", "Weak topics"],
+                tip: "Practice missions do not affect grades — students answer more calmly and show their real level.",
+                actions: ["stats"]
+            },
+            {
+                id: "portfolio",
+                icon: "🎖",
+                time: "10 minutes",
+                title: "Year-end and portfolio: the pilot passport",
+                goal: "Show progress across the year and give students an award worth keeping.",
+                steps: [
+                    "Check progress in Grades 7, 8 and 9 on the «Class» tab.",
+                    "Open the «Pilot passport» on the profile screen.",
+                    "Enter the surname and first name — they go into the certificate automatically.",
+                    "Download a PNG or print a PDF for the portfolio.",
+                    "For leavers, choose «Whole trilogy» — a passport with all three ranks."
+                ],
+                tools: ["Pilot passport", "PNG/PDF", "Portfolio"],
+                tip: "The certificate is signed with the date and the pilot code — handy for a school portfolio and parents' evening.",
+                actions: []
+            }
+        ]
+    }
+};
 
 /** Проверка полноты казахской локализации (для консоли). */
 function rpgKkCoverage() {
