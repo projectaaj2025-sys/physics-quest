@@ -950,8 +950,8 @@ body.pq-print-open { overflow: hidden; }
 .pq-theme-toggle {
     display: inline-flex;
     align-items: center;
-    gap: 6px;
-    padding: 5px 11px;
+    gap: 8px;
+    padding: 4px 10px 4px 6px;
     border-radius: 999px;
     border: 1px solid rgba(0, 184, 212, 0.35);
     background: #f0f7fb;
@@ -960,15 +960,60 @@ body.pq-print-open { overflow: hidden; }
     font-size: 12.5px;
     font-weight: 800;
     cursor: pointer;
-    transition: all 0.16s ease;
+    transition: background 0.16s ease, border-color 0.16s ease;
     white-space: nowrap;
 }
 .pq-theme-toggle:hover {
     background: #e0f4fa;
     border-color: #00b8d4;
-    transform: translateY(-1px);
 }
-.pq-theme-toggle .pq-theme-icon { font-size: 14px; line-height: 1; }
+.pq-theme-toggle:focus-visible {
+    outline: 2px solid var(--primary, #00b8d4);
+    outline-offset: 2px;
+}
+
+/* сам слайдер: дорожка с солнцем слева и луной справа */
+.pq-theme-track {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 54px;
+    height: 26px;
+    padding: 0 5px;
+    border-radius: 999px;
+    background: #dceaf6;
+    box-shadow: inset 0 1px 3px rgba(15, 35, 70, 0.18);
+    transition: background 0.2s ease;
+}
+.pq-theme-opt {
+    position: relative;
+    z-index: 2;
+    font-size: 11px;
+    line-height: 1;
+    opacity: 0.5;
+    transition: opacity 0.2s ease;
+}
+.pq-theme-knob {
+    position: absolute;
+    z-index: 1;
+    top: 3px;
+    left: 3px;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: #ffffff;
+    box-shadow: 0 1px 4px rgba(15, 35, 70, 0.35);
+    transition: transform 0.22s ease;
+}
+.pq-theme-txt { min-width: 52px; text-align: left; }
+
+/* светлая тема — солнце активно, ползунок слева */
+html[data-theme="light"] .pq-theme-opt-light { opacity: 1; }
+/* тёмная тема — луна активна, ползунок справа */
+html[data-theme="dark"] .pq-theme-opt-dark { opacity: 1; }
+html[data-theme="dark"] .pq-theme-track { background: #1d3556; }
+html[data-theme="dark"] .pq-theme-knob { transform: translateX(28px); background: #e8f2ff; }
 .pq-theme-fab {
     position: fixed;
     right: 14px;
@@ -1036,6 +1081,7 @@ html[data-theme="dark"] .pq-theme-toggle:hover {
     background: rgba(32, 58, 92, 0.95);
     border-color: #38bdf8;
 }
+
 
 /* ---------- тёмная тема: окно аккаунта ---------- */
 html[data-theme="dark"] .pq-acc-card {

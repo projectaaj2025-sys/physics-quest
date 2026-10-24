@@ -11,9 +11,9 @@
     var META_COLOR = { light: "#eef4fb", dark: "#081121" };
 
     var TEXT = {
-        ru: { toDark: "🌙 Тёмная", toLight: "☀️ Светлая", label: "Тема оформления", title: "Переключить тему" },
-        kk: { toDark: "🌙 Қараңғы", toLight: "☀️ Ашық", label: "Безендіру тақырыбы", title: "Тақырыпты ауыстыру" },
-        en: { toDark: "🌙 Dark", toLight: "☀️ Light", label: "Theme", title: "Switch theme" }
+        ru: { light: "Светлая", dark: "Тёмная", label: "Тема оформления", title: "Тема: светлая или тёмная" },
+        kk: { light: "Ашық", dark: "Қараңғы", label: "Безендіру тақырыбы", title: "Тақырып: ашық немесе қараңғы" },
+        en: { light: "Light", dark: "Dark", label: "Theme", title: "Theme: light or dark" }
     };
 
     function lang() {
@@ -49,13 +49,13 @@
         var list = document.querySelectorAll("[data-pq-theme-toggle]");
         for (var i = 0; i < list.length; i++) {
             var btn = list[i];
-            btn.setAttribute("aria-pressed", mode === "dark" ? "true" : "false");
+            var dark = mode === "dark";
+            btn.setAttribute("aria-checked", dark ? "true" : "false");
+            btn.setAttribute("aria-pressed", dark ? "true" : "false");
             btn.setAttribute("title", t("title"));
-            btn.setAttribute("aria-label", t("label") + ": " + t(mode === "dark" ? "toLight" : "toDark"));
+            btn.setAttribute("aria-label", t("label") + ": " + t(dark ? "dark" : "light"));
             var txt = btn.querySelector(".pq-theme-txt");
-            if (txt) txt.textContent = t(mode === "dark" ? "toLight" : "toDark");
-            var ico = btn.querySelector(".pq-theme-icon");
-            if (ico) ico.textContent = mode === "dark" ? "☀️" : "🌙";
+            if (txt) txt.textContent = t(dark ? "dark" : "light");
         }
     }
 
@@ -91,7 +91,14 @@
             btn.type = "button";
             btn.className = "pq-theme-toggle";
             btn.setAttribute("data-pq-theme-toggle", "1");
-            btn.innerHTML = '<span class="pq-theme-icon">🌙</span><span class="pq-theme-txt"></span>';
+            btn.setAttribute("role", "switch");
+            btn.innerHTML =
+                '<span class="pq-theme-track" aria-hidden="true">' +
+                    '<span class="pq-theme-opt pq-theme-opt-light">☀️</span>' +
+                    '<span class="pq-theme-opt pq-theme-opt-dark">🌙</span>' +
+                    '<span class="pq-theme-knob"></span>' +
+                '</span>' +
+                '<span class="pq-theme-txt"></span>';
             btn.addEventListener("click", function (e) {
                 e.preventDefault();
                 Theme.toggle();
