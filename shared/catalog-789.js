@@ -933,9 +933,9 @@ window.GRADE_CATALOG = {
       "en": "Grade 8 · Thermal & Electric Shield"
     },
     "topicsSummary": {
-      "ru": "Тепловые явления, термодинамика, агрегатные переходы, электростатика, постоянный ток, законы Ома и Джоуля–Ленца, электромагнетизм, оптика",
-      "kk": "Жылу құбылыстары, термодинамика, агрегаттық ауысулар, электростатика, тұрақты ток, Ом мен Джоуль–Ленц заңдары, электромагнетизм, оптика",
-      "en": "Thermal phenomena, thermodynamics, phase transitions, electrostatics, DC circuits, Ohm's & Joule–Lenz laws, electromagnetism, optics"
+      "ru": "Тепловые явления, термодинамика, агрегатные переходы, электростатика, постоянный ток, законы Ома и Джоуля–Ленца, электромагнетизм, оптика + Лаб. мини-игры и комикс",
+      "kk": "Жылу құбылыстары, термодинамика, агрегаттық ауысулар, электростатика, тұрақты ток, Ом мен Джоуль–Ленц заңдары, электромагнетизм, оптика + Зерт. мини-ойындар мен комикс",
+      "en": "Thermal phenomena, thermodynamics, phase transitions, electrostatics, DC circuits, Ohm's & Joule–Lenz laws, electromagnetism, optics + Lab mini-games & comic"
     },
     "levels": [
       {

@@ -515,7 +515,9 @@ const Game = {
         if (typeof LabGames !== "undefined") {
             LabGames.reset();
             const labBtn = document.getElementById("btn-lab");
-            if (labBtn) labBtn.style.display = LabGames.configs[this.currentLevel] ? "" : "none";
+            // Кнопка «🔬 Лаб» всегда доступна в 8–9 классах: роутер Simulators89 откроет
+            // мини-игру уровня 45–48 (9 кл.) / 45–55 (8 кл.) или галерею симуляторов.
+            if (labBtn) labBtn.style.display = "inline-flex";
             if (LabGames.configs[this.currentLevel]) {
                 setTimeout(() => LabGames.tryShow(this.currentLevel, this), 700);
             }

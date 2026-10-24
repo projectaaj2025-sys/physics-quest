@@ -25,11 +25,15 @@ const LabGames = {
             }
         });
         document.getElementById("lab-close")?.addEventListener("click", () => this.hide(false));
-        document.getElementById("btn-lab")?.addEventListener("click", () => {
-            if (typeof Game !== "undefined" && this.configs[Game.currentLevel]) {
-                this.show(this.configs[Game.currentLevel], Game);
-            }
-        });
+        // В 8–9 классах кнопкой «🔬 Лаб» управляет роутер Simulators89
+        // (он открывает мини-игру уровня либо галерею симуляторов) — второй обработчик не нужен.
+        if (typeof window.Simulators89 === "undefined") {
+            document.getElementById("btn-lab")?.addEventListener("click", () => {
+                if (typeof Game !== "undefined" && this.configs[Game.currentLevel]) {
+                    this.show(this.configs[Game.currentLevel], Game);
+                }
+            });
+        }
     },
     tryShow(levelId, game) {
         if (this.shownThisLevel && this.activeLevel === levelId) return;
@@ -58,6 +62,8 @@ const LabGames = {
         const hintEl = document.getElementById("lab-hint-text");
         const L = (typeof I18n !== "undefined" && I18n.currentLang) || "ru";
         const pick = (o, k) => L === "kk" ? (o[k + "Kk"] || o[k]) : L === "en" ? (o[k + "En"] || o[k]) : o[k];
+        // Единицы измерения тоже локализуем: unit / unitKk / unitEn
+        const unitOf = (cfg) => L === "kk" ? (cfg.unitKk || cfg.unit || "") : L === "en" ? (cfg.unitEn || cfg.unit || "") : (cfg.unit || "");
         if (title) title.textContent = pick(cfg, "title");
         if (desc) desc.textContent = pick(cfg, "desc");
         if (hintEl) hintEl.textContent = pick(cfg, "hint") || "";
@@ -66,7 +72,7 @@ const LabGames = {
             const goalPrefix = (typeof I18n !== "undefined" && I18n.t("labGoalPrefix") !== "labGoalPrefix")
                 ? I18n.t("labGoalPrefix")
                 : (L === "kk" ? "→ мақсат:" : L === "en" ? "→ goal:" : "→ цель:");
-            if (cfg.formulaStr) formulaEl.textContent = cfg.formulaStr + "  " + goalPrefix + " " + cfg.target + " " + (cfg.unit || "");
+            if (cfg.formulaStr) formulaEl.textContent = cfg.formulaStr + "  " + goalPrefix + " " + cfg.target + " " + unitOf(cfg);
         }
         if (resultEl) resultEl.style.display = "none";
         if (circuitEl) circuitEl.style.display = "none";
@@ -92,7 +98,7 @@ const LabGames = {
                 resultEl.style.display = "";
                 const resWord = L === "kk" ? "Нәтиже" : L === "en" ? "Result" : "Результат";
                 const goalWord = L === "kk" ? "мақсат" : L === "en" ? "target" : "цель";
-                resultEl.textContent = `${resWord}: ${res.toFixed(2)} ${cfg.unit || ""} (${goalWord} ${cfg.target} ±${cfg.tol})`;
+                resultEl.textContent = `${resWord}: ${res.toFixed(2)} ${unitOf(cfg)} (${goalWord} ${cfg.target} ±${cfg.tol})`;
                 const ok = Math.abs(res - cfg.target) <= cfg.tol;
                 resultEl.className = "lab-result " + (ok ? "ok" : "bad");
                 resultEl._ok = ok;

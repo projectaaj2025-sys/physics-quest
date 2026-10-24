@@ -1,8 +1,10 @@
 /* ===== ВИЗУАЛЬНЫЕ ИНТЕРАКТИВНЫЕ CANVAS-СИМУЛЯТОРЫ ДЛЯ 8 И 9 КЛАССОВ (RU / ҚАЗ / EN) =====
-   • 8 класс (6 лабораторий): Калориметр, Фазовый переход льда, Цепь Ома с реостатом,
-     Подстанция Джоуля–Ленца, Индукция Фарадея, Оптическая скамья с тонкой линзой.
-   • 9 класс (6 лабораторий): Баллистический полигон, Орбита спутника «Беркут»,
-     Воздушная дорожка импульса, Маятник и осциллограф, Волновая ванна, Фотоэффект Эйнштейна. */
+   • 8 класс (9 лабораторий): Калориметр, Фазовый переход льда, Цепь Ома с реостатом,
+     Подстанция Джоуля–Ленца, Индукция Фарадея, Оптическая скамья с тонкой линзой,
+     Гидравлический пресс, Архимед и плотность, Эхо и звук.
+   • 9 класс (9 лабораторий): Баллистический полигон, Орбита спутника «Беркут»,
+     Воздушная дорожка импульса, Маятник и осциллограф, Волновая ванна, Фотоэффект Эйнштейна,
+     Закон Кулона, Радиоактивный распад, Электромагнитная индукция. */
 
 (function () {
     function getLang() {
@@ -43,7 +45,7 @@
                 },
                 unit: "°C",
                 tol: 0.6,
-                defaults: { metal: "cu", m1: 400, t1: 180, m2: 250 },
+                defaults: { metal: "cu", m1: 400, t1: 100, m2: 250 },
                 controls: [
                     { id: "metal", type: "select", label: { ru: "Металл цилиндра", kk: "Цилиндр металы", en: "Cylinder metal" }, options: [
                         { value: "cu", label: { ru: "Медь (c = 380 Дж/кг·°C)", kk: "Мыс (c = 380 Дж/кг·°C)", en: "Copper (c = 380 J/kg·°C)" } },
@@ -90,7 +92,7 @@
                 },
                 unit: "kJ",
                 tol: 2.0,
-                defaults: { mass: 200, power: 1500, time: 75 },
+                defaults: { mass: 200, power: 1500, time: 45 },
                 controls: [
                     { id: "mass", type: "range", min: 100, max: 500, step: 50, unit: { ru: "г", kk: "г", en: "g" }, label: { ru: "Масса льда (при 0 °C)", kk: "Мұз массасы (0 °C)", en: "Ice mass (at 0 °C)" } },
                     { id: "power", type: "range", min: 500, max: 3000, step: 100, unit: { ru: "Вт", kk: "Вт", en: "W" }, label: { ru: "Мощность нагревателя P", kk: "Қыздырғыш қуаты P", en: "Heater power P" } },
@@ -142,7 +144,7 @@
                 },
                 unit: "A",
                 tol: 0.08,
-                defaults: { U: 18, Rlamp: 4, Rrheo: 8 },
+                defaults: { U: 12, Rlamp: 4, Rrheo: 8 },
                 controls: [
                     { id: "U", type: "range", min: 4, max: 24, step: 1, unit: { ru: "В", kk: "В", en: "V" }, label: { ru: "Напряжение источника U", kk: "Көз кернеуі U", en: "Source voltage U" } },
                     { id: "Rlamp", type: "range", min: 2, max: 10, step: 1, unit: { ru: "Ом", kk: "Ом", en: "Ω" }, label: { ru: "Сопротивление лампы R₁", kk: "Шам кедергісі R₁", en: "Lamp resistance R₁" } },
@@ -426,7 +428,7 @@
                 },
                 unit: "m",
                 tol: 1.5,
-                defaults: { v0: 30, angle: 35, g: "9.8" },
+                defaults: { v0: 30, angle: 25, g: "9.8" },
                 controls: [
                     { id: "g", type: "select", label: { ru: "Небесное тело (g)", kk: "Аспан денесі (g)", en: "Gravity field (g)" }, options: [
                         { value: "9.8", label: { ru: "Земля (g = 9,8 м/с²)", kk: "Жер (g = 9,8 м/с²)", en: "Earth (g = 9.8 m/s²)" } },
@@ -508,7 +510,7 @@
                 },
                 unit: "m/s",
                 tol: 0.12,
-                defaults: { mode: "inelastic", m1: 4, v1: 6, m2: 4, v2: -1 },
+                defaults: { mode: "inelastic", m1: 2, v1: 6, m2: 6, v2: -1 },
                 controls: [
                     { id: "mode", type: "select", label: { ru: "Режим соударения", kk: "Соқтығысу режимі", en: "Collision mode" }, options: [
                         { value: "inelastic", label: { ru: "Неупругая стыковка (захват)", kk: "Серпімсіз түйісу", en: "Inelastic docking (latch)" } },
@@ -779,6 +781,33 @@
     }
     function saveDone(grade, map) {
         try { localStorage.setItem(storageKey(grade), JSON.stringify(map)); } catch (_) {}
+    }
+
+    // Локализация единиц измерения для поля ответа: unit хранится в «нейтральном» виде.
+    const UNIT_I18N = {
+        "kJ": { ru: "кДж", kk: "кДж", en: "kJ" },
+        "kJ/kg": { ru: "кДж/кг", kk: "кДж/кг", en: "kJ/kg" },
+        "cm": { ru: "см", kk: "см", en: "cm" },
+        "km": { ru: "км", kk: "км", en: "km" },
+        "km/s": { ru: "км/с", kk: "км/с", en: "km/s" },
+        "m/s": { ru: "м/с", kk: "м/с", en: "m/s" },
+        "m/s²": { ru: "м/с²", kk: "м/с²", en: "m/s²" },
+        "m": { ru: "м", kk: "м", en: "m" },
+        "s": { ru: "с", kk: "с", en: "s" },
+        "A": { ru: "А", kk: "А", en: "A" },
+        "V": { ru: "В", kk: "В", en: "V" },
+        "W": { ru: "Вт", kk: "Вт", en: "W" },
+        "N": { ru: "Н", kk: "Н", en: "N" },
+        "kN": { ru: "кН", kk: "кН", en: "kN" },
+        "eV": { ru: "эВ", kk: "эВ", en: "eV" },
+        "Ω": { ru: "Ом", kk: "Ом", en: "Ω" },
+        "pcs": { ru: "шт.", kk: "дана", en: "pcs" },
+        "°C": { ru: "°C", kk: "°C", en: "°C" }
+    };
+    function unitText(unit) {
+        const row = UNIT_I18N[unit];
+        if (!row) return unit || "";
+        return row[getLang()] || row.ru || unit;
     }
 
     function wavelengthToColor(nm) {
@@ -1772,8 +1801,9 @@
             this.mountSection(g);
             this.renderCards(g);
 
-            // Подключаем кнопку «🔬 Лаборатория» в 8 и 9 классах к визуальным симуляторам.
-            // Клонируем узел, чтобы снять обработчики LabGames из старых модулей.
+            // Подключаем кнопку «🔬 Лаборатория» в 8 и 9 классах.
+            // Клонируем узел, чтобы снять обработчики LabGames из старых модулей, и вешаем единый роутер:
+            // если у текущего уровня есть лабораторная мини-игра — открываем её, иначе — галерею симуляторов.
             const oldBtnLab = document.getElementById("btn-lab");
             if (oldBtnLab) {
                 const btnLab = oldBtnLab.cloneNode(true);
@@ -1781,7 +1811,27 @@
                 btnLab.style.display = "inline-flex";
                 btnLab.onclick = (e) => {
                     e.preventDefault();
-                    if (typeof App !== "undefined" && App.showLevelSelect) App.showLevelSelect();
+                    const configs = window.GRADE_LAB_GAMES_CONFIG || {};
+                    const lvl = (typeof Game !== "undefined" && Game.currentLevel) || null;
+                    const cfg = lvl != null ? configs[lvl] : null;
+                    if (cfg && typeof LabGames !== "undefined" && typeof LabGames.show === "function") {
+                        // Не открываем лабораторию поверх активного вопроса — сначала ответ.
+                        if (typeof Game !== "undefined" && Game.isTaskActive) {
+                            if (typeof showNotification === "function" && typeof I18n !== "undefined") {
+                                showNotification(I18n.t("pauseUnavailable"), "warning");
+                            }
+                            return;
+                        }
+                        LabGames.show(cfg, typeof Game !== "undefined" ? Game : null);
+                        return;
+                    }
+                    // Галерея живёт на экране выбора уровня: ставим игру на паузу и уходим туда.
+                    if (typeof Game !== "undefined" && Game.running && !Game.paused) {
+                        try { Game.togglePause(); } catch (e) {}
+                    }
+                    const showLevels = (typeof window.showLevelSelect === "function") ? window.showLevelSelect
+                        : (typeof App !== "undefined" && App.showLevelSelect) ? App.showLevelSelect.bind(App) : null;
+                    if (showLevels) showLevels();
                     setTimeout(() => {
                         const sec = document.getElementById("pq-sim89-section");
                         if (sec && typeof sec.scrollIntoView === "function") sec.scrollIntoView({ behavior: "smooth", block: "start" });
@@ -1836,9 +1886,10 @@
             const p = document.getElementById("pq-sim89-prog");
             const cb = document.getElementById("pq-sim89-classic-btn");
             if (k) k.textContent = tr("ИНТЕРАКТИВНЫЕ ФИЗИЧЕСКИЕ СИМУЛЯТОРЫ · CANVAS 2D", "ИНТЕРАКТИВТІ ФИЗИКАЛЫҚ СИМУЛЯТОРЛАР · CANVAS 2D", "INTERACTIVE PHYSICS SIMULATORS · CANVAS 2D");
+            const countRu = `${labs.length} ${labs.length % 10 === 1 && labs.length % 100 !== 11 ? "симулятор" : (labs.length % 10 >= 2 && labs.length % 10 <= 4 && (labs.length % 100 < 12 || labs.length % 100 > 14) ? "симулятора" : "симуляторов")}`;
             if (t) t.textContent = grade === 8
-                ? tr("🔬 Лабораторный комплекс «Эквилибриум» (6 симуляторов)", "🔬 «Эквилибриум» зертханалық кешені (6 симулятор)", "🔬 Equilibrium Interactive Lab Suite (6 Simulators)")
-                : tr("🛰️ Испытательный полигон «Орбита-9» (6 симуляторов)", "🛰️ «Орбита-9» сынақ полигоны (6 симулятор)", "🛰️ Orbita-9 Proving Grounds (6 Simulators)");
+                ? tr(`🔬 Лабораторный комплекс «Эквилибриум» (${countRu})`, `🔬 «Эквилибриум» зертханалық кешені (${labs.length} симулятор)`, `🔬 Equilibrium Interactive Lab Suite (${labs.length} Simulators)`)
+                : tr(`🛰️ Испытательный полигон «Орбита-9» (${countRu})`, `🛰️ «Орбита-9» сынақ полигоны (${labs.length} симулятор)`, `🛰️ Orbita-9 Proving Grounds (${labs.length} Simulators)`);
             if (s) s.textContent = tr(
                 "Реалистичные модели с живой анимацией: управляй приборами, выводи установку в целевой режим и подтверждай расчёт (+30 XP и +5 💎).",
                 "Жанды анимациясы бар шынайы модельдер: аспаптарды басқарып, есепті дәлелде (+30 XP және +5 💎).",
@@ -1846,9 +1897,11 @@
             );
             if (p) p.textContent = `🔑 ${doneCount} / ${labs.length}`;
             if (cb) {
+                const configs = window.GRADE_LAB_GAMES_CONFIG || {};
+                const hasBench = Object.keys(configs).length > 0 && typeof LabGames !== "undefined";
+                cb.style.display = hasBench ? "" : "none";
                 cb.textContent = tr("📐 Тренажёр расчётов", "📐 Есептеу жаттықтырғышы", "📐 Calculation Bench");
                 cb.onclick = () => {
-                    const configs = window.GRADE_LAB_GAMES_CONFIG || {};
                     const keys = Object.keys(configs);
                     const lvl = (typeof Game !== "undefined" && Game.currentLevel) || keys[0];
                     const cfg = configs[lvl] || (keys.length ? configs[keys[0]] : null);
@@ -1940,7 +1993,7 @@
                             </div>
                         </div>
                         <input type="number" step="any" id="pq-s89-ans" placeholder="0.0">
-                        <span style="font-weight:900;color:#fde68a;">${lab.unit}</span>
+                        <span style="font-weight:900;color:#fde68a;">${unitText(lab.unit)}</span>
                         <button type="button" class="btn btn-primary btn-small" id="pq-s89-check">
                             ${tr("✅ Подтвердить опыт", "✅ Тәжірибені растау", "✅ Verify Experiment")}
                         </button>
