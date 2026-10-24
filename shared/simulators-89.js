@@ -792,6 +792,15 @@
     }
 
     function drawCanvasFrame(ctx, w, h, lab, params, calc, tick) {
+        // Светлая «фотореалистичная» отрисовка с управлением мышью.
+        // Если модуль не загружен — работаем по-старому (тёмная схема).
+        if (window.PQSimLight && window.PQSimLight.has(lab.id)) {
+            try {
+                if (window.PQSimLight.render(ctx, w, h, lab, params, calc, tick)) return;
+            } catch (e) {
+                try { console.warn("PQSimLight fallback:", e); } catch (err) {}
+            }
+        }
         ctx.clearRect(0, 0, w, h);
         const bg = ctx.createLinearGradient(0, 0, 0, h);
         bg.addColorStop(0, "#061126");

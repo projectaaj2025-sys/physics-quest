@@ -940,7 +940,9 @@
             steps.push(`<li><b>2.</b> ${esc(pack.stepSub)}: <span class="pq-formula-inline">${esc(data.parts ? data.parts.lhs + " = " + data.substituted : "—")}</span></li>`);
             if (isFinite(data.numeric)) {
                 const unit = data.task && data.task.type === "numeric" ? (data.task.unit || unitFromQuestion(data.task) || "") : "";
-                steps.push(`<li><b>3.</b> ${esc(pack.stepCalc)}: <span class="pq-formula-inline">${esc(data.parts.lhs)} = ${esc(fmt(data.numeric))} ${esc(unit)}</span></li>`);
+                // Ответ не показываем сразу: задача должна учить оформлению,
+                // а не выдавать готовое число. Расчёт открывается по кнопке.
+                steps.push(`<li class="pq-step-answer" hidden><b>3.</b> ${esc(pack.stepCalc)}: <span class="pq-formula-inline">${esc(data.parts.lhs)} = ${esc(fmt(data.numeric))} ${esc(unit)}</span></li>`);
             } else if (!data.reliable && data.parts) {
                 steps.push(`<li><b>3.</b> ${esc(pack.stepCalc)}: <span class="pq-formula-inline">${esc(data.parts.lhs)} = ?</span> — ${esc({ ru: "подставь свои значения", kk: "өз мәндеріңді қой", en: "substitute your values" }[lang])}</li>`);
             }
@@ -994,6 +996,11 @@
                 </section>
                 <section class="pq-solver-block pq-block-solution">
                     <h4>✏️ ${esc(pack.solution)}</h4>
+                    <p class="pq-solver-template-note">${esc({
+                        ru: "Это шаблон оформления: спиши столбики «Дано → СИ → Формула → Решение», подставь свои числа и посчитай сам. Образец записи — во вкладке «Конспект».",
+                        kk: "Бұл — безендіру үлгісі: «Берілгені → ХБЖ → Формула → Шешуі» бағандарын көшіріп, өз сандарыңды қойып, өзің есепте. Жазу үлгісі «Конспект» қойындысында.",
+                        en: "This is the formatting template: copy the “Given → SI → Formula → Solution” columns, put in your own numbers and compute yourself. A worked sample is in the “Notes” tab."
+                    }[lang])}</p>
                     <ol class="pq-steps">${steps.join("")}</ol>
                     ${unknownNote}
                     <div class="pq-answer-slot">
@@ -1158,6 +1165,7 @@
                 state.revealed = !state.revealed;
                 const slot = panel.querySelector("#pq-answer-value");
                 if (slot) slot.hidden = !state.revealed;
+                panel.querySelectorAll(".pq-step-answer").forEach((el) => { el.hidden = !state.revealed; });
                 reveal.textContent = state.revealed ? tr("hideAnswer") : tr("showAnswer");
                 try { if (window.PQSound) PQSound.play("energy"); } catch (e) {}
             });

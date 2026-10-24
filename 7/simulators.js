@@ -603,9 +603,12 @@
     $("field-sim-result").textContent = locObj(active.goal) + " " + tr("Подсказка:", "Кеңес:", "Hint:") + " " + locObj(active.tip);
     $("field-sim-next").style.display = "none";
     $("field-sim-check").disabled = true;
+    const lightCanvas = (window.PQSimLight7 && window.PQSimLight7.has(active.control))
+      ? `<canvas id="pq7-sim-canvas" class="pq7-sim-canvas" width="760" height="260" aria-label="${locObj(active.title)}"></canvas>`
+      : "";
     $("field-sim-lab").innerHTML =
       challengePanel(active) +
-      '<div class="sim-lab-device">' + controls(active) + "</div>" +
+      '<div class="sim-lab-device' + (lightCanvas ? " has-canvas" : "") + '">' + lightCanvas + controls(active) + "</div>" +
       `<section class="sim-trial-book">
         <h3>${tr("📒 Журнал измерений", "📒 Өлшеу журналы", "📒 Measurement Log")}</h3>
         <p>${tr("Проведи минимум два разных опыта и сравни показания.", "Кемінде екі түрлі тәжірибе жүргізіп, көрсеткіштерді салыстыр.", "Run at least two distinct trials and compare readings.")}</p>
@@ -623,6 +626,7 @@
     bindControls();
     renderTrialRows();
     updateChallengeStatus();
+    startLightLoop();
   }
 
   function challengePanel(m) {
@@ -1066,6 +1070,146 @@
     };
   }
 
+  /* ---------- светлая canvas-сцена + управление мышью ---------- */
+  let lightRaf = null;
+  let lightTick = 0;
+
+  function clampNum(v, min, max) {
+    const n = Number(v);
+    if (!isFinite(n)) return min;
+    return Math.max(min, Math.min(max, n));
+  }
+
+  function stopLightLoop() {
+    if (lightRaf) {
+      try { cancelAnimationFrame(lightRaf); } catch (e) {}
+      lightRaf = null;
+    }
+  }
+
+  function startLightLoop() {
+    stopLightLoop();
+    if (!window.PQSimLight7 || !active || !window.PQSimLight7.has(active.control)) return;
+    const canvas = $("pq7-sim-canvas");
+    if (!canvas) return;
+    window.PQSimLight7.setBridge({
+      get() {
+        const snap = Object.assign({}, apparatus);
+        document.querySelectorAll("#field-sim-lab input[type=range]").forEach((inp) => {
+          if (inp && inp.id) snap[inp.id] = Number(inp.value);
+        });
+        const sel = $("surface");
+        if (sel) snap.surface = Number(sel.value);
+        return { control: active ? active.control : "", apparatus: snap };
+      },
+      act(key, value) { applyLightAction(key, value); }
+    });
+    const step = () => {
+      const cv = $("pq7-sim-canvas");
+      if (!cv || !active) { lightRaf = null; return; }
+      const ctx = cv.getContext("2d");
+      if (ctx) {
+        try { window.PQSimLight7.render(ctx, cv.width, cv.height, lightTick++); } catch (e) {}
+      }
+      lightRaf = requestAnimationFrame(step);
+    };
+    step();
+  }
+
+  // Действия мышью повторяют кнопки/ползунки: правим state и обновляем показания.
+  function applyLightAction(key, value) {
+    if (!active || !apparatus) return;
+    const R = (v, a, b) => clampNum(v, a, b);
+    const ranges = {
+      length: [1, 100], normal: [10, 100], force: [100, 600], area: [2, 20],
+      inputForce: [20, 150], smallArea: [1, 10], largeArea: [5, 40],
+      workForce: [50, 250], workDistance: [1, 8], workTime: [2, 10],
+      dropMass: [1, 10], height: [1, 10], dropPercent: [0, 100],
+      volume: [100, 1200], mass: [100, 1000], depth: [0, 50], pivot: [5, 95]
+    };
+    let handled = true;
+    switch (key) {
+      case "weigh":
+        // взвешиваем только когда образец дотащили до чашки, а не при лёгком сдвиге
+        if (Number(value) < 0.6) break;
+        const wBtn = document.querySelector('[data-sim-action="weigh"]');
+        if (wBtn) wBtn.click();
+        break;
+      case "immerse":
+        const iBtn = document.querySelector('[data-sim-action="immerse"]');
+        if (iBtn) iBtn.click();
+        break;
+      case "measure":
+        const mBtn = document.querySelector('[data-sim-action="measure"]');
+        if (mBtn) mBtn.click();
+        break;
+      case "fill":
+        apparatus.fills = Math.min(6, (Number(apparatus.fills) || 0) + 1);
+        apparatus.measured = false;
+        updateReadouts();
+        break;
+      case "distance": {
+        const total = Math.max(1, Number(apparatus.targetDistance) || 60);
+        const d = R(value, 0, total);
+        apparatus.distance = d;
+        apparatus.time = apparatus.speed ? d / apparatus.speed : 0;
+        updateReadouts();
+        break;
+      }
+      case "sample":
+        apparatus.sample = String(value);
+        ["A", "B", "C"].forEach((sv) => {
+          const btn = document.querySelector(`[data-sim-action="sample"][data-value="${sv}"]`);
+          if (btn && sv === String(value)) btn.click();
+        });
+        break;
+      case "frame":
+        const fBtn = document.querySelector(`[data-sim-action="frame"][data-value="${value}"]`);
+        if (fBtn) fBtn.click(); else apparatus.frame = value;
+        break;
+      case "body":
+        const bBtn = document.querySelector(`[data-sim-action="body"][data-value="${value}"]`);
+        if (bBtn) bBtn.click(); else apparatus.body = value;
+        break;
+      case "massKg":
+        const kBtn = document.querySelector(`[data-sim-action="mass-kg"][data-value="${value}"]`);
+        if (kBtn) kBtn.click(); else apparatus.massKg = value;
+        break;
+      case "fluid":
+        const flBtn = document.querySelector(`[data-sim-action="fluid"][data-value="${value}"]`);
+        if (flBtn) flBtn.click(); else apparatus.fluid = value;
+        break;
+      case "surface": {
+        apparatus.surface = String(value);
+        const sel = $("surface");
+        if (sel) {
+          sel.value = String(value);
+          sel.dispatchEvent(new Event("input", { bubbles: true }));
+          sel.dispatchEvent(new Event("change", { bubbles: true }));
+        }
+        break;
+      }
+      default: {
+        const rng = ranges[key];
+        const v = rng ? R(typeof value === "string" ? parseFloat(value) : value, rng[0], rng[1]) : value;
+        apparatus[key] = v;
+        const el = $(key);
+        if (el && el.type === "range") {
+          el.value = String(v);
+          el.dispatchEvent(new Event("input", { bubbles: true }));
+        } else {
+          updateReadouts();
+        }
+        handled = false;
+      }
+    }
+    experimentReady = false;
+    const chk = $("field-sim-check");
+    if (chk) chk.disabled = true;
+    if (typeof updateReadouts === "function") updateReadouts();
+    return handled;
+  }
+
   function updateReadouts() {
     if (!$("field-sim-lab")?.innerHTML || !active) return;
     const val = id => $(id) ? Number($(id).value) : null;
@@ -1242,6 +1386,7 @@
   }
 
   function closeModal() {
+    stopLightLoop();
     const modal = $("field-sim-modal");
     if (modal) {
       modal.classList.remove("open");

@@ -810,12 +810,17 @@ function renderTheoryContent(tab) {
             : `<p class="experiment-empty">${I18n.t("experimentUnavailable")}</p>`;
     } else if (tab === "conspekt" && CONSPECT[key]) {
         const c = CONSPECT[key];
-        box.innerHTML = `<div class="theory-conspekt-title">📘 ${escapeHtml(conspektTitle(c))}</div>` + renderTheoryText(conspektText(c));
+        const ofCard = (window.PQOformlenie && PQOformlenie.render) ? PQOformlenie.render(key) : "";
+        box.innerHTML = `<div class="theory-conspekt-title">📘 ${escapeHtml(conspektTitle(c))}</div>`
+            + renderTheoryText(conspektText(c))
+            + ofCard;
     } else {
         const entry = LEVEL_THEORY[key] || LEVEL_THEORY["bonus"] || LEVEL_THEORY["custom"] || { ru: "" };
         const text = entry[I18n.currentLang] || entry.ru || "";
         const epPrefix = (typeof episodeBriefingHtml === "function" && pendingLevelId) ? episodeBriefingHtml(pendingLevelId) : "";
-        box.innerHTML = epPrefix + renderTheoryText(text);
+        // пример оформления показываем и в учебнике: слабый ученик видит, как писать решение
+        const ofCard = (window.PQOformlenie && PQOformlenie.render) ? PQOformlenie.render(key) : "";
+        box.innerHTML = epPrefix + renderTheoryText(text) + ofCard;
     }
     const mc = document.querySelector("#theory-modal .modal-content");
     if (mc) mc.scrollTop = 0;

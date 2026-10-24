@@ -80,13 +80,16 @@
     .worlds-lead { color: var(--muted); font-size: 13px; line-height: 1.55; margin: 8px 0 14px; max-width: 900px; }
     .worlds-img { width: 100%; border-radius: 14px; display: block; border: 1px solid rgba(120,200,255,.2); }
     .field7 { margin: 22px 0 6px; padding: 18px; border-radius: 22px; border: 1px solid var(--line); background: rgba(10, 23, 44, .62); }
-    .f7-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 10px; margin-top: 6px; }
+    .f7-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(214px, 1fr)); gap: 12px; margin-top: 10px; }
     .f7-item {
-        display: flex; align-items: center; gap: 10px; padding: 10px 12px; border-radius: 13px;
-        border: 1px solid rgba(120, 200, 255, .16); background: rgba(13, 31, 58, .7);
-        font-size: 12.5px; font-weight: 700; color: #d7e8ff;
+        display: block; padding: 0; overflow: hidden; text-align: left; cursor: zoom-in;
+        border-radius: 14px; border: 1px solid rgba(120, 200, 255, .18); background: rgba(13, 31, 58, .7);
+        font: inherit; color: #d7e8ff; transition: transform .16s, border-color .16s;
     }
-    .f7-item span.ico { font-size: 18px; }
+    .f7-item:hover { transform: translateY(-3px); border-color: rgba(56, 189, 248, .55); }
+    .f7-item img { display: block; width: 100%; aspect-ratio: 760 / 260; object-fit: cover; background: #eef3f9; }
+    .f7-cap { display: flex; align-items: center; gap: 9px; padding: 9px 11px; font-size: 12.5px; font-weight: 700; }
+    .f7-cap .ico { font-size: 17px; }
     .f7-item small { display: block; font-weight: 600; color: #8ba2bf; font-size: 10.5px; }
     .overview { margin: 22px 0 0; }
     .overview img { width: 100%; border-radius: 16px; display: block; border: 1px solid rgba(120,200,255,.22); }
@@ -158,7 +161,7 @@
     <header class="hero">
         <div class="kicker" data-i18n="kicker">ИНТЕРАКТИВНЫЕ СИМУЛЯТОРЫ · 7–9 КЛАССЫ</div>
         <h1 data-i18n="title">Скриншоты мини-игр «Физика-Квест»</h1>
-        <p class="lead" data-i18n="lead">18 лабораторий внутри игры: 15 полевых симуляторов для 7 класса и 9 canvas-симуляторов для 8 и 9 классов. Каждый опыт — это реальная установка: меняй параметры, следи за телеметрией, выводи установку в целевой режим и вводи расчётное значение. Ниже — настоящие кадры из игры.</p>
+        <p class="lead" data-i18n="lead">18 лабораторий внутри игры: 15 полевых симуляторов · превью для 7 класса и 9 canvas-симуляторов для 8 и 9 классов. Каждый опыт — это реальная установка: меняй параметры, следи за телеметрией, выводи установку в целевой режим и вводи расчётное значение. Ниже — настоящие кадры из игры.</p>
         <div class="stats">
             <div class="stat"><b>33</b> <span data-i18n="sLabs">симуляторов и лабораторий</span></div>
             <div class="stat"><b>6</b> <span data-i18n="sNew">новых опытов в этой версии</span></div>
@@ -181,14 +184,14 @@
 
     <figure class="overview">
         <img src="./assets/screenshots/new-labs-overview.png" alt="Новые мини-игры" loading="lazy">
-        <figcaption data-i18n="overview">Шесть новых лабораторий одним взглядом: полный интерфейс опыта, телеметрия и задание.</figcaption>
+        <figcaption data-i18n="overview">Все 33 лаборатории теперь в светлом «реалистичном» стиле: приборы, жидкости, свет и тени рисует canvas, а не эмодзи.</figcaption>
     </figure>
 
     <section class="field7">
         <div class="worlds-head">
             <div>
                 <div class="kicker" data-i18n="f7Kicker">7 КЛАСС · ПОЛЕВОЙ ЖУРНАЛ</div>
-                <h2 data-i18n="f7Title">15 полевых симуляторов</h2>
+                <h2 data-i18n="f7Title">15 полевых симуляторов · превью</h2>
             </div>
             <span class="worlds-count">15</span>
         </div>
@@ -199,7 +202,7 @@
     <section class="grid" id="grid"></section>
 
     <div class="foot">
-        <span data-i18n="footNote">Все изображения получены автоматической отрисовкой реальных canvas-сцен игры при заданных параметрах.</span>
+        <span data-i18n="footNote">Все изображения получены автоматической отрисовкой реальных canvas-сцен игры: светлая «фотореалистичная» графика, предметы можно тянуть мышью.</span>
         <span>© Физика-Квест · 7–9</span>
     </div>
 </div>
@@ -216,15 +219,15 @@
             openGame: "Открыть игру", toPortal: "На портал",
             kicker: "ИНТЕРАКТИВНЫЕ СИМУЛЯТОРЫ · 7–9 КЛАССЫ",
             title: "Скриншоты мини-игр «Физика-Квест»",
-            lead: "33 симулятора внутри игры: 15 полевых опытов для 7 класса и 18 canvas-лабораторий для 8 и 9 классов. Каждый опыт — это реальная установка: меняй параметры, следи за телеметрией, выводи установку в целевой режим и вводи расчётное значение. Ниже — 12 кадров из игры.",
+            lead: "33 симулятора внутри игры: 15 полевых опытов для 7 класса и 18 canvas-лабораторий для 8 и 9 классов. Каждый опыт — это реальная установка: меняй параметры, следи за телеметрией, выводи установку в целевой режим и вводи расчётное значение. Ниже — 18 кадров из игры.",
             sLabs: "симулятора в игре", sNew: "новых опытов в этой версии", sLangs: "языка интерфейса", sReward: "за каждый подтверждённый опыт",
             newBadge: "новый", grade: "класс",
-            f7Kicker: "7 КЛАСС · ПОЛЕВОЙ ЖУРНАЛ", f7Title: "15 полевых симуляторов",
+            f7Kicker: "7 КЛАСС · ПОЛЕВОЙ ЖУРНАЛ", f7Title: "15 полевых симуляторов · превью",
             f7Lead: "Отдельный набор опытов для 7 класса: измерения, плотность, давление, Архимед, рычаг и энергия. Полностью на трёх языках.",
-            overview: "Шесть новых лабораторий одним взглядом: полный интерфейс опыта, телеметрия и задание.",
+            overview: "Все 33 лаборатории теперь в светлом «реалистичном» стиле: приборы, жидкости, свет и тени рисует canvas, а не эмодзи.",
             worldsKicker: "ОФОРМЛЕНИЕ УРОВНЕЙ", worldsTitle: "Шесть разных миров внутри игры",
             worldsLead: "Фон уровня больше не один и тот же: каждая глава получает свой мир — небо, силуэты, частицы и свечение. Ниже — реальные кадры фонов, которые рисует движок.",
-            footNote: "Все изображения получены автоматической отрисовкой реальных canvas-сцен игры при заданных параметрах.",
+            footNote: "Все изображения получены автоматической отрисовкой реальных canvas-сцен игры: светлая «фотореалистичная» графика, предметы можно тянуть мышью.",
             items: {
                 "sim-g8-calorimeter": { t: "Калориметр: тепловой баланс", d: "Горячий цилиндр опускают в воду. Нужно вывести смесь в рабочий коридор 32–45 °C и рассчитать теплоту Q = cmΔt." },
                 "sim-g8-hydraulic": { t: "Гидравлический пресс", d: "Малый поршень давит с силой F₁ — большой поднимает 800-килограммовый блок щита. Проверяем выигрыш в силе." },
@@ -300,35 +303,41 @@
 
     const CARDS = [
         { id: "sim-g8-calorimeter", file: "sim-g8-calorimeter.png", grade: 8, para: "§ 7–9", formula: "Q = cmΔt" },
-        { id: "sim-g8-hydraulic", file: "sim-g8-hydraulic.png", grade: 8, para: "§ 24–28", formula: "F₂ = F₁·S₂/S₁", isNew: true },
-        { id: "sim-g8-archimedes", file: "sim-g8-archimedes.png", grade: 8, para: "§ 46–49", formula: "F_A = ρ·g·V", isNew: true },
-        { id: "sim-g8-echo", file: "sim-g8-echo.png", grade: 8, para: "§ 30–33", formula: "h = v·t / 2", isNew: true },
-        { id: "sim-g9-coulomb", file: "sim-g9-coulomb.png", grade: 9, para: "§ 1–8", formula: "F = k·q₁q₂/r²", isNew: true },
-        { id: "sim-g9-decay", file: "sim-g9-decay.png", grade: 9, para: "§ 29–36", formula: "N = N₀·2^(−t/T)", isNew: true },
-        { id: "sim-g9-induction", file: "sim-g9-induction.png", grade: 9, para: "§ 37–44", formula: "ε = N·B·S/Δt", isNew: true },
         { id: "sim-g8-phase", file: "sim-g8-phase.png", grade: 8, para: "§ 12–15", formula: "Q = λ·m" },
+        { id: "sim-g8-ohm", file: "sim-g8-ohm.png", grade: 8, para: "§ 16–20", formula: "I = U / R", isNew: true },
+        { id: "sim-g8-joule", file: "sim-g8-joule.png", grade: 8, para: "§ 21–23", formula: "Q = I²Rt", isNew: true },
+        { id: "sim-g8-faraday", file: "sim-g8-faraday.png", grade: 8, para: "§ 32–37", formula: "ε = N·ΔΦ/Δt", isNew: true },
+        { id: "sim-g8-hydraulic", file: "sim-g8-hydraulic.png", grade: 8, para: "§ 24–28", formula: "F₂ = F₁·S₂/S₁" },
+        { id: "sim-g8-archimedes", file: "sim-g8-archimedes.png", grade: 8, para: "§ 46–49", formula: "F_A = ρ·g·V" },
+        { id: "sim-g8-echo", file: "sim-g8-echo.png", grade: 8, para: "§ 30–33", formula: "h = v·t / 2" },
         { id: "sim-g8-optics", file: "sim-g8-optics.png", grade: 8, para: "§ 38–42", formula: "1/F = 1/d + 1/f" },
+        { id: "sim-g9-coulomb", file: "sim-g9-coulomb.png", grade: 9, para: "§ 1–8", formula: "F = k·q₁q₂/r²" },
+        { id: "sim-g9-decay", file: "sim-g9-decay.png", grade: 9, para: "§ 29–36", formula: "N = N₀·2^(−t/T)" },
+        { id: "sim-g9-induction", file: "sim-g9-induction.png", grade: 9, para: "§ 37–44", formula: "ε = N·B·S/Δt" },
         { id: "sim-g9-ballistics", file: "sim-g9-ballistics.png", grade: 9, para: "§ 9–16", formula: "L = v²·sin2α / g" },
+        { id: "sim-g9-orbit", file: "sim-g9-orbit.png", grade: 9, para: "§ 17–20", formula: "v = √(GM/R)", isNew: true },
+        { id: "sim-g9-collision", file: "sim-g9-collision.png", grade: 9, para: "§ 21–24", formula: "m₁v₁ + m₂v₂ = const", isNew: true },
         { id: "sim-g9-oscillator", file: "sim-g9-oscillator.png", grade: 9, para: "§ 20–28", formula: "T = 2π√(l/g)" },
+        { id: "sim-g9-waves", file: "sim-g9-waves.png", grade: 9, para: "§ 25–32", formula: "λ = v / ν", isNew: true },
         { id: "sim-g9-quantum", file: "sim-g9-quantum.png", grade: 9, para: "§ 36–43", formula: "hν = A + E_к" }
     ];
 
     const FIELD7 = [
-        ["📏", "§3", { ru: "Перевод единиц", kk: "Бірліктерді түрлендіру", en: "Unit conversion" }],
-        ["📐", "§5", { ru: "Метрологический пост", kk: "Метрологиялық бекет", en: "Metrology post" }],
-        ["🚌", "§7", { ru: "Дождь в автобусе", kk: "Автобустағы жаңбыр", en: "Rain in a bus" }],
-        ["🛰️", "§8–9", { ru: "Относительность движения", kk: "Қозғалыстың салыстырмалылығы", en: "Relative motion" }],
-        ["⚖️", "§13", { ru: "Плотность вещества", kk: "Заттың тығыздығы", en: "Density" }],
-        ["🪐", "§15", { ru: "Сила тяжести", kk: "Ауырлық күші", en: "Gravity" }],
-        ["🛞", "§19", { ru: "Сила трения", kk: "Үйкеліс күші", en: "Friction" }],
-        ["🧱", "§22", { ru: "Давление тела", kk: "Дененің қысымы", en: "Pressure of a body" }],
-        ["🌡️", "§24", { ru: "Давление жидкости", kk: "Сұйықтық қысымы", en: "Liquid pressure" }],
-        ["🦾", "§25", { ru: "Гидравлический пресс", kk: "Гидравликалық пресс", en: "Hydraulic press" }],
-        ["🧪", "§26", { ru: "Сообщающиеся сосуды", kk: "Кеңейткіш ыдыстар", en: "Communicating vessels" }],
-        ["🌊", "§28", { ru: "Сила Архимеда", kk: "Архимед күші", en: "Buoyancy" }],
-        ["⚡", "§30", { ru: "Мощность", kk: "Қуат", en: "Power" }],
-        ["🔋", "§32", { ru: "Энергия", kk: "Энергия", en: "Energy" }],
-        ["⚙️", "§35", { ru: "Рычаг и момент", kk: "Иінтірек және момент", en: "Lever & moment" }]
+        ["📏", "§3", "sim7-units.png", { ru: "Перевод единиц", kk: "Бірліктерді түрлендіру", en: "Unit conversion" }],
+        ["📐", "§5", "sim7-lab-measure.png", { ru: "Метрологический пост", kk: "Метрологиялық бекет", en: "Metrology post" }],
+        ["🚌", "§7", "sim7-lab-relative.png", { ru: "Дождь в автобусе", kk: "Автобустағы жаңбыр", en: "Rain in a bus" }],
+        ["🛰️", "§8–9", "sim7-lab-motion.png", { ru: "Навигация ровера", kk: "Ровер навигациясы", en: "Rover navigation" }],
+        ["⚖️", "§13", "sim7-lab-density.png", { ru: "Плотность вещества", kk: "Заттың тығыздығы", en: "Density" }],
+        ["🪐", "§15", "sim7-lab-gravity.png", { ru: "Вес на Луне", kk: "Айдағы салмақ", en: "Weight on the Moon" }],
+        ["🛞", "§19", "sim7-friction.png", { ru: "Сила трения", kk: "Үйкеліс күші", en: "Friction" }],
+        ["🧱", "§22", "sim7-pressure.png", { ru: "Давление тела", kk: "Дененің қысымы", en: "Pressure of a body" }],
+        ["🌡️", "§24", "sim7-lab-liquid.png", { ru: "Давление жидкости", kk: "Сұйықтық қысымы", en: "Liquid pressure" }],
+        ["🦾", "§25", "sim7-hydraulic.png", { ru: "Гидравлический пресс", kk: "Гидравликалық пресс", en: "Hydraulic press" }],
+        ["🧪", "§26", "sim7-lab-vessels.png", { ru: "Сообщающиеся сосуды", kk: "Кеңейткіш ыдыстар", en: "Communicating vessels" }],
+        ["🌊", "§28", "sim7-lab-buoyancy.png", { ru: "Сила Архимеда", kk: "Архимед күші", en: "Buoyancy" }],
+        ["⚡", "§30", "sim7-power.png", { ru: "Мощность турбины", kk: "Турбина қуаты", en: "Turbine power" }],
+        ["🔋", "§32", "sim7-energy.png", { ru: "Энергия капсулы", kk: "Капсула энергиясы", en: "Capsule energy" }],
+        ["⚙️", "§35", "sim7-lab-lever.png", { ru: "Рычаг и момент", kk: "Иінтірек және момент", en: "Lever & moment" }]
     ];
 
     let lang = localStorage.getItem("pq_lang") || "ru";
@@ -343,8 +352,11 @@
         });
         const f7 = document.getElementById("f7-grid");
         if (f7) {
-            f7.innerHTML = FIELD7.map(([icon, para, name]) => `
-                <div class="f7-item"><span class="ico">${icon}</span><div>${name[lang] || name.ru}<small>${para}</small></div></div>`).join("");
+            f7.innerHTML = FIELD7.map(([icon, para, file, name]) => `
+                <button type="button" class="f7-item" data-img="./assets/screenshots/${file}">
+                    <img src="./assets/screenshots/${file}" alt="${name[lang] || name.ru}" loading="lazy">
+                    <span class="f7-cap"><span class="ico">${icon}</span><span>${name[lang] || name.ru}<small>${para}</small></span></span>
+                </button>`).join("");
         }
         document.getElementById("grid").innerHTML = CARDS.map((c) => {
             const item = dict.items[c.id] || { t: c.id, d: "" };
@@ -369,7 +381,7 @@
     }
 
     function bind() {
-        document.querySelectorAll(".shot").forEach((el) => {
+        document.querySelectorAll(".shot, .f7-item").forEach((el) => {
             el.addEventListener("click", () => {
                 const img = document.getElementById("lightbox-img");
                 img.src = el.getAttribute("data-img");

@@ -730,6 +730,7 @@
             "./shared/conspect-examples.js",
             "./shared/level-themes.js",
             "./shared/problem-solver.js",
+            "./shared/oformlenie.js",
             "./shared/sound.js",
             "./shared/team-battle.js",
             "./shared/print-cards.js",
@@ -739,15 +740,16 @@
             "./shared/rpg-boot.js"
         ];
         if (grade === 7) {
-            scripts.push("./7/simulators.js");
+            scripts.push("./shared/sim-light-7.js", "./7/simulators.js");
         } else if (grade === 9) {
             scripts.push("./shared/lab-games.js", "./9/extras.js");
         }
         // Единый визуальный комикс-дневник трилогии (7 → 8 → 9) для всех параллелей
         scripts.push("./shared/trilogy-diary.js");
-        // Визуальные canvas-симуляторы для 8 и 9 классов
+        // Визуальные canvas-симуляторы для 8 и 9 классов:
+        // сначала светлый фотореалистичный движок, затем сами лаборатории
         if (grade === 8 || grade === 9) {
-            scripts.push("./shared/simulators-89.js");
+            scripts.push("./shared/sim-light.js", "./shared/simulators-89.js");
         }
 
         const fill = document.getElementById("loading-fill");

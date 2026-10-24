@@ -3,7 +3,7 @@
    Стратегия: shell-first для навигации, cache-first для ресурсов,
    докачка недостающих файлов из сети и сохранение в кэш.
    ============================================================ */
-const PQ_VERSION = "pq-v3.1.0";
+const PQ_VERSION = "pq-v3.2.0";
 const PQ_SHELL = [
     "./",
     "./index.html",
@@ -37,6 +37,18 @@ const PQ_SHELL = [
     "./shared/offline.js",
     "./shared/offline-manifest.js",
     "./shared/conspect-examples.js",
+    "./shared/locales-base.js",
+    "./shared/oformlenie.js",
+    "./shared/trilogy-diary.js",
+    "./shared/lab-games.js",
+    "./shared/sim-light.js",
+    "./shared/sim-light-7.js",
+    "./shared/simulators-89.js",
+    "./7/simulators.js",
+    "./7/content.js",
+    "./8/content.js",
+    "./9/content.js",
+    "./9/extras.js",
     "./assets/icons/icon-180.png",
     "./assets/icons/icon-192.png"
 ];

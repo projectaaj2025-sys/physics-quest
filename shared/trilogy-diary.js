@@ -37,7 +37,10 @@
             diaryBtn: "Трилогия комиксі",
             nextHint: "Келесі оқиғаға нұсқау:",
             storyBtn: "📖 Трилогия комиксі",
-            storyHint: "Үш ойынның сюжеті бір комиксте"
+            storyHint: "Үш ойынның сюжеті бір комиксте",
+            lockedTitle: "Тарау әзірге жабық",
+            lockedText: "Комикс #{0}-миссияға жеткенде ашылады. Әзірге өткен тараулар қолжетімді.",
+            lockedHint: "#{0}-миссиядан ашылады"
         },
         en: {
             modalTitle: "📖 Physics Quest Trilogy Comic Diary",
@@ -53,7 +56,10 @@
             diaryBtn: "Trilogy Comic",
             nextHint: "A hint at the next adventure:",
             storyBtn: "📖 Trilogy comic",
-            storyHint: "The story of all three games in one comic"
+            storyHint: "The story of all three games in one comic",
+            lockedTitle: "This chapter is still locked",
+            lockedText: "The comic unlocks when you reach mission #{0}. Chapters you have already passed are available.",
+            lockedHint: "Unlocks from mission #{0}"
         }
     };
 
@@ -641,13 +647,61 @@
         ],
 
         9: [
+                        {
+                ep: 1, from: 1, to: 1, img: "./assets/comics/g9-ch01.jpg",
+                formula: "v = s / t · правила ТБ = допуск к полёту",
+                title: {
+                    ru: "Глава 1. Допуск к полётам",
+                    kk: "1-тарау. Ұшуға жолдама",
+                    en: "Chapter 1. Flight Clearance"
+                },
+                date: {
+                    ru: "Стыковочный шлюз «Орбиты-9» · ТБ и §1",
+                    kk: "«Орбита-9» түйісу шлюзі · ҚТ және §1",
+                    en: "Orbita-9 airlock · Safety & §1"
+                },
+                panels: [
+                    {
+                        who: { ru: "КВАНТ", kk: "КВАНТ", en: "KVANT" },
+                        color: "#38bdf8",
+                        text: {
+                            ru: "Курсант, прежде чем сесть за штурвал — допуск. Станция просыпается после пятидесяти лет сна, и первым делом мы проверяем, что ты знаешь правила безопасности.",
+                            kk: "Курсант, штурвалға отырмас бұрын — жолдама. Станция елу жылдық ұйқыдан оянып жатыр, ең алдымен қауіпсіздік ережелерін білетініңді тексереміз.",
+                            en: "Cadet, before you take the controls you need clearance. The station is waking after fifty years, and first we check that you know the safety rules."
+                        }
+                    },
+                    {
+                        who: { ru: "ПИЛОТ", kk: "ҰШҚЫШ", en: "PILOT" },
+                        color: "#34d399",
+                        text: {
+                            ru: "Ремни затянуты, шлем герметичен, приборы проверены. Полёт начинается не с двигателя, а с дисциплины!",
+                            kk: "Белдік тартылды, дулыға герметикалық, аспаптар тексерілді. Ұшу қозғалтқыштан емес, тәртіптен басталады!",
+                            en: "Harness tight, helmet sealed, instruments checked. A flight starts with discipline, not with the engine!"
+                        }
+                    },
+                    {
+                        who: { ru: "КВАНТ", kk: "КВАНТ", en: "KVANT" },
+                        color: "#38bdf8",
+                        text: {
+                            ru: "Допуск принят. Шлюз открыт — впереди лётная школа, где ты научишься рассчитывать движение метеоров.",
+                            kk: "Жолдама қабылданды. Шлюз ашық — алда метеорлардың қозғалысын есептеуді үйренетін ұшқыштар мектебі.",
+                            en: "Clearance accepted. The airlock is open — ahead lies flight school, where you will learn to calculate meteor motion."
+                        }
+                    }
+                ],
+                note: {
+                    ru: "Безопасность — это первая формула лётчика: цена ошибки здесь измеряется не баллами, а жизнью экипажа.",
+                    kk: "Қауіпсіздік — ұшқыштың бірінші формуласы: мұнда қатенің бағасы баллмен емес, экипаж өмірімен өлшенеді.",
+                    en: "Safety is a pilot's first formula: here a mistake costs not points but the crew's lives."
+                }
+            },
             {
-                ep: 1, from: 1, to: 8, img: "./assets/comics/g9-ep1.jpg",
+                ep: 2, from: 2, to: 8, img: "./assets/comics/g9-ch02.jpg",
                 formula: "x = x₀ + v₀ₓt + aₓt²/2 · vₓ = v₀ₓ + aₓt",
                 title: {
-                    ru: "Глава 1. Пробуждение «Орбиты-9»",
-                    kk: "1-тарау. «Орбита-9» станциясының оянуы",
-                    en: "Chapter 1. Awakening of Orbita-9"
+                    ru: "Глава 2. Пробуждение «Орбиты-9»",
+                    kk: "2-тарау. «Орбита-9» станциясының оянуы",
+                    en: "Chapter 2. Awakening of Orbita-9"
                 },
                 date: {
                     ru: "Стыковочный узел, 420 км над Землёй · ТБ и §1–§7",
@@ -689,13 +743,61 @@
                     en: "Vector kinematics is the navigation language of every spacecraft."
                 }
             },
+                        {
+                ep: 3, from: 9, to: 13, img: "./assets/comics/g9-ch03.jpg",
+                formula: "M = F · d · sin α · звёздная карта = навигация",
+                title: {
+                    ru: "Глава 3. Звёздная карта: астрономия",
+                    kk: "3-тарау. Жұлдыз картасы: астрономия",
+                    en: "Chapter 3. Star Chart: Astronomy"
+                },
+                date: {
+                    ru: "Обсерватория «Орбиты-9» · §9–§13",
+                    kk: "«Орбита-9» обсерваториясы · §9–§13",
+                    en: "Orbita-9 observatory · §9–§13"
+                },
+                panels: [
+                    {
+                        who: { ru: "КВАНТ", kk: "КВАНТ", en: "KVANT" },
+                        color: "#38bdf8",
+                        text: {
+                            ru: "Угроза пришла из глубины космоса. Чтобы найти её источник, научись читать звёздную карту: параллакс, годичное движение Земли, масштабы расстояний.",
+                            kk: "Қауіп ғарыш тереңдігінен келді. Оның көзін табу үшін жұлдыз картасын оқуды үйрен: параллакс, Жердің жылдық қозғалысы, қашықтықтар масштабы.",
+                            en: "The threat came from deep space. To find its source, learn to read the star chart: parallax, Earth's yearly motion, distance scales."
+                        }
+                    },
+                    {
+                        who: { ru: "ИНЖЕНЕР", kk: "ИНЖЕНЕР", en: "ENGINEER" },
+                        color: "#f59e0b",
+                        text: {
+                            ru: "Смотри: одна и та же звезда смещается по небу на полградуса за полгода. Значит, до неё — парсеки, а не километры!",
+                            kk: "Қара: бір жұлдыз жарты жылда аспанда жарты градусқа ығысады. Демек, оған дейін километр емес, парсектер!",
+                            en: "Look: the same star shifts half a degree across the sky in six months. So it lies parsecs away, not kilometres!"
+                        }
+                    },
+                    {
+                        who: { ru: "ПИЛОТ", kk: "ҰШҚЫШ", en: "PILOT" },
+                        color: "#34d399",
+                        text: {
+                            ru: "Курс проложен по трём опорным звёздам. Метеорный поток Персеиды-Х идёт точно из созвездия Кассиопеи!",
+                            kk: "Курс үш тірек жұлдыз бойынша салынды. Персеида-Х метеор ағыны дәл Кассиопея шоқжұлдызынан келеді!",
+                            en: "Course plotted by three reference stars. The Perseid-X stream comes exactly from the constellation Cassiopeia!"
+                        }
+                    }
+                ],
+                note: {
+                    ru: "Астрономия — это навигация: измерив угол и параллакс, мы находим расстояние до объекта, который ещё не видим.",
+                    kk: "Астрономия — навигация: бұрыш пен параллаксты өлшеп, әлі көрмеген нысанға дейінгі қашықтықты табамыз.",
+                    en: "Astronomy is navigation: by measuring an angle and a parallax we find the distance to an object we cannot yet see."
+                }
+            },
             {
-                ep: 2, from: 9, to: 20, img: "./assets/comics/g9-ep2.jpg",
+                ep: 4, from: 14, to: 20, img: "./assets/comics/g9-ch04.jpg",
                 formula: "F = Gm₁m₂/R² · v₁ = √(GM/R) ≈ 7,9 км/с",
                 title: {
-                    ru: "Глава 2. Крылья «Беркута» и гравитация",
-                    kk: "2-тарау. «Бүркіт» қанаттары және гравитация",
-                    en: "Chapter 2. Wings of Berkut & Gravity"
+                    ru: "Глава 4. Крылья «Беркута» и гравитация",
+                    kk: "4-тарау. «Бүркіт» қанаттары және гравитация",
+                    en: "Chapter 4. Wings of Berkut & Gravity"
                 },
                 date: {
                     ru: "Околоземная орбита · §8–§19",
@@ -738,12 +840,12 @@
                 }
             },
             {
-                ep: 3, from: 21, to: 24, img: "./assets/comics/g9-ep3.jpg",
+                ep: 5, from: 21, to: 24, img: "./assets/comics/g9-ch05.jpg",
                 formula: "m₁v⃗₁ + m₂v⃗₂ = const · E_к = mv²/2",
                 title: {
-                    ru: "Глава 3. Импульсный щит против болида",
-                    kk: "3-тарау. Болидке қарсы импульстік қалқан",
-                    en: "Chapter 3. Momentum Shield Against the Bolide"
+                    ru: "Глава 5. Импульсный щит против болида",
+                    kk: "5-тарау. Болидке қарсы импульстік қалқан",
+                    en: "Chapter 5. Momentum Shield Against the Bolide"
                 },
                 date: {
                     ru: "Внешний периметр · §20–§23",
@@ -786,12 +888,12 @@
                 }
             },
             {
-                ep: 4, from: 25, to: 35, img: "./assets/comics/g9-ep4.jpg",
+                ep: 6, from: 25, to: 32, img: "./assets/comics/g9-ch06.jpg",
                 formula: "T = 2π√(l/g) · λ = v / ν · c = 3·10⁸ м/с",
                 title: {
-                    ru: "Глава 4. Резонансная волна",
-                    kk: "4-тарау. Резонанстық толқын",
-                    en: "Chapter 4. Resonance Wave"
+                    ru: "Глава 6. Резонансная волна",
+                    kk: "6-тарау. Резонанстық толқын",
+                    en: "Chapter 6. Resonance Wave"
                 },
                 date: {
                     ru: "Волновой излучатель «Орбиты-9» · §24–§35",
@@ -833,13 +935,61 @@
                     en: "Resonance can shatter bridges, yet in a physicist's hands becomes a precision tool for communication and defense."
                 }
             },
+                        {
+                ep: 7, from: 33, to: 37, img: "./assets/comics/g9-ch07.jpg",
+                formula: "hν = A + E_к · E = mc² · закон радиоактивного распада",
+                title: {
+                    ru: "Глава 7. Атомный рубеж",
+                    kk: "7-тарау. Атомдық шеп",
+                    en: "Chapter 7. Atomic Frontier"
+                },
+                date: {
+                    ru: "Радиационный пояс · §33–§37",
+                    kk: "Радиация белдеуі · §33–§37",
+                    en: "Radiation belt · §33–§37"
+                },
+                panels: [
+                    {
+                        who: { ru: "КВАНТ", kk: "КВАНТ", en: "KVANT" },
+                        color: "#38bdf8",
+                        text: {
+                            ru: "Впереди радиационный пояс. Кванты, фотоэффект, рентген и радиоактивность — вот что нам нужно понять, чтобы пройти его без потерь.",
+                            kk: "Алда радиация белдеуі. Кванттар, фотоэффект, рентген және радиоактивтілік — оны шығынсыз өту үшін осыны түсінуіміз керек.",
+                            en: "A radiation belt lies ahead. Quanta, the photoelectric effect, X-rays and radioactivity are what we must understand to cross it safely."
+                        }
+                    },
+                    {
+                        who: { ru: "ИНЖЕНЕР", kk: "ИНЖЕНЕР", en: "ENGINEER" },
+                        color: "#f59e0b",
+                        text: {
+                            ru: "Защита из свинца и водорода гасит частицы: тяжёлые ядра берут энергию на себя, а лёгкие замедляют нейтроны.",
+                            kk: "Қорғасын мен сутектен жасалған қорғаныс бөлшектерді сөндіреді: ауыр ядролар энергияны өзіне алады, жеңілдері нейтрондарды баяулатады.",
+                            en: "Lead-and-hydrogen shielding absorbs particles: heavy nuclei take the energy while light ones slow the neutrons."
+                        }
+                    },
+                    {
+                        who: { ru: "ПИЛОТ", kk: "ҰШҚЫШ", en: "PILOT" },
+                        color: "#34d399",
+                        text: {
+                            ru: "Фотоэлементы на обшивке ловят каждый квант света. Энергии хватает, чтобы щит держался на минимуме.",
+                            kk: "Қаптамадағы фотоэлементтер әрбір жарық квантын ұстайды. Қалқанды ең төменгі деңгейде ұстауға энергия жетеді.",
+                            en: "The photovoltaic cells on the hull catch every light quantum. It is enough energy to keep the shield at minimum."
+                        }
+                    }
+                ],
+                note: {
+                    ru: "Энергия кванта E = hν связывает свет и атом: от неё зависит, вырвет ли фотон электрон из металла.",
+                    kk: "Квант энергиясы E = hν жарық пен атомды байланыстырады: фотон металдан электронды жұлып алатыны осыған байланысты.",
+                    en: "The quantum energy E = hν links light and the atom: it decides whether a photon frees an electron from a metal."
+                }
+            },
             {
-                ep: 5, from: 36, to: 43, img: "./assets/comics/g9-ep5.svg",
+                ep: 8, from: 38, to: 42, img: "./assets/comics/g9-ch08.jpg",
                 formula: "hν = A_вых + E_к · E = Δmc² · N = N₀·2^(−t/T)",
                 title: {
-                    ru: "Глава 5. Квантовое сердце станции",
-                    kk: "5-тарау. Станцияның кванттық жүрегі",
-                    en: "Chapter 5. Quantum Heart of the Station"
+                    ru: "Глава 8. Квантовое сердце станции",
+                    kk: "8-тарау. Станцияның кванттық жүрегі",
+                    en: "Chapter 8. Quantum Heart of the Station"
                 },
                 date: {
                     ru: "Квантово-ядерный реактор · §36–§43",
@@ -882,12 +1032,12 @@
                 }
             },
             {
-                ep: 6, from: 44, to: 48, img: "./assets/comics/g9-ep6.svg",
+                ep: 9, from: 43, to: 44, img: "./assets/comics/g9-ch09.jpg",
                 formula: "Астерия (7) → Эквилибриум (8) → Орбита-9 (9)",
                 title: {
-                    ru: "Глава 6. Единый щит Земли",
-                    kk: "6-тарау. Жердің біртұтас қалқаны",
-                    en: "Chapter 6. United Shield of Earth"
+                    ru: "Глава 9. Единый щит Земли",
+                    kk: "9-тарау. Жердің біртұтас қалқаны",
+                    en: "Chapter 9. United Shield of Earth"
                 },
                 date: {
                     ru: "Гранд-финал трилогии · Лаб. №1–4",
@@ -927,6 +1077,54 @@
                     ru: "Трилогия завершена! Все три звена планетарной защиты — Астерия, Эквилибриум и Орбита-9 — объединены твоими знаниями.",
                     kk: "Трилогия аяқталды! Планеталық қорғаныстың үш буыны — Астерия, Эквилибриум және Орбита-9 — сенің біліміңмен біріктірілді.",
                     en: "Trilogy complete! All three links of planetary defense — Asteria, Equilibrium, and Orbita-9 — stand united through your knowledge."
+                }
+            },
+            {
+                ep: 10, from: 45, to: 48, img: "./assets/comics/g9-ch10.jpg",
+                formula: "T = 2π√(l/g) · λ = v/ν · ε = NΔΦ/Δt · F = kq₁q₂/r²",
+                title: {
+                    ru: "Глава 10. Космолаборатория",
+                    kk: "10-тарау. Ғарыш зертханасы",
+                    en: "Chapter 10. Space Laboratory"
+                },
+                date: {
+                    ru: "Научный отсек «Орбиты-9» · Лаб. №1–4",
+                    kk: "«Орбита-9» ғылыми бөлімі · №1–4 зерт.",
+                    en: "Orbita-9 science bay · Labs #1–4"
+                },
+                panels: [
+                    {
+                        who: { ru: "КВАНТ", kk: "КВАНТ", en: "KVANT" },
+                        color: "#38bdf8",
+                        text: {
+                            ru: "Практика — критерий истины! На борту открыта космолаборатория: маятник, волновая камера, фотоэлемент и катушка индуктивности.",
+                            kk: "Тәжірибе — ақиқат өлшемі! Бортта ғарыш зертханасы ашылды: маятник, толқын камерасы, фотоэлемент және индуктивтік орама.",
+                            en: "Practice is the test of truth! A space lab is open aboard: a pendulum, a wave tank, a photocell and an induction coil."
+                        }
+                    },
+                    {
+                        who: { ru: "ПИЛОТ", kk: "ҰШҚЫШ", en: "PILOT" },
+                        color: "#34d399",
+                        text: {
+                            ru: "Ставлю маятник на 0,5 метра — и осциллограф показывает период 1,42 секунды. Ровно как в формуле!",
+                            kk: "Маятникті 0,5 метрге қоямын — осциллограф 1,42 секунд период көрсетеді. Дәл формуладағыдай!",
+                            en: "I set the pendulum to 0.5 metres and the oscilloscope shows a period of 1.42 seconds — exactly as the formula says!"
+                        }
+                    },
+                    {
+                        who: { ru: "КВАНТ", kk: "КВАНТ", en: "KVANT" },
+                        color: "#38bdf8",
+                        text: {
+                            ru: "Каждая лаборатория — это +30 XP и +5 алмазов. Собери все четыре — и станция получит полный научный архив.",
+                            kk: "Әр зертхана — +30 XP және +5 алмаз. Төртеуін де жина — станция толық ғылыми мұрағат алады.",
+                            en: "Each lab earns +30 XP and +5 diamonds. Complete all four and the station gains a full science archive."
+                        }
+                    }
+                ],
+                note: {
+                    ru: "Лаборатория превращает формулы в опыт: измеряем период, длину волны, ЭДС и заряд — и сравниваем с расчётом.",
+                    kk: "Зертхана формулаларды тәжірибеге айналдырады: период, толқын ұзындығы, ЭҚК және зарядты өлшеп, есеппен салыстырамыз.",
+                    en: "The lab turns formulas into experiment: we measure period, wavelength, EMF and charge, then compare with the calculation."
                 }
             }
         ]
@@ -1208,6 +1406,35 @@
                 font-size: 13px;
                 cursor: pointer;
             }
+            .pq-td-ep.locked {
+                opacity: 0.62;
+                border-style: dashed;
+                filter: grayscale(0.5);
+            }
+            .pq-td-ep.locked:hover { transform: none; border-color: rgba(148, 163, 184, 0.35); }
+            .pq-td-ep.shake { animation: pq-td-shake 0.4s ease; }
+            @keyframes pq-td-shake {
+                0%, 100% { transform: translateX(0); }
+                25% { transform: translateX(-4px); }
+                50% { transform: translateX(4px); }
+                75% { transform: translateX(-3px); }
+            }
+            .pq-td-locked {
+                display: flex; gap: 14px; align-items: center;
+                margin: 14px 18px; padding: 26px 20px;
+                border-radius: 16px;
+                border: 1.5px dashed rgba(148, 163, 184, 0.45);
+                background: rgba(15, 23, 42, 0.55);
+                color: #cbd5e1;
+            }
+            .pq-td-locked-icon {
+                font-size: 30px; width: 58px; height: 58px; flex: 0 0 58px;
+                display: flex; align-items: center; justify-content: center;
+                border-radius: 50%; background: rgba(56, 189, 248, 0.14);
+                border: 1px solid rgba(56, 189, 248, 0.3);
+            }
+            .pq-td-locked strong { display: block; font-size: 15px; color: #e2e8f0; margin-bottom: 4px; }
+            .pq-td-locked p { margin: 0; font-size: 13px; line-height: 1.5; color: #94a3b8; }
             .pq-td-navbtn.primary {
                 background: linear-gradient(135deg, #0ea5e9, #2563eb);
                 border-color: transparent;
@@ -1296,6 +1523,29 @@
             return modal;
         },
 
+        unlockedLevel(grade) {
+            let lvl = 1;
+            try {
+                if (window.Storage && Storage.getProgressForGrade) {
+                    const prog = Storage.getProgressForGrade(Number(grade) || 7) || {};
+                    lvl = Math.max(lvl, Number(prog.unlockedLevel) || 1);
+                    const done = prog.completedLevels || {};
+                    Object.keys(done).forEach((k) => { lvl = Math.max(lvl, Number(k) + 1); });
+                }
+            } catch (e) {}
+            try {
+                if (Number(window.CURRENT_GRADE) === Number(grade) && window.Game && Number(Game.currentLevel)) {
+                    lvl = Math.max(lvl, Number(Game.currentLevel));
+                }
+            } catch (e) {}
+            return lvl;
+        },
+
+        isLocked(item, grade) {
+            if (!item) return false;
+            return this.unlockedLevel(grade) < Number(item.from || 1);
+        },
+
         open(grade, chapterIndex = 0) {
             if ([7, 8, 9].includes(Number(grade))) this.grade = Number(grade);
             const list = TRILOGY_BOOKS[this.grade] || TRILOGY_BOOKS[7];
@@ -1348,13 +1598,23 @@
                     </div>
 
                     <div class="pq-td-eps">
-                        ${list.map((ch, idx) => `
-                            <button type="button" class="pq-td-ep ${idx === this.index ? "active" : ""}" data-td-idx="${idx}">
-                                #${ch.ep} · ${esc(loc(ch.title).replace(/^Глава \d+\.\s*|^\d+-тарау\.\s*|^Chapter \d+\.\s*/i, ""))}
-                            </button>
-                        `).join("")}
+                        ${list.map((ch, idx) => {
+                            const locked = this.isLocked(ch, this.grade);
+                            return `
+                            <button type="button" class="pq-td-ep ${idx === this.index ? "active" : ""} ${locked ? "locked" : ""}" data-td-idx="${idx}" data-locked="${locked ? 1 : 0}" title="${locked ? esc(ui("lockedHint", ch.from)) : ""}">
+                                ${locked ? "🔒 " : ""}#${ch.ep} · ${esc(loc(ch.title).replace(/^Глава \d+\.\s*|^\d+-тарау\.\s*|^Chapter \d+\.\s*/i, ""))}
+                            </button>`;
+                        }).join("")}
                     </div>
 
+                    ${this.isLocked(item, this.grade) ? `
+                    <div class="pq-td-locked">
+                        <div class="pq-td-locked-icon">🔒</div>
+                        <div>
+                            <strong>${esc(ui("lockedTitle"))}</strong>
+                            <p>${esc(ui("lockedText", item.from))}</p>
+                        </div>
+                    </div>` : `
                     <div class="pq-td-art-wrap">
                         <img src="${esc(item.img)}" alt="${esc(loc(item.title))}">
                         <div class="pq-td-art-caption">
@@ -1379,6 +1639,7 @@
                         <div><strong>${esc(ui("physKey"))}</strong> ${esc(loc(item.note))}</div>
                         <span class="pq-td-formula">${esc(item.formula)}</span>
                     </div>
+                    </div>`}
 
                     ${item.teaser ? `
                     <div class="pq-td-teaser">
@@ -1409,7 +1670,14 @@
             });
             modal.querySelectorAll("[data-td-idx]").forEach(b => {
                 b.onclick = () => {
-                    this.index = Number(b.getAttribute("data-td-idx"));
+                    const idx = Number(b.getAttribute("data-td-idx"));
+                    if (b.getAttribute("data-locked") === "1") {
+                        try { if (window.PQSound) PQSound.play("wrong"); } catch (e) {}
+                        b.classList.add("shake");
+                        setTimeout(() => b.classList.remove("shake"), 420);
+                        return;
+                    }
+                    this.index = idx;
                     this.render();
                 };
             });

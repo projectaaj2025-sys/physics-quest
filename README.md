@@ -37,13 +37,13 @@
 - `shared/print-cards.js` — печать A4-бейджей класса: имя, постоянный 4-символьный код, QR-код входа.
 - `shared/certificate.js` — «Сертификат / Паспорт пилота трилогии» (PNG/печать, отдельные поля «Фамилия» и «Имя», 4 варианта фона в `assets/certs/`).
 - `shared/sound.js` — Web Audio SFX и фоновый эмбиент с переключателем 🔊 / 🔇.
-- `shared/offline.js`, `offline-manifest.js`, `sw.js` — офлайн-PWA (`pq-v3.1.0`), кэш 98 файлов и ZIP-архив всей игры.
+- `shared/offline.js`, `offline-manifest.js`, `sw.js` — офлайн-PWA (`pq-v3.2.0`), кэш 123 файлов и ZIP-архив всей игры (`node tools/build-offline-manifest.js` пересобирает список).
 - `shared/level-themes.js` — 14 разных миров внутри уровней (небо, силуэты, частицы, свечение).
 - `shared/trilogy-diary.js` — единый визуальный комикс-дневник трилогии (3 части × 6 глав × 3 панели) с иллюстрациями.
 - `assets/pdf/` — полные PDF-конспекты на 3 языках (`grade7-{ru,kk,en}.pdf`, `grade8-{ru,kk,en}.pdf`, `grade9-{ru,kk,en}.pdf`).
-- `assets/comics/` — AI-иллюстрации глав комикс-дневника (`g7-ep1…6.jpg`, `g8-ep1…6.jpg`, `g9-ep1…4.jpg`, оставшиеся главы — SVG).
+- `assets/comics/` — AI-иллюстрации всех глав комикс-дневника: `g7-ep1…6.jpg`, `g8-ep1…6.jpg`, `g9-ch01…ch10.jpg` (22 файла, по одному на каждую главу сюжета).
 - `assets/certs/` — фоны сертификатов (`cert-g7/g8/g9/all.jpg`), сгенерированы нейросетью.
-- `assets/screenshots/` — кадры симуляторов и миров уровней; страница-галерея `screenshots.html`.
+- `assets/screenshots/` — 33 кадра всех симуляторов (15 опытов 7 класса + 18 лабораторий 8–9 классов) и миров уровней; страница-галерея `screenshots.html`.
 
 ### Что нового в версии 2.0
 
