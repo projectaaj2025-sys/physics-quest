@@ -14,7 +14,7 @@
         "КВАНТ-0": { ru: "КВАНТ-0", kk: "КВАНТ-0", en: "KVANT-0" },
         "АЛИЯ": { ru: "АЛИЯ", kk: "ӘЛИЯ", en: "ALIYA" },
         "ТИМУР": { ru: "ТИМУР", kk: "ТИМУР", en: "TIMUR" },
-        "ПИЛОТ": { ru: "ПИЛОТ", kk: "ҰШҚЫШ", en: "PILOT" },
+        "ТЫ": { ru: "ТЫ", kk: "СЕН", en: "YOU" },
         "ИНЖЕНЕР": { ru: "ИНЖЕНЕР", kk: "ИНЖЕНЕР", en: "ENGINEER" }
     };
 
@@ -27,7 +27,7 @@
     const KVANT = "#38bdf8";
     const ALIYA = "#f472b6";
     const TIMUR = "#fbbf24";
-    const PILOT = "#34d399";
+    const PLAYER = "#34d399";
     const ENGINEER = "#fb923c";
 
     const EXTRA = {
@@ -308,10 +308,10 @@
                         "Инструктаж пройден. Теперь каждая ошибка в расчёте — это трещина в орбитальном щите.",
                         "Инструктаж өтілді. Енді есептегі әр қате — орбиталық қалқандағы жарық.",
                         "The briefing is done. Now every calculation error is a crack in the orbital shield."),
-                    P("ПИЛОТ", PILOT,
-                        "Курсант, я Кира с Орбиты-9. Показываю пульт — тут всё считается в СИ и без округлений.",
-                        "Курсант, мен Орбита-9-дан Кирамын. Пультты көрсетемін — бәрі ХБЖ-де, дөңгелектеусіз.",
-                        "Cadet, I'm Kira from Orbita-9. Here is the console — everything in SI, no early rounding.")
+                    P("АЛИЯ", ALIYA,
+                        "Курсант, я Алия с Орбиты-9. Показываю пульт — тут всё считается в СИ и без округлений.",
+                        "Курсант, мен Орбита-9-дан Әлиямын. Пультты көрсетемін — бәрі ХБЖ-де, дөңгелектеусіз.",
+                        "Cadet, I'm Aliya from Orbita-9. Here is the console — everything in SI, no early rounding.")
                 ]
             },
             2: {
@@ -322,7 +322,7 @@
                     en: "Distance and displacement differ. The vector matters more than the path travelled."
                 },
                 panels: [
-                    P("ПИЛОТ", PILOT,
+                    P("ТЫ", PLAYER,
                         "Ты прошёл 4 км на север и 3 км на восток. Путь 7 км, а перемещение — 5 км.",
                         "Сен 4 км солтүстікке, 3 км шығысқа жүрдің. Жол 7 км, ал орын ауыстыру — 5 км.",
                         "You walked 4 km north and 3 km east. Path 7 km, displacement 5 km."),
@@ -340,7 +340,7 @@
                     en: "Moment of force is force times lever arm: a heavy telescope turns not with more force, but further from the axis."
                 },
                 panels: [
-                    P("ПИЛОТ", PILOT,
+                    P("ТЫ", PLAYER,
                         "Антенна массой 200 кг. Жму в 0,5 м от оси с силой 40 Н — момент 20 Н·м, и привод справляется.",
                         "Антеннаның массасы 200 кг. Осьтен 0,5 м жерде 40 Н күшпен басамын — момент 20 Н·м, жетек көтереді.",
                         "The dish weighs 200 kg. I push 40 N at 0.5 m from the axis — a 20 N·m moment, and the drive holds it."),
@@ -358,7 +358,7 @@
                     en: "Gravity does not vanish in orbit: it keeps Berkut on its loop and sets the first cosmic velocity."
                 },
                 panels: [
-                    P("ПИЛОТ", PILOT,
+                    P("ТЫ", PLAYER,
                         "На высоте 400 км g меньше всего на 11%. Поэтому первая космическая — 7,9 км/с, а не «тяжести нет».",
                         "400 км биіктікте g небәрі 11%-ға кіші. Сондықтан бірінші ғарыштық — 7,9 км/с, «ауырлық жоқ» емес.",
                         "At 400 km altitude g is only 11% lower. That's why the first cosmic velocity is 7.9 km/s, not 'no gravity'."),
@@ -376,7 +376,7 @@
                     en: "Momentum is conserved: a hit on the shield turns direction, not the system's total momentum."
                 },
                 panels: [
-                    P("ПИЛОТ", PILOT,
+                    P("ТЫ", PLAYER,
                         "Две тележки 2 и 3 кг: после сцепки скорость 2 м/с. Значит, до сцепки импульс был 10 кг·м/с.",
                         "Екі арба 2 және 3 кг: тіркелгеннен кейін жылдамдық 2 м/с. Демек, бұрын импульс 10 кг·м/с.",
                         "Two carts of 2 and 3 kg: 2 m/s after coupling. So momentum before was 10 kg·m/s."),
@@ -394,7 +394,7 @@
                     en: "Period and frequency: a pendulum and a satellite obey the same mathematics."
                 },
                 panels: [
-                    P("ПИЛОТ", PILOT,
+                    P("ТЫ", PLAYER,
                         "Маятник длиной 1 м даёт период 2 с. На орбите при другом g период тоже другой.",
                         "Ұзындығы 1 м маятник 2 с период береді. Орбитада g басқа, сондықтан период та басқа.",
                         "A 1 m pendulum gives a 2 s period. On orbit, with another g, the period changes too."),
@@ -423,13 +423,14 @@
                 ]
             },
             8: {
+                img: "./assets/comics/g9-ep8b.jpg",
                 note: {
                     ru: "Квантовое сердце: энергия фотона E = hν и дефект массы E = Δmc² — два способа получить одну и ту же энергию.",
                     kk: "Кванттық жүрек: фотон энергиясы E = hν және масса ақауы E = Δmc² — бір энергияны алудың екі жолы.",
                     en: "Quantum heart: photon energy E = hν and mass defect E = Δmc² — two ways to get the same energy."
                 },
                 panels: [
-                    P("ПИЛОТ", PILOT,
+                    P("ТЫ", PLAYER,
                         "Фотон с частотой 5·10¹⁴ Гц даёт E ≈ 3,3·10⁻¹⁹ Дж. Мало по одному, много в пучке.",
                         "Жиілігі 5·10¹⁴ Гц фотон E ≈ 3,3·10⁻¹⁹ Дж береді. Біреуі аз, шоғырда көп.",
                         "A photon at 5·10¹⁴ Hz carries E ≈ 3.3·10⁻¹⁹ J. Tiny alone, huge in a beam."),
@@ -440,13 +441,14 @@
                 ]
             },
             9: {
+                img: "./assets/comics/g9-ep9b.jpg",
                 note: {
                     ru: "Три щита — одна система: энергия не появляется из ниоткуда, поэтому запас считают заранее.",
                     kk: "Үш қалқан — бір жүйе: энергия жоқтан пайда болмайды, сондықтан қорды алдын ала санайды.",
                     en: "Three shields, one system: energy never appears from nowhere, so the reserve is calculated in advance."
                 },
                 panels: [
-                    P("ПИЛОТ", PILOT,
+                    P("ТЫ", PLAYER,
                         "Три щита дают 97% защиты. Остальное — запас, который мы держим в журнале.",
                         "Үш қалқан 97% қорғаныс береді. Қалғаны — журналда ұстаған қор.",
                         "Three shields give 97% protection. The rest is reserve kept in the log."),
@@ -457,13 +459,14 @@
                 ]
             },
             10: {
+                img: "./assets/comics/g9-ep10b.jpg",
                 note: {
                     ru: "Космолаборатория: маятник, волна, индукция и закон Кулона — четыре опыта, которые проверяют всю трилогию.",
                     kk: "Ғарыш зертханасы: маятник, толқын, индукция және Кулон заңы — бүкіл трилогияны тексеретін төрт тәжірибе.",
                     en: "Space laboratory: pendulum, wave, induction and Coulomb's law — four experiments that test the whole trilogy."
                 },
                 panels: [
-                    P("ПИЛОТ", PILOT,
+                    P("ТЫ", PLAYER,
                         "Маятник 1 м даёт период 2 с, волна 30 МГц — длину 10 м. Сходится с расчётом, значит, приборы в порядке.",
                         "1 м маятник 2 с период береді, 30 МГц толқын — 10 м ұзындық. Есеппен сәйкес, аспаптар тәртіпте.",
                         "A 1 m pendulum gives 2 s, a 30 MHz wave gives 10 m. It matches the maths, so the instruments are fine."),

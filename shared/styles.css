@@ -901,6 +901,14 @@ html, body {
     font-size: 12px;
     color: var(--text-dim);
 }
+.quest-marks-note {
+    margin-top: 6px;
+    padding: 8px 10px;
+    border-radius: 10px;
+    background: rgba(56, 189, 248, 0.08);
+    border: 1px dashed rgba(56, 189, 248, 0.35);
+    line-height: 1.45;
+}
 .profile-conspekt-actions {
     display: flex;
     gap: 10px;
