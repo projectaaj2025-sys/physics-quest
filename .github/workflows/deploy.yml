@@ -15,7 +15,29 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
+  check:
+    runs-on: ubuntu-latest
+    outputs:
+      enabled: ${{ steps.pages.outputs.enabled }}
+    steps:
+      - name: Проверить, что GitHub Pages включён для Actions
+        id: pages
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          info=$(curl -s -H "Authorization: Bearer $GH_TOKEN" -H "Accept: application/vnd.github+json" \
+            "${{ github.api_url }}/repos/${{ github.repository }}/pages" || true)
+          build=$(printf '%s' "$info" | jq -r '.build_type // empty' 2>/dev/null)
+          if [ "$build" = "workflow" ]; then
+            echo "enabled=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "enabled=false" >> "$GITHUB_OUTPUT"
+            echo "::notice title=GitHub Pages::Pages ещё не включён. Откройте Settings → Pages → Source: GitHub Actions и запустите этот workflow заново."
+          fi
+
   deploy:
+    needs: check
+    if: needs.check.outputs.enabled == 'true'
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
