@@ -21,14 +21,56 @@ let storyModalMode = "journal";
 let storyBriefingLevel = null;
 let levelScreenTab = "levels";
 
+/* Окно «Лор и сюжет» содержит две части в одном окне:
+   1) .story-lore — текст лора, 2) #pq-comic-zone — комикс трилогии.
+   Так комикс живёт вместе с лором, а не отдельной кнопкой. */
+function ensureStoryLayout() {
+    const content = document.getElementById("story-content");
+    if (!content) return null;
+    let lore = content.querySelector("#story-lore");
+    let zone = content.querySelector("#pq-comic-zone");
+    if (!lore || !zone) {
+        content.innerHTML = "";
+        lore = document.createElement("div");
+        lore.id = "story-lore";
+        lore.className = "story-lore";
+        zone = document.createElement("section");
+        zone.id = "pq-comic-zone";
+        zone.className = "pq-comic-zone";
+        zone.setAttribute("aria-live", "polite");
+        content.appendChild(lore);
+        content.appendChild(zone);
+    }
+    return { lore, zone };
+}
+
 function setStoryModalContent(kicker, title, html, mode = "journal") {
     storyModalMode = mode;
     document.getElementById("story-kicker").textContent = kicker || "";
     document.getElementById("story-title").textContent = title || "";
-    document.getElementById("story-content").innerHTML = html || "";
+    const layout = ensureStoryLayout();
+    const target = layout ? layout.lore : document.getElementById("story-content");
+    target.innerHTML = html || "";
+    if (layout) {
+        const showComic = mode === "journal";
+        layout.zone.style.display = showComic ? "block" : "none";
+        if (!showComic) layout.zone.innerHTML = "";
+        document.querySelector(".story-modal-content")?.classList.toggle("story-has-comic", showComic);
+    }
     const continueButton = document.getElementById("btn-story-continue");
     continueButton.style.display = mode === "briefing" ? "inline-flex" : "none";
     document.getElementById("story-modal").classList.add("active");
+    if (layout && mode === "journal") {
+        if (typeof TrilogyDiary !== "undefined" && TrilogyDiary.renderInto) {
+            try { TrilogyDiary.renderInto(layout.zone); } catch (e) { console.error(e); }
+        }
+        // Быстрый переход от героев к комиксу — иначе он в самом низу окна
+        const jump = target.querySelector('[data-pq-jump="comic"]');
+        if (jump) jump.onclick = (e) => {
+            e.preventDefault();
+            try { layout.zone.scrollIntoView({ block: "start", behavior: "smooth" }); } catch (err) {}
+        };
+    }
 }
 
 function showStoryBriefing(levelId) {
@@ -72,7 +114,9 @@ function showStoryJournal() {
     const totalCompleted = completedStoryLevels(progress);
     const totalLevels = LEVELS_CONFIG.length;
     const percentage = Math.round((totalCompleted / totalLevels) * 100);
+    const castIntro = window.PQStoryCast && PQStoryCast.introHtml ? PQStoryCast.introHtml() : "";
     const html = `
+        ${castIntro}
         <div class="story-overall-progress">
             <strong>${I18n.t("storyGlobalProgress")}</strong>
             <div class="story-progress-track"><div class="story-progress-fill" style="width:${percentage}%"></div></div>
@@ -274,6 +318,12 @@ function setupMainMenu() {
         showAbout();
     });
     document.getElementById("btn-level-story").addEventListener("click", () => {
+        showStoryJournal();
+    });
+    // Смена языка перерисовывает открытое окно лора вместе с комиксом
+    window.addEventListener("pq:lang-changed", () => {
+        const modal = document.getElementById("story-modal");
+        if (!modal || !modal.classList.contains("active") || storyModalMode !== "journal" || storyBriefingLevel !== null) return;
         showStoryJournal();
     });
     document.getElementById("btn-levels-tab").addEventListener("click", () => {

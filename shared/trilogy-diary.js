@@ -1517,44 +1517,21 @@
                     this.open(Number(window.CURRENT_GRADE) || 7, 0);
                 };
             }
-            this.injectStoryButton();
+            // Комикс теперь внутри окна «Лор и сюжет» (одна секция),
+            // отдельной кнопки больше нет — её отрисовывает setStoryModalContent().
             window.addEventListener("pq:lang-changed", () => {
                 const b = document.getElementById("btn-diary")?.querySelector("[data-i18n]");
                 if (b) b.textContent = ui("diaryBtn");
-                this.updateStoryButton();
-                const modal = document.getElementById("pq-trilogy-modal");
-                if (modal && modal.classList.contains("open")) this.render();
             });
         },
 
-        injectStoryButton() {
-            const story = document.getElementById("story-modal");
-            if (!story) return;
-            const content = story.querySelector(".modal-content") || story;
-            let btn = document.getElementById("pq-story-comics");
-            if (!btn) {
-                btn = document.createElement("button");
-                btn.type = "button";
-                btn.id = "pq-story-comics";
-                btn.className = "btn btn-primary pq-story-comics";
-                // в play.html у модалки «Лор и сюжет» разметка .story-actions
-                const actions = content.querySelector(".modal-actions, .story-actions");
-                if (actions) actions.insertBefore(btn, actions.firstChild);
-                else content.appendChild(btn);
-                btn.addEventListener("click", (e) => {
-                    e.preventDefault();
-                    this.open(Number(window.CURRENT_GRADE) || 7, 0);
-                });
-            }
-            this.updateStoryButton();
-        },
+        /* Совместимость: раньше здесь создавалась отдельная кнопка «Комикс трилогии».
+           Теперь комикс встроен в окно «Лор и сюжет», кнопка не нужна. */
+        injectStoryButton() {},
+        updateStoryButton() {},
 
-        updateStoryButton() {
-            const btn = document.getElementById("pq-story-comics");
-            if (!btn) return;
-            btn.innerHTML = `<span>${esc(ui("storyBtn"))}</span><small>${esc(ui("storyHint"))}</small>`;
-        },
-
+        /* Резервное отдельное окно: используется только если на странице
+           почему-то нет окна «Лор и сюжет» (обычно комикс живёт внутри него). */
         ensureModal() {
             injectStyles();
             let modal = document.getElementById("pq-trilogy-modal");
@@ -1598,14 +1575,30 @@
             if ([7, 8, 9].includes(Number(grade))) this.grade = Number(grade);
             const list = TRILOGY_BOOKS[this.grade] || TRILOGY_BOOKS[7];
             this.index = Math.max(0, Math.min(list.length - 1, Number(chapterIndex) || 0));
-            const modal = this.ensureModal();
-            this.render();
-            modal.classList.add("open");
+            const storyModal = document.getElementById("story-modal");
+            const storyOpen = storyModal && storyModal.classList.contains("active");
+            if (!storyOpen && typeof showStoryJournal === "function") {
+                // Комикс — часть раздела «Лор и сюжет»: открываем его целиком,
+                // комикс отрисуется в своей секции.
+                showStoryJournal();
+            } else {
+                this.render();
+            }
+            this.scrollToComic();
+        },
+
+        scrollToComic() {
+            const zone = document.getElementById("pq-comic-zone");
+            if (!zone) return;
+            setTimeout(() => {
+                try { zone.scrollIntoView({ block: "start", behavior: "smooth" }); } catch (e) {}
+            }, 80);
         },
 
         close() {
             const modal = document.getElementById("pq-trilogy-modal");
             if (modal) modal.classList.remove("open");
+            if (typeof closeStoryModal === "function") closeStoryModal();
         },
 
         tryAutoShow(levelId) {
@@ -1622,19 +1615,30 @@
             setTimeout(() => this.open(g, idx), 650);
         },
 
-        render() {
-            const modal = this.ensureModal();
+        /* Отрисовка комикса внутри секции окна «Лор и сюжет» */
+        renderInto(host) {
+            if (!host) return;
+            this.host = host;
+            this.render(host);
+        },
+
+        render(host) {
+            injectStyles();
+            let root = host || this.host || document.getElementById("pq-comic-zone");
+            if (!root) {
+                // страница без окна лора — крайний случай, отдельное окно
+                root = this.ensureModal();
+                root.classList.add("open");
+            }
+            this.host = root;
             const list = TRILOGY_BOOKS[this.grade] || TRILOGY_BOOKS[7];
             const item = list[this.index] || list[0];
 
-            modal.innerHTML = `
+            root.innerHTML = `
                 <div class="pq-td-card">
-                    <div class="pq-td-top">
-                        <div>
-                            <h2>${esc(ui("modalTitle"))}</h2>
-                            <p>${esc(ui("modalSub"))}</p>
-                        </div>
-                        <button type="button" class="pq-td-x" data-td="close" aria-label="Close">✕</button>
+                    <div class="pq-td-sec-head">
+                        <span class="pq-td-sec-title">${esc(ui("modalTitle"))}</span>
+                        <span class="pq-td-sec-hint">${esc(ui("modalSub"))}</span>
                     </div>
 
                     <div class="pq-td-parts">
@@ -1710,14 +1714,14 @@
                 </div>
             `;
 
-            modal.querySelectorAll("[data-td-grade]").forEach(b => {
+            root.querySelectorAll("[data-td-grade]").forEach(b => {
                 b.onclick = () => {
                     this.grade = Number(b.getAttribute("data-td-grade"));
                     this.index = 0;
                     this.render();
                 };
             });
-            modal.querySelectorAll("[data-td-idx]").forEach(b => {
+            root.querySelectorAll("[data-td-idx]").forEach(b => {
                 b.onclick = () => {
                     const idx = Number(b.getAttribute("data-td-idx"));
                     if (b.getAttribute("data-locked") === "1") {
@@ -1730,7 +1734,7 @@
                     this.render();
                 };
             });
-            modal.querySelector('[data-td="prev"]').onclick = () => {
+            root.querySelector('[data-td="prev"]').onclick = () => {
                 if (this.index > 0) {
                     this.index--;
                 } else if (this.grade > 7) {
@@ -1739,7 +1743,7 @@
                 }
                 this.render();
             };
-            modal.querySelector('[data-td="next"]').onclick = () => {
+            root.querySelector('[data-td="next"]').onclick = () => {
                 if (this.index < list.length - 1) {
                     this.index++;
                 } else if (this.grade < 9) {
@@ -1748,7 +1752,7 @@
                 }
                 this.render();
             };
-            modal.querySelectorAll('[data-td="close"]').forEach(b => {
+            root.querySelectorAll('[data-td="close"]').forEach(b => {
                 b.onclick = () => this.close();
             });
         }

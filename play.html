@@ -69,10 +69,6 @@
                     <span class="btn-icon">ℹ</span>
                     <span data-i18n="about">О проекте</span>
                 </button>
-                <button class="btn btn-secondary diary-btn" id="btn-diary" style="display:none">
-                    <span class="btn-icon">📖</span>
-                    <span data-i18n="diaryBtn">Дневник экспедиции</span>
-                </button>
                 <button class="btn btn-secondary" id="btn-profile">
                     <span class="btn-icon">👤</span>
                     <span data-i18n="profile">Профиль</span>
@@ -755,6 +751,8 @@
         } else if (grade === 9) {
             scripts.push("./shared/lab-games.js", "./9/extras.js");
         }
+        // Знакомство с героями и общий сюжет — показывается в «Лор и сюжет» перед комиксом
+        scripts.push("./shared/story-cast.js");
         // Единый визуальный комикс-дневник трилогии (7 → 8 → 9) для всех параллелей
         scripts.push("./shared/trilogy-diary.js");
         // Визуальные canvas-симуляторы для 8 и 9 классов:

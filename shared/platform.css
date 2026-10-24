@@ -1209,3 +1209,245 @@ html[data-theme="light"] .pq-net-badge.is-offline {
     border-color: rgba(220, 60, 60, 0.35);
     color: #a32424;
 }
+
+/* ============================================================
+   «Лор и сюжет»: знакомство с героями и общим сюжетом,
+   затем — комикс трилогии внутри того же окна (одна секция).
+   ============================================================ */
+
+/* --- Окно лора с комиксом внутри: шире, чтобы поместились кадры --- */
+.story-modal-content.story-has-comic { max-width: 960px; }
+.story-lore { display: block; }
+.pq-comic-zone { margin-top: 8px; }
+
+/* --- Знакомство с героями --- */
+.pq-story-intro {
+    margin: 0 0 20px;
+    padding: 18px 20px;
+    border-radius: 16px;
+    border: 1px solid var(--border-light);
+    background: var(--gradient-card);
+    box-shadow: var(--shadow);
+}
+.pq-story-h3 {
+    margin: 0 0 12px;
+    font-size: 15px;
+    font-weight: 900;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--primary-dark);
+}
+.pq-story-h3 + .pq-story-plot { margin-top: 4px; }
+.pq-story-cast {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 10px;
+    margin-bottom: 18px;
+}
+.pq-story-cast-card {
+    display: flex;
+    gap: 11px;
+    align-items: flex-start;
+    padding: 12px 14px;
+    border-radius: 14px;
+    border: 1px solid var(--border-light);
+    border-top: 3px solid var(--cast-color, var(--primary));
+    background: var(--bg-card);
+    box-shadow: 0 2px 10px rgba(15, 35, 70, 0.06);
+}
+.pq-story-cast-icon {
+    flex: 0 0 38px;
+    width: 38px; height: 38px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 21px;
+    border-radius: 50%;
+    /* запасные значения для браузеров без color-mix */
+    background: rgba(56, 189, 248, 0.14);
+    background: color-mix(in srgb, var(--cast-color, #38bdf8) 18%, transparent);
+    border: 1px solid rgba(56, 189, 248, 0.4);
+    border: 1px solid color-mix(in srgb, var(--cast-color, #38bdf8) 45%, transparent);
+}
+.pq-story-cast-name {
+    font-size: 14.5px;
+    font-weight: 900;
+    color: var(--text-bright);
+    line-height: 1.2;
+}
+.pq-story-cast-role {
+    margin: 2px 0 6px;
+    font-size: 11.5px;
+    font-weight: 800;
+    letter-spacing: 0.02em;
+    color: var(--primary-dark);
+}
+.pq-story-cast-bio {
+    margin: 0;
+    font-size: 12.5px;
+    line-height: 1.5;
+    color: var(--text-dim);
+}
+/* Сюжет остаётся сплошным текстом — без карточек и списков */
+.pq-story-plot { font-size: 14px; line-height: 1.7; color: var(--text); }
+.pq-story-plot-p { margin: 0 0 10px; }
+.pq-story-plot-p:last-child { margin-bottom: 0; }
+
+/* --- Комикс внутри окна лора --- */
+.pq-comic-zone .pq-td-sec-head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin: 22px 0 12px;
+    padding-top: 18px;
+    border-top: 1px dashed var(--border-light);
+}
+.pq-comic-zone .pq-td-sec-title {
+    font-size: 15px;
+    font-weight: 900;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--primary-dark);
+}
+.pq-comic-zone .pq-td-sec-hint { font-size: 12px; font-weight: 700; color: var(--text-dim); }
+.pq-comic-zone .pq-td-card {
+    width: 100%;
+    max-height: none;
+    overflow: visible;
+    padding: 16px 0 0;
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+    box-shadow: none;
+}
+.pq-comic-zone .pq-td-foot { margin-top: 4px; }
+/* Карточка встроена в окно лора: внутренние отступы уже задаёт модалка */
+.pq-comic-zone .pq-td-teaser { margin: 12px 0 4px; }
+.pq-comic-zone .pq-td-act { margin: 0 0 4px; }
+html[data-theme="light"] .pq-comic-zone .pq-td-card,
+html:not([data-theme="dark"]) .pq-comic-zone .pq-td-card { color: var(--text); }
+
+/* Светлая тема: комикс-панель читается на белом фоне */
+html[data-theme="light"] .pq-comic-zone .pq-td-top h2,
+html:not([data-theme="dark"]) .pq-comic-zone .pq-td-top h2 { color: var(--text-bright); }
+html[data-theme="light"] .pq-comic-zone .pq-td-top p,
+html:not([data-theme="dark"]) .pq-comic-zone .pq-td-top p { color: var(--text-dim); }
+html[data-theme="light"] .pq-comic-zone .pq-td-part,
+html:not([data-theme="dark"]) .pq-comic-zone .pq-td-part {
+    background: var(--bg-card);
+    border-color: var(--border-light);
+    color: var(--text);
+}
+html[data-theme="light"] .pq-comic-zone .pq-td-part.active,
+html:not([data-theme="dark"]) .pq-comic-zone .pq-td-part.active {
+    background: var(--gradient-primary);
+    border-color: transparent;
+    color: #ffffff;
+}
+html[data-theme="light"] .pq-comic-zone .pq-td-ep,
+html:not([data-theme="dark"]) .pq-comic-zone .pq-td-ep {
+    background: #ffffff;
+    border-color: var(--border-light);
+    color: var(--text);
+}
+html[data-theme="light"] .pq-comic-zone .pq-td-ep.active,
+html:not([data-theme="dark"]) .pq-comic-zone .pq-td-ep.active {
+    background: var(--primary);
+    border-color: var(--primary);
+    color: #ffffff;
+}
+html[data-theme="light"] .pq-comic-zone .pq-td-bubble,
+html:not([data-theme="dark"]) .pq-comic-zone .pq-td-bubble {
+    background: #f7fbff;
+    border-color: var(--border-light);
+    color: var(--ink-2);
+}
+html[data-theme="light"] .pq-comic-zone .pq-td-keybox,
+html:not([data-theme="dark"]) .pq-comic-zone .pq-td-keybox {
+    background: rgba(0, 184, 212, 0.08);
+    border-color: rgba(0, 184, 212, 0.3);
+    color: var(--text);
+}
+html[data-theme="light"] .pq-comic-zone .pq-td-formula,
+html:not([data-theme="dark"]) .pq-comic-zone .pq-td-formula {
+    background: #ffffff;
+    border: 1px solid var(--border-light);
+    color: var(--primary-dark);
+}
+html[data-theme="light"] .pq-comic-zone .pq-td-navbtn,
+html:not([data-theme="dark"]) .pq-comic-zone .pq-td-navbtn {
+    background: #ffffff;
+    border-color: var(--border-light);
+    color: var(--text);
+}
+html[data-theme="light"] .pq-comic-zone .pq-td-navbtn.primary,
+html:not([data-theme="dark"]) .pq-comic-zone .pq-td-navbtn.primary {
+    background: var(--gradient-primary);
+    border-color: transparent;
+    color: #ffffff;
+}
+html[data-theme="light"] .pq-comic-zone .pq-td-locked,
+html:not([data-theme="dark"]) .pq-comic-zone .pq-td-locked {
+    background: #f7fbff;
+    border-color: var(--border-light);
+    color: var(--text-dim);
+}
+html[data-theme="light"] .pq-comic-zone .pq-td-locked strong,
+html:not([data-theme="dark"]) .pq-comic-zone .pq-td-locked strong { color: var(--text-bright); }
+html[data-theme="light"] .pq-comic-zone .pq-td-locked p,
+html:not([data-theme="dark"]) .pq-comic-zone .pq-td-locked p { color: var(--text-dim); }
+html[data-theme="light"] .pq-comic-zone .pq-td-teaser,
+html:not([data-theme="dark"]) .pq-comic-zone .pq-td-teaser {
+    background: rgba(255, 179, 0, 0.1);
+    border-color: rgba(255, 179, 0, 0.45);
+    color: var(--text);
+}
+html[data-theme="light"] .pq-comic-zone .pq-td-teaser strong,
+html:not([data-theme="dark"]) .pq-comic-zone .pq-td-teaser strong { color: var(--warn-ink); }
+html[data-theme="light"] .pq-comic-zone .pq-td-act,
+html:not([data-theme="dark"]) .pq-comic-zone .pq-td-act {
+    color: var(--primary-dark);
+    background: rgba(0, 184, 212, 0.08);
+    border-color: rgba(0, 184, 212, 0.25);
+}
+html[data-theme="light"] .pq-comic-zone .pq-td-locked-icon,
+html:not([data-theme="dark"]) .pq-comic-zone .pq-td-locked-icon {
+    background: rgba(0, 184, 212, 0.1);
+    border-color: rgba(0, 184, 212, 0.28);
+}
+
+/* Тёмная тема: заголовки секции */
+html[data-theme="dark"] .pq-story-intro { background: var(--gradient-card); }
+html[data-theme="dark"] .pq-story-h3,
+html[data-theme="dark"] .pq-comic-zone .pq-td-sec-title { color: #7dd3fc; }
+html[data-theme="dark"] .pq-comic-zone .pq-td-sec-head { border-top-color: rgba(148, 163, 184, 0.25); }
+
+/* Мобильная раскладка */
+@media (max-width: 640px) {
+    .pq-story-intro { padding: 14px 14px; }
+    .pq-story-cast { grid-template-columns: 1fr; }
+    .story-modal-content.story-has-comic { max-width: none; }
+}
+
+/* Кнопка-переход от знакомства с героями к комиксу */
+.pq-story-jump {
+    margin-top: 12px;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 15px;
+    border-radius: 999px;
+    border: 1px solid var(--primary);
+    background: rgba(0, 184, 212, 0.08);
+    color: var(--primary-dark);
+    font-size: 12.5px;
+    font-weight: 900;
+    cursor: pointer;
+    transition: transform .15s ease, background .15s ease;
+}
+.pq-story-jump:hover { transform: translateY(-1px); background: rgba(0, 184, 212, 0.16); }
+html[data-theme="dark"] .pq-story-jump {
+    background: rgba(56, 189, 248, 0.14);
+    border-color: rgba(125, 211, 252, 0.5);
+    color: #bae6fd;
+}
