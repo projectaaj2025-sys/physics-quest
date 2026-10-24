@@ -2,7 +2,7 @@
    Сгенерировано tools/gen-task-types.js — правки вносить в генератор.
    Типы: multi-select (отметь все), short-answer (короткий ответ),
    matching (сопоставление величины и единицы СИ).
-   Всего заданий: 21 (по 3 на каждый уровень). */
+   Всего заданий: 21 (набор зависит от того, каких типов не хватает в банке уровня). */
 const TASKS_DATABASE_TYPES = [
  {
   "id": "t7_l1_safety_num",
@@ -33,21 +33,21 @@ const TASKS_DATABASE_TYPES = [
   "topic": "general",
   "difficulty": 1,
   "question": {
-   "ru": "Переведи в единицы СИ: 40 см = ___ м.",
-   "en": "Convert to SI units: 40 cm = ___ m.",
-   "kk": "ХБЖ-ға келтір: 40 см = ___ м."
+   "ru": "Переведи в единицы СИ: 3 мин = ___ с.",
+   "en": "Convert to SI units: 3 min = ___ s.",
+   "kk": "ХБЖ-ға келтір: 3 мин = ___ с."
   },
-  "correctAnswer": 0.4,
-  "tolerance": 0.001,
+  "correctAnswer": 180,
+  "tolerance": 0.5,
   "hint": {
    "ru": "Кило- — это 1000, милли- — это 0,001, а 1 л = 0,001 м³.",
    "en": "Kilo- means 1000, milli- means 0.001, and 1 L = 0.001 m³.",
    "kk": "Кило- — бұл 1000, милли- — 0,001, ал 1 л = 0,001 м³."
   },
   "explanation": {
-   "ru": "Ответ: 0.4.",
-   "en": "Answer: 0.4.",
-   "kk": "Жауабы: 0.4."
+   "ru": "Ответ: 180.",
+   "en": "Answer: 180.",
+   "kk": "Жауабы: 180."
   }
  },
  {
@@ -56,21 +56,21 @@ const TASKS_DATABASE_TYPES = [
   "topic": "general",
   "difficulty": 1,
   "question": {
-   "ru": "Переведи в единицы СИ: 2 л = ___ м³.",
-   "en": "Convert to SI units: 2 L = ___ m³.",
-   "kk": "ХБЖ-ға келтір: 2 л = ___ м³."
+   "ru": "Переведи в единицы СИ: 250 мА = ___ А.",
+   "en": "Convert to SI units: 250 mA = ___ A.",
+   "kk": "ХБЖ-ға келтір: 250 мА = ___ А."
   },
-  "correctAnswer": 0.002,
-  "tolerance": 0.0001,
+  "correctAnswer": 0.25,
+  "tolerance": 0.001,
   "hint": {
    "ru": "Кило- — это 1000, милли- — это 0,001, а 1 л = 0,001 м³.",
    "en": "Kilo- means 1000, milli- means 0.001, and 1 L = 0.001 m³.",
    "kk": "Кило- — бұл 1000, милли- — 0,001, ал 1 л = 0,001 м³."
   },
   "explanation": {
-   "ru": "Ответ: 0.002.",
-   "en": "Answer: 0.002.",
-   "kk": "Жауабы: 0.002."
+   "ru": "Ответ: 0.25.",
+   "en": "Answer: 0.25.",
+   "kk": "Жауабы: 0.25."
   }
  },
  {
@@ -799,9 +799,9 @@ const TASKS_DATABASE_TYPES = [
   "topic": "pressure",
   "difficulty": 2,
   "question": {
-   "ru": "Отметь все величины, которые изучаются в теме «🔬 Лаб. №6: Закон Архимеда».",
-   "en": "Select all quantities studied in the topic «🔬 Lab #6: Archimedes' law».",
-   "kk": "«🔬 Лаб. №6: Закон Архимеда» тақырыбында оқылатын барлық шамаларды белгіле."
+   "ru": "Отметь все величины, которые изучаются в теме «Лаб. №6: Закон Архимеда».",
+   "en": "Select all quantities studied in the topic «Lab #6: Archimedes' law».",
+   "kk": "«Лаб. №6: Закон Архимеда» тақырыбында оқылатын барлық шамаларды белгіле."
   },
   "options": {
    "ru": [
@@ -844,9 +844,9 @@ const TASKS_DATABASE_TYPES = [
   "topic": "mechanical",
   "difficulty": 2,
   "question": {
-   "ru": "Отметь все величины, которые изучаются в теме «🔬 Лаб. №9: Равновесие рычага».",
-   "en": "Select all quantities studied in the topic «🔬 Lab #9: Lever equilibrium».",
-   "kk": "«🔬 Лаб. №9: Равновесие рычага» тақырыбында оқылатын барлық шамаларды белгіле."
+   "ru": "Отметь все величины, которые изучаются в теме «Лаб. №9: Равновесие рычага».",
+   "en": "Select all quantities studied in the topic «Lab #9: Lever equilibrium».",
+   "kk": "«Лаб. №9: Равновесие рычага» тақырыбында оқылатын барлық шамаларды белгіле."
   },
   "options": {
    "ru": [

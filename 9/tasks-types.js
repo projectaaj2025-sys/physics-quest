@@ -2,7 +2,7 @@
    Сгенерировано tools/gen-task-types.js — правки вносить в генератор.
    Типы: multi-select (отметь все), short-answer (короткий ответ),
    matching (сопоставление величины и единицы СИ).
-   Всего заданий: 189 (по 3 на каждый уровень). */
+   Всего заданий: 189 (набор зависит от того, каких типов не хватает в банке уровня). */
 const TASKS_DATABASE_TYPES = [
  {
   "id": "t9_l1_safety_ms",
@@ -59,21 +59,66 @@ const TASKS_DATABASE_TYPES = [
   "topic": "safety",
   "difficulty": 2,
   "question": {
-   "ru": "В каких единицах СИ измеряется величина «масса»? Запиши единицу.",
-   "en": "Which SI unit is used to measure «mass»? Write the unit.",
-   "kk": "«масса» шамасы ХБЖ-да қандай бірлікпен өлшенеді? Бірлікті жаз."
+   "ru": "В каких единицах СИ измеряется величина «сила»? Запиши единицу.",
+   "en": "Which SI unit is used to measure «force»? Write the unit.",
+   "kk": "«күш» шамасы ХБЖ-да қандай бірлікпен өлшенеді? Бірлікті жаз."
   },
   "correctAnswer": {
    "ru": [
+    "ньютон",
+    "н",
+    "n",
+    "N",
+    "Н"
+   ],
+   "en": [
+    "newton",
+    "n",
+    "N"
+   ],
+   "kk": [
+    "ньютон",
+    "н",
+    "n",
+    "N",
+    "Н"
+   ]
+  },
+  "hint": {
+   "ru": "Подумай, к какой группе относится величина: теплота, электричество, волны или движение. Единица этой группы и будет ответом.",
+   "en": "Think about the group this quantity belongs to: heat, electricity, waves or motion. The unit of that group is the answer.",
+   "kk": "Шама қай топқа жататынын ойла: жылу, электр, толқын немесе қозғалыс. Сол топтың бірлігі дұрыс жауап."
+  },
+  "explanation": {
+   "ru": "Единица СИ для величины «сила» — ньютон (Н).",
+   "en": "The SI unit of «force» is newton (N).",
+   "kk": "«күш» шамасының ХБЖ бірлігі — ньютон (Н)."
+  }
+ },
+ {
+  "id": "t9_l1_safety_fb",
+  "type": "fill-blank",
+  "topic": "safety",
+  "difficulty": 2,
+  "question": {
+   "ru": "В каких единицах измеряется величина «масса»? Запиши единицу.",
+   "en": "In which units is «mass» measured? Write the unit.",
+   "kk": "«масса» шамасы қандай бірліктермен өлшенеді? Бірлікті жаз."
+  },
+  "correctAnswer": {
+   "ru": [
+    "килограмм (кг)",
     "килограмм",
     "кг",
     "kg"
    ],
    "en": [
+    "kilogram (kg)",
     "kilogram",
     "kg"
    ],
    "kk": [
+    "килограмм (кг)",
     "килограмм",
     "кг",
     "kg"
@@ -88,40 +133,6 @@ const TASKS_DATABASE_TYPES = [
    "ru": "Единица СИ для величины «масса» — килограмм (кг).",
    "en": "The SI unit of «mass» is kilogram (kg).",
    "kk": "«масса» шамасының ХБЖ бірлігі — килограмм (кг)."
-  }
- },
- {
-  "id": "t9_l1_safety_fb",
-  "type": "fill-blank",
-  "topic": "safety",
-  "difficulty": 2,
-  "question": {
-   "ru": "В единицах «кг·м/с» измеряется величина ___.",
-   "en": "The quantity measured in kg·m/s is ___.",
-   "kk": "«кг·м/с» бірлігімен өлшенетін шама — ___."
-  },
-  "correctAnswer": {
-   "ru": [
-    "импульс тела",
-    "импульс"
-   ],
-   "en": [
-    "momentum of a body",
-    "momentum"
-   ],
-   "kk": [
-    "дене импульсі"
-   ]
-  },
-  "hint": {
-   "ru": "Название единицы подсказывает, какую величину она измеряет. Это величина из этой темы.",
-   "en": "The unit's name hints at the quantity it measures. It belongs to this topic.",
-   "kk": "Бірліктің атауы қандай шама өлшенетінін көрсетеді. Бұл — осы тақырыптың шамасы."
-  },
-  "explanation": {
-   "ru": "В кг·м/с измеряется импульс тела.",
-   "en": "The quantity measured in kg·m/s is momentum of a body.",
-   "kk": "кг·м/с бірлігімен дене импульсі өлшенеді."
   }
  },
  {
@@ -153,9 +164,9 @@ const TASKS_DATABASE_TYPES = [
   "topic": "safety",
   "difficulty": 2,
   "question": {
-   "ru": "Сопоставь физическую величину и её единицу измерения в СИ.",
-   "en": "Match each physical quantity with its SI unit.",
-   "kk": "Физикалық шаманы оның ХБЖ-дағы өлшем бірлігімен сәйкестендір."
+   "ru": "Сопоставь величины из темы «Допуск к полётам: техника безопасности» и их единицы измерения в СИ.",
+   "en": "Match the quantities from «Flight Clearance: Safety Rules» with their SI units.",
+   "kk": "«Ұшуға рұқсат: қауіпсіздік ережелері» тақырыбындағы шамаларды олардың ХБЖ бірліктерімен сәйкестендір."
   },
   "pairs": {
    "left": {
@@ -177,18 +188,18 @@ const TASKS_DATABASE_TYPES = [
    },
    "right": {
     "ru": [
-     "килограмм (кг)",
      "ньютон (Н)",
+     "килограмм (кг)",
      "секунда (с)"
     ],
     "en": [
-     "kilogram (kg)",
      "newton (N)",
+     "kilogram (kg)",
      "second (s)"
     ],
     "kk": [
-     "килограмм (кг)",
      "ньютон (Н)",
+     "килограмм (кг)",
      "секунд (с)"
     ]
    }
@@ -196,7 +207,7 @@ const TASKS_DATABASE_TYPES = [
   "correctPairs": [
    [
     0,
-    0
+    1
    ],
    [
     1,
@@ -204,7 +215,7 @@ const TASKS_DATABASE_TYPES = [
    ],
    [
     2,
-    1
+    0
    ]
   ],
   "hint": {
@@ -310,9 +321,9 @@ const TASKS_DATABASE_TYPES = [
   "topic": "p1",
   "difficulty": 2,
   "question": {
-   "ru": "Сопоставь физическую величину и её единицу измерения в СИ.",
-   "en": "Match each physical quantity with its SI unit.",
-   "kk": "Физикалық шаманы оның ХБЖ-дағы өлшем бірлігімен сәйкестендір."
+   "ru": "Сопоставь величины из темы «Механическое движение» и их единицы измерения в СИ.",
+   "en": "Match the quantities from «Mechanical motion» with their SI units.",
+   "kk": "«Механикалық қозғалыс» тақырыбындағы шамаларды олардың ХБЖ бірліктерімен сәйкестендір."
   },
   "pairs": {
    "left": {
@@ -426,28 +437,26 @@ const TASKS_DATABASE_TYPES = [
   "topic": "p2",
   "difficulty": 2,
   "question": {
-   "ru": "В каких единицах СИ измеряется величина «перемещение»? Запиши единицу.",
-   "en": "Which SI unit is used to measure «displacement»? Write the unit.",
-   "kk": "«орын ауыстыру» шамасы ХБЖ-да қандай бірлікпен өлшенеді? Бірлікті жаз."
+   "ru": "В каких единицах СИ измеряется величина «период обращения»? Запиши единицу.",
+   "en": "Which SI unit is used to measure «period of revolution»? Write the unit.",
+   "kk": "«айналу периоды» шамасы ХБЖ-да қандай бірлікпен өлшенеді? Бірлікті жаз."
   },
   "correctAnswer": {
    "ru": [
-    "метр",
-    "м",
-    "m",
-    "M"
+    "секунда",
+    "с",
+    "s",
+    "сек"
    ],
    "en": [
-    "metre",
-    "meter",
-    "m",
-    "M"
+    "second",
+    "s",
+    "sec"
    ],
    "kk": [
-    "метр",
-    "м",
-    "m",
-    "M"
+    "секунд",
+    "с",
+    "s"
    ]
   },
   "hint": {
@@ -456,9 +465,9 @@ const TASKS_DATABASE_TYPES = [
    "kk": "Шама қай топқа жататынын ойла: жылу, электр, толқын немесе қозғалыс. Сол топтың бірлігі дұрыс жауап."
   },
   "explanation": {
-   "ru": "Единица СИ для величины «перемещение» — метр (м).",
-   "en": "The SI unit of «displacement» is metre (m).",
-   "kk": "«орын ауыстыру» шамасының ХБЖ бірлігі — метр (м)."
+   "ru": "Единица СИ для величины «период обращения» — секунда (с).",
+   "en": "The SI unit of «period of revolution» is second (s).",
+   "kk": "«айналу периоды» шамасының ХБЖ бірлігі — секунд (с)."
   }
  },
  {
@@ -467,43 +476,43 @@ const TASKS_DATABASE_TYPES = [
   "topic": "p2",
   "difficulty": 2,
   "question": {
-   "ru": "Сопоставь физическую величину и её единицу измерения в СИ.",
-   "en": "Match each physical quantity with its SI unit.",
-   "kk": "Физикалық шаманы оның ХБЖ-дағы өлшем бірлігімен сәйкестендір."
+   "ru": "Сопоставь величины из темы «Векторы и действия над ними» и их единицы измерения в СИ.",
+   "en": "Match the quantities from «Vectors and operations on them» with their SI units.",
+   "kk": "«Векторлар және олармен әрекеттер» тақырыбындағы шамаларды олардың ХБЖ бірліктерімен сәйкестендір."
   },
   "pairs": {
    "left": {
     "ru": [
      "перемещение",
-     "время",
-     "ускорение"
+     "центростремительное ускорение",
+     "скорость"
     ],
     "en": [
      "displacement",
-     "time",
-     "acceleration"
+     "centripetal acceleration",
+     "velocity"
     ],
     "kk": [
      "орын ауыстыру",
-     "уақыт",
-     "үдеу"
+     "центрге тартқыш үдеу",
+     "жылдамдық"
     ]
    },
    "right": {
     "ru": [
      "м/с²",
      "метр (м)",
-     "секунда (с)"
+     "м/с"
     ],
     "en": [
      "m/s²",
      "metre (m)",
-     "second (s)"
+     "m/s"
     ],
     "kk": [
      "м/с²",
      "метр (м)",
-     "секунд (с)"
+     "м/с"
     ]
    }
   },
@@ -514,11 +523,11 @@ const TASKS_DATABASE_TYPES = [
    ],
    [
     1,
-    2
+    0
    ],
    [
     2,
-    0
+    2
    ]
   ],
   "hint": {
@@ -527,9 +536,9 @@ const TASKS_DATABASE_TYPES = [
    "kk": "Алдымен нақты білетін шамалардан баста: мысалы, күш ньютонмен өлшенеді."
   },
   "explanation": {
-   "ru": "Верные пары: перемещение — метр (м); время — секунда (с); ускорение — м/с².",
-   "en": "Correct pairs: displacement — metre (m); time — second (s); acceleration — m/s².",
-   "kk": "Дұрыс жұптар: орын ауыстыру — метр (м); уақыт — секунд (с); үдеу — м/с²."
+   "ru": "Верные пары: перемещение — метр (м); центростремительное ускорение — м/с²; скорость — м/с.",
+   "en": "Correct pairs: displacement — metre (m); centripetal acceleration — m/s²; velocity — m/s.",
+   "kk": "Дұрыс жұптар: орын ауыстыру — метр (м); центрге тартқыш үдеу — м/с²; жылдамдық — м/с."
   }
  },
  {
@@ -619,9 +628,9 @@ const TASKS_DATABASE_TYPES = [
   "topic": "p3",
   "difficulty": 2,
   "question": {
-   "ru": "Сопоставь физическую величину и её единицу измерения в СИ.",
-   "en": "Match each physical quantity with its SI unit.",
-   "kk": "Физикалық шаманы оның ХБЖ-дағы өлшем бірлігімен сәйкестендір."
+   "ru": "Сопоставь величины из темы «Равнопеременное движение, ускорение» и их единицы измерения в СИ.",
+   "en": "Match the quantities from «Uniformly variable motion, acceleration» with their SI units.",
+   "kk": "«Тең үдемелі қозғалыс, үдеу» тақырыбындағы шамаларды олардың ХБЖ бірліктерімен сәйкестендір."
   },
   "pairs": {
    "left": {
@@ -776,30 +785,34 @@ const TASKS_DATABASE_TYPES = [
   "topic": "p4",
   "difficulty": 2,
   "question": {
-   "ru": "В единицах «рад/с» измеряется величина ___.",
-   "en": "The quantity measured in rad/s is ___.",
-   "kk": "«рад/с» бірлігімен өлшенетін шама — ___."
+   "ru": "Назови единицу СИ для величины «скорость»: ___.",
+   "en": "Name the SI unit of «velocity»: ___.",
+   "kk": "«жылдамдық» шамасының ХБЖ бірлігін ата: ___."
   },
   "correctAnswer": {
    "ru": [
-    "угловая скорость"
+    "м/с",
+    "m/s",
+    "метр в секунду"
    ],
    "en": [
-    "angular velocity"
+    "m/s",
+    "metre per second"
    ],
    "kk": [
-    "бұрыштық жылдамдық"
+    "м/с",
+    "m/s"
    ]
   },
   "hint": {
-   "ru": "Название единицы подсказывает, какую величину она измеряет. Это величина из этой темы.",
-   "en": "The unit's name hints at the quantity it measures. It belongs to this topic.",
-   "kk": "Бірліктің атауы қандай шама өлшенетінін көрсетеді. Бұл — осы тақырыптың шамасы."
+   "ru": "Подумай, к какой группе относится величина: теплота, электричество, волны или движение. Единица этой группы и будет ответом.",
+   "en": "Think about the group this quantity belongs to: heat, electricity, waves or motion. The unit of that group is the answer.",
+   "kk": "Шама қай топқа жататынын ойла: жылу, электр, толқын немесе қозғалыс. Сол топтың бірлігі дұрыс жауап."
   },
   "explanation": {
-   "ru": "В рад/с измеряется угловая скорость.",
-   "en": "The quantity measured in rad/s is angular velocity.",
-   "kk": "рад/с бірлігімен бұрыштық жылдамдық өлшенеді."
+   "ru": "Единица СИ для величины «скорость» — м/с.",
+   "en": "The SI unit of «velocity» is m/s.",
+   "kk": "«жылдамдық» шамасының ХБЖ бірлігі — м/с."
   }
  },
  {
@@ -808,43 +821,43 @@ const TASKS_DATABASE_TYPES = [
   "topic": "p4",
   "difficulty": 2,
   "question": {
-   "ru": "Сопоставь физическую величину и её единицу измерения в СИ.",
-   "en": "Match each physical quantity with its SI unit.",
-   "kk": "Физикалық шаманы оның ХБЖ-дағы өлшем бірлігімен сәйкестендір."
+   "ru": "Сопоставь величины из темы «Скорость и перемещение при равноускоренном движении» и их единицы измерения в СИ.",
+   "en": "Match the quantities from «Speed and displacement in uniformly accelerated motion» with their SI units.",
+   "kk": "«Тең үдеумен қозғалыста жылдамдық пен орын ауыстыру» тақырыбындағы шамаларды олардың ХБЖ бірліктерімен сәйкестендір."
   },
   "pairs": {
    "left": {
     "ru": [
+     "путь",
      "скорость",
-     "время",
-     "перемещение"
+     "время"
     ],
     "en": [
+     "distance travelled",
      "velocity",
-     "time",
-     "displacement"
+     "time"
     ],
     "kk": [
+     "жол",
      "жылдамдық",
-     "уақыт",
-     "орын ауыстыру"
+     "уақыт"
     ]
    },
    "right": {
     "ru": [
-     "метр (м)",
      "секунда (с)",
-     "м/с"
+     "м/с",
+     "метр (м)"
     ],
     "en": [
-     "metre (m)",
      "second (s)",
-     "m/s"
+     "m/s",
+     "metre (m)"
     ],
     "kk": [
-     "метр (м)",
      "секунд (с)",
-     "м/с"
+     "м/с",
+     "метр (м)"
     ]
    }
   },
@@ -868,9 +881,9 @@ const TASKS_DATABASE_TYPES = [
    "kk": "Алдымен нақты білетін шамалардан баста: мысалы, күш ньютонмен өлшенеді."
   },
   "explanation": {
-   "ru": "Верные пары: скорость — м/с; время — секунда (с); перемещение — метр (м).",
-   "en": "Correct pairs: velocity — m/s; time — second (s); displacement — metre (m).",
-   "kk": "Дұрыс жұптар: жылдамдық — м/с; уақыт — секунд (с); орын ауыстыру — метр (м)."
+   "ru": "Верные пары: путь — метр (м); скорость — м/с; время — секунда (с).",
+   "en": "Correct pairs: distance travelled — metre (m); velocity — m/s; time — second (s).",
+   "kk": "Дұрыс жұптар: жол — метр (м); жылдамдық — м/с; уақыт — секунд (с)."
   }
  },
  {
@@ -924,9 +937,9 @@ const TASKS_DATABASE_TYPES = [
   "topic": "p5",
   "difficulty": 2,
   "question": {
-   "ru": "В каких единицах СИ измеряется величина «ускорение»? Запиши единицу.",
-   "en": "Which SI unit is used to measure «acceleration»? Write the unit.",
-   "kk": "«үдеу» шамасы ХБЖ-да қандай бірлікпен өлшенеді? Бірлікті жаз."
+   "ru": "В каких единицах СИ измеряется величина «ускорение свободного падения»? Запиши единицу.",
+   "en": "Which SI unit is used to measure «acceleration due to gravity»? Write the unit.",
+   "kk": "«еркін түсу үдеуі» шамасы ХБЖ-да қандай бірлікпен өлшенеді? Бірлікті жаз."
   },
   "correctAnswer": {
    "ru": [
@@ -937,8 +950,7 @@ const TASKS_DATABASE_TYPES = [
    ],
    "en": [
     "m/s²",
-    "m/s2",
-    "metre per second squared"
+    "m/s2"
    ],
    "kk": [
     "м/с2",
@@ -952,9 +964,9 @@ const TASKS_DATABASE_TYPES = [
    "kk": "Шама қай топқа жататынын ойла: жылу, электр, толқын немесе қозғалыс. Сол топтың бірлігі дұрыс жауап."
   },
   "explanation": {
-   "ru": "Единица СИ для величины «ускорение» — м/с².",
-   "en": "The SI unit of «acceleration» is m/s².",
-   "kk": "«үдеу» шамасының ХБЖ бірлігі — м/с²."
+   "ru": "Единица СИ для величины «ускорение свободного падения» — м/с².",
+   "en": "The SI unit of «acceleration due to gravity» is m/s².",
+   "kk": "«еркін түсу үдеуі» шамасының ХБЖ бірлігі — м/с²."
   }
  },
  {
@@ -963,30 +975,42 @@ const TASKS_DATABASE_TYPES = [
   "topic": "p5",
   "difficulty": 2,
   "question": {
-   "ru": "В единицах «рад/с» измеряется величина ___.",
-   "en": "The quantity measured in rad/s is ___.",
-   "kk": "«рад/с» бірлігімен өлшенетін шама — ___."
+   "ru": "Назови единицу СИ для величины «путь»: ___.",
+   "en": "Name the SI unit of «distance travelled»: ___.",
+   "kk": "«жол» шамасының ХБЖ бірлігін ата: ___."
   },
   "correctAnswer": {
    "ru": [
-    "угловая скорость"
+    "метр (м)",
+    "метр",
+    "м",
+    "m",
+    "M"
    ],
    "en": [
-    "angular velocity"
+    "metre (m)",
+    "metre",
+    "m",
+    "meter",
+    "M"
    ],
    "kk": [
-    "бұрыштық жылдамдық"
+    "метр (м)",
+    "метр",
+    "м",
+    "m",
+    "M"
    ]
   },
   "hint": {
-   "ru": "Название единицы подсказывает, какую величину она измеряет. Это величина из этой темы.",
-   "en": "The unit's name hints at the quantity it measures. It belongs to this topic.",
-   "kk": "Бірліктің атауы қандай шама өлшенетінін көрсетеді. Бұл — осы тақырыптың шамасы."
+   "ru": "Подумай, к какой группе относится величина: теплота, электричество, волны или движение. Единица этой группы и будет ответом.",
+   "en": "Think about the group this quantity belongs to: heat, electricity, waves or motion. The unit of that group is the answer.",
+   "kk": "Шама қай топқа жататынын ойла: жылу, электр, толқын немесе қозғалыс. Сол топтың бірлігі дұрыс жауап."
   },
   "explanation": {
-   "ru": "В рад/с измеряется угловая скорость.",
-   "en": "The quantity measured in rad/s is angular velocity.",
-   "kk": "рад/с бірлігімен бұрыштық жылдамдық өлшенеді."
+   "ru": "Единица СИ для величины «путь» — метр (м).",
+   "en": "The SI unit of «distance travelled» is metre (m).",
+   "kk": "«жол» шамасының ХБЖ бірлігі — метр (м)."
   }
  },
  {
@@ -995,42 +1019,42 @@ const TASKS_DATABASE_TYPES = [
   "topic": "p5",
   "difficulty": 2,
   "question": {
-   "ru": "Сопоставь физическую величину и её единицу измерения в СИ.",
-   "en": "Match each physical quantity with its SI unit.",
-   "kk": "Физикалық шаманы оның ХБЖ-дағы өлшем бірлігімен сәйкестендір."
+   "ru": "Сопоставь величины из темы «Свободное падение тел» и их единицы измерения в СИ.",
+   "en": "Match the quantities from «Free fall of bodies» with their SI units.",
+   "kk": "«Денелердің еркін түсуі» тақырыбындағы шамаларды олардың ХБЖ бірліктерімен сәйкестендір."
   },
   "pairs": {
    "left": {
     "ru": [
-     "путь",
-     "скорость",
-     "время"
+     "время",
+     "ускорение",
+     "скорость"
     ],
     "en": [
-     "distance travelled",
-     "velocity",
-     "time"
+     "time",
+     "acceleration",
+     "velocity"
     ],
     "kk": [
-     "жол",
-     "жылдамдық",
-     "уақыт"
+     "уақыт",
+     "үдеу",
+     "жылдамдық"
     ]
    },
    "right": {
     "ru": [
      "секунда (с)",
-     "метр (м)",
+     "м/с²",
      "м/с"
     ],
     "en": [
      "second (s)",
-     "metre (m)",
+     "m/s²",
      "m/s"
     ],
     "kk": [
      "секунд (с)",
-     "метр (м)",
+     "м/с²",
      "м/с"
     ]
    }
@@ -1038,15 +1062,15 @@ const TASKS_DATABASE_TYPES = [
   "correctPairs": [
    [
     0,
-    1
+    0
    ],
    [
     1,
-    2
+    1
    ],
    [
     2,
-    0
+    2
    ]
   ],
   "hint": {
@@ -1055,9 +1079,9 @@ const TASKS_DATABASE_TYPES = [
    "kk": "Алдымен нақты білетін шамалардан баста: мысалы, күш ньютонмен өлшенеді."
   },
   "explanation": {
-   "ru": "Верные пары: путь — метр (м); скорость — м/с; время — секунда (с).",
-   "en": "Correct pairs: distance travelled — metre (m); velocity — m/s; time — second (s).",
-   "kk": "Дұрыс жұптар: жол — метр (м); жылдамдық — м/с; уақыт — секунд (с)."
+   "ru": "Верные пары: время — секунда (с); ускорение — м/с²; скорость — м/с.",
+   "en": "Correct pairs: time — second (s); acceleration — m/s²; velocity — m/s.",
+   "kk": "Дұрыс жұптар: уақыт — секунд (с); үдеу — м/с²; жылдамдық — м/с."
   }
  },
  {
@@ -1150,26 +1174,26 @@ const TASKS_DATABASE_TYPES = [
   "topic": "p6",
   "difficulty": 2,
   "question": {
-   "ru": "Сопоставь физическую величину и её единицу измерения в СИ.",
-   "en": "Match each physical quantity with its SI unit.",
-   "kk": "Физикалық шаманы оның ХБЖ-дағы өлшем бірлігімен сәйкестендір."
+   "ru": "Сопоставь величины из темы «Криволинейное движение. Движение по окружности» и их единицы измерения в СИ.",
+   "en": "Match the quantities from «Curvilinear motion. Circular motion» with their SI units.",
+   "kk": "«Қисық сызықты қозғалыс. Шеңбер бойымен қозғалыс» тақырыбындағы шамаларды олардың ХБЖ бірліктерімен сәйкестендір."
   },
   "pairs": {
    "left": {
     "ru": [
      "центростремительное ускорение",
-     "время",
-     "скорость"
+     "скорость",
+     "период обращения"
     ],
     "en": [
      "centripetal acceleration",
-     "time",
-     "velocity"
+     "velocity",
+     "period of revolution"
     ],
     "kk": [
      "центрге тартқыш үдеу",
-     "уақыт",
-     "жылдамдық"
+     "жылдамдық",
+     "айналу периоды"
     ]
    },
    "right": {
@@ -1197,11 +1221,11 @@ const TASKS_DATABASE_TYPES = [
    ],
    [
     1,
-    0
+    2
    ],
    [
     2,
-    2
+    0
    ]
   ],
   "hint": {
@@ -1210,9 +1234,9 @@ const TASKS_DATABASE_TYPES = [
    "kk": "Алдымен нақты білетін шамалардан баста: мысалы, күш ньютонмен өлшенеді."
   },
   "explanation": {
-   "ru": "Верные пары: центростремительное ускорение — м/с²; время — секунда (с); скорость — м/с.",
-   "en": "Correct pairs: centripetal acceleration — m/s²; time — second (s); velocity — m/s.",
-   "kk": "Дұрыс жұптар: центрге тартқыш үдеу — м/с²; уақыт — секунд (с); жылдамдық — м/с."
+   "ru": "Верные пары: центростремительное ускорение — м/с²; скорость — м/с; период обращения — секунда (с).",
+   "en": "Correct pairs: centripetal acceleration — m/s²; velocity — m/s; period of revolution — second (s).",
+   "kk": "Дұрыс жұптар: центрге тартқыш үдеу — м/с²; жылдамдық — м/с; айналу периоды — секунд (с)."
   }
  },
  {
@@ -1266,9 +1290,9 @@ const TASKS_DATABASE_TYPES = [
   "topic": "p7",
   "difficulty": 2,
   "question": {
-   "ru": "В каких единицах СИ измеряется величина «ускорение»? Запиши единицу.",
-   "en": "Which SI unit is used to measure «acceleration»? Write the unit.",
-   "kk": "«үдеу» шамасы ХБЖ-да қандай бірлікпен өлшенеді? Бірлікті жаз."
+   "ru": "В каких единицах СИ измеряется величина «центростремительное ускорение»? Запиши единицу.",
+   "en": "Which SI unit is used to measure «centripetal acceleration»? Write the unit.",
+   "kk": "«центрге тартқыш үдеу» шамасы ХБЖ-да қандай бірлікпен өлшенеді? Бірлікті жаз."
   },
   "correctAnswer": {
    "ru": [
@@ -1279,8 +1303,7 @@ const TASKS_DATABASE_TYPES = [
    ],
    "en": [
     "m/s²",
-    "m/s2",
-    "metre per second squared"
+    "m/s2"
    ],
    "kk": [
     "м/с2",
@@ -1294,9 +1317,9 @@ const TASKS_DATABASE_TYPES = [
    "kk": "Шама қай топқа жататынын ойла: жылу, электр, толқын немесе қозғалыс. Сол топтың бірлігі дұрыс жауап."
   },
   "explanation": {
-   "ru": "Единица СИ для величины «ускорение» — м/с².",
-   "en": "The SI unit of «acceleration» is m/s².",
-   "kk": "«үдеу» шамасының ХБЖ бірлігі — м/с²."
+   "ru": "Единица СИ для величины «центростремительное ускорение» — м/с².",
+   "en": "The SI unit of «centripetal acceleration» is m/s².",
+   "kk": "«центрге тартқыш үдеу» шамасының ХБЖ бірлігі — м/с²."
   }
  },
  {
@@ -1305,30 +1328,42 @@ const TASKS_DATABASE_TYPES = [
   "topic": "p7",
   "difficulty": 2,
   "question": {
-   "ru": "В единицах «рад/с» измеряется величина ___.",
-   "en": "The quantity measured in rad/s is ___.",
-   "kk": "«рад/с» бірлігімен өлшенетін шама — ___."
+   "ru": "Назови единицу СИ для величины «перемещение»: ___.",
+   "en": "Name the SI unit of «displacement»: ___.",
+   "kk": "«орын ауыстыру» шамасының ХБЖ бірлігін ата: ___."
   },
   "correctAnswer": {
    "ru": [
-    "угловая скорость"
+    "метр (м)",
+    "метр",
+    "м",
+    "m",
+    "M"
    ],
    "en": [
-    "angular velocity"
+    "metre (m)",
+    "metre",
+    "m",
+    "meter",
+    "M"
    ],
    "kk": [
-    "бұрыштық жылдамдық"
+    "метр (м)",
+    "метр",
+    "м",
+    "m",
+    "M"
    ]
   },
   "hint": {
-   "ru": "Название единицы подсказывает, какую величину она измеряет. Это величина из этой темы.",
-   "en": "The unit's name hints at the quantity it measures. It belongs to this topic.",
-   "kk": "Бірліктің атауы қандай шама өлшенетінін көрсетеді. Бұл — осы тақырыптың шамасы."
+   "ru": "Подумай, к какой группе относится величина: теплота, электричество, волны или движение. Единица этой группы и будет ответом.",
+   "en": "Think about the group this quantity belongs to: heat, electricity, waves or motion. The unit of that group is the answer.",
+   "kk": "Шама қай топқа жататынын ойла: жылу, электр, толқын немесе қозғалыс. Сол топтың бірлігі дұрыс жауап."
   },
   "explanation": {
-   "ru": "В рад/с измеряется угловая скорость.",
-   "en": "The quantity measured in rad/s is angular velocity.",
-   "kk": "рад/с бірлігімен бұрыштық жылдамдық өлшенеді."
+   "ru": "Единица СИ для величины «перемещение» — метр (м).",
+   "en": "The SI unit of «displacement» is metre (m).",
+   "kk": "«орын ауыстыру» шамасының ХБЖ бірлігі — метр (м)."
   }
  },
  {
@@ -1337,43 +1372,43 @@ const TASKS_DATABASE_TYPES = [
   "topic": "p7",
   "difficulty": 2,
   "question": {
-   "ru": "Сопоставь физическую величину и её единицу измерения в СИ.",
-   "en": "Match each physical quantity with its SI unit.",
-   "kk": "Физикалық шаманы оның ХБЖ-дағы өлшем бірлігімен сәйкестендір."
+   "ru": "Сопоставь величины из темы «Центростремительное ускорение» и их единицы измерения в СИ.",
+   "en": "Match the quantities from «Centripetal acceleration» with their SI units.",
+   "kk": "«Центрге тартқыш үдеу» тақырыбындағы шамаларды олардың ХБЖ бірліктерімен сәйкестендір."
   },
   "pairs": {
    "left": {
     "ru": [
-     "время",
-     "скорость",
-     "частота обращения"
+     "частота обращения",
+     "период обращения",
+     "центростремительное ускорение"
     ],
     "en": [
-     "time",
-     "velocity",
-     "frequency of revolution"
+     "frequency of revolution",
+     "period of revolution",
+     "centripetal acceleration"
     ],
     "kk": [
-     "уақыт",
-     "жылдамдық",
-     "айналу жиілігі"
+     "айналу жиілігі",
+     "айналу периоды",
+     "центрге тартқыш үдеу"
     ]
    },
    "right": {
     "ru": [
+     "герц (Гц)",
      "секунда (с)",
-     "м/с",
-     "герц (Гц)"
+     "м/с²"
     ],
     "en": [
+     "hertz (Hz)",
      "second (s)",
-     "m/s",
-     "hertz (Hz)"
+     "m/s²"
     ],
     "kk": [
+     "герц (Гц)",
      "секунд (с)",
-     "м/с",
-     "герц (Гц)"
+     "м/с²"
     ]
    }
   },
@@ -1397,9 +1432,9 @@ const TASKS_DATABASE_TYPES = [
    "kk": "Алдымен нақты білетін шамалардан баста: мысалы, күш ньютонмен өлшенеді."
   },
   "explanation": {
-   "ru": "Верные пары: время — секунда (с); скорость — м/с; частота обращения — герц (Гц).",
-   "en": "Correct pairs: time — second (s); velocity — m/s; frequency of revolution — hertz (Hz).",
-   "kk": "Дұрыс жұптар: уақыт — секунд (с); жылдамдық — м/с; айналу жиілігі — герц (Гц)."
+   "ru": "Верные пары: частота обращения — герц (Гц); период обращения — секунда (с); центростремительное ускорение — м/с².",
+   "en": "Correct pairs: frequency of revolution — hertz (Hz); period of revolution — second (s); centripetal acceleration — m/s².",
+   "kk": "Дұрыс жұптар: айналу жиілігі — герц (Гц); айналу периоды — секунд (с); центрге тартқыш үдеу — м/с²."
   }
  },
  {
@@ -1491,9 +1526,9 @@ const TASKS_DATABASE_TYPES = [
   "topic": "p8",
   "difficulty": 2,
   "question": {
-   "ru": "В единицах «градус (°)» измеряется величина ___.",
-   "en": "The quantity measured in degree (°) is ___.",
-   "kk": "«градус (°)» бірлігімен өлшенетін шама — ___."
+   "ru": "Единица «градус (°)» соответствует величине ___.",
+   "en": "The unit degree (°) corresponds to the quantity ___.",
+   "kk": "«градус (°)» бірлігі ___ шамасына сәйкес келеді."
   },
   "correctAnswer": {
    "ru": [
@@ -1525,43 +1560,43 @@ const TASKS_DATABASE_TYPES = [
   "topic": "p8",
   "difficulty": 2,
   "question": {
-   "ru": "Сопоставь физическую величину и её единицу измерения в СИ.",
-   "en": "Match each physical quantity with its SI unit.",
-   "kk": "Физикалық шаманы оның ХБЖ-дағы өлшем бірлігімен сәйкестендір."
+   "ru": "Сопоставь величины из темы «Звёздное небо» и их единицы измерения в СИ.",
+   "en": "Match the quantities from «Starry Sky» with their SI units.",
+   "kk": "«Жұлдызды аспан» тақырыбындағы шамаларды олардың ХБЖ бірліктерімен сәйкестендір."
   },
   "pairs": {
    "left": {
     "ru": [
      "расстояние до небесного тела",
-     "период обращения планеты",
-     "годичный параллакс"
+     "годичный параллакс",
+     "угловой размер светила"
     ],
     "en": [
      "distance to a celestial body",
-     "orbital period of a planet",
-     "annual parallax"
+     "annual parallax",
+     "angular size of a celestial body"
     ],
     "kk": [
      "аспан денесіне дейінгі қашықтық",
-     "планетаның айналу периоды",
-     "жылдық параллакс"
+     "жылдық параллакс",
+     "жарық шырағының бұрыштық мөлшері"
     ]
    },
    "right": {
     "ru": [
      "метр (м)",
-     "секунда (с)",
-     "угловая секунда (″)"
+     "угловая секунда (″)",
+     "градус (°)"
     ],
     "en": [
      "metre (m)",
-     "second (s)",
-     "arcsecond (″)"
+     "arcsecond (″)",
+     "degree (°)"
     ],
     "kk": [
      "метр (м)",
-     "секунд (с)",
-     "бұрыштық секунд (″)"
+     "бұрыштық секунд (″)",
+     "градус (°)"
     ]
    }
   },
@@ -1585,9 +1620,9 @@ const TASKS_DATABASE_TYPES = [
    "kk": "Алдымен нақты білетін шамалардан баста: мысалы, күш ньютонмен өлшенеді."
   },
   "explanation": {
-   "ru": "Верные пары: расстояние до небесного тела — метр (м); период обращения планеты — секунда (с); годичный параллакс — угловая секунда (″).",
-   "en": "Correct pairs: distance to a celestial body — metre (m); orbital period of a planet — second (s); annual parallax — arcsecond (″).",
-   "kk": "Дұрыс жұптар: аспан денесіне дейінгі қашықтық — метр (м); планетаның айналу периоды — секунд (с); жылдық параллакс — бұрыштық секунд (″)."
+   "ru": "Верные пары: расстояние до небесного тела — метр (м); годичный параллакс — угловая секунда (″); угловой размер светила — градус (°).",
+   "en": "Correct pairs: distance to a celestial body — metre (m); annual parallax — arcsecond (″); angular size of a celestial body — degree (°).",
+   "kk": "Дұрыс жұптар: аспан денесіне дейінгі қашықтық — метр (м); жылдық параллакс — бұрыштық секунд (″); жарық шырағының бұрыштық мөлшері — градус (°)."
   }
  },
  {
@@ -1641,26 +1676,32 @@ const TASKS_DATABASE_TYPES = [
   "topic": "p9",
   "difficulty": 2,
   "question": {
-   "ru": "В каких единицах СИ измеряется величина «расстояние до небесного тела»? Запиши единицу.",
-   "en": "Which SI unit is used to measure «distance to a celestial body»? Write the unit.",
-   "kk": "«аспан денесіне дейінгі қашықтық» шамасы ХБЖ-да қандай бірлікпен өлшенеді? Бірлікті жаз."
+   "ru": "В каких единицах СИ измеряется величина «период обращения планеты»? Запиши единицу.",
+   "en": "Which SI unit is used to measure «orbital period of a planet»? Write the unit.",
+   "kk": "«планетаның айналу периоды» шамасы ХБЖ-да қандай бірлікпен өлшенеді? Бірлікті жаз."
   },
   "correctAnswer": {
    "ru": [
-    "метр",
-    "м",
-    "m",
-    "M"
+    "секунда",
+    "с",
+    "s",
+    "сек",
+    "сутки",
+    "год"
    ],
    "en": [
-    "metre",
-    "meter",
-    "m"
+    "second",
+    "s",
+    "sec",
+    "day",
+    "year"
    ],
    "kk": [
-    "метр",
-    "м",
-    "m"
+    "секунд",
+    "с",
+    "s",
+    "тәулік",
+    "жыл"
    ]
   },
   "hint": {
@@ -1669,9 +1710,9 @@ const TASKS_DATABASE_TYPES = [
    "kk": "Шама қай топқа жататынын ойла: жылу, электр, толқын немесе қозғалыс. Сол топтың бірлігі дұрыс жауап."
   },
   "explanation": {
-   "ru": "Единица СИ для величины «расстояние до небесного тела» — метр (м).",
-   "en": "The SI unit of «distance to a celestial body» is metre (m).",
-   "kk": "«аспан денесіне дейінгі қашықтық» шамасының ХБЖ бірлігі — метр (м)."
+   "ru": "Единица СИ для величины «период обращения планеты» — секунда (с).",
+   "en": "The SI unit of «orbital period of a planet» is second (s).",
+   "kk": "«планетаның айналу периоды» шамасының ХБЖ бірлігі — секунд (с)."
   }
  },
  {
@@ -1712,9 +1753,9 @@ const TASKS_DATABASE_TYPES = [
   "topic": "p9",
   "difficulty": 2,
   "question": {
-   "ru": "Сопоставь физическую величину и её единицу измерения в СИ.",
-   "en": "Match each physical quantity with its SI unit.",
-   "kk": "Физикалық шаманы оның ХБЖ-дағы өлшем бірлігімен сәйкестендір."
+   "ru": "Сопоставь величины из темы «Небесная сфера, системы небесных координат» и их единицы измерения в СИ.",
+   "en": "Match the quantities from «Celestial sphere, celestial coordinate systems» with their SI units.",
+   "kk": "«Аспан сферасы, аспан координаталар жүйесі» тақырыбындағы шамаларды олардың ХБЖ бірліктерімен сәйкестендір."
   },
   "pairs": {
    "left": {
@@ -1828,32 +1869,24 @@ const TASKS_DATABASE_TYPES = [
   "topic": "p10",
   "difficulty": 2,
   "question": {
-   "ru": "В каких единицах СИ измеряется величина «период обращения планеты»? Запиши единицу.",
-   "en": "Which SI unit is used to measure «orbital period of a planet»? Write the unit.",
-   "kk": "«планетаның айналу периоды» шамасы ХБЖ-да қандай бірлікпен өлшенеді? Бірлікті жаз."
+   "ru": "В каких единицах СИ измеряется величина «угловой размер светила»? Запиши единицу.",
+   "en": "Which SI unit is used to measure «angular size of a celestial body»? Write the unit.",
+   "kk": "«жарық шырағының бұрыштық мөлшері» шамасы ХБЖ-да қандай бірлікпен өлшенеді? Бірлікті жаз."
   },
   "correctAnswer": {
    "ru": [
-    "секунда",
-    "с",
-    "s",
-    "сек",
-    "сутки",
-    "год"
+    "градус",
+    "°",
+    "град"
    ],
    "en": [
-    "second",
-    "s",
-    "sec",
-    "day",
-    "year"
+    "degree",
+    "°",
+    "deg"
    ],
    "kk": [
-    "секунд",
-    "с",
-    "s",
-    "тәулік",
-    "жыл"
+    "градус",
+    "°"
    ]
   },
   "hint": {
@@ -1862,9 +1895,9 @@ const TASKS_DATABASE_TYPES = [
    "kk": "Шама қай топқа жататынын ойла: жылу, электр, толқын немесе қозғалыс. Сол топтың бірлігі дұрыс жауап."
   },
   "explanation": {
-   "ru": "Единица СИ для величины «период обращения планеты» — секунда (с).",
-   "en": "The SI unit of «orbital period of a planet» is second (s).",
-   "kk": "«планетаның айналу периоды» шамасының ХБЖ бірлігі — секунд (с)."
+   "ru": "Единица СИ для величины «угловой размер светила» — градус (°).",
+   "en": "The SI unit of «angular size of a celestial body» is degree (°).",
+   "kk": "«жарық шырағының бұрыштық мөлшері» шамасының ХБЖ бірлігі — градус (°)."
   }
  },
  {
@@ -1873,32 +1906,40 @@ const TASKS_DATABASE_TYPES = [
   "topic": "p10",
   "difficulty": 2,
   "question": {
-   "ru": "В единицах «градус (°)» измеряется величина ___.",
-   "en": "The quantity measured in degree (°) is ___.",
-   "kk": "«градус (°)» бірлігімен өлшенетін шама — ___."
+   "ru": "Единица измерения величины «расстояние до небесного тела» — ___.",
+   "en": "The unit of «distance to a celestial body» is ___.",
+   "kk": "«аспан денесіне дейінгі қашықтық» шамасының өлшем бірлігі — ___."
   },
   "correctAnswer": {
    "ru": [
-    "угловой размер светила",
-    "угловой размер"
+    "метр (м)",
+    "метр",
+    "м",
+    "m",
+    "M"
    ],
    "en": [
-    "angular size of a celestial body",
-    "angular size"
+    "metre (m)",
+    "metre",
+    "m",
+    "meter"
    ],
    "kk": [
-    "жарық шырағының бұрыштық мөлшері"
+    "метр (м)",
+    "метр",
+    "м",
+    "m"
    ]
   },
   "hint": {
-   "ru": "Название единицы подсказывает, какую величину она измеряет. Это величина из этой темы.",
-   "en": "The unit's name hints at the quantity it measures. It belongs to this topic.",
-   "kk": "Бірліктің атауы қандай шама өлшенетінін көрсетеді. Бұл — осы тақырыптың шамасы."
+   "ru": "Подумай, к какой группе относится величина: теплота, электричество, волны или движение. Единица этой группы и будет ответом.",
+   "en": "Think about the group this quantity belongs to: heat, electricity, waves or motion. The unit of that group is the answer.",
+   "kk": "Шама қай топқа жататынын ойла: жылу, электр, толқын немесе қозғалыс. Сол топтың бірлігі дұрыс жауап."
   },
   "explanation": {
-   "ru": "В градус (°) измеряется угловой размер светила.",
-   "en": "The quantity measured in degree (°) is angular size of a celestial body.",
-   "kk": "градус (°) бірлігімен жарық шырағының бұрыштық мөлшері өлшенеді."
+   "ru": "Единица СИ для величины «расстояние до небесного тела» — метр (м).",
+   "en": "The SI unit of «distance to a celestial body» is metre (m).",
+   "kk": "«аспан денесіне дейінгі қашықтық» шамасының ХБЖ бірлігі — метр (м)."
   }
  },
  {
@@ -1907,26 +1948,26 @@ const TASKS_DATABASE_TYPES = [
   "topic": "p10",
   "difficulty": 2,
   "question": {
-   "ru": "Сопоставь физическую величину и её единицу измерения в СИ.",
-   "en": "Match each physical quantity with its SI unit.",
-   "kk": "Физикалық шаманы оның ХБЖ-дағы өлшем бірлігімен сәйкестендір."
+   "ru": "Сопоставь величины из темы «Видимое движение светил. Местное, поясное и всемирное время» и их единицы измерения в СИ.",
+   "en": "Match the quantities from «Apparent motion of celestial bodies. Local, zone, and universal time» with their SI units.",
+   "kk": "«Аспан денелерінің көрінетін қозғалысы. Жергілікті, белдеулік және дүниежүзілік уақыт» тақырыбындағы шамаларды олардың ХБЖ бірліктерімен сәйкестендір."
   },
   "pairs": {
    "left": {
     "ru": [
-     "расстояние до небесного тела",
      "период обращения планеты",
-     "угловой размер светила"
+     "угловой размер светила",
+     "расстояние до небесного тела"
     ],
     "en": [
-     "distance to a celestial body",
      "orbital period of a planet",
-     "angular size of a celestial body"
+     "angular size of a celestial body",
+     "distance to a celestial body"
     ],
     "kk": [
-     "аспан денесіне дейінгі қашықтық",
      "планетаның айналу периоды",
-     "жарық шырағының бұрыштық мөлшері"
+     "жарық шырағының бұрыштық мөлшері",
+     "аспан денесіне дейінгі қашықтық"
     ]
    },
    "right": {
@@ -1950,15 +1991,15 @@ const TASKS_DATABASE_TYPES = [
   "correctPairs": [
    [
     0,
-    0
-   ],
-   [
-    1,
     1
    ],
    [
-    2,
+    1,
     2
+   ],
+   [
+    2,
+    0
    ]
   ],
   "hint": {
@@ -1967,9 +2008,9 @@ const TASKS_DATABASE_TYPES = [
    "kk": "Алдымен нақты білетін шамалардан баста: мысалы, күш ньютонмен өлшенеді."
   },
   "explanation": {
-   "ru": "Верные пары: расстояние до небесного тела — метр (м); период обращения планеты — секунда (с); угловой размер светила — градус (°).",
-   "en": "Correct pairs: distance to a celestial body — metre (m); orbital period of a planet — second (s); angular size of a celestial body — degree (°).",
-   "kk": "Дұрыс жұптар: аспан денесіне дейінгі қашықтық — метр (м); планетаның айналу периоды — секунд (с); жарық шырағының бұрыштық мөлшері — градус (°)."
+   "ru": "Верные пары: период обращения планеты — секунда (с); угловой размер светила — градус (°); расстояние до небесного тела — метр (м).",
+   "en": "Correct pairs: orbital period of a planet — second (s); angular size of a celestial body — degree (°); distance to a celestial body — metre (m).",
+   "kk": "Дұрыс жұптар: планетаның айналу периоды — секунд (с); жарық шырағының бұрыштық мөлшері — градус (°); аспан денесіне дейінгі қашықтық — метр (м)."
   }
  },
  {
@@ -2023,32 +2064,26 @@ const TASKS_DATABASE_TYPES = [
   "topic": "p11",
   "difficulty": 2,
   "question": {
-   "ru": "В каких единицах СИ измеряется величина «период обращения планеты»? Запиши единицу.",
-   "en": "Which SI unit is used to measure «orbital period of a planet»? Write the unit.",
-   "kk": "«планетаның айналу периоды» шамасы ХБЖ-да қандай бірлікпен өлшенеді? Бірлікті жаз."
+   "ru": "В каких единицах СИ измеряется величина «расстояние до небесного тела»? Запиши единицу.",
+   "en": "Which SI unit is used to measure «distance to a celestial body»? Write the unit.",
+   "kk": "«аспан денесіне дейінгі қашықтық» шамасы ХБЖ-да қандай бірлікпен өлшенеді? Бірлікті жаз."
   },
   "correctAnswer": {
    "ru": [
-    "секунда",
-    "с",
-    "s",
-    "сек",
-    "сутки",
-    "год"
+    "метр",
+    "м",
+    "m",
+    "M"
    ],
    "en": [
-    "second",
-    "s",
-    "sec",
-    "day",
-    "year"
+    "metre",
+    "meter",
+    "m"
    ],
    "kk": [
-    "секунд",
-    "с",
-    "s",
-    "тәулік",
-    "жыл"
+    "метр",
+    "м",
+    "m"
    ]
   },
   "hint": {
@@ -2057,9 +2092,9 @@ const TASKS_DATABASE_TYPES = [
    "kk": "Шама қай топқа жататынын ойла: жылу, электр, толқын немесе қозғалыс. Сол топтың бірлігі дұрыс жауап."
   },
   "explanation": {
-   "ru": "Единица СИ для величины «период обращения планеты» — секунда (с).",
-   "en": "The SI unit of «orbital period of a planet» is second (s).",
-   "kk": "«планетаның айналу периоды» шамасының ХБЖ бірлігі — секунд (с)."
+   "ru": "Единица СИ для величины «расстояние до небесного тела» — метр (м).",
+   "en": "The SI unit of «distance to a celestial body» is metre (m).",
+   "kk": "«аспан денесіне дейінгі қашықтық» шамасының ХБЖ бірлігі — метр (м)."
   }
  },
  {
@@ -2068,9 +2103,9 @@ const TASKS_DATABASE_TYPES = [
   "topic": "p11",
   "difficulty": 2,
   "question": {
-   "ru": "В единицах «угловая секунда (″)» измеряется величина ___.",
-   "en": "The quantity measured in arcsecond (″) is ___.",
-   "kk": "«бұрыштық секунд (″)» бірлігімен өлшенетін шама — ___."
+   "ru": "Единица «угловая секунда (″)» соответствует величине ___.",
+   "en": "The unit arcsecond (″) corresponds to the quantity ___.",
+   "kk": "«бұрыштық секунд (″)» бірлігі ___ шамасына сәйкес келеді."
   },
   "correctAnswer": {
    "ru": [
@@ -2100,9 +2135,9 @@ const TASKS_DATABASE_TYPES = [
   "topic": "p11",
   "difficulty": 2,
   "question": {
-   "ru": "Сопоставь физическую величину и её единицу измерения в СИ.",
-   "en": "Match each physical quantity with its SI unit.",
-   "kk": "Физикалық шаманы оның ХБЖ-дағы өлшем бірлігімен сәйкестендір."
+   "ru": "Сопоставь величины из темы «Законы движения планет Солнечной системы» и их единицы измерения в СИ.",
+   "en": "Match the quantities from «Laws of motion of the planets of the Solar System» with their SI units.",
+   "kk": "«Күн жүйесіндегі планеталардың қозғалыс заңдары» тақырыбындағы шамаларды олардың ХБЖ бірліктерімен сәйкестендір."
   },
   "pairs": {
    "left": {
@@ -2124,34 +2159,34 @@ const TASKS_DATABASE_TYPES = [
    },
    "right": {
     "ru": [
-     "секунда (с)",
      "метр (м)",
-     "угловая секунда (″)"
+     "угловая секунда (″)",
+     "секунда (с)"
     ],
     "en": [
-     "second (s)",
      "metre (m)",
-     "arcsecond (″)"
+     "arcsecond (″)",
+     "second (s)"
     ],
     "kk": [
-     "секунд (с)",
      "метр (м)",
-     "бұрыштық секунд (″)"
+     "бұрыштық секунд (″)",
+     "секунд (с)"
     ]
    }
   },
   "correctPairs": [
    [
     0,
-    0
+    2
    ],
    [
     1,
-    1
+    0
    ],
    [
     2,
-    2
+    1
    ]
   ],
   "hint": {
@@ -2216,25 +2251,26 @@ const TASKS_DATABASE_TYPES = [
   "topic": "p12",
   "difficulty": 2,
   "question": {
-   "ru": "В каких единицах СИ измеряется величина «годичный параллакс»? Запиши единицу.",
-   "en": "Which SI unit is used to measure «annual parallax»? Write the unit.",
-   "kk": "«жылдық параллакс» шамасы ХБЖ-да қандай бірлікпен өлшенеді? Бірлікті жаз."
+   "ru": "В каких единицах СИ измеряется величина «ускорение»? Запиши единицу.",
+   "en": "Which SI unit is used to measure «acceleration»? Write the unit.",
+   "kk": "«үдеу» шамасы ХБЖ-да қандай бірлікпен өлшенеді? Бірлікті жаз."
   },
   "correctAnswer": {
    "ru": [
-    "угловая секунда",
-    "секунда дуги",
-    "″",
-    "\""
+    "м/с2",
+    "м/с²",
+    "m/s2",
+    "m/s²"
    ],
    "en": [
-    "arcsecond",
-    "arc second",
-    "″"
+    "m/s²",
+    "m/s2",
+    "metre per second squared"
    ],
    "kk": [
-    "бұрыштық секунд",
-    "″"
+    "м/с2",
+    "м/с²",
+    "m/s²"
    ]
   },
   "hint": {
@@ -2243,9 +2279,9 @@ const TASKS_DATABASE_TYPES = [
    "kk": "Шама қай топқа жататынын ойла: жылу, электр, толқын немесе қозғалыс. Сол топтың бірлігі дұрыс жауап."
   },
   "explanation": {
-   "ru": "Единица СИ для величины «годичный параллакс» — угловая секунда (″).",
-   "en": "The SI unit of «annual parallax» is arcsecond (″).",
-   "kk": "«жылдық параллакс» шамасының ХБЖ бірлігі — бұрыштық секунд (″)."
+   "ru": "Единица СИ для величины «ускорение» — м/с².",
+   "en": "The SI unit of «acceleration» is m/s².",
+   "kk": "«үдеу» шамасының ХБЖ бірлігі — м/с²."
   }
  },
  {
@@ -2254,32 +2290,46 @@ const TASKS_DATABASE_TYPES = [
   "topic": "p12",
   "difficulty": 2,
   "question": {
-   "ru": "В единицах «градус (°)» измеряется величина ___.",
-   "en": "The quantity measured in degree (°) is ___.",
-   "kk": "«градус (°)» бірлігімен өлшенетін шама — ___."
+   "ru": "Назови единицу СИ для величины «период обращения планеты»: ___.",
+   "en": "Name the SI unit of «orbital period of a planet»: ___.",
+   "kk": "«планетаның айналу периоды» шамасының ХБЖ бірлігін ата: ___."
   },
   "correctAnswer": {
    "ru": [
-    "угловой размер светила",
-    "угловой размер"
+    "секунда (с)",
+    "секунда",
+    "с",
+    "s",
+    "сек",
+    "сутки",
+    "год"
    ],
    "en": [
-    "angular size of a celestial body",
-    "angular size"
+    "second (s)",
+    "second",
+    "s",
+    "sec",
+    "day",
+    "year"
    ],
    "kk": [
-    "жарық шырағының бұрыштық мөлшері"
+    "секунд (с)",
+    "секунд",
+    "с",
+    "s",
+    "тәулік",
+    "жыл"
    ]
   },
   "hint": {
-   "ru": "Название единицы подсказывает, какую величину она измеряет. Это величина из этой темы.",
-   "en": "The unit's name hints at the quantity it measures. It belongs to this topic.",
-   "kk": "Бірліктің атауы қандай шама өлшенетінін көрсетеді. Бұл — осы тақырыптың шамасы."
+   "ru": "Подумай, к какой группе относится величина: теплота, электричество, волны или движение. Единица этой группы и будет ответом.",
+   "en": "Think about the group this quantity belongs to: heat, electricity, waves or motion. The unit of that group is the answer.",
+   "kk": "Шама қай топқа жататынын ойла: жылу, электр, толқын немесе қозғалыс. Сол топтың бірлігі дұрыс жауап."
   },
   "explanation": {
-   "ru": "В градус (°) измеряется угловой размер светила.",
-   "en": "The quantity measured in degree (°) is angular size of a celestial body.",
-   "kk": "градус (°) бірлігімен жарық шырағының бұрыштық мөлшері өлшенеді."
+   "ru": "Единица СИ для величины «период обращения планеты» — секунда (с).",
+   "en": "The SI unit of «orbital period of a planet» is second (s).",
+   "kk": "«планетаның айналу периоды» шамасының ХБЖ бірлігі — секунд (с)."
   }
  },
  {
@@ -2288,58 +2338,58 @@ const TASKS_DATABASE_TYPES = [
   "topic": "p12",
   "difficulty": 2,
   "question": {
-   "ru": "Сопоставь физическую величину и её единицу измерения в СИ.",
-   "en": "Match each physical quantity with its SI unit.",
-   "kk": "Физикалық шаманы оның ХБЖ-дағы өлшем бірлігімен сәйкестендір."
+   "ru": "Сопоставь величины из темы «Определение расстояний в астрономии методом параллакса» и их единицы измерения в СИ.",
+   "en": "Match the quantities from «Determining distances in astronomy by the parallax method» with their SI units.",
+   "kk": "«Астрономияда параллакс әдісімен қашықтықтарды анықтау» тақырыбындағы шамаларды олардың ХБЖ бірліктерімен сәйкестендір."
   },
   "pairs": {
    "left": {
     "ru": [
-     "период обращения",
+     "расстояние до небесного тела",
      "годичный параллакс",
      "угловой размер светила"
     ],
     "en": [
-     "period of revolution",
+     "distance to a celestial body",
      "annual parallax",
      "angular size of a celestial body"
     ],
     "kk": [
-     "айналу периоды",
+     "аспан денесіне дейінгі қашықтық",
      "жылдық параллакс",
      "жарық шырағының бұрыштық мөлшері"
     ]
    },
    "right": {
     "ru": [
+     "метр (м)",
      "градус (°)",
-     "угловая секунда (″)",
-     "секунда (с)"
+     "угловая секунда (″)"
     ],
     "en": [
+     "metre (m)",
      "degree (°)",
-     "arcsecond (″)",
-     "second (s)"
+     "arcsecond (″)"
     ],
     "kk": [
+     "метр (м)",
      "градус (°)",
-     "бұрыштық секунд (″)",
-     "секунд (с)"
+     "бұрыштық секунд (″)"
     ]
    }
   },
   "correctPairs": [
    [
     0,
-    2
+    0
    ],
    [
     1,
-    1
+    2
    ],
    [
     2,
-    0
+    1
    ]
   ],
   "hint": {
@@ -2348,9 +2398,9 @@ const TASKS_DATABASE_TYPES = [
    "kk": "Алдымен нақты білетін шамалардан баста: мысалы, күш ньютонмен өлшенеді."
   },
   "explanation": {
-   "ru": "Верные пары: период обращения — секунда (с); годичный параллакс — угловая секунда (″); угловой размер светила — градус (°).",
-   "en": "Correct pairs: period of revolution — second (s); annual parallax — arcsecond (″); angular size of a celestial body — degree (°).",
-   "kk": "Дұрыс жұптар: айналу периоды — секунд (с); жылдық параллакс — бұрыштық секунд (″); жарық шырағының бұрыштық мөлшері — градус (°)."
+   "ru": "Верные пары: расстояние до небесного тела — метр (м); годичный параллакс — угловая секунда (″); угловой размер светила — градус (°).",
+   "en": "Correct pairs: distance to a celestial body — metre (m); annual parallax — arcsecond (″); angular size of a celestial body — degree (°).",
+   "kk": "Дұрыс жұптар: аспан денесіне дейінгі қашықтық — метр (м); жылдық параллакс — бұрыштық секунд (″); жарық шырағының бұрыштық мөлшері — градус (°)."
   }
  },
  {
@@ -2446,19 +2496,21 @@ const TASKS_DATABASE_TYPES = [
   "topic": "p13",
   "difficulty": 2,
   "question": {
-   "ru": "В единицах «килограмм (кг)» измеряется величина ___.",
-   "en": "The quantity measured in kilogram (kg) is ___.",
-   "kk": "«килограмм (кг)» бірлігімен өлшенетін шама — ___."
+   "ru": "В единицах «кг·м/с» измеряется величина ___.",
+   "en": "The quantity measured in kg·m/s is ___.",
+   "kk": "«кг·м/с» бірлігімен өлшенетін шама — ___."
   },
   "correctAnswer": {
    "ru": [
-    "масса"
+    "импульс тела",
+    "импульс"
    ],
    "en": [
-    "mass"
+    "momentum of a body",
+    "momentum"
    ],
    "kk": [
-    "масса"
+    "дене импульсі"
    ]
   },
   "hint": {
@@ -2467,9 +2519,9 @@ const TASKS_DATABASE_TYPES = [
    "kk": "Бірліктің атауы қандай шама өлшенетінін көрсетеді. Бұл — осы тақырыптың шамасы."
   },
   "explanation": {
-   "ru": "В килограмм (кг) измеряется масса.",
-   "en": "The quantity measured in kilogram (kg) is mass.",
-   "kk": "килограмм (кг) бірлігімен масса өлшенеді."
+   "ru": "В кг·м/с измеряется импульс тела.",
+   "en": "The quantity measured in kg·m/s is momentum of a body.",
+   "kk": "кг·м/с бірлігімен дене импульсі өлшенеді."
   }
  },
  {
@@ -2478,42 +2530,42 @@ const TASKS_DATABASE_TYPES = [
   "topic": "p13",
   "difficulty": 2,
   "question": {
-   "ru": "Сопоставь физическую величину и её единицу измерения в СИ.",
-   "en": "Match each physical quantity with its SI unit.",
-   "kk": "Физикалық шаманы оның ХБЖ-дағы өлшем бірлігімен сәйкестендір."
+   "ru": "Сопоставь величины из темы «Первый закон Ньютона. Инерциальные системы отсчёта» и их единицы измерения в СИ.",
+   "en": "Match the quantities from «Newton's first law. Inertial frames of reference» with their SI units.",
+   "kk": "«Ньютонның бірінші заңы. Инерциялық санау жүйелері» тақырыбындағы шамаларды олардың ХБЖ бірліктерімен сәйкестендір."
   },
   "pairs": {
    "left": {
     "ru": [
      "сила",
-     "импульс тела",
-     "ускорение свободного падения"
+     "ускорение свободного падения",
+     "масса"
     ],
     "en": [
      "force",
-     "momentum of a body",
-     "acceleration due to gravity"
+     "acceleration due to gravity",
+     "mass"
     ],
     "kk": [
      "күш",
-     "дене импульсі",
-     "еркін түсу үдеуі"
+     "еркін түсу үдеуі",
+     "масса"
     ]
    },
    "right": {
     "ru": [
      "м/с²",
-     "кг·м/с",
+     "килограмм (кг)",
      "ньютон (Н)"
     ],
     "en": [
      "m/s²",
-     "kg·m/s",
+     "kilogram (kg)",
      "newton (N)"
     ],
     "kk": [
      "м/с²",
-     "кг·м/с",
+     "килограмм (кг)",
      "ньютон (Н)"
     ]
    }
@@ -2525,11 +2577,11 @@ const TASKS_DATABASE_TYPES = [
    ],
    [
     1,
-    1
+    0
    ],
    [
     2,
-    0
+    1
    ]
   ],
   "hint": {
@@ -2538,9 +2590,9 @@ const TASKS_DATABASE_TYPES = [
    "kk": "Алдымен нақты білетін шамалардан баста: мысалы, күш ньютонмен өлшенеді."
   },
   "explanation": {
-   "ru": "Верные пары: сила — ньютон (Н); импульс тела — кг·м/с; ускорение свободного падения — м/с².",
-   "en": "Correct pairs: force — newton (N); momentum of a body — kg·m/s; acceleration due to gravity — m/s².",
-   "kk": "Дұрыс жұптар: күш — ньютон (Н); дене импульсі — кг·м/с; еркін түсу үдеуі — м/с²."
+   "ru": "Верные пары: сила — ньютон (Н); ускорение свободного падения — м/с²; масса — килограмм (кг).",
+   "en": "Correct pairs: force — newton (N); acceleration due to gravity — m/s²; mass — kilogram (kg).",
+   "kk": "Дұрыс жұптар: күш — ньютон (Н); еркін түсу үдеуі — м/с²; масса — килограмм (кг)."
   }
  },
  {
@@ -2594,29 +2646,69 @@ const TASKS_DATABASE_TYPES = [
   "topic": "p14",
   "difficulty": 2,
   "question": {
-   "ru": "В каких единицах СИ измеряется величина «сила»? Запиши единицу.",
-   "en": "Which SI unit is used to measure «force»? Write the unit.",
-   "kk": "«күш» шамасы ХБЖ-да қандай бірлікпен өлшенеді? Бірлікті жаз."
+   "ru": "В каких единицах СИ измеряется величина «масса»? Запиши единицу.",
+   "en": "Which SI unit is used to measure «mass»? Write the unit.",
+   "kk": "«масса» шамасы ХБЖ-да қандай бірлікпен өлшенеді? Бірлікті жаз."
   },
   "correctAnswer": {
    "ru": [
-    "ньютон",
-    "н",
-    "n",
-    "N",
-    "Н"
+    "килограмм",
+    "кг",
+    "kg"
    ],
    "en": [
-    "newton",
+    "kilogram",
+    "kg"
+   ],
+   "kk": [
+    "килограмм",
+    "кг",
+    "kg"
+   ]
+  },
+  "hint": {
+   "ru": "Подумай, к какой группе относится величина: теплота, электричество, волны или движение. Единица этой группы и будет ответом.",
+   "en": "Think about the group this quantity belongs to: heat, electricity, waves or motion. The unit of that group is the answer.",
+   "kk": "Шама қай топқа жататынын ойла: жылу, электр, толқын немесе қозғалыс. Сол топтың бірлігі дұрыс жауап."
+  },
+  "explanation": {
+   "ru": "Единица СИ для величины «масса» — килограмм (кг).",
+   "en": "The SI unit of «mass» is kilogram (kg).",
+   "kk": "«масса» шамасының ХБЖ бірлігі — килограмм (кг)."
+  }
+ },
+ {
+  "id": "t9_l15_p14_fb",
+  "type": "fill-blank",
+  "topic": "p14",
+  "difficulty": 2,
+  "question": {
+   "ru": "Назови единицу СИ для величины «сила»: ___.",
+   "en": "Name the SI unit of «force»: ___.",
+   "kk": "«күш» шамасының ХБЖ бірлігін ата: ___."
+  },
+  "correctAnswer": {
+   "ru": [
+    "ньютон (Н)",
+    "ньютон",
+    "Н",
+    "н",
     "n",
     "N"
    ],
+   "en": [
+    "newton (N)",
+    "newton",
+    "N",
+    "n"
+   ],
    "kk": [
+    "ньютон (Н)",
     "ньютон",
+    "Н",
     "н",
     "n",
-    "N",
-    "Н"
+    "N"
    ]
   },
   "hint": {
@@ -2631,89 +2723,55 @@ const TASKS_DATABASE_TYPES = [
   }
  },
  {
-  "id": "t9_l15_p14_fb",
-  "type": "fill-blank",
-  "topic": "p14",
-  "difficulty": 2,
-  "question": {
-   "ru": "В единицах «кг·м/с» измеряется величина ___.",
-   "en": "The quantity measured in kg·m/s is ___.",
-   "kk": "«кг·м/с» бірлігімен өлшенетін шама — ___."
-  },
-  "correctAnswer": {
-   "ru": [
-    "импульс тела",
-    "импульс"
-   ],
-   "en": [
-    "momentum of a body",
-    "momentum"
-   ],
-   "kk": [
-    "дене импульсі"
-   ]
-  },
-  "hint": {
-   "ru": "Название единицы подсказывает, какую величину она измеряет. Это величина из этой темы.",
-   "en": "The unit's name hints at the quantity it measures. It belongs to this topic.",
-   "kk": "Бірліктің атауы қандай шама өлшенетінін көрсетеді. Бұл — осы тақырыптың шамасы."
-  },
-  "explanation": {
-   "ru": "В кг·м/с измеряется импульс тела.",
-   "en": "The quantity measured in kg·m/s is momentum of a body.",
-   "kk": "кг·м/с бірлігімен дене импульсі өлшенеді."
-  }
- },
- {
   "id": "t9_l15_p14_mt",
   "type": "matching",
   "topic": "p14",
   "difficulty": 2,
   "question": {
-   "ru": "Сопоставь физическую величину и её единицу измерения в СИ.",
-   "en": "Match each physical quantity with its SI unit.",
-   "kk": "Физикалық шаманы оның ХБЖ-дағы өлшем бірлігімен сәйкестендір."
+   "ru": "Сопоставь величины из темы «Силы в механике» и их единицы измерения в СИ.",
+   "en": "Match the quantities from «Forces in mechanics» with their SI units.",
+   "kk": "«Механикадағы күштер» тақырыбындағы шамаларды олардың ХБЖ бірліктерімен сәйкестендір."
   },
   "pairs": {
    "left": {
     "ru": [
      "сила",
-     "импульс тела",
-     "ускорение свободного падения"
+     "ускорение свободного падения",
+     "импульс тела"
     ],
     "en": [
      "force",
-     "momentum of a body",
-     "acceleration due to gravity"
+     "acceleration due to gravity",
+     "momentum of a body"
     ],
     "kk": [
      "күш",
-     "дене импульсі",
-     "еркін түсу үдеуі"
+     "еркін түсу үдеуі",
+     "дене импульсі"
     ]
    },
    "right": {
     "ru": [
-     "м/с²",
      "ньютон (Н)",
-     "кг·м/с"
+     "кг·м/с",
+     "м/с²"
     ],
     "en": [
-     "m/s²",
      "newton (N)",
-     "kg·m/s"
+     "kg·m/s",
+     "m/s²"
     ],
     "kk": [
-     "м/с²",
      "ньютон (Н)",
-     "кг·м/с"
+     "кг·м/с",
+     "м/с²"
     ]
    }
   },
   "correctPairs": [
    [
     0,
-    1
+    0
    ],
    [
     1,
@@ -2721,7 +2779,7 @@ const TASKS_DATABASE_TYPES = [
    ],
    [
     2,
-    0
+    1
    ]
   ],
   "hint": {
@@ -2730,9 +2788,9 @@ const TASKS_DATABASE_TYPES = [
    "kk": "Алдымен нақты білетін шамалардан баста: мысалы, күш ньютонмен өлшенеді."
   },
   "explanation": {
-   "ru": "Верные пары: сила — ньютон (Н); импульс тела — кг·м/с; ускорение свободного падения — м/с².",
-   "en": "Correct pairs: force — newton (N); momentum of a body — kg·m/s; acceleration due to gravity — m/s².",
-   "kk": "Дұрыс жұптар: күш — ньютон (Н); дене импульсі — кг·м/с; еркін түсу үдеуі — м/с²."
+   "ru": "Верные пары: сила — ньютон (Н); ускорение свободного падения — м/с²; импульс тела — кг·м/с.",
+   "en": "Correct pairs: force — newton (N); acceleration due to gravity — m/s²; momentum of a body — kg·m/s.",
+   "kk": "Дұрыс жұптар: күш — ньютон (Н); еркін түсу үдеуі — м/с²; дене импульсі — кг·м/с."
   }
  },
  {
@@ -2786,29 +2844,69 @@ const TASKS_DATABASE_TYPES = [
   "topic": "p15",
   "difficulty": 2,
   "question": {
-   "ru": "В каких единицах СИ измеряется величина «вес тела»? Запиши единицу.",
-   "en": "Which SI unit is used to measure «weight of a body»? Write the unit.",
-   "kk": "«дене салмағы» шамасы ХБЖ-да қандай бірлікпен өлшенеді? Бірлікті жаз."
+   "ru": "В каких единицах СИ измеряется величина «импульс тела»? Запиши единицу.",
+   "en": "Which SI unit is used to measure «momentum of a body»? Write the unit.",
+   "kk": "«дене импульсі» шамасы ХБЖ-да қандай бірлікпен өлшенеді? Бірлікті жаз."
   },
   "correctAnswer": {
    "ru": [
-    "ньютон",
-    "н",
-    "n",
-    "N",
-    "Н"
+    "кг·м/с",
+    "кг*м/с",
+    "kg*m/s"
    ],
    "en": [
-    "newton",
+    "kg·m/s",
+    "kg*m/s",
+    "kg m/s"
+   ],
+   "kk": [
+    "кг·м/с",
+    "кг*м/с"
+   ]
+  },
+  "hint": {
+   "ru": "Подумай, к какой группе относится величина: теплота, электричество, волны или движение. Единица этой группы и будет ответом.",
+   "en": "Think about the group this quantity belongs to: heat, electricity, waves or motion. The unit of that group is the answer.",
+   "kk": "Шама қай топқа жататынын ойла: жылу, электр, толқын немесе қозғалыс. Сол топтың бірлігі дұрыс жауап."
+  },
+  "explanation": {
+   "ru": "Единица СИ для величины «импульс тела» — кг·м/с.",
+   "en": "The SI unit of «momentum of a body» is kg·m/s.",
+   "kk": "«дене импульсі» шамасының ХБЖ бірлігі — кг·м/с."
+  }
+ },
+ {
+  "id": "t9_l16_p15_fb",
+  "type": "fill-blank",
+  "topic": "p15",
+  "difficulty": 2,
+  "question": {
+   "ru": "Единица измерения величины «вес тела» — ___.",
+   "en": "The unit of «weight of a body» is ___.",
+   "kk": "«дене салмағы» шамасының өлшем бірлігі — ___."
+  },
+  "correctAnswer": {
+   "ru": [
+    "ньютон (Н)",
+    "ньютон",
+    "Н",
+    "н",
     "n",
     "N"
    ],
+   "en": [
+    "newton (N)",
+    "newton",
+    "N",
+    "n"
+   ],
    "kk": [
+    "ньютон (Н)",
     "ньютон",
+    "Н",
     "н",
     "n",
-    "N",
-    "Н"
+    "N"
    ]
   },
   "hint": {
@@ -2823,91 +2921,59 @@ const TASKS_DATABASE_TYPES = [
   }
  },
  {
-  "id": "t9_l16_p15_fb",
-  "type": "fill-blank",
-  "topic": "p15",
-  "difficulty": 2,
-  "question": {
-   "ru": "В единицах «килограмм (кг)» измеряется величина ___.",
-   "en": "The quantity measured in kilogram (kg) is ___.",
-   "kk": "«килограмм (кг)» бірлігімен өлшенетін шама — ___."
-  },
-  "correctAnswer": {
-   "ru": [
-    "масса"
-   ],
-   "en": [
-    "mass"
-   ],
-   "kk": [
-    "масса"
-   ]
-  },
-  "hint": {
-   "ru": "Название единицы подсказывает, какую величину она измеряет. Это величина из этой темы.",
-   "en": "The unit's name hints at the quantity it measures. It belongs to this topic.",
-   "kk": "Бірліктің атауы қандай шама өлшенетінін көрсетеді. Бұл — осы тақырыптың шамасы."
-  },
-  "explanation": {
-   "ru": "В килограмм (кг) измеряется масса.",
-   "en": "The quantity measured in kilogram (kg) is mass.",
-   "kk": "килограмм (кг) бірлігімен масса өлшенеді."
-  }
- },
- {
   "id": "t9_l16_p15_mt",
   "type": "matching",
   "topic": "p15",
   "difficulty": 2,
   "question": {
-   "ru": "Сопоставь физическую величину и её единицу измерения в СИ.",
-   "en": "Match each physical quantity with its SI unit.",
-   "kk": "Физикалық шаманы оның ХБЖ-дағы өлшем бірлігімен сәйкестендір."
+   "ru": "Сопоставь величины из темы «Второй закон Ньютона, масса» и их единицы измерения в СИ.",
+   "en": "Match the quantities from «Newton's second law, mass» with their SI units.",
+   "kk": "«Ньютонның екінші заңы, масса» тақырыбындағы шамаларды олардың ХБЖ бірліктерімен сәйкестендір."
   },
   "pairs": {
    "left": {
     "ru": [
-     "сила",
      "масса",
-     "импульс тела"
+     "сила",
+     "ускорение свободного падения"
     ],
     "en": [
-     "force",
      "mass",
-     "momentum of a body"
+     "force",
+     "acceleration due to gravity"
     ],
     "kk": [
-     "күш",
      "масса",
-     "дене импульсі"
+     "күш",
+     "еркін түсу үдеуі"
     ]
    },
    "right": {
     "ru": [
      "ньютон (Н)",
      "килограмм (кг)",
-     "кг·м/с"
+     "м/с²"
     ],
     "en": [
      "newton (N)",
      "kilogram (kg)",
-     "kg·m/s"
+     "m/s²"
     ],
     "kk": [
      "ньютон (Н)",
      "килограмм (кг)",
-     "кг·м/с"
+     "м/с²"
     ]
    }
   },
   "correctPairs": [
    [
     0,
-    0
+    1
    ],
    [
     1,
-    1
+    0
    ],
    [
     2,
@@ -2920,9 +2986,9 @@ const TASKS_DATABASE_TYPES = [
    "kk": "Алдымен нақты білетін шамалардан баста: мысалы, күш ньютонмен өлшенеді."
   },
   "explanation": {
-   "ru": "Верные пары: сила — ньютон (Н); масса — килограмм (кг); импульс тела — кг·м/с.",
-   "en": "Correct pairs: force — newton (N); mass — kilogram (kg); momentum of a body — kg·m/s.",
-   "kk": "Дұрыс жұптар: күш — ньютон (Н); масса — килограмм (кг); дене импульсі — кг·м/с."
+   "ru": "Верные пары: масса — килограмм (кг); сила — ньютон (Н); ускорение свободного падения — м/с².",
+   "en": "Correct pairs: mass — kilogram (kg); force — newton (N); acceleration due to gravity — m/s².",
+   "kk": "Дұрыс жұптар: масса — килограмм (кг); күш — ньютон (Н); еркін түсу үдеуі — м/с²."
   }
  },
  {
@@ -2976,25 +3042,21 @@ const TASKS_DATABASE_TYPES = [
   "topic": "p16",
   "difficulty": 2,
   "question": {
-   "ru": "В каких единицах СИ измеряется величина «ускорение свободного падения»? Запиши единицу.",
-   "en": "Which SI unit is used to measure «acceleration due to gravity»? Write the unit.",
-   "kk": "«еркін түсу үдеуі» шамасы ХБЖ-да қандай бірлікпен өлшенеді? Бірлікті жаз."
+   "ru": "В каких единицах СИ измеряется величина «скорость волны»? Запиши единицу.",
+   "en": "Which SI unit is used to measure «wave speed»? Write the unit.",
+   "kk": "«толқын жылдамдығы» шамасы ХБЖ-да қандай бірлікпен өлшенеді? Бірлікті жаз."
   },
   "correctAnswer": {
    "ru": [
-    "м/с2",
-    "м/с²",
-    "m/s2",
-    "m/s²"
+    "м/с",
+    "m/s"
    ],
    "en": [
-    "m/s²",
-    "m/s2"
+    "m/s"
    ],
    "kk": [
-    "м/с2",
-    "м/с²",
-    "m/s²"
+    "м/с",
+    "m/s"
    ]
   },
   "hint": {
@@ -3003,9 +3065,9 @@ const TASKS_DATABASE_TYPES = [
    "kk": "Шама қай топқа жататынын ойла: жылу, электр, толқын немесе қозғалыс. Сол топтың бірлігі дұрыс жауап."
   },
   "explanation": {
-   "ru": "Единица СИ для величины «ускорение свободного падения» — м/с².",
-   "en": "The SI unit of «acceleration due to gravity» is m/s².",
-   "kk": "«еркін түсу үдеуі» шамасының ХБЖ бірлігі — м/с²."
+   "ru": "Единица СИ для величины «скорость волны» — м/с.",
+   "en": "The SI unit of «wave speed» is m/s.",
+   "kk": "«толқын жылдамдығы» шамасының ХБЖ бірлігі — м/с."
   }
  },
  {
@@ -3014,21 +3076,19 @@ const TASKS_DATABASE_TYPES = [
   "topic": "p16",
   "difficulty": 2,
   "question": {
-   "ru": "В единицах «кг·м/с» измеряется величина ___.",
-   "en": "The quantity measured in kg·m/s is ___.",
-   "kk": "«кг·м/с» бірлігімен өлшенетін шама — ___."
+   "ru": "Единица «килограмм (кг)» соответствует величине ___.",
+   "en": "The unit kilogram (kg) corresponds to the quantity ___.",
+   "kk": "«килограмм (кг)» бірлігі ___ шамасына сәйкес келеді."
   },
   "correctAnswer": {
    "ru": [
-    "импульс тела",
-    "импульс"
+    "масса"
    ],
    "en": [
-    "momentum of a body",
-    "momentum"
+    "mass"
    ],
    "kk": [
-    "дене импульсі"
+    "масса"
    ]
   },
   "hint": {
@@ -3037,9 +3097,9 @@ const TASKS_DATABASE_TYPES = [
    "kk": "Бірліктің атауы қандай шама өлшенетінін көрсетеді. Бұл — осы тақырыптың шамасы."
   },
   "explanation": {
-   "ru": "В кг·м/с измеряется импульс тела.",
-   "en": "The quantity measured in kg·m/s is momentum of a body.",
-   "kk": "кг·м/с бірлігімен дене импульсі өлшенеді."
+   "ru": "В килограмм (кг) измеряется масса.",
+   "en": "The quantity measured in kilogram (kg) is mass.",
+   "kk": "килограмм (кг) бірлігімен масса өлшенеді."
   }
  },
  {
@@ -3048,9 +3108,9 @@ const TASKS_DATABASE_TYPES = [
   "topic": "p16",
   "difficulty": 2,
   "question": {
-   "ru": "Сопоставь физическую величину и её единицу измерения в СИ.",
-   "en": "Match each physical quantity with its SI unit.",
-   "kk": "Физикалық шаманы оның ХБЖ-дағы өлшем бірлігімен сәйкестендір."
+   "ru": "Сопоставь величины из темы «Третий закон Ньютона» и их единицы измерения в СИ.",
+   "en": "Match the quantities from «Newton's third law» with their SI units.",
+   "kk": "«Ньютонның үшінші заңы» тақырыбындағы шамаларды олардың ХБЖ бірліктерімен сәйкестендір."
   },
   "pairs": {
    "left": {
@@ -3072,34 +3132,34 @@ const TASKS_DATABASE_TYPES = [
    },
    "right": {
     "ru": [
-     "м/с²",
      "ньютон (Н)",
-     "килограмм (кг)"
+     "килограмм (кг)",
+     "м/с²"
     ],
     "en": [
-     "m/s²",
      "newton (N)",
-     "kilogram (kg)"
+     "kilogram (kg)",
+     "m/s²"
     ],
     "kk": [
-     "м/с²",
      "ньютон (Н)",
-     "килограмм (кг)"
+     "килограмм (кг)",
+     "м/с²"
     ]
    }
   },
   "correctPairs": [
    [
     0,
-    1
+    0
    ],
    [
     1,
-    2
+    1
    ],
    [
     2,
-    0
+    2
    ]
   ],
   "hint": {
@@ -3164,29 +3224,29 @@ const TASKS_DATABASE_TYPES = [
   "topic": "p17",
   "difficulty": 2,
   "question": {
-   "ru": "В каких единицах СИ измеряется величина «сила»? Запиши единицу.",
-   "en": "Which SI unit is used to measure «force»? Write the unit.",
-   "kk": "«күш» шамасы ХБЖ-да қандай бірлікпен өлшенеді? Бірлікті жаз."
+   "ru": "В каких единицах СИ измеряется величина «частота звука»? Запиши единицу.",
+   "en": "Which SI unit is used to measure «sound frequency»? Write the unit.",
+   "kk": "«дыбыс жиілігі» шамасы ХБЖ-да қандай бірлікпен өлшенеді? Бірлікті жаз."
   },
   "correctAnswer": {
    "ru": [
-    "ньютон",
-    "н",
-    "n",
-    "N",
-    "Н"
+    "герц",
+    "гц",
+    "hz",
+    "Hz",
+    "Гц"
    ],
    "en": [
-    "newton",
-    "n",
-    "N"
+    "hertz",
+    "hz",
+    "Hz"
    ],
    "kk": [
-    "ньютон",
-    "н",
-    "n",
-    "N",
-    "Н"
+    "герц",
+    "гц",
+    "hz",
+    "Hz",
+    "Гц"
    ]
   },
   "hint": {
@@ -3195,9 +3255,9 @@ const TASKS_DATABASE_TYPES = [
    "kk": "Шама қай топқа жататынын ойла: жылу, электр, толқын немесе қозғалыс. Сол топтың бірлігі дұрыс жауап."
   },
   "explanation": {
-   "ru": "Единица СИ для величины «сила» — ньютон (Н).",
-   "en": "The SI unit of «force» is newton (N).",
-   "kk": "«күш» шамасының ХБЖ бірлігі — ньютон (Н)."
+   "ru": "Единица СИ для величины «частота звука» — герц (Гц).",
+   "en": "The SI unit of «sound frequency» is hertz (Hz).",
+   "kk": "«дыбыс жиілігі» шамасының ХБЖ бірлігі — герц (Гц)."
   }
  },
  {
@@ -3206,30 +3266,36 @@ const TASKS_DATABASE_TYPES = [
   "topic": "p17",
   "difficulty": 2,
   "question": {
-   "ru": "В единицах «килограмм (кг)» измеряется величина ___.",
-   "en": "The quantity measured in kilogram (kg) is ___.",
-   "kk": "«килограмм (кг)» бірлігімен өлшенетін шама — ___."
+   "ru": "Единица измерения величины «ускорение свободного падения» — ___.",
+   "en": "The unit of «acceleration due to gravity» is ___.",
+   "kk": "«еркін түсу үдеуі» шамасының өлшем бірлігі — ___."
   },
   "correctAnswer": {
    "ru": [
-    "масса"
+    "м/с²",
+    "м/с2",
+    "m/s2",
+    "m/s²"
    ],
    "en": [
-    "mass"
+    "m/s²",
+    "m/s2"
    ],
    "kk": [
-    "масса"
+    "м/с²",
+    "м/с2",
+    "m/s²"
    ]
   },
   "hint": {
-   "ru": "Название единицы подсказывает, какую величину она измеряет. Это величина из этой темы.",
-   "en": "The unit's name hints at the quantity it measures. It belongs to this topic.",
-   "kk": "Бірліктің атауы қандай шама өлшенетінін көрсетеді. Бұл — осы тақырыптың шамасы."
+   "ru": "Подумай, к какой группе относится величина: теплота, электричество, волны или движение. Единица этой группы и будет ответом.",
+   "en": "Think about the group this quantity belongs to: heat, electricity, waves or motion. The unit of that group is the answer.",
+   "kk": "Шама қай топқа жататынын ойла: жылу, электр, толқын немесе қозғалыс. Сол топтың бірлігі дұрыс жауап."
   },
   "explanation": {
-   "ru": "В килограмм (кг) измеряется масса.",
-   "en": "The quantity measured in kilogram (kg) is mass.",
-   "kk": "килограмм (кг) бірлігімен масса өлшенеді."
+   "ru": "Единица СИ для величины «ускорение свободного падения» — м/с².",
+   "en": "The SI unit of «acceleration due to gravity» is m/s².",
+   "kk": "«еркін түсу үдеуі» шамасының ХБЖ бірлігі — м/с²."
   }
  },
  {
@@ -3238,42 +3304,42 @@ const TASKS_DATABASE_TYPES = [
   "topic": "p17",
   "difficulty": 2,
   "question": {
-   "ru": "Сопоставь физическую величину и её единицу измерения в СИ.",
-   "en": "Match each physical quantity with its SI unit.",
-   "kk": "Физикалық шаманы оның ХБЖ-дағы өлшем бірлігімен сәйкестендір."
+   "ru": "Сопоставь величины из темы «Закон всемирного тяготения» и их единицы измерения в СИ.",
+   "en": "Match the quantities from «Law of universal gravitation» with their SI units.",
+   "kk": "«Ғаламдық тартылу заңы» тақырыбындағы шамаларды олардың ХБЖ бірліктерімен сәйкестендір."
   },
   "pairs": {
    "left": {
     "ru": [
+     "сила",
      "масса",
-     "ускорение свободного падения",
-     "сила"
+     "ускорение свободного падения"
     ],
     "en": [
+     "force",
      "mass",
-     "acceleration due to gravity",
-     "force"
+     "acceleration due to gravity"
     ],
     "kk": [
+     "күш",
      "масса",
-     "еркін түсу үдеуі",
-     "күш"
+     "еркін түсу үдеуі"
     ]
    },
    "right": {
     "ru": [
-     "килограмм (кг)",
      "м/с²",
+     "килограмм (кг)",
      "ньютон (Н)"
     ],
     "en": [
-     "kilogram (kg)",
      "m/s²",
+     "kilogram (kg)",
      "newton (N)"
     ],
     "kk": [
-     "килограмм (кг)",
      "м/с²",
+     "килограмм (кг)",
      "ньютон (Н)"
     ]
    }
@@ -3281,7 +3347,7 @@ const TASKS_DATABASE_TYPES = [
   "correctPairs": [
    [
     0,
-    0
+    2
    ],
    [
     1,
@@ -3289,7 +3355,7 @@ const TASKS_DATABASE_TYPES = [
    ],
    [
     2,
-    2
+    0
    ]
   ],
   "hint": {
@@ -3298,9 +3364,9 @@ const TASKS_DATABASE_TYPES = [
    "kk": "Алдымен нақты білетін шамалардан баста: мысалы, күш ньютонмен өлшенеді."
   },
   "explanation": {
-   "ru": "Верные пары: масса — килограмм (кг); ускорение свободного падения — м/с²; сила — ньютон (Н).",
-   "en": "Correct pairs: mass — kilogram (kg); acceleration due to gravity — m/s²; force — newton (N).",
-   "kk": "Дұрыс жұптар: масса — килограмм (кг); еркін түсу үдеуі — м/с²; күш — ньютон (Н)."
+   "ru": "Верные пары: сила — ньютон (Н); масса — килограмм (кг); ускорение свободного падения — м/с².",
+   "en": "Correct pairs: force — newton (N); mass — kilogram (kg); acceleration due to gravity — m/s².",
+   "kk": "Дұрыс жұптар: күш — ньютон (Н); масса — килограмм (кг); еркін түсу үдеуі — м/с²."
   }
  },
  {
@@ -3354,29 +3420,29 @@ const TASKS_DATABASE_TYPES = [
   "topic": "p18",
   "difficulty": 2,
   "question": {
-   "ru": "В каких единицах СИ измеряется величина «вес тела»? Запиши единицу.",
-   "en": "Which SI unit is used to measure «weight of a body»? Write the unit.",
-   "kk": "«дене салмағы» шамасы ХБЖ-да қандай бірлікпен өлшенеді? Бірлікті жаз."
+   "ru": "В каких единицах СИ измеряется величина «кинетическая энергия»? Запиши единицу.",
+   "en": "Which SI unit is used to measure «kinetic energy»? Write the unit.",
+   "kk": "«кинетикалық энергия» шамасы ХБЖ-да қандай бірлікпен өлшенеді? Бірлікті жаз."
   },
   "correctAnswer": {
    "ru": [
-    "ньютон",
-    "н",
-    "n",
-    "N",
-    "Н"
+    "джоуль",
+    "дж",
+    "j",
+    "J",
+    "Дж"
    ],
    "en": [
-    "newton",
-    "n",
-    "N"
+    "joule",
+    "j",
+    "J"
    ],
    "kk": [
-    "ньютон",
-    "н",
-    "n",
-    "N",
-    "Н"
+    "джоуль",
+    "дж",
+    "j",
+    "J",
+    "Дж"
    ]
   },
   "hint": {
@@ -3385,9 +3451,9 @@ const TASKS_DATABASE_TYPES = [
    "kk": "Шама қай топқа жататынын ойла: жылу, электр, толқын немесе қозғалыс. Сол топтың бірлігі дұрыс жауап."
   },
   "explanation": {
-   "ru": "Единица СИ для величины «вес тела» — ньютон (Н).",
-   "en": "The SI unit of «weight of a body» is newton (N).",
-   "kk": "«дене салмағы» шамасының ХБЖ бірлігі — ньютон (Н)."
+   "ru": "Единица СИ для величины «кинетическая энергия» — джоуль (Дж).",
+   "en": "The SI unit of «kinetic energy» is joule (J).",
+   "kk": "«кинетикалық энергия» шамасының ХБЖ бірлігі — джоуль (Дж)."
   }
  },
  {
@@ -3396,32 +3462,43 @@ const TASKS_DATABASE_TYPES = [
   "topic": "p18",
   "difficulty": 2,
   "question": {
-   "ru": "В единицах «кг·м/с» измеряется величина ___.",
-   "en": "The quantity measured in kg·m/s is ___.",
-   "kk": "«кг·м/с» бірлігімен өлшенетін шама — ___."
+   "ru": "Единица измерения величины «сила» — ___.",
+   "en": "The unit of «force» is ___.",
+   "kk": "«күш» шамасының өлшем бірлігі — ___."
   },
   "correctAnswer": {
    "ru": [
-    "импульс тела",
-    "импульс"
+    "ньютон (Н)",
+    "ньютон",
+    "Н",
+    "н",
+    "n",
+    "N"
    ],
    "en": [
-    "momentum of a body",
-    "momentum"
+    "newton (N)",
+    "newton",
+    "N",
+    "n"
    ],
    "kk": [
-    "дене импульсі"
+    "ньютон (Н)",
+    "ньютон",
+    "Н",
+    "н",
+    "n",
+    "N"
    ]
   },
   "hint": {
-   "ru": "Название единицы подсказывает, какую величину она измеряет. Это величина из этой темы.",
-   "en": "The unit's name hints at the quantity it measures. It belongs to this topic.",
-   "kk": "Бірліктің атауы қандай шама өлшенетінін көрсетеді. Бұл — осы тақырыптың шамасы."
+   "ru": "Подумай, к какой группе относится величина: теплота, электричество, волны или движение. Единица этой группы и будет ответом.",
+   "en": "Think about the group this quantity belongs to: heat, electricity, waves or motion. The unit of that group is the answer.",
+   "kk": "Шама қай топқа жататынын ойла: жылу, электр, толқын немесе қозғалыс. Сол топтың бірлігі дұрыс жауап."
   },
   "explanation": {
-   "ru": "В кг·м/с измеряется импульс тела.",
-   "en": "The quantity measured in kg·m/s is momentum of a body.",
-   "kk": "кг·м/с бірлігімен дене импульсі өлшенеді."
+   "ru": "Единица СИ для величины «сила» — ньютон (Н).",
+   "en": "The SI unit of «force» is newton (N).",
+   "kk": "«күш» шамасының ХБЖ бірлігі — ньютон (Н)."
   }
  },
  {
@@ -3430,54 +3507,54 @@ const TASKS_DATABASE_TYPES = [
   "topic": "p18",
   "difficulty": 2,
   "question": {
-   "ru": "Сопоставь физическую величину и её единицу измерения в СИ.",
-   "en": "Match each physical quantity with its SI unit.",
-   "kk": "Физикалық шаманы оның ХБЖ-дағы өлшем бірлігімен сәйкестендір."
+   "ru": "Сопоставь величины из темы «Вес тела, невесомость» и их единицы измерения в СИ.",
+   "en": "Match the quantities from «Body weight, weightlessness» with their SI units.",
+   "kk": "«Дененің салмағы, салмақсыздық» тақырыбындағы шамаларды олардың ХБЖ бірліктерімен сәйкестендір."
   },
   "pairs": {
    "left": {
     "ru": [
      "вес тела",
      "ускорение свободного падения",
-     "импульс тела"
+     "масса"
     ],
     "en": [
      "weight of a body",
      "acceleration due to gravity",
-     "momentum of a body"
+     "mass"
     ],
     "kk": [
      "дене салмағы",
      "еркін түсу үдеуі",
-     "дене импульсі"
+     "масса"
     ]
    },
    "right": {
     "ru": [
-     "кг·м/с",
-     "м/с²",
-     "ньютон (Н)"
+     "килограмм (кг)",
+     "ньютон (Н)",
+     "м/с²"
     ],
     "en": [
-     "kg·m/s",
-     "m/s²",
-     "newton (N)"
+     "kilogram (kg)",
+     "newton (N)",
+     "m/s²"
     ],
     "kk": [
-     "кг·м/с",
-     "м/с²",
-     "ньютон (Н)"
+     "килограмм (кг)",
+     "ньютон (Н)",
+     "м/с²"
     ]
    }
   },
   "correctPairs": [
    [
     0,
-    2
+    1
    ],
    [
     1,
-    1
+    2
    ],
    [
     2,
@@ -3490,9 +3567,9 @@ const TASKS_DATABASE_TYPES = [
    "kk": "Алдымен нақты білетін шамалардан баста: мысалы, күш ньютонмен өлшенеді."
   },
   "explanation": {
-   "ru": "Верные пары: вес тела — ньютон (Н); ускорение свободного падения — м/с²; импульс тела — кг·м/с.",
-   "en": "Correct pairs: weight of a body — newton (N); acceleration due to gravity — m/s²; momentum of a body — kg·m/s.",
-   "kk": "Дұрыс жұптар: дене салмағы — ньютон (Н); еркін түсу үдеуі — м/с²; дене импульсі — кг·м/с."
+   "ru": "Верные пары: вес тела — ньютон (Н); ускорение свободного падения — м/с²; масса — килограмм (кг).",
+   "en": "Correct pairs: weight of a body — newton (N); acceleration due to gravity — m/s²; mass — kilogram (kg).",
+   "kk": "Дұрыс жұптар: дене салмағы — ньютон (Н); еркін түсу үдеуі — м/с²; масса — килограмм (кг)."
   }
  },
  {
@@ -3546,25 +3623,29 @@ const TASKS_DATABASE_TYPES = [
   "topic": "p19",
   "difficulty": 2,
   "question": {
-   "ru": "В каких единицах СИ измеряется величина «ускорение свободного падения»? Запиши единицу.",
-   "en": "Which SI unit is used to measure «acceleration due to gravity»? Write the unit.",
-   "kk": "«еркін түсу үдеуі» шамасы ХБЖ-да қандай бірлікпен өлшенеді? Бірлікті жаз."
+   "ru": "В каких единицах СИ измеряется величина «частота колебаний»? Запиши единицу.",
+   "en": "Which SI unit is used to measure «frequency of oscillation»? Write the unit.",
+   "kk": "«тербеліс жиілігі» шамасы ХБЖ-да қандай бірлікпен өлшенеді? Бірлікті жаз."
   },
   "correctAnswer": {
    "ru": [
-    "м/с2",
-    "м/с²",
-    "m/s2",
-    "m/s²"
+    "герц",
+    "гц",
+    "hz",
+    "Hz",
+    "Гц"
    ],
    "en": [
-    "m/s²",
-    "m/s2"
+    "hertz",
+    "hz",
+    "Hz"
    ],
    "kk": [
-    "м/с2",
-    "м/с²",
-    "m/s²"
+    "герц",
+    "гц",
+    "hz",
+    "Hz",
+    "Гц"
    ]
   },
   "hint": {
@@ -3573,9 +3654,9 @@ const TASKS_DATABASE_TYPES = [
    "kk": "Шама қай топқа жататынын ойла: жылу, электр, толқын немесе қозғалыс. Сол топтың бірлігі дұрыс жауап."
   },
   "explanation": {
-   "ru": "Единица СИ для величины «ускорение свободного падения» — м/с².",
-   "en": "The SI unit of «acceleration due to gravity» is m/s².",
-   "kk": "«еркін түсу үдеуі» шамасының ХБЖ бірлігі — м/с²."
+   "ru": "Единица СИ для величины «частота колебаний» — герц (Гц).",
+   "en": "The SI unit of «frequency of oscillation» is hertz (Hz).",
+   "kk": "«тербеліс жиілігі» шамасының ХБЖ бірлігі — герц (Гц)."
   }
  },
  {
@@ -3584,30 +3665,35 @@ const TASKS_DATABASE_TYPES = [
   "topic": "p19",
   "difficulty": 2,
   "question": {
-   "ru": "В единицах «килограмм (кг)» измеряется величина ___.",
-   "en": "The quantity measured in kilogram (kg) is ___.",
-   "kk": "«килограмм (кг)» бірлігімен өлшенетін шама — ___."
+   "ru": "Назови единицу СИ для величины «импульс тела»: ___.",
+   "en": "Name the SI unit of «momentum of a body»: ___.",
+   "kk": "«дене импульсі» шамасының ХБЖ бірлігін ата: ___."
   },
   "correctAnswer": {
    "ru": [
-    "масса"
+    "кг·м/с",
+    "кг*м/с",
+    "kg*m/s"
    ],
    "en": [
-    "mass"
+    "kg·m/s",
+    "kg*m/s",
+    "kg m/s"
    ],
    "kk": [
-    "масса"
+    "кг·м/с",
+    "кг*м/с"
    ]
   },
   "hint": {
-   "ru": "Название единицы подсказывает, какую величину она измеряет. Это величина из этой темы.",
-   "en": "The unit's name hints at the quantity it measures. It belongs to this topic.",
-   "kk": "Бірліктің атауы қандай шама өлшенетінін көрсетеді. Бұл — осы тақырыптың шамасы."
+   "ru": "Подумай, к какой группе относится величина: теплота, электричество, волны или движение. Единица этой группы и будет ответом.",
+   "en": "Think about the group this quantity belongs to: heat, electricity, waves or motion. The unit of that group is the answer.",
+   "kk": "Шама қай топқа жататынын ойла: жылу, электр, толқын немесе қозғалыс. Сол топтың бірлігі дұрыс жауап."
   },
   "explanation": {
-   "ru": "В килограмм (кг) измеряется масса.",
-   "en": "The quantity measured in kilogram (kg) is mass.",
-   "kk": "килограмм (кг) бірлігімен масса өлшенеді."
+   "ru": "Единица СИ для величины «импульс тела» — кг·м/с.",
+   "en": "The SI unit of «momentum of a body» is kg·m/s.",
+   "kk": "«дене импульсі» шамасының ХБЖ бірлігі — кг·м/с."
   }
  },
  {
@@ -3616,9 +3702,9 @@ const TASKS_DATABASE_TYPES = [
   "topic": "p19",
   "difficulty": 2,
   "question": {
-   "ru": "Сопоставь физическую величину и её единицу измерения в СИ.",
-   "en": "Match each physical quantity with its SI unit.",
-   "kk": "Физикалық шаманы оның ХБЖ-дағы өлшем бірлігімен сәйкестендір."
+   "ru": "Сопоставь величины из темы «Движение тела под действием силы тяжести. Спутники» и их единицы измерения в СИ.",
+   "en": "Match the quantities from «Motion of a body under the influence of gravity. Satellites» with their SI units.",
+   "kk": "«Дененің ауырлық күшінің әрекетімен қозғалысы. Жасанды серіктер» тақырыбындағы шамаларды олардың ХБЖ бірліктерімен сәйкестендір."
   },
   "pairs": {
    "left": {
@@ -3732,24 +3818,26 @@ const TASKS_DATABASE_TYPES = [
   "topic": "p20",
   "difficulty": 2,
   "question": {
-   "ru": "В каких единицах СИ измеряется величина «масса»? Запиши единицу.",
-   "en": "Which SI unit is used to measure «mass»? Write the unit.",
-   "kk": "«масса» шамасы ХБЖ-да қандай бірлікпен өлшенеді? Бірлікті жаз."
+   "ru": "В каких единицах СИ измеряется величина «период полураспада»? Запиши единицу.",
+   "en": "Which SI unit is used to measure «half-life»? Write the unit.",
+   "kk": "«жартылай ыдырау периоды» шамасы ХБЖ-да қандай бірлікпен өлшенеді? Бірлікті жаз."
   },
   "correctAnswer": {
    "ru": [
-    "килограмм",
-    "кг",
-    "kg"
+    "секунда",
+    "с",
+    "s",
+    "сек"
    ],
    "en": [
-    "kilogram",
-    "kg"
+    "second",
+    "s",
+    "sec"
    ],
    "kk": [
-    "килограмм",
-    "кг",
-    "kg"
+    "секунд",
+    "с",
+    "s"
    ]
   },
   "hint": {
@@ -3758,9 +3846,9 @@ const TASKS_DATABASE_TYPES = [
    "kk": "Шама қай топқа жататынын ойла: жылу, электр, толқын немесе қозғалыс. Сол топтың бірлігі дұрыс жауап."
   },
   "explanation": {
-   "ru": "Единица СИ для величины «масса» — килограмм (кг).",
-   "en": "The SI unit of «mass» is kilogram (kg).",
-   "kk": "«масса» шамасының ХБЖ бірлігі — килограмм (кг)."
+   "ru": "Единица СИ для величины «период полураспада» — секунда (с).",
+   "en": "The SI unit of «half-life» is second (s).",
+   "kk": "«жартылай ыдырау периоды» шамасының ХБЖ бірлігі — секунд (с)."
   }
  },
  {
@@ -3769,32 +3857,36 @@ const TASKS_DATABASE_TYPES = [
   "topic": "p20",
   "difficulty": 2,
   "question": {
-   "ru": "В единицах «кг·м/с» измеряется величина ___.",
-   "en": "The quantity measured in kg·m/s is ___.",
-   "kk": "«кг·м/с» бірлігімен өлшенетін шама — ___."
+   "ru": "Назови единицу СИ для величины «ускорение свободного падения»: ___.",
+   "en": "Name the SI unit of «acceleration due to gravity»: ___.",
+   "kk": "«еркін түсу үдеуі» шамасының ХБЖ бірлігін ата: ___."
   },
   "correctAnswer": {
    "ru": [
-    "импульс тела",
-    "импульс"
+    "м/с²",
+    "м/с2",
+    "m/s2",
+    "m/s²"
    ],
    "en": [
-    "momentum of a body",
-    "momentum"
+    "m/s²",
+    "m/s2"
    ],
    "kk": [
-    "дене импульсі"
+    "м/с²",
+    "м/с2",
+    "m/s²"
    ]
   },
   "hint": {
-   "ru": "Название единицы подсказывает, какую величину она измеряет. Это величина из этой темы.",
-   "en": "The unit's name hints at the quantity it measures. It belongs to this topic.",
-   "kk": "Бірліктің атауы қандай шама өлшенетінін көрсетеді. Бұл — осы тақырыптың шамасы."
+   "ru": "Подумай, к какой группе относится величина: теплота, электричество, волны или движение. Единица этой группы и будет ответом.",
+   "en": "Think about the group this quantity belongs to: heat, electricity, waves or motion. The unit of that group is the answer.",
+   "kk": "Шама қай топқа жататынын ойла: жылу, электр, толқын немесе қозғалыс. Сол топтың бірлігі дұрыс жауап."
   },
   "explanation": {
-   "ru": "В кг·м/с измеряется импульс тела.",
-   "en": "The quantity measured in kg·m/s is momentum of a body.",
-   "kk": "кг·м/с бірлігімен дене импульсі өлшенеді."
+   "ru": "Единица СИ для величины «ускорение свободного падения» — м/с².",
+   "en": "The SI unit of «acceleration due to gravity» is m/s².",
+   "kk": "«еркін түсу үдеуі» шамасының ХБЖ бірлігі — м/с²."
   }
  },
  {
@@ -3803,50 +3895,50 @@ const TASKS_DATABASE_TYPES = [
   "topic": "p20",
   "difficulty": 2,
   "question": {
-   "ru": "Сопоставь физическую величину и её единицу измерения в СИ.",
-   "en": "Match each physical quantity with its SI unit.",
-   "kk": "Физикалық шаманы оның ХБЖ-дағы өлшем бірлігімен сәйкестендір."
+   "ru": "Сопоставь величины из темы «Импульс тела и импульс силы. Закон сохранения импульса» и их единицы измерения в СИ.",
+   "en": "Match the quantities from «Momentum of a body and momentum of a force. Law of conservation of momentum» with their SI units.",
+   "kk": "«Дененің импульсі және күш импульсі. Импульстің сақталу заңы» тақырыбындағы шамаларды олардың ХБЖ бірліктерімен сәйкестендір."
   },
   "pairs": {
    "left": {
     "ru": [
-     "импульс тела",
      "масса",
-     "вес тела"
+     "импульс тела",
+     "сила"
     ],
     "en": [
-     "momentum of a body",
      "mass",
-     "weight of a body"
+     "momentum of a body",
+     "force"
     ],
     "kk": [
-     "дене импульсі",
      "масса",
-     "дене салмағы"
+     "дене импульсі",
+     "күш"
     ]
    },
    "right": {
     "ru": [
-     "ньютон (Н)",
      "килограмм (кг)",
-     "кг·м/с"
+     "кг·м/с",
+     "ньютон (Н)"
     ],
     "en": [
-     "newton (N)",
      "kilogram (kg)",
-     "kg·m/s"
+     "kg·m/s",
+     "newton (N)"
     ],
     "kk": [
-     "ньютон (Н)",
      "килограмм (кг)",
-     "кг·м/с"
+     "кг·м/с",
+     "ньютон (Н)"
     ]
    }
   },
   "correctPairs": [
    [
     0,
-    2
+    0
    ],
    [
     1,
@@ -3854,7 +3946,7 @@ const TASKS_DATABASE_TYPES = [
    ],
    [
     2,
-    0
+    2
    ]
   ],
   "hint": {
@@ -3863,9 +3955,9 @@ const TASKS_DATABASE_TYPES = [
    "kk": "Алдымен нақты білетін шамалардан баста: мысалы, күш ньютонмен өлшенеді."
   },
   "explanation": {
-   "ru": "Верные пары: импульс тела — кг·м/с; масса — килограмм (кг); вес тела — ньютон (Н).",
-   "en": "Correct pairs: momentum of a body — kg·m/s; mass — kilogram (kg); weight of a body — newton (N).",
-   "kk": "Дұрыс жұптар: дене импульсі — кг·м/с; масса — килограмм (кг); дене салмағы — ньютон (Н)."
+   "ru": "Верные пары: масса — килограмм (кг); импульс тела — кг·м/с; сила — ньютон (Н).",
+   "en": "Correct pairs: mass — kilogram (kg); momentum of a body — kg·m/s; force — newton (N).",
+   "kk": "Дұрыс жұптар: масса — килограмм (кг); дене импульсі — кг·м/с; күш — ньютон (Н)."
   }
  },
  {
@@ -3919,24 +4011,26 @@ const TASKS_DATABASE_TYPES = [
   "topic": "p21",
   "difficulty": 2,
   "question": {
-   "ru": "В каких единицах СИ измеряется величина «импульс тела»? Запиши единицу.",
-   "en": "Which SI unit is used to measure «momentum of a body»? Write the unit.",
-   "kk": "«дене импульсі» шамасы ХБЖ-да қандай бірлікпен өлшенеді? Бірлікті жаз."
+   "ru": "В каких единицах СИ измеряется величина «амплитуда колебаний»? Запиши единицу.",
+   "en": "Which SI unit is used to measure «amplitude of oscillation»? Write the unit.",
+   "kk": "«тербеліс амплитудасы» шамасы ХБЖ-да қандай бірлікпен өлшенеді? Бірлікті жаз."
   },
   "correctAnswer": {
    "ru": [
-    "кг·м/с",
-    "кг*м/с",
-    "kg*m/s"
+    "метр",
+    "м",
+    "m",
+    "M"
    ],
    "en": [
-    "kg·m/s",
-    "kg*m/s",
-    "kg m/s"
+    "metre",
+    "meter",
+    "m"
    ],
    "kk": [
-    "кг·м/с",
-    "кг*м/с"
+    "метр",
+    "м",
+    "m"
    ]
   },
   "hint": {
@@ -3945,9 +4039,9 @@ const TASKS_DATABASE_TYPES = [
    "kk": "Шама қай топқа жататынын ойла: жылу, электр, толқын немесе қозғалыс. Сол топтың бірлігі дұрыс жауап."
   },
   "explanation": {
-   "ru": "Единица СИ для величины «импульс тела» — кг·м/с.",
-   "en": "The SI unit of «momentum of a body» is kg·m/s.",
-   "kk": "«дене импульсі» шамасының ХБЖ бірлігі — кг·м/с."
+   "ru": "Единица СИ для величины «амплитуда колебаний» — метр (м).",
+   "en": "The SI unit of «amplitude of oscillation» is metre (m).",
+   "kk": "«тербеліс амплитудасы» шамасының ХБЖ бірлігі — метр (м)."
   }
  },
  {
@@ -3956,30 +4050,36 @@ const TASKS_DATABASE_TYPES = [
   "topic": "p21",
   "difficulty": 2,
   "question": {
-   "ru": "В единицах «килограмм (кг)» измеряется величина ___.",
-   "en": "The quantity measured in kilogram (kg) is ___.",
-   "kk": "«килограмм (кг)» бірлігімен өлшенетін шама — ___."
+   "ru": "В каких единицах измеряется величина «ускорение свободного падения»? Запиши единицу.",
+   "en": "In which units is «acceleration due to gravity» measured? Write the unit.",
+   "kk": "«еркін түсу үдеуі» шамасы қандай бірліктермен өлшенеді? Бірлікті жаз."
   },
   "correctAnswer": {
    "ru": [
-    "масса"
+    "м/с²",
+    "м/с2",
+    "m/s2",
+    "m/s²"
    ],
    "en": [
-    "mass"
+    "m/s²",
+    "m/s2"
    ],
    "kk": [
-    "масса"
+    "м/с²",
+    "м/с2",
+    "m/s²"
    ]
   },
   "hint": {
-   "ru": "Название единицы подсказывает, какую величину она измеряет. Это величина из этой темы.",
-   "en": "The unit's name hints at the quantity it measures. It belongs to this topic.",
-   "kk": "Бірліктің атауы қандай шама өлшенетінін көрсетеді. Бұл — осы тақырыптың шамасы."
+   "ru": "Подумай, к какой группе относится величина: теплота, электричество, волны или движение. Единица этой группы и будет ответом.",
+   "en": "Think about the group this quantity belongs to: heat, electricity, waves or motion. The unit of that group is the answer.",
+   "kk": "Шама қай топқа жататынын ойла: жылу, электр, толқын немесе қозғалыс. Сол топтың бірлігі дұрыс жауап."
   },
   "explanation": {
-   "ru": "В килограмм (кг) измеряется масса.",
-   "en": "The quantity measured in kilogram (kg) is mass.",
-   "kk": "килограмм (кг) бірлігімен масса өлшенеді."
+   "ru": "Единица СИ для величины «ускорение свободного падения» — м/с².",
+   "en": "The SI unit of «acceleration due to gravity» is m/s².",
+   "kk": "«еркін түсу үдеуі» шамасының ХБЖ бірлігі — м/с²."
   }
  },
  {
@@ -3988,43 +4088,43 @@ const TASKS_DATABASE_TYPES = [
   "topic": "p21",
   "difficulty": 2,
   "question": {
-   "ru": "Сопоставь физическую величину и её единицу измерения в СИ.",
-   "en": "Match each physical quantity with its SI unit.",
-   "kk": "Физикалық шаманы оның ХБЖ-дағы өлшем бірлігімен сәйкестендір."
+   "ru": "Сопоставь величины из темы «Реактивное движение» и их единицы измерения в СИ.",
+   "en": "Match the quantities from «Reactive motion» with their SI units.",
+   "kk": "«Реактивті қозғалыс» тақырыбындағы шамаларды олардың ХБЖ бірліктерімен сәйкестендір."
   },
   "pairs": {
    "left": {
     "ru": [
-     "масса",
      "импульс тела",
-     "вес тела"
+     "масса",
+     "ускорение свободного падения"
     ],
     "en": [
-     "mass",
      "momentum of a body",
-     "weight of a body"
+     "mass",
+     "acceleration due to gravity"
     ],
     "kk": [
-     "масса",
      "дене импульсі",
-     "дене салмағы"
+     "масса",
+     "еркін түсу үдеуі"
     ]
    },
    "right": {
     "ru": [
+     "кг·м/с",
      "килограмм (кг)",
-     "ньютон (Н)",
-     "кг·м/с"
+     "м/с²"
     ],
     "en": [
+     "kg·m/s",
      "kilogram (kg)",
-     "newton (N)",
-     "kg·m/s"
+     "m/s²"
     ],
     "kk": [
+     "кг·м/с",
      "килограмм (кг)",
-     "ньютон (Н)",
-     "кг·м/с"
+     "м/с²"
     ]
    }
   },
@@ -4035,11 +4135,11 @@ const TASKS_DATABASE_TYPES = [
    ],
    [
     1,
-    2
+    1
    ],
    [
     2,
-    1
+    2
    ]
   ],
   "hint": {
@@ -4048,9 +4148,9 @@ const TASKS_DATABASE_TYPES = [
    "kk": "Алдымен нақты білетін шамалардан баста: мысалы, күш ньютонмен өлшенеді."
   },
   "explanation": {
-   "ru": "Верные пары: масса — килограмм (кг); импульс тела — кг·м/с; вес тела — ньютон (Н).",
-   "en": "Correct pairs: mass — kilogram (kg); momentum of a body — kg·m/s; weight of a body — newton (N).",
-   "kk": "Дұрыс жұптар: масса — килограмм (кг); дене импульсі — кг·м/с; дене салмағы — ньютон (Н)."
+   "ru": "Верные пары: импульс тела — кг·м/с; масса — килограмм (кг); ускорение свободного падения — м/с².",
+   "en": "Correct pairs: momentum of a body — kg·m/s; mass — kilogram (kg); acceleration due to gravity — m/s².",
+   "kk": "Дұрыс жұптар: дене импульсі — кг·м/с; масса — килограмм (кг); еркін түсу үдеуі — м/с²."
   }
  },
  {
@@ -4104,9 +4204,9 @@ const TASKS_DATABASE_TYPES = [
   "topic": "p22",
   "difficulty": 2,
   "question": {
-   "ru": "В каких единицах СИ измеряется величина «механическая работа»? Запиши единицу.",
-   "en": "Which SI unit is used to measure «mechanical work»? Write the unit.",
-   "kk": "«механикалық жұмыс» шамасы ХБЖ-да қандай бірлікпен өлшенеді? Бірлікті жаз."
+   "ru": "В каких единицах СИ измеряется величина «потенциальная энергия»? Запиши единицу.",
+   "en": "Which SI unit is used to measure «potential energy»? Write the unit.",
+   "kk": "«потенциалдық энергия» шамасы ХБЖ-да қандай бірлікпен өлшенеді? Бірлікті жаз."
   },
   "correctAnswer": {
    "ru": [
@@ -4135,9 +4235,9 @@ const TASKS_DATABASE_TYPES = [
    "kk": "Шама қай топқа жататынын ойла: жылу, электр, толқын немесе қозғалыс. Сол топтың бірлігі дұрыс жауап."
   },
   "explanation": {
-   "ru": "Единица СИ для величины «механическая работа» — джоуль (Дж).",
-   "en": "The SI unit of «mechanical work» is joule (J).",
-   "kk": "«механикалық жұмыс» шамасының ХБЖ бірлігі — джоуль (Дж)."
+   "ru": "Единица СИ для величины «потенциальная энергия» — джоуль (Дж).",
+   "en": "The SI unit of «potential energy» is joule (J).",
+   "kk": "«потенциалдық энергия» шамасының ХБЖ бірлігі — джоуль (Дж)."
   }
  },
  {
@@ -4146,30 +4246,40 @@ const TASKS_DATABASE_TYPES = [
   "topic": "p22",
   "difficulty": 2,
   "question": {
-   "ru": "В единицах «ватт (Вт)» измеряется величина ___.",
-   "en": "The quantity measured in watt (W) is ___.",
-   "kk": "«ватт (Вт)» бірлігімен өлшенетін шама — ___."
+   "ru": "Единица измерения величины «высота подъёма тела» — ___.",
+   "en": "The unit of «height of a body above the ground» is ___.",
+   "kk": "«дененің көтерілу биіктігі» шамасының өлшем бірлігі — ___."
   },
   "correctAnswer": {
    "ru": [
-    "мощность"
+    "метр (м)",
+    "метр",
+    "м",
+    "m",
+    "M"
    ],
    "en": [
-    "power"
+    "metre (m)",
+    "metre",
+    "m",
+    "meter"
    ],
    "kk": [
-    "қуат"
+    "метр (м)",
+    "метр",
+    "м",
+    "m"
    ]
   },
   "hint": {
-   "ru": "Название единицы подсказывает, какую величину она измеряет. Это величина из этой темы.",
-   "en": "The unit's name hints at the quantity it measures. It belongs to this topic.",
-   "kk": "Бірліктің атауы қандай шама өлшенетінін көрсетеді. Бұл — осы тақырыптың шамасы."
+   "ru": "Подумай, к какой группе относится величина: теплота, электричество, волны или движение. Единица этой группы и будет ответом.",
+   "en": "Think about the group this quantity belongs to: heat, electricity, waves or motion. The unit of that group is the answer.",
+   "kk": "Шама қай топқа жататынын ойла: жылу, электр, толқын немесе қозғалыс. Сол топтың бірлігі дұрыс жауап."
   },
   "explanation": {
-   "ru": "В ватт (Вт) измеряется мощность.",
-   "en": "The quantity measured in watt (W) is power.",
-   "kk": "ватт (Вт) бірлігімен қуат өлшенеді."
+   "ru": "Единица СИ для величины «высота подъёма тела» — метр (м).",
+   "en": "The SI unit of «height of a body above the ground» is metre (m).",
+   "kk": "«дененің көтерілу биіктігі» шамасының ХБЖ бірлігі — метр (м)."
   }
  },
  {
@@ -4178,50 +4288,50 @@ const TASKS_DATABASE_TYPES = [
   "topic": "p22",
   "difficulty": 2,
   "question": {
-   "ru": "Сопоставь физическую величину и её единицу измерения в СИ.",
-   "en": "Match each physical quantity with its SI unit.",
-   "kk": "Физикалық шаманы оның ХБЖ-дағы өлшем бірлігімен сәйкестендір."
+   "ru": "Сопоставь величины из темы «Механическая работа и энергия» и их единицы измерения в СИ.",
+   "en": "Match the quantities from «Mechanical work and energy» with their SI units.",
+   "kk": "«Механикалық жұмыс және энергия» тақырыбындағы шамаларды олардың ХБЖ бірліктерімен сәйкестендір."
   },
   "pairs": {
    "left": {
     "ru": [
-     "кинетическая энергия",
      "мощность",
+     "механическая работа",
      "высота подъёма тела"
     ],
     "en": [
-     "kinetic energy",
      "power",
+     "mechanical work",
      "height of a body above the ground"
     ],
     "kk": [
-     "кинетикалық энергия",
      "қуат",
+     "механикалық жұмыс",
      "дененің көтерілу биіктігі"
     ]
    },
    "right": {
     "ru": [
+     "ватт (Вт)",
      "метр (м)",
-     "джоуль (Дж)",
-     "ватт (Вт)"
+     "джоуль (Дж)"
     ],
     "en": [
+     "watt (W)",
      "metre (m)",
-     "joule (J)",
-     "watt (W)"
+     "joule (J)"
     ],
     "kk": [
+     "ватт (Вт)",
      "метр (м)",
-     "джоуль (Дж)",
-     "ватт (Вт)"
+     "джоуль (Дж)"
     ]
    }
   },
   "correctPairs": [
    [
     0,
-    1
+    0
    ],
    [
     1,
@@ -4229,7 +4339,7 @@ const TASKS_DATABASE_TYPES = [
    ],
    [
     2,
-    0
+    1
    ]
   ],
   "hint": {
@@ -4238,9 +4348,9 @@ const TASKS_DATABASE_TYPES = [
    "kk": "Алдымен нақты білетін шамалардан баста: мысалы, күш ньютонмен өлшенеді."
   },
   "explanation": {
-   "ru": "Верные пары: кинетическая энергия — джоуль (Дж); мощность — ватт (Вт); высота подъёма тела — метр (м).",
-   "en": "Correct pairs: kinetic energy — joule (J); power — watt (W); height of a body above the ground — metre (m).",
-   "kk": "Дұрыс жұптар: кинетикалық энергия — джоуль (Дж); қуат — ватт (Вт); дененің көтерілу биіктігі — метр (м)."
+   "ru": "Верные пары: мощность — ватт (Вт); механическая работа — джоуль (Дж); высота подъёма тела — метр (м).",
+   "en": "Correct pairs: power — watt (W); mechanical work — joule (J); height of a body above the ground — metre (m).",
+   "kk": "Дұрыс жұптар: қуат — ватт (Вт); механикалық жұмыс — джоуль (Дж); дененің көтерілу биіктігі — метр (м)."
   }
  },
  {
@@ -4294,26 +4404,29 @@ const TASKS_DATABASE_TYPES = [
   "topic": "p23",
   "difficulty": 2,
   "question": {
-   "ru": "В каких единицах СИ измеряется величина «высота подъёма тела»? Запиши единицу.",
-   "en": "Which SI unit is used to measure «height of a body above the ground»? Write the unit.",
-   "kk": "«дененің көтерілу биіктігі» шамасы ХБЖ-да қандай бірлікпен өлшенеді? Бірлікті жаз."
+   "ru": "В каких единицах СИ измеряется величина «механическая работа»? Запиши единицу.",
+   "en": "Which SI unit is used to measure «mechanical work»? Write the unit.",
+   "kk": "«механикалық жұмыс» шамасы ХБЖ-да қандай бірлікпен өлшенеді? Бірлікті жаз."
   },
   "correctAnswer": {
    "ru": [
-    "метр",
-    "м",
-    "m",
-    "M"
+    "джоуль",
+    "дж",
+    "j",
+    "J",
+    "Дж"
    ],
    "en": [
-    "metre",
-    "meter",
-    "m"
+    "joule",
+    "j",
+    "J"
    ],
    "kk": [
-    "метр",
-    "м",
-    "m"
+    "джоуль",
+    "дж",
+    "j",
+    "J",
+    "Дж"
    ]
   },
   "hint": {
@@ -4322,9 +4435,9 @@ const TASKS_DATABASE_TYPES = [
    "kk": "Шама қай топқа жататынын ойла: жылу, электр, толқын немесе қозғалыс. Сол топтың бірлігі дұрыс жауап."
   },
   "explanation": {
-   "ru": "Единица СИ для величины «высота подъёма тела» — метр (м).",
-   "en": "The SI unit of «height of a body above the ground» is metre (m).",
-   "kk": "«дененің көтерілу биіктігі» шамасының ХБЖ бірлігі — метр (м)."
+   "ru": "Единица СИ для величины «механическая работа» — джоуль (Дж).",
+   "en": "The SI unit of «mechanical work» is joule (J).",
+   "kk": "«механикалық жұмыс» шамасының ХБЖ бірлігі — джоуль (Дж)."
   }
  },
  {
@@ -4333,30 +4446,43 @@ const TASKS_DATABASE_TYPES = [
   "topic": "p23",
   "difficulty": 2,
   "question": {
-   "ru": "В единицах «ватт (Вт)» измеряется величина ___.",
-   "en": "The quantity measured in watt (W) is ___.",
-   "kk": "«ватт (Вт)» бірлігімен өлшенетін шама — ___."
+   "ru": "Назови единицу СИ для величины «мощность»: ___.",
+   "en": "Name the SI unit of «power»: ___.",
+   "kk": "«қуат» шамасының ХБЖ бірлігін ата: ___."
   },
   "correctAnswer": {
    "ru": [
-    "мощность"
+    "ватт (Вт)",
+    "ватт",
+    "Вт",
+    "вт",
+    "w",
+    "W"
    ],
    "en": [
-    "power"
+    "watt (W)",
+    "watt",
+    "W",
+    "w"
    ],
    "kk": [
-    "қуат"
+    "ватт (Вт)",
+    "ватт",
+    "Вт",
+    "вт",
+    "w",
+    "W"
    ]
   },
   "hint": {
-   "ru": "Название единицы подсказывает, какую величину она измеряет. Это величина из этой темы.",
-   "en": "The unit's name hints at the quantity it measures. It belongs to this topic.",
-   "kk": "Бірліктің атауы қандай шама өлшенетінін көрсетеді. Бұл — осы тақырыптың шамасы."
+   "ru": "Подумай, к какой группе относится величина: теплота, электричество, волны или движение. Единица этой группы и будет ответом.",
+   "en": "Think about the group this quantity belongs to: heat, electricity, waves or motion. The unit of that group is the answer.",
+   "kk": "Шама қай топқа жататынын ойла: жылу, электр, толқын немесе қозғалыс. Сол топтың бірлігі дұрыс жауап."
   },
   "explanation": {
-   "ru": "В ватт (Вт) измеряется мощность.",
-   "en": "The quantity measured in watt (W) is power.",
-   "kk": "ватт (Вт) бірлігімен қуат өлшенеді."
+   "ru": "Единица СИ для величины «мощность» — ватт (Вт).",
+   "en": "The SI unit of «power» is watt (W).",
+   "kk": "«қуат» шамасының ХБЖ бірлігі — ватт (Вт)."
   }
  },
  {
@@ -4365,43 +4491,43 @@ const TASKS_DATABASE_TYPES = [
   "topic": "p23",
   "difficulty": 2,
   "question": {
-   "ru": "Сопоставь физическую величину и её единицу измерения в СИ.",
-   "en": "Match each physical quantity with its SI unit.",
-   "kk": "Физикалық шаманы оның ХБЖ-дағы өлшем бірлігімен сәйкестендір."
+   "ru": "Сопоставь величины из темы «Закон сохранения и превращения энергии» и их единицы измерения в СИ.",
+   "en": "Match the quantities from «Law of conservation and transformation of energy» with their SI units.",
+   "kk": "«Энергияны сақтау және түрлендіру заңы» тақырыбындағы шамаларды олардың ХБЖ бірліктерімен сәйкестендір."
   },
   "pairs": {
    "left": {
     "ru": [
-     "кинетическая энергия",
+     "высота подъёма тела",
      "мощность",
-     "высота подъёма тела"
+     "механическая работа"
     ],
     "en": [
-     "kinetic energy",
+     "height of a body above the ground",
      "power",
-     "height of a body above the ground"
+     "mechanical work"
     ],
     "kk": [
-     "кинетикалық энергия",
+     "дененің көтерілу биіктігі",
      "қуат",
-     "дененің көтерілу биіктігі"
+     "механикалық жұмыс"
     ]
    },
    "right": {
     "ru": [
+     "метр (м)",
      "джоуль (Дж)",
-     "ватт (Вт)",
-     "метр (м)"
+     "ватт (Вт)"
     ],
     "en": [
+     "metre (m)",
      "joule (J)",
-     "watt (W)",
-     "metre (m)"
+     "watt (W)"
     ],
     "kk": [
+     "метр (м)",
      "джоуль (Дж)",
-     "ватт (Вт)",
-     "метр (м)"
+     "ватт (Вт)"
     ]
    }
   },
@@ -4412,11 +4538,11 @@ const TASKS_DATABASE_TYPES = [
    ],
    [
     1,
-    1
+    2
    ],
    [
     2,
-    2
+    1
    ]
   ],
   "hint": {
@@ -4425,9 +4551,9 @@ const TASKS_DATABASE_TYPES = [
    "kk": "Алдымен нақты білетін шамалардан баста: мысалы, күш ньютонмен өлшенеді."
   },
   "explanation": {
-   "ru": "Верные пары: кинетическая энергия — джоуль (Дж); мощность — ватт (Вт); высота подъёма тела — метр (м).",
-   "en": "Correct pairs: kinetic energy — joule (J); power — watt (W); height of a body above the ground — metre (m).",
-   "kk": "Дұрыс жұптар: кинетикалық энергия — джоуль (Дж); қуат — ватт (Вт); дененің көтерілу биіктігі — метр (м)."
+   "ru": "Верные пары: высота подъёма тела — метр (м); мощность — ватт (Вт); механическая работа — джоуль (Дж).",
+   "en": "Correct pairs: height of a body above the ground — metre (m); power — watt (W); mechanical work — joule (J).",
+   "kk": "Дұрыс жұптар: дененің көтерілу биіктігі — метр (м); қуат — ватт (Вт); механикалық жұмыс — джоуль (Дж)."
   }
  },
  {
@@ -4481,26 +4607,26 @@ const TASKS_DATABASE_TYPES = [
   "topic": "p24",
   "difficulty": 2,
   "question": {
-   "ru": "В каких единицах СИ измеряется величина «амплитуда колебаний»? Запиши единицу.",
-   "en": "Which SI unit is used to measure «amplitude of oscillation»? Write the unit.",
-   "kk": "«тербеліс амплитудасы» шамасы ХБЖ-да қандай бірлікпен өлшенеді? Бірлікті жаз."
+   "ru": "В каких единицах СИ измеряется величина «период колебаний»? Запиши единицу.",
+   "en": "Which SI unit is used to measure «period of oscillation»? Write the unit.",
+   "kk": "«тербеліс периоды» шамасы ХБЖ-да қандай бірлікпен өлшенеді? Бірлікті жаз."
   },
   "correctAnswer": {
    "ru": [
-    "метр",
-    "м",
-    "m",
-    "M"
+    "секунда",
+    "с",
+    "s",
+    "сек"
    ],
    "en": [
-    "metre",
-    "meter",
-    "m"
+    "second",
+    "s",
+    "sec"
    ],
    "kk": [
-    "метр",
-    "м",
-    "m"
+    "секунд",
+    "с",
+    "s"
    ]
   },
   "hint": {
@@ -4509,9 +4635,9 @@ const TASKS_DATABASE_TYPES = [
    "kk": "Шама қай топқа жататынын ойла: жылу, электр, толқын немесе қозғалыс. Сол топтың бірлігі дұрыс жауап."
   },
   "explanation": {
-   "ru": "Единица СИ для величины «амплитуда колебаний» — метр (м).",
-   "en": "The SI unit of «amplitude of oscillation» is metre (m).",
-   "kk": "«тербеліс амплитудасы» шамасының ХБЖ бірлігі — метр (м)."
+   "ru": "Единица СИ для величины «период колебаний» — секунда (с).",
+   "en": "The SI unit of «period of oscillation» is second (s).",
+   "kk": "«тербеліс периоды» шамасының ХБЖ бірлігі — секунд (с)."
   }
  },
  {
@@ -4520,9 +4646,9 @@ const TASKS_DATABASE_TYPES = [
   "topic": "p24",
   "difficulty": 2,
   "question": {
-   "ru": "Сопоставь физическую величину и её единицу измерения в СИ.",
-   "en": "Match each physical quantity with its SI unit.",
-   "kk": "Физикалық шаманы оның ХБЖ-дағы өлшем бірлігімен сәйкестендір."
+   "ru": "Сопоставь величины из темы «Колебательное движение» и их единицы измерения в СИ.",
+   "en": "Match the quantities from «Oscillatory motion» with their SI units.",
+   "kk": "«Тербелмелі қозғалыс» тақырыбындағы шамаларды олардың ХБЖ бірліктерімен сәйкестендір."
   },
   "pairs": {
    "left": {
@@ -4544,26 +4670,26 @@ const TASKS_DATABASE_TYPES = [
    },
    "right": {
     "ru": [
-     "метр (м)",
+     "секунда (с)",
      "герц (Гц)",
-     "секунда (с)"
+     "метр (м)"
     ],
     "en": [
-     "metre (m)",
+     "second (s)",
      "hertz (Hz)",
-     "second (s)"
+     "metre (m)"
     ],
     "kk": [
-     "метр (м)",
+     "секунд (с)",
      "герц (Гц)",
-     "секунд (с)"
+     "метр (м)"
     ]
    }
   },
   "correctPairs": [
    [
     0,
-    0
+    2
    ],
    [
     1,
@@ -4571,7 +4697,7 @@ const TASKS_DATABASE_TYPES = [
    ],
    [
     2,
-    2
+    0
    ]
   ],
   "hint": {
@@ -4636,26 +4762,29 @@ const TASKS_DATABASE_TYPES = [
   "topic": "p25",
   "difficulty": 2,
   "question": {
-   "ru": "В каких единицах СИ измеряется величина «амплитуда колебаний»? Запиши единицу.",
-   "en": "Which SI unit is used to measure «amplitude of oscillation»? Write the unit.",
-   "kk": "«тербеліс амплитудасы» шамасы ХБЖ-да қандай бірлікпен өлшенеді? Бірлікті жаз."
+   "ru": "В каких единицах СИ измеряется величина «электроёмкость конденсатора»? Запиши единицу.",
+   "en": "Which SI unit is used to measure «capacitance of a capacitor»? Write the unit.",
+   "kk": "«конденсатор сыйымдылығы» шамасы ХБЖ-да қандай бірлікпен өлшенеді? Бірлікті жаз."
   },
   "correctAnswer": {
    "ru": [
-    "метр",
-    "м",
-    "m",
-    "M"
+    "фарад",
+    "ф",
+    "f",
+    "F",
+    "Ф"
    ],
    "en": [
-    "metre",
-    "meter",
-    "m"
+    "farad",
+    "f",
+    "F"
    ],
    "kk": [
-    "метр",
-    "м",
-    "m"
+    "фарад",
+    "ф",
+    "f",
+    "F",
+    "Ф"
    ]
   },
   "hint": {
@@ -4664,9 +4793,9 @@ const TASKS_DATABASE_TYPES = [
    "kk": "Шама қай топқа жататынын ойла: жылу, электр, толқын немесе қозғалыс. Сол топтың бірлігі дұрыс жауап."
   },
   "explanation": {
-   "ru": "Единица СИ для величины «амплитуда колебаний» — метр (м).",
-   "en": "The SI unit of «amplitude of oscillation» is metre (m).",
-   "kk": "«тербеліс амплитудасы» шамасының ХБЖ бірлігі — метр (м)."
+   "ru": "Единица СИ для величины «электроёмкость конденсатора» — фарад (Ф).",
+   "en": "The SI unit of «capacitance of a capacitor» is farad (F).",
+   "kk": "«конденсатор сыйымдылығы» шамасының ХБЖ бірлігі — фарад (Ф)."
   }
  },
  {
@@ -4675,32 +4804,43 @@ const TASKS_DATABASE_TYPES = [
   "topic": "p25",
   "difficulty": 2,
   "question": {
-   "ru": "В единицах «генри (Гн)» измеряется величина ___.",
-   "en": "The quantity measured in henry (H) is ___.",
-   "kk": "«генри (Гн)» бірлігімен өлшенетін шама — ___."
+   "ru": "В каких единицах измеряется величина «индуктивность катушки»? Запиши единицу.",
+   "en": "In which units is «inductance of a coil» measured? Write the unit.",
+   "kk": "«шарғы индуктивтілігі» шамасы қандай бірліктермен өлшенеді? Бірлікті жаз."
   },
   "correctAnswer": {
    "ru": [
-    "индуктивность катушки",
-    "индуктивность"
+    "генри (Гн)",
+    "генри",
+    "Гн",
+    "гн",
+    "h",
+    "H"
    ],
    "en": [
-    "inductance of a coil",
-    "inductance"
+    "henry (H)",
+    "henry",
+    "H",
+    "h"
    ],
    "kk": [
-    "шарғы индуктивтілігі"
+    "генри (Гн)",
+    "генри",
+    "Гн",
+    "гн",
+    "h",
+    "H"
    ]
   },
   "hint": {
-   "ru": "Название единицы подсказывает, какую величину она измеряет. Это величина из этой темы.",
-   "en": "The unit's name hints at the quantity it measures. It belongs to this topic.",
-   "kk": "Бірліктің атауы қандай шама өлшенетінін көрсетеді. Бұл — осы тақырыптың шамасы."
+   "ru": "Подумай, к какой группе относится величина: теплота, электричество, волны или движение. Единица этой группы и будет ответом.",
+   "en": "Think about the group this quantity belongs to: heat, electricity, waves or motion. The unit of that group is the answer.",
+   "kk": "Шама қай топқа жататынын ойла: жылу, электр, толқын немесе қозғалыс. Сол топтың бірлігі дұрыс жауап."
   },
   "explanation": {
-   "ru": "В генри (Гн) измеряется индуктивность катушки.",
-   "en": "The quantity measured in henry (H) is inductance of a coil.",
-   "kk": "генри (Гн) бірлігімен шарғы индуктивтілігі өлшенеді."
+   "ru": "Единица СИ для величины «индуктивность катушки» — генри (Гн).",
+   "en": "The SI unit of «inductance of a coil» is henry (H).",
+   "kk": "«шарғы индуктивтілігі» шамасының ХБЖ бірлігі — генри (Гн)."
   }
  },
  {
@@ -4709,54 +4849,54 @@ const TASKS_DATABASE_TYPES = [
   "topic": "p25",
   "difficulty": 2,
   "question": {
-   "ru": "Сопоставь физическую величину и её единицу измерения в СИ.",
-   "en": "Match each physical quantity with its SI unit.",
-   "kk": "Физикалық шаманы оның ХБЖ-дағы өлшем бірлігімен сәйкестендір."
+   "ru": "Сопоставь величины из темы «Превращение энергии при колебаниях. Уравнение колебаний» и их единицы измерения в СИ.",
+   "en": "Match the quantities from «Energy transformation in oscillations. Oscillation equation» with their SI units.",
+   "kk": "«Тербелістер кезіндегі энергияның түрленуі. Тербеліс теңдеуі» тақырыбындағы шамаларды олардың ХБЖ бірліктерімен сәйкестендір."
   },
   "pairs": {
    "left": {
     "ru": [
-     "амплитуда колебаний",
      "период колебаний",
-     "индуктивность катушки"
+     "амплитуда колебаний",
+     "частота колебаний"
     ],
     "en": [
-     "amplitude of oscillation",
      "period of oscillation",
-     "inductance of a coil"
+     "amplitude of oscillation",
+     "frequency of oscillation"
     ],
     "kk": [
-     "тербеліс амплитудасы",
      "тербеліс периоды",
-     "шарғы индуктивтілігі"
+     "тербеліс амплитудасы",
+     "тербеліс жиілігі"
     ]
    },
    "right": {
     "ru": [
      "метр (м)",
      "секунда (с)",
-     "генри (Гн)"
+     "герц (Гц)"
     ],
     "en": [
      "metre (m)",
      "second (s)",
-     "henry (H)"
+     "hertz (Hz)"
     ],
     "kk": [
      "метр (м)",
      "секунд (с)",
-     "генри (Гн)"
+     "герц (Гц)"
     ]
    }
   },
   "correctPairs": [
    [
     0,
-    0
+    1
    ],
    [
     1,
-    1
+    0
    ],
    [
     2,
@@ -4769,9 +4909,9 @@ const TASKS_DATABASE_TYPES = [
    "kk": "Алдымен нақты білетін шамалардан баста: мысалы, күш ньютонмен өлшенеді."
   },
   "explanation": {
-   "ru": "Верные пары: амплитуда колебаний — метр (м); период колебаний — секунда (с); индуктивность катушки — генри (Гн).",
-   "en": "Correct pairs: amplitude of oscillation — metre (m); period of oscillation — second (s); inductance of a coil — henry (H).",
-   "kk": "Дұрыс жұптар: тербеліс амплитудасы — метр (м); тербеліс периоды — секунд (с); шарғы индуктивтілігі — генри (Гн)."
+   "ru": "Верные пары: период колебаний — секунда (с); амплитуда колебаний — метр (м); частота колебаний — герц (Гц).",
+   "en": "Correct pairs: period of oscillation — second (s); amplitude of oscillation — metre (m); frequency of oscillation — hertz (Hz).",
+   "kk": "Дұрыс жұптар: тербеліс периоды — секунд (с); тербеліс амплитудасы — метр (м); тербеліс жиілігі — герц (Гц)."
   }
  },
  {
@@ -4825,29 +4965,27 @@ const TASKS_DATABASE_TYPES = [
   "topic": "p26",
   "difficulty": 2,
   "question": {
-   "ru": "В каких единицах СИ измеряется величина «частота колебаний»? Запиши единицу.",
-   "en": "Which SI unit is used to measure «frequency of oscillation»? Write the unit.",
-   "kk": "«тербеліс жиілігі» шамасы ХБЖ-да қандай бірлікпен өлшенеді? Бірлікті жаз."
+   "ru": "В каких единицах СИ измеряется величина «активность радиоактивного образца»? Запиши единицу.",
+   "en": "Which SI unit is used to measure «activity of a radioactive sample»? Write the unit.",
+   "kk": "«радиоактивті үлгінің белсенділігі» шамасы ХБЖ-да қандай бірлікпен өлшенеді? Бірлікті жаз."
   },
   "correctAnswer": {
    "ru": [
-    "герц",
-    "гц",
-    "hz",
-    "Hz",
-    "Гц"
+    "беккерель",
+    "бк",
+    "bq",
+    "Bq"
    ],
    "en": [
-    "hertz",
-    "hz",
-    "Hz"
+    "becquerel",
+    "bq",
+    "Bq"
    ],
    "kk": [
-    "герц",
-    "гц",
-    "hz",
-    "Hz",
-    "Гц"
+    "беккерель",
+    "бк",
+    "bq",
+    "Bq"
    ]
   },
   "hint": {
@@ -4856,9 +4994,9 @@ const TASKS_DATABASE_TYPES = [
    "kk": "Шама қай топқа жататынын ойла: жылу, электр, толқын немесе қозғалыс. Сол топтың бірлігі дұрыс жауап."
   },
   "explanation": {
-   "ru": "Единица СИ для величины «частота колебаний» — герц (Гц).",
-   "en": "The SI unit of «frequency of oscillation» is hertz (Hz).",
-   "kk": "«тербеліс жиілігі» шамасының ХБЖ бірлігі — герц (Гц)."
+   "ru": "Единица СИ для величины «активность радиоактивного образца» — беккерель (Бк).",
+   "en": "The SI unit of «activity of a radioactive sample» is becquerel (Bq).",
+   "kk": "«радиоактивті үлгінің белсенділігі» шамасының ХБЖ бірлігі — беккерель (Бк)."
   }
  },
  {
@@ -4867,32 +5005,43 @@ const TASKS_DATABASE_TYPES = [
   "topic": "p26",
   "difficulty": 2,
   "question": {
-   "ru": "В единицах «фарад (Ф)» измеряется величина ___.",
-   "en": "The quantity measured in farad (F) is ___.",
-   "kk": "«фарад (Ф)» бірлігімен өлшенетін шама — ___."
+   "ru": "Назови единицу СИ для величины «электроёмкость конденсатора»: ___.",
+   "en": "Name the SI unit of «capacitance of a capacitor»: ___.",
+   "kk": "«конденсатор сыйымдылығы» шамасының ХБЖ бірлігін ата: ___."
   },
   "correctAnswer": {
    "ru": [
-    "электроёмкость конденсатора",
-    "электроёмкость"
+    "фарад (Ф)",
+    "фарад",
+    "Ф",
+    "ф",
+    "f",
+    "F"
    ],
    "en": [
-    "capacitance of a capacitor",
-    "capacitance"
+    "farad (F)",
+    "farad",
+    "F",
+    "f"
    ],
    "kk": [
-    "конденсатор сыйымдылығы"
+    "фарад (Ф)",
+    "фарад",
+    "Ф",
+    "ф",
+    "f",
+    "F"
    ]
   },
   "hint": {
-   "ru": "Название единицы подсказывает, какую величину она измеряет. Это величина из этой темы.",
-   "en": "The unit's name hints at the quantity it measures. It belongs to this topic.",
-   "kk": "Бірліктің атауы қандай шама өлшенетінін көрсетеді. Бұл — осы тақырыптың шамасы."
+   "ru": "Подумай, к какой группе относится величина: теплота, электричество, волны или движение. Единица этой группы и будет ответом.",
+   "en": "Think about the group this quantity belongs to: heat, electricity, waves or motion. The unit of that group is the answer.",
+   "kk": "Шама қай топқа жататынын ойла: жылу, электр, толқын немесе қозғалыс. Сол топтың бірлігі дұрыс жауап."
   },
   "explanation": {
-   "ru": "В фарад (Ф) измеряется электроёмкость конденсатора.",
-   "en": "The quantity measured in farad (F) is capacitance of a capacitor.",
-   "kk": "фарад (Ф) бірлігімен конденсатор сыйымдылығы өлшенеді."
+   "ru": "Единица СИ для величины «электроёмкость конденсатора» — фарад (Ф).",
+   "en": "The SI unit of «capacitance of a capacitor» is farad (F).",
+   "kk": "«конденсатор сыйымдылығы» шамасының ХБЖ бірлігі — фарад (Ф)."
   }
  },
  {
@@ -4901,42 +5050,42 @@ const TASKS_DATABASE_TYPES = [
   "topic": "p26",
   "difficulty": 2,
   "question": {
-   "ru": "Сопоставь физическую величину и её единицу измерения в СИ.",
-   "en": "Match each physical quantity with its SI unit.",
-   "kk": "Физикалық шаманы оның ХБЖ-дағы өлшем бірлігімен сәйкестендір."
+   "ru": "Сопоставь величины из темы «Колебания математического и пружинного маятников» и их единицы измерения в СИ.",
+   "en": "Match the quantities from «Oscillations of mathematical and spring pendulums» with their SI units.",
+   "kk": "«Математикалық және серіппелі маятниктердің тербелістері» тақырыбындағы шамаларды олардың ХБЖ бірліктерімен сәйкестендір."
   },
   "pairs": {
    "left": {
     "ru": [
-     "амплитуда колебаний",
      "частота колебаний",
+     "амплитуда колебаний",
      "период колебаний"
     ],
     "en": [
-     "amplitude of oscillation",
      "frequency of oscillation",
+     "amplitude of oscillation",
      "period of oscillation"
     ],
     "kk": [
-     "тербеліс амплитудасы",
      "тербеліс жиілігі",
+     "тербеліс амплитудасы",
      "тербеліс периоды"
     ]
    },
    "right": {
     "ru": [
-     "метр (м)",
      "герц (Гц)",
+     "метр (м)",
      "секунда (с)"
     ],
     "en": [
-     "metre (m)",
      "hertz (Hz)",
+     "metre (m)",
      "second (s)"
     ],
     "kk": [
-     "метр (м)",
      "герц (Гц)",
+     "метр (м)",
      "секунд (с)"
     ]
    }
@@ -4961,9 +5110,9 @@ const TASKS_DATABASE_TYPES = [
    "kk": "Алдымен нақты білетін шамалардан баста: мысалы, күш ньютонмен өлшенеді."
   },
   "explanation": {
-   "ru": "Верные пары: амплитуда колебаний — метр (м); частота колебаний — герц (Гц); период колебаний — секунда (с).",
-   "en": "Correct pairs: amplitude of oscillation — metre (m); frequency of oscillation — hertz (Hz); period of oscillation — second (s).",
-   "kk": "Дұрыс жұптар: тербеліс амплитудасы — метр (м); тербеліс жиілігі — герц (Гц); тербеліс периоды — секунд (с)."
+   "ru": "Верные пары: частота колебаний — герц (Гц); амплитуда колебаний — метр (м); период колебаний — секунда (с).",
+   "en": "Correct pairs: frequency of oscillation — hertz (Hz); amplitude of oscillation — metre (m); period of oscillation — second (s).",
+   "kk": "Дұрыс жұптар: тербеліс жиілігі — герц (Гц); тербеліс амплитудасы — метр (м); тербеліс периоды — секунд (с)."
   }
  },
  {
@@ -5017,29 +5166,29 @@ const TASKS_DATABASE_TYPES = [
   "topic": "p27",
   "difficulty": 2,
   "question": {
-   "ru": "В каких единицах СИ измеряется величина «частота колебаний»? Запиши единицу.",
-   "en": "Which SI unit is used to measure «frequency of oscillation»? Write the unit.",
-   "kk": "«тербеліс жиілігі» шамасы ХБЖ-да қандай бірлікпен өлшенеді? Бірлікті жаз."
+   "ru": "В каких единицах СИ измеряется величина «индуктивность катушки»? Запиши единицу.",
+   "en": "Which SI unit is used to measure «inductance of a coil»? Write the unit.",
+   "kk": "«шарғы индуктивтілігі» шамасы ХБЖ-да қандай бірлікпен өлшенеді? Бірлікті жаз."
   },
   "correctAnswer": {
    "ru": [
-    "герц",
-    "гц",
-    "hz",
-    "Hz",
-    "Гц"
+    "генри",
+    "гн",
+    "h",
+    "H",
+    "Гн"
    ],
    "en": [
-    "hertz",
-    "hz",
-    "Hz"
+    "henry",
+    "h",
+    "H"
    ],
    "kk": [
-    "герц",
-    "гц",
-    "hz",
-    "Hz",
-    "Гц"
+    "генри",
+    "гн",
+    "h",
+    "H",
+    "Гн"
    ]
   },
   "hint": {
@@ -5048,9 +5197,9 @@ const TASKS_DATABASE_TYPES = [
    "kk": "Шама қай топқа жататынын ойла: жылу, электр, толқын немесе қозғалыс. Сол топтың бірлігі дұрыс жауап."
   },
   "explanation": {
-   "ru": "Единица СИ для величины «частота колебаний» — герц (Гц).",
-   "en": "The SI unit of «frequency of oscillation» is hertz (Hz).",
-   "kk": "«тербеліс жиілігі» шамасының ХБЖ бірлігі — герц (Гц)."
+   "ru": "Единица СИ для величины «индуктивность катушки» — генри (Гн).",
+   "en": "The SI unit of «inductance of a coil» is henry (H).",
+   "kk": "«шарғы индуктивтілігі» шамасының ХБЖ бірлігі — генри (Гн)."
   }
  },
  {
@@ -5059,21 +5208,21 @@ const TASKS_DATABASE_TYPES = [
   "topic": "p27",
   "difficulty": 2,
   "question": {
-   "ru": "В единицах «генри (Гн)» измеряется величина ___.",
-   "en": "The quantity measured in henry (H) is ___.",
-   "kk": "«генри (Гн)» бірлігімен өлшенетін шама — ___."
+   "ru": "Какую величину измеряют в «фарад (Ф)»? Запиши название величины.",
+   "en": "Which quantity is measured in farad (F)? Write its name.",
+   "kk": "«фарад (Ф)» бірлігімен қандай шама өлшенеді? Шаманың атауын жаз."
   },
   "correctAnswer": {
    "ru": [
-    "индуктивность катушки",
-    "индуктивность"
+    "электроёмкость конденсатора",
+    "электроёмкость"
    ],
    "en": [
-    "inductance of a coil",
-    "inductance"
+    "capacitance of a capacitor",
+    "capacitance"
    ],
    "kk": [
-    "шарғы индуктивтілігі"
+    "конденсатор сыйымдылығы"
    ]
   },
   "hint": {
@@ -5082,9 +5231,9 @@ const TASKS_DATABASE_TYPES = [
    "kk": "Бірліктің атауы қандай шама өлшенетінін көрсетеді. Бұл — осы тақырыптың шамасы."
   },
   "explanation": {
-   "ru": "В генри (Гн) измеряется индуктивность катушки.",
-   "en": "The quantity measured in henry (H) is inductance of a coil.",
-   "kk": "генри (Гн) бірлігімен шарғы индуктивтілігі өлшенеді."
+   "ru": "В фарад (Ф) измеряется электроёмкость конденсатора.",
+   "en": "The quantity measured in farad (F) is capacitance of a capacitor.",
+   "kk": "фарад (Ф) бірлігімен конденсатор сыйымдылығы өлшенеді."
   }
  },
  {
@@ -5093,42 +5242,42 @@ const TASKS_DATABASE_TYPES = [
   "topic": "p27",
   "difficulty": 2,
   "question": {
-   "ru": "Сопоставь физическую величину и её единицу измерения в СИ.",
-   "en": "Match each physical quantity with its SI unit.",
-   "kk": "Физикалық шаманы оның ХБЖ-дағы өлшем бірлігімен сәйкестендір."
+   "ru": "Сопоставь величины из темы «Свободные и вынужденные колебания, резонанс» и их единицы измерения в СИ.",
+   "en": "Match the quantities from «Free and forced oscillations, resonance» with their SI units.",
+   "kk": "«Еркін және мәжбүрлі тербелістер, резонанс» тақырыбындағы шамаларды олардың ХБЖ бірліктерімен сәйкестендір."
   },
   "pairs": {
    "left": {
     "ru": [
      "период колебаний",
      "частота колебаний",
-     "индуктивность катушки"
+     "амплитуда колебаний"
     ],
     "en": [
      "period of oscillation",
      "frequency of oscillation",
-     "inductance of a coil"
+     "amplitude of oscillation"
     ],
     "kk": [
      "тербеліс периоды",
      "тербеліс жиілігі",
-     "шарғы индуктивтілігі"
+     "тербеліс амплитудасы"
     ]
    },
    "right": {
     "ru": [
      "герц (Гц)",
-     "генри (Гн)",
+     "метр (м)",
      "секунда (с)"
     ],
     "en": [
      "hertz (Hz)",
-     "henry (H)",
+     "metre (m)",
      "second (s)"
     ],
     "kk": [
      "герц (Гц)",
-     "генри (Гн)",
+     "метр (м)",
      "секунд (с)"
     ]
    }
@@ -5153,9 +5302,9 @@ const TASKS_DATABASE_TYPES = [
    "kk": "Алдымен нақты білетін шамалардан баста: мысалы, күш ньютонмен өлшенеді."
   },
   "explanation": {
-   "ru": "Верные пары: период колебаний — секунда (с); частота колебаний — герц (Гц); индуктивность катушки — генри (Гн).",
-   "en": "Correct pairs: period of oscillation — second (s); frequency of oscillation — hertz (Hz); inductance of a coil — henry (H).",
-   "kk": "Дұрыс жұптар: тербеліс периоды — секунд (с); тербеліс жиілігі — герц (Гц); шарғы индуктивтілігі — генри (Гн)."
+   "ru": "Верные пары: период колебаний — секунда (с); частота колебаний — герц (Гц); амплитуда колебаний — метр (м).",
+   "en": "Correct pairs: period of oscillation — second (s); frequency of oscillation — hertz (Hz); amplitude of oscillation — metre (m).",
+   "kk": "Дұрыс жұптар: тербеліс периоды — секунд (с); тербеліс жиілігі — герц (Гц); тербеліс амплитудасы — метр (м)."
   }
  },
  {
@@ -5209,29 +5358,69 @@ const TASKS_DATABASE_TYPES = [
   "topic": "p28",
   "difficulty": 2,
   "question": {
-   "ru": "В каких единицах СИ измеряется величина «частота колебаний»? Запиши единицу.",
-   "en": "Which SI unit is used to measure «frequency of oscillation»? Write the unit.",
-   "kk": "«тербеліс жиілігі» шамасы ХБЖ-да қандай бірлікпен өлшенеді? Бірлікті жаз."
+   "ru": "В каких единицах СИ измеряется величина «дефект масс»? Запиши единицу.",
+   "en": "Which SI unit is used to measure «mass defect»? Write the unit.",
+   "kk": "«масса ақауы» шамасы ХБЖ-да қандай бірлікпен өлшенеді? Бірлікті жаз."
   },
   "correctAnswer": {
    "ru": [
-    "герц",
-    "гц",
-    "hz",
-    "Hz",
-    "Гц"
+    "а.е.м.",
+    "аем",
+    "атомная единица массы"
    ],
    "en": [
-    "hertz",
+    "u",
+    "amu",
+    "atomic mass unit"
+   ],
+   "kk": [
+    "а.е.м.",
+    "аем"
+   ]
+  },
+  "hint": {
+   "ru": "Подумай, к какой группе относится величина: теплота, электричество, волны или движение. Единица этой группы и будет ответом.",
+   "en": "Think about the group this quantity belongs to: heat, electricity, waves or motion. The unit of that group is the answer.",
+   "kk": "Шама қай топқа жататынын ойла: жылу, электр, толқын немесе қозғалыс. Сол топтың бірлігі дұрыс жауап."
+  },
+  "explanation": {
+   "ru": "Единица СИ для величины «дефект масс» — атомная единица массы (а.е.м.).",
+   "en": "The SI unit of «mass defect» is atomic mass unit (u).",
+   "kk": "«масса ақауы» шамасының ХБЖ бірлігі — атомдық масса бірлігі (а.е.м.)."
+  }
+ },
+ {
+  "id": "t9_l29_p28_fb",
+  "type": "fill-blank",
+  "topic": "p28",
+  "difficulty": 2,
+  "question": {
+   "ru": "В каких единицах измеряется величина «частота колебаний»? Запиши единицу.",
+   "en": "In which units is «frequency of oscillation» measured? Write the unit.",
+   "kk": "«тербеліс жиілігі» шамасы қандай бірліктермен өлшенеді? Бірлікті жаз."
+  },
+  "correctAnswer": {
+   "ru": [
+    "герц (Гц)",
+    "герц",
+    "Гц",
+    "гц",
     "hz",
     "Hz"
    ],
+   "en": [
+    "hertz (Hz)",
+    "hertz",
+    "Hz",
+    "hz"
+   ],
    "kk": [
+    "герц (Гц)",
     "герц",
+    "Гц",
     "гц",
     "hz",
-    "Hz",
-    "Гц"
+    "Hz"
    ]
   },
   "hint": {
@@ -5246,97 +5435,63 @@ const TASKS_DATABASE_TYPES = [
   }
  },
  {
-  "id": "t9_l29_p28_fb",
-  "type": "fill-blank",
-  "topic": "p28",
-  "difficulty": 2,
-  "question": {
-   "ru": "В единицах «фарад (Ф)» измеряется величина ___.",
-   "en": "The quantity measured in farad (F) is ___.",
-   "kk": "«фарад (Ф)» бірлігімен өлшенетін шама — ___."
-  },
-  "correctAnswer": {
-   "ru": [
-    "электроёмкость конденсатора",
-    "электроёмкость"
-   ],
-   "en": [
-    "capacitance of a capacitor",
-    "capacitance"
-   ],
-   "kk": [
-    "конденсатор сыйымдылығы"
-   ]
-  },
-  "hint": {
-   "ru": "Название единицы подсказывает, какую величину она измеряет. Это величина из этой темы.",
-   "en": "The unit's name hints at the quantity it measures. It belongs to this topic.",
-   "kk": "Бірліктің атауы қандай шама өлшенетінін көрсетеді. Бұл — осы тақырыптың шамасы."
-  },
-  "explanation": {
-   "ru": "В фарад (Ф) измеряется электроёмкость конденсатора.",
-   "en": "The quantity measured in farad (F) is capacitance of a capacitor.",
-   "kk": "фарад (Ф) бірлігімен конденсатор сыйымдылығы өлшенеді."
-  }
- },
- {
   "id": "t9_l29_p28_mt",
   "type": "matching",
   "topic": "p28",
   "difficulty": 2,
   "question": {
-   "ru": "Сопоставь физическую величину и её единицу измерения в СИ.",
-   "en": "Match each physical quantity with its SI unit.",
-   "kk": "Физикалық шаманы оның ХБЖ-дағы өлшем бірлігімен сәйкестендір."
+   "ru": "Сопоставь величины из темы «Свободные электромагнитные колебания» и их единицы измерения в СИ.",
+   "en": "Match the quantities from «Free electromagnetic oscillations» with their SI units.",
+   "kk": "«Еркін электромагниттік тербелістер» тақырыбындағы шамаларды олардың ХБЖ бірліктерімен сәйкестендір."
   },
   "pairs": {
    "left": {
     "ru": [
-     "индуктивность катушки",
      "электроёмкость конденсатора",
-     "амплитуда колебаний"
+     "индуктивность катушки",
+     "период колебаний"
     ],
     "en": [
-     "inductance of a coil",
      "capacitance of a capacitor",
-     "amplitude of oscillation"
+     "inductance of a coil",
+     "period of oscillation"
     ],
     "kk": [
-     "шарғы индуктивтілігі",
      "конденсатор сыйымдылығы",
-     "тербеліс амплитудасы"
+     "шарғы индуктивтілігі",
+     "тербеліс периоды"
     ]
    },
    "right": {
     "ru": [
      "генри (Гн)",
-     "фарад (Ф)",
-     "метр (м)"
+     "секунда (с)",
+     "фарад (Ф)"
     ],
     "en": [
      "henry (H)",
-     "farad (F)",
-     "metre (m)"
+     "second (s)",
+     "farad (F)"
     ],
     "kk": [
      "генри (Гн)",
-     "фарад (Ф)",
-     "метр (м)"
+     "секунд (с)",
+     "фарад (Ф)"
     ]
    }
   },
   "correctPairs": [
    [
     0,
-    0
+    2
    ],
    [
     1,
-    1
+    0
    ],
    [
     2,
-    2
+    1
    ]
   ],
   "hint": {
@@ -5345,9 +5500,9 @@ const TASKS_DATABASE_TYPES = [
    "kk": "Алдымен нақты білетін шамалардан баста: мысалы, күш ньютонмен өлшенеді."
   },
   "explanation": {
-   "ru": "Верные пары: индуктивность катушки — генри (Гн); электроёмкость конденсатора — фарад (Ф); амплитуда колебаний — метр (м).",
-   "en": "Correct pairs: inductance of a coil — henry (H); capacitance of a capacitor — farad (F); amplitude of oscillation — metre (m).",
-   "kk": "Дұрыс жұптар: шарғы индуктивтілігі — генри (Гн); конденсатор сыйымдылығы — фарад (Ф); тербеліс амплитудасы — метр (м)."
+   "ru": "Верные пары: электроёмкость конденсатора — фарад (Ф); индуктивность катушки — генри (Гн); период колебаний — секунда (с).",
+   "en": "Correct pairs: capacitance of a capacitor — farad (F); inductance of a coil — henry (H); period of oscillation — second (s).",
+   "kk": "Дұрыс жұптар: конденсатор сыйымдылығы — фарад (Ф); шарғы индуктивтілігі — генри (Гн); тербеліс периоды — секунд (с)."
   }
  },
  {
@@ -5401,26 +5556,27 @@ const TASKS_DATABASE_TYPES = [
   "topic": "p29",
   "difficulty": 2,
   "question": {
-   "ru": "В каких единицах СИ измеряется величина «длина волны»? Запиши единицу.",
-   "en": "Which SI unit is used to measure «wavelength»? Write the unit.",
-   "kk": "«толқын ұзындығы» шамасы ХБЖ-да қандай бірлікпен өлшенеді? Бірлікті жаз."
+   "ru": "В каких единицах СИ измеряется величина «уровень громкости»? Запиши единицу.",
+   "en": "Which SI unit is used to measure «loudness level»? Write the unit.",
+   "kk": "«дыбыс қаттылығының деңгейі» шамасы ХБЖ-да қандай бірлікпен өлшенеді? Бірлікті жаз."
   },
   "correctAnswer": {
    "ru": [
-    "метр",
-    "м",
-    "m",
-    "M"
+    "децибел",
+    "дб",
+    "db",
+    "dB"
    ],
    "en": [
-    "metre",
-    "meter",
-    "m"
+    "decibel",
+    "db",
+    "dB"
    ],
    "kk": [
-    "метр",
-    "м",
-    "m"
+    "децибел",
+    "дб",
+    "db",
+    "dB"
    ]
   },
   "hint": {
@@ -5429,9 +5585,9 @@ const TASKS_DATABASE_TYPES = [
    "kk": "Шама қай топқа жататынын ойла: жылу, электр, толқын немесе қозғалыс. Сол топтың бірлігі дұрыс жауап."
   },
   "explanation": {
-   "ru": "Единица СИ для величины «длина волны» — метр (м).",
-   "en": "The SI unit of «wavelength» is metre (m).",
-   "kk": "«толқын ұзындығы» шамасының ХБЖ бірлігі — метр (м)."
+   "ru": "Единица СИ для величины «уровень громкости» — децибел (дБ).",
+   "en": "The SI unit of «loudness level» is decibel (dB).",
+   "kk": "«дыбыс қаттылығының деңгейі» шамасының ХБЖ бірлігі — децибел (дБ)."
   }
  },
  {
@@ -5440,30 +5596,43 @@ const TASKS_DATABASE_TYPES = [
   "topic": "p29",
   "difficulty": 2,
   "question": {
-   "ru": "В единицах «децибел (дБ)» измеряется величина ___.",
-   "en": "The quantity measured in decibel (dB) is ___.",
-   "kk": "«децибел (дБ)» бірлігімен өлшенетін шама — ___."
+   "ru": "Назови единицу СИ для величины «частота звука»: ___.",
+   "en": "Name the SI unit of «sound frequency»: ___.",
+   "kk": "«дыбыс жиілігі» шамасының ХБЖ бірлігін ата: ___."
   },
   "correctAnswer": {
    "ru": [
-    "уровень громкости"
+    "герц (Гц)",
+    "герц",
+    "Гц",
+    "гц",
+    "hz",
+    "Hz"
    ],
    "en": [
-    "loudness level"
+    "hertz (Hz)",
+    "hertz",
+    "Hz",
+    "hz"
    ],
    "kk": [
-    "дыбыс қаттылығының деңгейі"
+    "герц (Гц)",
+    "герц",
+    "Гц",
+    "гц",
+    "hz",
+    "Hz"
    ]
   },
   "hint": {
-   "ru": "Название единицы подсказывает, какую величину она измеряет. Это величина из этой темы.",
-   "en": "The unit's name hints at the quantity it measures. It belongs to this topic.",
-   "kk": "Бірліктің атауы қандай шама өлшенетінін көрсетеді. Бұл — осы тақырыптың шамасы."
+   "ru": "Подумай, к какой группе относится величина: теплота, электричество, волны или движение. Единица этой группы и будет ответом.",
+   "en": "Think about the group this quantity belongs to: heat, electricity, waves or motion. The unit of that group is the answer.",
+   "kk": "Шама қай топқа жататынын ойла: жылу, электр, толқын немесе қозғалыс. Сол топтың бірлігі дұрыс жауап."
   },
   "explanation": {
-   "ru": "В децибел (дБ) измеряется уровень громкости.",
-   "en": "The quantity measured in decibel (dB) is loudness level.",
-   "kk": "децибел (дБ) бірлігімен дыбыс қаттылығының деңгейі өлшенеді."
+   "ru": "Единица СИ для величины «частота звука» — герц (Гц).",
+   "en": "The SI unit of «sound frequency» is hertz (Hz).",
+   "kk": "«дыбыс жиілігі» шамасының ХБЖ бірлігі — герц (Гц)."
   }
  },
  {
@@ -5472,43 +5641,43 @@ const TASKS_DATABASE_TYPES = [
   "topic": "p29",
   "difficulty": 2,
   "question": {
-   "ru": "Сопоставь физическую величину и её единицу измерения в СИ.",
-   "en": "Match each physical quantity with its SI unit.",
-   "kk": "Физикалық шаманы оның ХБЖ-дағы өлшем бірлігімен сәйкестендір."
+   "ru": "Сопоставь величины из темы «Волновое движение» и их единицы измерения в СИ.",
+   "en": "Match the quantities from «Wave motion» with their SI units.",
+   "kk": "«Толқындық қозғалыс» тақырыбындағы шамаларды олардың ХБЖ бірліктерімен сәйкестендір."
   },
   "pairs": {
    "left": {
     "ru": [
-     "скорость волны",
      "длина волны",
-     "частота звука"
+     "скорость волны",
+     "уровень громкости"
     ],
     "en": [
-     "wave speed",
      "wavelength",
-     "sound frequency"
+     "wave speed",
+     "loudness level"
     ],
     "kk": [
-     "толқын жылдамдығы",
      "толқын ұзындығы",
-     "дыбыс жиілігі"
+     "толқын жылдамдығы",
+     "дыбыс қаттылығының деңгейі"
     ]
    },
    "right": {
     "ru": [
-     "герц (Гц)",
-     "метр (м)",
-     "м/с"
+     "м/с",
+     "децибел (дБ)",
+     "метр (м)"
     ],
     "en": [
-     "hertz (Hz)",
-     "metre (m)",
-     "m/s"
+     "m/s",
+     "decibel (dB)",
+     "metre (m)"
     ],
     "kk": [
-     "герц (Гц)",
-     "метр (м)",
-     "м/с"
+     "м/с",
+     "децибел (дБ)",
+     "метр (м)"
     ]
    }
   },
@@ -5519,11 +5688,11 @@ const TASKS_DATABASE_TYPES = [
    ],
    [
     1,
-    1
+    0
    ],
    [
     2,
-    0
+    1
    ]
   ],
   "hint": {
@@ -5532,9 +5701,9 @@ const TASKS_DATABASE_TYPES = [
    "kk": "Алдымен нақты білетін шамалардан баста: мысалы, күш ньютонмен өлшенеді."
   },
   "explanation": {
-   "ru": "Верные пары: скорость волны — м/с; длина волны — метр (м); частота звука — герц (Гц).",
-   "en": "Correct pairs: wave speed — m/s; wavelength — metre (m); sound frequency — hertz (Hz).",
-   "kk": "Дұрыс жұптар: толқын жылдамдығы — м/с; толқын ұзындығы — метр (м); дыбыс жиілігі — герц (Гц)."
+   "ru": "Верные пары: длина волны — метр (м); скорость волны — м/с; уровень громкости — децибел (дБ).",
+   "en": "Correct pairs: wavelength — metre (m); wave speed — m/s; loudness level — decibel (dB).",
+   "kk": "Дұрыс жұптар: толқын ұзындығы — метр (м); толқын жылдамдығы — м/с; дыбыс қаттылығының деңгейі — децибел (дБ)."
   }
  },
  {
@@ -5588,21 +5757,26 @@ const TASKS_DATABASE_TYPES = [
   "topic": "p30",
   "difficulty": 2,
   "question": {
-   "ru": "В каких единицах СИ измеряется величина «скорость волны»? Запиши единицу.",
-   "en": "Which SI unit is used to measure «wave speed»? Write the unit.",
-   "kk": "«толқын жылдамдығы» шамасы ХБЖ-да қандай бірлікпен өлшенеді? Бірлікті жаз."
+   "ru": "В каких единицах СИ измеряется величина «длина волны»? Запиши единицу.",
+   "en": "Which SI unit is used to measure «wavelength»? Write the unit.",
+   "kk": "«толқын ұзындығы» шамасы ХБЖ-да қандай бірлікпен өлшенеді? Бірлікті жаз."
   },
   "correctAnswer": {
    "ru": [
-    "м/с",
-    "m/s"
+    "метр",
+    "м",
+    "m",
+    "M"
    ],
    "en": [
-    "m/s"
+    "metre",
+    "meter",
+    "m"
    ],
    "kk": [
-    "м/с",
-    "m/s"
+    "метр",
+    "м",
+    "m"
    ]
   },
   "hint": {
@@ -5611,9 +5785,9 @@ const TASKS_DATABASE_TYPES = [
    "kk": "Шама қай топқа жататынын ойла: жылу, электр, толқын немесе қозғалыс. Сол топтың бірлігі дұрыс жауап."
   },
   "explanation": {
-   "ru": "Единица СИ для величины «скорость волны» — м/с.",
-   "en": "The SI unit of «wave speed» is m/s.",
-   "kk": "«толқын жылдамдығы» шамасының ХБЖ бірлігі — м/с."
+   "ru": "Единица СИ для величины «длина волны» — метр (м).",
+   "en": "The SI unit of «wavelength» is metre (m).",
+   "kk": "«толқын ұзындығы» шамасының ХБЖ бірлігі — метр (м)."
   }
  },
  {
@@ -5622,30 +5796,43 @@ const TASKS_DATABASE_TYPES = [
   "topic": "p30",
   "difficulty": 2,
   "question": {
-   "ru": "В единицах «децибел (дБ)» измеряется величина ___.",
-   "en": "The quantity measured in decibel (dB) is ___.",
-   "kk": "«децибел (дБ)» бірлігімен өлшенетін шама — ___."
+   "ru": "В каких единицах измеряется величина «уровень громкости»? Запиши единицу.",
+   "en": "In which units is «loudness level» measured? Write the unit.",
+   "kk": "«дыбыс қаттылығының деңгейі» шамасы қандай бірліктермен өлшенеді? Бірлікті жаз."
   },
   "correctAnswer": {
    "ru": [
-    "уровень громкости"
+    "децибел (дБ)",
+    "децибел",
+    "дБ",
+    "дб",
+    "db",
+    "dB"
    ],
    "en": [
-    "loudness level"
+    "decibel (dB)",
+    "decibel",
+    "dB",
+    "db"
    ],
    "kk": [
-    "дыбыс қаттылығының деңгейі"
+    "децибел (дБ)",
+    "децибел",
+    "дБ",
+    "дб",
+    "db",
+    "dB"
    ]
   },
   "hint": {
-   "ru": "Название единицы подсказывает, какую величину она измеряет. Это величина из этой темы.",
-   "en": "The unit's name hints at the quantity it measures. It belongs to this topic.",
-   "kk": "Бірліктің атауы қандай шама өлшенетінін көрсетеді. Бұл — осы тақырыптың шамасы."
+   "ru": "Подумай, к какой группе относится величина: теплота, электричество, волны или движение. Единица этой группы и будет ответом.",
+   "en": "Think about the group this quantity belongs to: heat, electricity, waves or motion. The unit of that group is the answer.",
+   "kk": "Шама қай топқа жататынын ойла: жылу, электр, толқын немесе қозғалыс. Сол топтың бірлігі дұрыс жауап."
   },
   "explanation": {
-   "ru": "В децибел (дБ) измеряется уровень громкости.",
-   "en": "The quantity measured in decibel (dB) is loudness level.",
-   "kk": "децибел (дБ) бірлігімен дыбыс қаттылығының деңгейі өлшенеді."
+   "ru": "Единица СИ для величины «уровень громкости» — децибел (дБ).",
+   "en": "The SI unit of «loudness level» is decibel (dB).",
+   "kk": "«дыбыс қаттылығының деңгейі» шамасының ХБЖ бірлігі — децибел (дБ)."
   }
  },
  {
@@ -5654,50 +5841,50 @@ const TASKS_DATABASE_TYPES = [
   "topic": "p30",
   "difficulty": 2,
   "question": {
-   "ru": "Сопоставь физическую величину и её единицу измерения в СИ.",
-   "en": "Match each physical quantity with its SI unit.",
-   "kk": "Физикалық шаманы оның ХБЖ-дағы өлшем бірлігімен сәйкестендір."
+   "ru": "Сопоставь величины из темы «Звук, характеристики звука, резонанс, эхо» и их единицы измерения в СИ.",
+   "en": "Match the quantities from «Sound, characteristics of sound, resonance, echo» with their SI units.",
+   "kk": "«Дыбыс, дыбыстың сипаттары, резонанс, эхо» тақырыбындағы шамаларды олардың ХБЖ бірліктерімен сәйкестендір."
   },
   "pairs": {
    "left": {
     "ru": [
-     "частота звука",
      "скорость волны",
+     "длина волны",
      "уровень громкости"
     ],
     "en": [
-     "sound frequency",
      "wave speed",
+     "wavelength",
      "loudness level"
     ],
     "kk": [
-     "дыбыс жиілігі",
      "толқын жылдамдығы",
+     "толқын ұзындығы",
      "дыбыс қаттылығының деңгейі"
     ]
    },
    "right": {
     "ru": [
-     "м/с",
-     "герц (Гц)",
-     "децибел (дБ)"
+     "метр (м)",
+     "децибел (дБ)",
+     "м/с"
     ],
     "en": [
-     "m/s",
-     "hertz (Hz)",
-     "decibel (dB)"
+     "metre (m)",
+     "decibel (dB)",
+     "m/s"
     ],
     "kk": [
-     "м/с",
-     "герц (Гц)",
-     "децибел (дБ)"
+     "метр (м)",
+     "децибел (дБ)",
+     "м/с"
     ]
    }
   },
   "correctPairs": [
    [
     0,
-    1
+    2
    ],
    [
     1,
@@ -5705,7 +5892,7 @@ const TASKS_DATABASE_TYPES = [
    ],
    [
     2,
-    2
+    1
    ]
   ],
   "hint": {
@@ -5714,9 +5901,9 @@ const TASKS_DATABASE_TYPES = [
    "kk": "Алдымен нақты білетін шамалардан баста: мысалы, күш ньютонмен өлшенеді."
   },
   "explanation": {
-   "ru": "Верные пары: частота звука — герц (Гц); скорость волны — м/с; уровень громкости — децибел (дБ).",
-   "en": "Correct pairs: sound frequency — hertz (Hz); wave speed — m/s; loudness level — decibel (dB).",
-   "kk": "Дұрыс жұптар: дыбыс жиілігі — герц (Гц); толқын жылдамдығы — м/с; дыбыс қаттылығының деңгейі — децибел (дБ)."
+   "ru": "Верные пары: скорость волны — м/с; длина волны — метр (м); уровень громкости — децибел (дБ).",
+   "en": "Correct pairs: wave speed — m/s; wavelength — metre (m); loudness level — decibel (dB).",
+   "kk": "Дұрыс жұптар: толқын жылдамдығы — м/с; толқын ұзындығы — метр (м); дыбыс қаттылығының деңгейі — децибел (дБ)."
   }
  },
  {
@@ -5804,30 +5991,32 @@ const TASKS_DATABASE_TYPES = [
   "topic": "p31",
   "difficulty": 2,
   "question": {
-   "ru": "В единицах «децибел (дБ)» измеряется величина ___.",
-   "en": "The quantity measured in decibel (dB) is ___.",
-   "kk": "«децибел (дБ)» бірлігімен өлшенетін шама — ___."
+   "ru": "В каких единицах измеряется величина «скорость волны»? Запиши единицу.",
+   "en": "In which units is «wave speed» measured? Write the unit.",
+   "kk": "«толқын жылдамдығы» шамасы қандай бірліктермен өлшенеді? Бірлікті жаз."
   },
   "correctAnswer": {
    "ru": [
-    "уровень громкости"
+    "м/с",
+    "m/s"
    ],
    "en": [
-    "loudness level"
+    "m/s"
    ],
    "kk": [
-    "дыбыс қаттылығының деңгейі"
+    "м/с",
+    "m/s"
    ]
   },
   "hint": {
-   "ru": "Название единицы подсказывает, какую величину она измеряет. Это величина из этой темы.",
-   "en": "The unit's name hints at the quantity it measures. It belongs to this topic.",
-   "kk": "Бірліктің атауы қандай шама өлшенетінін көрсетеді. Бұл — осы тақырыптың шамасы."
+   "ru": "Подумай, к какой группе относится величина: теплота, электричество, волны или движение. Единица этой группы и будет ответом.",
+   "en": "Think about the group this quantity belongs to: heat, electricity, waves or motion. The unit of that group is the answer.",
+   "kk": "Шама қай топқа жататынын ойла: жылу, электр, толқын немесе қозғалыс. Сол топтың бірлігі дұрыс жауап."
   },
   "explanation": {
-   "ru": "В децибел (дБ) измеряется уровень громкости.",
-   "en": "The quantity measured in decibel (dB) is loudness level.",
-   "kk": "децибел (дБ) бірлігімен дыбыс қаттылығының деңгейі өлшенеді."
+   "ru": "Единица СИ для величины «скорость волны» — м/с.",
+   "en": "The SI unit of «wave speed» is m/s.",
+   "kk": "«толқын жылдамдығы» шамасының ХБЖ бірлігі — м/с."
   }
  },
  {
@@ -5836,54 +6025,54 @@ const TASKS_DATABASE_TYPES = [
   "topic": "p31",
   "difficulty": 2,
   "question": {
-   "ru": "Сопоставь физическую величину и её единицу измерения в СИ.",
-   "en": "Match each physical quantity with its SI unit.",
-   "kk": "Физикалық шаманы оның ХБЖ-дағы өлшем бірлігімен сәйкестендір."
+   "ru": "Сопоставь величины из темы «Электромагнитные волны. Шкала электромагнитных волн» и их единицы измерения в СИ.",
+   "en": "Match the quantities from «Electromagnetic waves. Electromagnetic wave scale» with their SI units.",
+   "kk": "«Электромагниттік толқындар. Электромагниттік толқындардың шкаласы» тақырыбындағы шамаларды олардың ХБЖ бірліктерімен сәйкестендір."
   },
   "pairs": {
    "left": {
     "ru": [
-     "скорость волны",
+     "скорость света",
      "длина волны",
-     "уровень громкости"
+     "частота звука"
     ],
     "en": [
-     "wave speed",
+     "speed of light",
      "wavelength",
-     "loudness level"
+     "sound frequency"
     ],
     "kk": [
-     "толқын жылдамдығы",
+     "жарық жылдамдығы",
      "толқын ұзындығы",
-     "дыбыс қаттылығының деңгейі"
+     "дыбыс жиілігі"
     ]
    },
    "right": {
     "ru": [
-     "м/с",
-     "децибел (дБ)",
-     "метр (м)"
+     "метр (м)",
+     "герц (Гц)",
+     "м/с"
     ],
     "en": [
-     "m/s",
-     "decibel (dB)",
-     "metre (m)"
+     "metre (m)",
+     "hertz (Hz)",
+     "m/s"
     ],
     "kk": [
-     "м/с",
-     "децибел (дБ)",
-     "метр (м)"
+     "метр (м)",
+     "герц (Гц)",
+     "м/с"
     ]
    }
   },
   "correctPairs": [
    [
     0,
-    0
+    2
    ],
    [
     1,
-    2
+    0
    ],
    [
     2,
@@ -5896,9 +6085,9 @@ const TASKS_DATABASE_TYPES = [
    "kk": "Алдымен нақты білетін шамалардан баста: мысалы, күш ньютонмен өлшенеді."
   },
   "explanation": {
-   "ru": "Верные пары: скорость волны — м/с; длина волны — метр (м); уровень громкости — децибел (дБ).",
-   "en": "Correct pairs: wave speed — m/s; wavelength — metre (m); loudness level — decibel (dB).",
-   "kk": "Дұрыс жұптар: толқын жылдамдығы — м/с; толқын ұзындығы — метр (м); дыбыс қаттылығының деңгейі — децибел (дБ)."
+   "ru": "Верные пары: скорость света — м/с; длина волны — метр (м); частота звука — герц (Гц).",
+   "en": "Correct pairs: speed of light — m/s; wavelength — metre (m); sound frequency — hertz (Hz).",
+   "kk": "Дұрыс жұптар: жарық жылдамдығы — м/с; толқын ұзындығы — метр (м); дыбыс жиілігі — герц (Гц)."
   }
  },
  {
@@ -5992,20 +6181,20 @@ const TASKS_DATABASE_TYPES = [
   "topic": "p32",
   "difficulty": 2,
   "question": {
-   "ru": "В единицах «электрон-вольт (эВ)» измеряется величина ___.",
-   "en": "The quantity measured in electronvolt (eV) is ___.",
-   "kk": "«электрон-вольт (эВ)» бірлігімен өлшенетін шама — ___."
+   "ru": "В единицах «грей (Гр)» измеряется величина ___.",
+   "en": "The quantity measured in gray (Gy) is ___.",
+   "kk": "«грей (Гр)» бірлігімен өлшенетін шама — ___."
   },
   "correctAnswer": {
    "ru": [
-    "работа выхода электрона",
-    "работа выхода"
+    "поглощённая доза излучения",
+    "поглощённая доза"
    ],
    "en": [
-    "work function"
+    "absorbed radiation dose"
    ],
    "kk": [
-    "электронның шығу жұмысы"
+    "сіңірілген сәулелену дозасы"
    ]
   },
   "hint": {
@@ -6014,9 +6203,9 @@ const TASKS_DATABASE_TYPES = [
    "kk": "Бірліктің атауы қандай шама өлшенетінін көрсетеді. Бұл — осы тақырыптың шамасы."
   },
   "explanation": {
-   "ru": "В электрон-вольт (эВ) измеряется работа выхода электрона.",
-   "en": "The quantity measured in electronvolt (eV) is work function.",
-   "kk": "электрон-вольт (эВ) бірлігімен электронның шығу жұмысы өлшенеді."
+   "ru": "В грей (Гр) измеряется поглощённая доза излучения.",
+   "en": "The quantity measured in gray (Gy) is absorbed radiation dose.",
+   "kk": "грей (Гр) бірлігімен сіңірілген сәулелену дозасы өлшенеді."
   }
  },
  {
@@ -6025,58 +6214,58 @@ const TASKS_DATABASE_TYPES = [
   "topic": "p32",
   "difficulty": 2,
   "question": {
-   "ru": "Сопоставь физическую величину и её единицу измерения в СИ.",
-   "en": "Match each physical quantity with its SI unit.",
-   "kk": "Физикалық шаманы оның ХБЖ-дағы өлшем бірлігімен сәйкестендір."
+   "ru": "Сопоставь величины из темы «Тепловое излучение» и их единицы измерения в СИ.",
+   "en": "Match the quantities from «Thermal radiation» with their SI units.",
+   "kk": "«Жылулық сәулелену» тақырыбындағы шамаларды олардың ХБЖ бірліктерімен сәйкестендір."
   },
   "pairs": {
    "left": {
     "ru": [
      "скорость света",
-     "активность радиоактивного образца",
+     "период полураспада",
      "энергия связи ядра"
     ],
     "en": [
      "speed of light",
-     "activity of a radioactive sample",
+     "half-life",
      "nuclear binding energy"
     ],
     "kk": [
      "жарық жылдамдығы",
-     "радиоактивті үлгінің белсенділігі",
+     "жартылай ыдырау периоды",
      "ядроның байланыс энергиясы"
     ]
    },
    "right": {
     "ru": [
+     "мегаэлектрон-вольт (МэВ)",
      "м/с",
-     "беккерель (Бк)",
-     "мегаэлектрон-вольт (МэВ)"
+     "секунда (с)"
     ],
     "en": [
+     "megaelectronvolt (MeV)",
      "m/s",
-     "becquerel (Bq)",
-     "megaelectronvolt (MeV)"
+     "second (s)"
     ],
     "kk": [
+     "мегаэлектрон-вольт (МэВ)",
      "м/с",
-     "беккерель (Бк)",
-     "мегаэлектрон-вольт (МэВ)"
+     "секунд (с)"
     ]
    }
   },
   "correctPairs": [
    [
     0,
-    0
-   ],
-   [
-    1,
     1
    ],
    [
-    2,
+    1,
     2
+   ],
+   [
+    2,
+    0
    ]
   ],
   "hint": {
@@ -6085,9 +6274,9 @@ const TASKS_DATABASE_TYPES = [
    "kk": "Алдымен нақты білетін шамалардан баста: мысалы, күш ньютонмен өлшенеді."
   },
   "explanation": {
-   "ru": "Верные пары: скорость света — м/с; активность радиоактивного образца — беккерель (Бк); энергия связи ядра — мегаэлектрон-вольт (МэВ).",
-   "en": "Correct pairs: speed of light — m/s; activity of a radioactive sample — becquerel (Bq); nuclear binding energy — megaelectronvolt (MeV).",
-   "kk": "Дұрыс жұптар: жарық жылдамдығы — м/с; радиоактивті үлгінің белсенділігі — беккерель (Бк); ядроның байланыс энергиясы — мегаэлектрон-вольт (МэВ)."
+   "ru": "Верные пары: скорость света — м/с; период полураспада — секунда (с); энергия связи ядра — мегаэлектрон-вольт (МэВ).",
+   "en": "Correct pairs: speed of light — m/s; half-life — second (s); nuclear binding energy — megaelectronvolt (MeV).",
+   "kk": "Дұрыс жұптар: жарық жылдамдығы — м/с; жартылай ыдырау периоды — секунд (с); ядроның байланыс энергиясы — мегаэлектрон-вольт (МэВ)."
   }
  },
  {
@@ -6141,27 +6330,24 @@ const TASKS_DATABASE_TYPES = [
   "topic": "p33",
   "difficulty": 2,
   "question": {
-   "ru": "В каких единицах СИ измеряется величина «активность радиоактивного образца»? Запиши единицу.",
-   "en": "Which SI unit is used to measure «activity of a radioactive sample»? Write the unit.",
-   "kk": "«радиоактивті үлгінің белсенділігі» шамасы ХБЖ-да қандай бірлікпен өлшенеді? Бірлікті жаз."
+   "ru": "В каких единицах СИ измеряется величина «энергия связи ядра»? Запиши единицу.",
+   "en": "Which SI unit is used to measure «nuclear binding energy»? Write the unit.",
+   "kk": "«ядроның байланыс энергиясы» шамасы ХБЖ-да қандай бірлікпен өлшенеді? Бірлікті жаз."
   },
   "correctAnswer": {
    "ru": [
-    "беккерель",
-    "бк",
-    "bq",
-    "Bq"
+    "мэв",
+    "mev",
+    "MeV"
    ],
    "en": [
-    "becquerel",
-    "bq",
-    "Bq"
+    "mev",
+    "MeV"
    ],
    "kk": [
-    "беккерель",
-    "бк",
-    "bq",
-    "Bq"
+    "мэв",
+    "mev",
+    "MeV"
    ]
   },
   "hint": {
@@ -6170,9 +6356,9 @@ const TASKS_DATABASE_TYPES = [
    "kk": "Шама қай топқа жататынын ойла: жылу, электр, толқын немесе қозғалыс. Сол топтың бірлігі дұрыс жауап."
   },
   "explanation": {
-   "ru": "Единица СИ для величины «активность радиоактивного образца» — беккерель (Бк).",
-   "en": "The SI unit of «activity of a radioactive sample» is becquerel (Bq).",
-   "kk": "«радиоактивті үлгінің белсенділігі» шамасының ХБЖ бірлігі — беккерель (Бк)."
+   "ru": "Единица СИ для величины «энергия связи ядра» — мегаэлектрон-вольт (МэВ).",
+   "en": "The SI unit of «nuclear binding energy» is megaelectronvolt (MeV).",
+   "kk": "«ядроның байланыс энергиясы» шамасының ХБЖ бірлігі — мегаэлектрон-вольт (МэВ)."
   }
  },
  {
@@ -6181,31 +6367,40 @@ const TASKS_DATABASE_TYPES = [
   "topic": "p33",
   "difficulty": 2,
   "question": {
-   "ru": "В единицах «грей (Гр)» измеряется величина ___.",
-   "en": "The quantity measured in gray (Gy) is ___.",
-   "kk": "«грей (Гр)» бірлігімен өлшенетін шама — ___."
+   "ru": "Назови единицу СИ для величины «период полураспада»: ___.",
+   "en": "Name the SI unit of «half-life»: ___.",
+   "kk": "«жартылай ыдырау периоды» шамасының ХБЖ бірлігін ата: ___."
   },
   "correctAnswer": {
    "ru": [
-    "поглощённая доза излучения",
-    "поглощённая доза"
+    "секунда (с)",
+    "секунда",
+    "с",
+    "s",
+    "сек"
    ],
    "en": [
-    "absorbed radiation dose"
+    "second (s)",
+    "second",
+    "s",
+    "sec"
    ],
    "kk": [
-    "сіңірілген сәулелену дозасы"
+    "секунд (с)",
+    "секунд",
+    "с",
+    "s"
    ]
   },
   "hint": {
-   "ru": "Название единицы подсказывает, какую величину она измеряет. Это величина из этой темы.",
-   "en": "The unit's name hints at the quantity it measures. It belongs to this topic.",
-   "kk": "Бірліктің атауы қандай шама өлшенетінін көрсетеді. Бұл — осы тақырыптың шамасы."
+   "ru": "Подумай, к какой группе относится величина: теплота, электричество, волны или движение. Единица этой группы и будет ответом.",
+   "en": "Think about the group this quantity belongs to: heat, electricity, waves or motion. The unit of that group is the answer.",
+   "kk": "Шама қай топқа жататынын ойла: жылу, электр, толқын немесе қозғалыс. Сол топтың бірлігі дұрыс жауап."
   },
   "explanation": {
-   "ru": "В грей (Гр) измеряется поглощённая доза излучения.",
-   "en": "The quantity measured in gray (Gy) is absorbed radiation dose.",
-   "kk": "грей (Гр) бірлігімен сіңірілген сәулелену дозасы өлшенеді."
+   "ru": "Единица СИ для величины «период полураспада» — секунда (с).",
+   "en": "The SI unit of «half-life» is second (s).",
+   "kk": "«жартылай ыдырау периоды» шамасының ХБЖ бірлігі — секунд (с)."
   }
  },
  {
@@ -6214,58 +6409,58 @@ const TASKS_DATABASE_TYPES = [
   "topic": "p33",
   "difficulty": 2,
   "question": {
-   "ru": "Сопоставь физическую величину и её единицу измерения в СИ.",
-   "en": "Match each physical quantity with its SI unit.",
-   "kk": "Физикалық шаманы оның ХБЖ-дағы өлшем бірлігімен сәйкестендір."
+   "ru": "Сопоставь величины из темы «Гипотеза Планка о световых квантах. Фотоэффект» и их единицы измерения в СИ.",
+   "en": "Match the quantities from «Planck's hypothesis about light quanta. Photoelectric effect» with their SI units.",
+   "kk": "«Планктің жарық кванттары туралы гипотезасы. Фотоэффект» тақырыбындағы шамаларды олардың ХБЖ бірліктерімен сәйкестендір."
   },
   "pairs": {
    "left": {
     "ru": [
-     "работа выхода электрона",
      "энергия фотона",
-     "период полураспада"
+     "работа выхода электрона",
+     "активность радиоактивного образца"
     ],
     "en": [
-     "work function",
      "photon energy",
-     "half-life"
+     "work function",
+     "activity of a radioactive sample"
     ],
     "kk": [
-     "электронның шығу жұмысы",
      "фотон энергиясы",
-     "жартылай ыдырау периоды"
+     "электронның шығу жұмысы",
+     "радиоактивті үлгінің белсенділігі"
     ]
    },
    "right": {
     "ru": [
      "электрон-вольт (эВ)",
-     "джоуль (Дж)",
-     "секунда (с)"
+     "беккерель (Бк)",
+     "джоуль (Дж)"
     ],
     "en": [
      "electronvolt (eV)",
-     "joule (J)",
-     "second (s)"
+     "becquerel (Bq)",
+     "joule (J)"
     ],
     "kk": [
      "электрон-вольт (эВ)",
-     "джоуль (Дж)",
-     "секунд (с)"
+     "беккерель (Бк)",
+     "джоуль (Дж)"
     ]
    }
   },
   "correctPairs": [
    [
     0,
-    0
+    2
    ],
    [
     1,
-    1
+    0
    ],
    [
     2,
-    2
+    1
    ]
   ],
   "hint": {
@@ -6274,9 +6469,9 @@ const TASKS_DATABASE_TYPES = [
    "kk": "Алдымен нақты білетін шамалардан баста: мысалы, күш ньютонмен өлшенеді."
   },
   "explanation": {
-   "ru": "Верные пары: работа выхода электрона — электрон-вольт (эВ); энергия фотона — джоуль (Дж); период полураспада — секунда (с).",
-   "en": "Correct pairs: work function — electronvolt (eV); photon energy — joule (J); half-life — second (s).",
-   "kk": "Дұрыс жұптар: электронның шығу жұмысы — электрон-вольт (эВ); фотон энергиясы — джоуль (Дж); жартылай ыдырау периоды — секунд (с)."
+   "ru": "Верные пары: энергия фотона — джоуль (Дж); работа выхода электрона — электрон-вольт (эВ); активность радиоактивного образца — беккерель (Бк).",
+   "en": "Correct pairs: photon energy — joule (J); work function — electronvolt (eV); activity of a radioactive sample — becquerel (Bq).",
+   "kk": "Дұрыс жұптар: фотон энергиясы — джоуль (Дж); электронның шығу жұмысы — электрон-вольт (эВ); радиоактивті үлгінің белсенділігі — беккерель (Бк)."
   }
  },
  {
@@ -6330,24 +6525,27 @@ const TASKS_DATABASE_TYPES = [
   "topic": "p34",
   "difficulty": 2,
   "question": {
-   "ru": "В каких единицах СИ измеряется величина «дефект масс»? Запиши единицу.",
-   "en": "Which SI unit is used to measure «mass defect»? Write the unit.",
-   "kk": "«масса ақауы» шамасы ХБЖ-да қандай бірлікпен өлшенеді? Бірлікті жаз."
+   "ru": "В каких единицах СИ измеряется величина «поглощённая доза излучения»? Запиши единицу.",
+   "en": "Which SI unit is used to measure «absorbed radiation dose»? Write the unit.",
+   "kk": "«сіңірілген сәулелену дозасы» шамасы ХБЖ-да қандай бірлікпен өлшенеді? Бірлікті жаз."
   },
   "correctAnswer": {
    "ru": [
-    "а.е.м.",
-    "аем",
-    "атомная единица массы"
+    "грей",
+    "гр",
+    "gy",
+    "Gy"
    ],
    "en": [
-    "u",
-    "amu",
-    "atomic mass unit"
+    "gray",
+    "gy",
+    "Gy"
    ],
    "kk": [
-    "а.е.м.",
-    "аем"
+    "грей",
+    "гр",
+    "gy",
+    "Gy"
    ]
   },
   "hint": {
@@ -6356,9 +6554,9 @@ const TASKS_DATABASE_TYPES = [
    "kk": "Шама қай топқа жататынын ойла: жылу, электр, толқын немесе қозғалыс. Сол топтың бірлігі дұрыс жауап."
   },
   "explanation": {
-   "ru": "Единица СИ для величины «дефект масс» — атомная единица массы (а.е.м.).",
-   "en": "The SI unit of «mass defect» is atomic mass unit (u).",
-   "kk": "«масса ақауы» шамасының ХБЖ бірлігі — атомдық масса бірлігі (а.е.м.)."
+   "ru": "Единица СИ для величины «поглощённая доза излучения» — грей (Гр).",
+   "en": "The SI unit of «absorbed radiation dose» is gray (Gy).",
+   "kk": "«сіңірілген сәулелену дозасы» шамасының ХБЖ бірлігі — грей (Гр)."
   }
  },
  {
@@ -6367,30 +6565,43 @@ const TASKS_DATABASE_TYPES = [
   "topic": "p34",
   "difficulty": 2,
   "question": {
-   "ru": "В единицах «беккерель (Бк)» измеряется величина ___.",
-   "en": "The quantity measured in becquerel (Bq) is ___.",
-   "kk": "«беккерель (Бк)» бірлігімен өлшенетін шама — ___."
+   "ru": "Единица измерения величины «энергия фотона» — ___.",
+   "en": "The unit of «photon energy» is ___.",
+   "kk": "«фотон энергиясы» шамасының өлшем бірлігі — ___."
   },
   "correctAnswer": {
    "ru": [
-    "активность радиоактивного образца"
+    "джоуль (Дж)",
+    "джоуль",
+    "Дж",
+    "дж",
+    "j",
+    "J"
    ],
    "en": [
-    "activity of a radioactive sample"
+    "joule (J)",
+    "joule",
+    "J",
+    "j"
    ],
    "kk": [
-    "радиоактивті үлгінің белсенділігі"
+    "джоуль (Дж)",
+    "джоуль",
+    "Дж",
+    "дж",
+    "j",
+    "J"
    ]
   },
   "hint": {
-   "ru": "Название единицы подсказывает, какую величину она измеряет. Это величина из этой темы.",
-   "en": "The unit's name hints at the quantity it measures. It belongs to this topic.",
-   "kk": "Бірліктің атауы қандай шама өлшенетінін көрсетеді. Бұл — осы тақырыптың шамасы."
+   "ru": "Подумай, к какой группе относится величина: теплота, электричество, волны или движение. Единица этой группы и будет ответом.",
+   "en": "Think about the group this quantity belongs to: heat, electricity, waves or motion. The unit of that group is the answer.",
+   "kk": "Шама қай топқа жататынын ойла: жылу, электр, толқын немесе қозғалыс. Сол топтың бірлігі дұрыс жауап."
   },
   "explanation": {
-   "ru": "В беккерель (Бк) измеряется активность радиоактивного образца.",
-   "en": "The quantity measured in becquerel (Bq) is activity of a radioactive sample.",
-   "kk": "беккерель (Бк) бірлігімен радиоактивті үлгінің белсенділігі өлшенеді."
+   "ru": "Единица СИ для величины «энергия фотона» — джоуль (Дж).",
+   "en": "The SI unit of «photon energy» is joule (J).",
+   "kk": "«фотон энергиясы» шамасының ХБЖ бірлігі — джоуль (Дж)."
   }
  },
  {
@@ -6399,43 +6610,43 @@ const TASKS_DATABASE_TYPES = [
   "topic": "p34",
   "difficulty": 2,
   "question": {
-   "ru": "Сопоставь физическую величину и её единицу измерения в СИ.",
-   "en": "Match each physical quantity with its SI unit.",
-   "kk": "Физикалық шаманы оның ХБЖ-дағы өлшем бірлігімен сәйкестендір."
+   "ru": "Сопоставь величины из темы «Рентгеновское излучение» и их единицы измерения в СИ.",
+   "en": "Match the quantities from «X-ray radiation» with their SI units.",
+   "kk": "«Рентген сәулеленуі» тақырыбындағы шамаларды олардың ХБЖ бірліктерімен сәйкестендір."
   },
   "pairs": {
    "left": {
     "ru": [
-     "работа выхода электрона",
+     "энергия фотона",
      "энергия связи ядра",
-     "эквивалентная доза"
+     "период полураспада"
     ],
     "en": [
-     "work function",
+     "photon energy",
      "nuclear binding energy",
-     "equivalent dose"
+     "half-life"
     ],
     "kk": [
-     "электронның шығу жұмысы",
+     "фотон энергиясы",
      "ядроның байланыс энергиясы",
-     "эквивалентті доза"
+     "жартылай ыдырау периоды"
     ]
    },
    "right": {
     "ru": [
-     "зиверт (Зв)",
      "мегаэлектрон-вольт (МэВ)",
-     "электрон-вольт (эВ)"
+     "секунда (с)",
+     "джоуль (Дж)"
     ],
     "en": [
-     "sievert (Sv)",
      "megaelectronvolt (MeV)",
-     "electronvolt (eV)"
+     "second (s)",
+     "joule (J)"
     ],
     "kk": [
-     "зиверт (Зв)",
      "мегаэлектрон-вольт (МэВ)",
-     "электрон-вольт (эВ)"
+     "секунд (с)",
+     "джоуль (Дж)"
     ]
    }
   },
@@ -6446,11 +6657,11 @@ const TASKS_DATABASE_TYPES = [
    ],
    [
     1,
-    1
+    0
    ],
    [
     2,
-    0
+    1
    ]
   ],
   "hint": {
@@ -6459,9 +6670,9 @@ const TASKS_DATABASE_TYPES = [
    "kk": "Алдымен нақты білетін шамалардан баста: мысалы, күш ньютонмен өлшенеді."
   },
   "explanation": {
-   "ru": "Верные пары: работа выхода электрона — электрон-вольт (эВ); энергия связи ядра — мегаэлектрон-вольт (МэВ); эквивалентная доза — зиверт (Зв).",
-   "en": "Correct pairs: work function — electronvolt (eV); nuclear binding energy — megaelectronvolt (MeV); equivalent dose — sievert (Sv).",
-   "kk": "Дұрыс жұптар: электронның шығу жұмысы — электрон-вольт (эВ); ядроның байланыс энергиясы — мегаэлектрон-вольт (МэВ); эквивалентті доза — зиверт (Зв)."
+   "ru": "Верные пары: энергия фотона — джоуль (Дж); энергия связи ядра — мегаэлектрон-вольт (МэВ); период полураспада — секунда (с).",
+   "en": "Correct pairs: photon energy — joule (J); nuclear binding energy — megaelectronvolt (MeV); half-life — second (s).",
+   "kk": "Дұрыс жұптар: фотон энергиясы — джоуль (Дж); ядроның байланыс энергиясы — мегаэлектрон-вольт (МэВ); жартылай ыдырау периоды — секунд (с)."
   }
  },
  {
@@ -6515,26 +6726,29 @@ const TASKS_DATABASE_TYPES = [
   "topic": "p35",
   "difficulty": 2,
   "question": {
-   "ru": "В каких единицах СИ измеряется величина «период полураспада»? Запиши единицу.",
-   "en": "Which SI unit is used to measure «half-life»? Write the unit.",
-   "kk": "«жартылай ыдырау периоды» шамасы ХБЖ-да қандай бірлікпен өлшенеді? Бірлікті жаз."
+   "ru": "В каких единицах СИ измеряется величина «энергия фотона»? Запиши единицу.",
+   "en": "Which SI unit is used to measure «photon energy»? Write the unit.",
+   "kk": "«фотон энергиясы» шамасы ХБЖ-да қандай бірлікпен өлшенеді? Бірлікті жаз."
   },
   "correctAnswer": {
    "ru": [
-    "секунда",
-    "с",
-    "s",
-    "сек"
+    "джоуль",
+    "дж",
+    "j",
+    "J",
+    "Дж"
    ],
    "en": [
-    "second",
-    "s",
-    "sec"
+    "joule",
+    "j",
+    "J"
    ],
    "kk": [
-    "секунд",
-    "с",
-    "s"
+    "джоуль",
+    "дж",
+    "j",
+    "J",
+    "Дж"
    ]
   },
   "hint": {
@@ -6543,9 +6757,9 @@ const TASKS_DATABASE_TYPES = [
    "kk": "Шама қай топқа жататынын ойла: жылу, электр, толқын немесе қозғалыс. Сол топтың бірлігі дұрыс жауап."
   },
   "explanation": {
-   "ru": "Единица СИ для величины «период полураспада» — секунда (с).",
-   "en": "The SI unit of «half-life» is second (s).",
-   "kk": "«жартылай ыдырау периоды» шамасының ХБЖ бірлігі — секунд (с)."
+   "ru": "Единица СИ для величины «энергия фотона» — джоуль (Дж).",
+   "en": "The SI unit of «photon energy» is joule (J).",
+   "kk": "«фотон энергиясы» шамасының ХБЖ бірлігі — джоуль (Дж)."
   }
  },
  {
@@ -6554,30 +6768,43 @@ const TASKS_DATABASE_TYPES = [
   "topic": "p35",
   "difficulty": 2,
   "question": {
-   "ru": "В единицах «атомная единица массы (а.е.м.)» измеряется величина ___.",
-   "en": "The quantity measured in atomic mass unit (u) is ___.",
-   "kk": "«атомдық масса бірлігі (а.е.м.)» бірлігімен өлшенетін шама — ___."
+   "ru": "Единица измерения величины «эквивалентная доза» — ___.",
+   "en": "The unit of «equivalent dose» is ___.",
+   "kk": "«эквивалентті доза» шамасының өлшем бірлігі — ___."
   },
   "correctAnswer": {
    "ru": [
-    "дефект масс"
+    "зиверт (Зв)",
+    "зиверт",
+    "Зв",
+    "зв",
+    "sv",
+    "Sv"
    ],
    "en": [
-    "mass defect"
+    "sievert (Sv)",
+    "sievert",
+    "Sv",
+    "sv"
    ],
    "kk": [
-    "масса ақауы"
+    "зиверт (Зв)",
+    "зиверт",
+    "Зв",
+    "зв",
+    "sv",
+    "Sv"
    ]
   },
   "hint": {
-   "ru": "Название единицы подсказывает, какую величину она измеряет. Это величина из этой темы.",
-   "en": "The unit's name hints at the quantity it measures. It belongs to this topic.",
-   "kk": "Бірліктің атауы қандай шама өлшенетінін көрсетеді. Бұл — осы тақырыптың шамасы."
+   "ru": "Подумай, к какой группе относится величина: теплота, электричество, волны или движение. Единица этой группы и будет ответом.",
+   "en": "Think about the group this quantity belongs to: heat, electricity, waves or motion. The unit of that group is the answer.",
+   "kk": "Шама қай топқа жататынын ойла: жылу, электр, толқын немесе қозғалыс. Сол топтың бірлігі дұрыс жауап."
   },
   "explanation": {
-   "ru": "В атомная единица массы (а.е.м.) измеряется дефект масс.",
-   "en": "The quantity measured in atomic mass unit (u) is mass defect.",
-   "kk": "атомдық масса бірлігі (а.е.м.) бірлігімен масса ақауы өлшенеді."
+   "ru": "Единица СИ для величины «эквивалентная доза» — зиверт (Зв).",
+   "en": "The SI unit of «equivalent dose» is sievert (Sv).",
+   "kk": "«эквивалентті доза» шамасының ХБЖ бірлігі — зиверт (Зв)."
   }
  },
  {
@@ -6586,43 +6813,43 @@ const TASKS_DATABASE_TYPES = [
   "topic": "p35",
   "difficulty": 2,
   "question": {
-   "ru": "Сопоставь физическую величину и её единицу измерения в СИ.",
-   "en": "Match each physical quantity with its SI unit.",
-   "kk": "Физикалық шаманы оның ХБЖ-дағы өлшем бірлігімен сәйкестендір."
+   "ru": "Сопоставь величины из темы «Радиоактивность. Природа радиоактивных излучений» и их единицы измерения в СИ.",
+   "en": "Match the quantities from «Radioactivity. Nature of radioactive emissions» with their SI units.",
+   "kk": "«Радиоактивтік. Радиоактивтік сәулеленудің табиғаты» тақырыбындағы шамаларды олардың ХБЖ бірліктерімен сәйкестендір."
   },
   "pairs": {
    "left": {
     "ru": [
      "активность радиоактивного образца",
      "период полураспада",
-     "работа выхода электрона"
+     "поглощённая доза излучения"
     ],
     "en": [
      "activity of a radioactive sample",
      "half-life",
-     "work function"
+     "absorbed radiation dose"
     ],
     "kk": [
      "радиоактивті үлгінің белсенділігі",
      "жартылай ыдырау периоды",
-     "электронның шығу жұмысы"
+     "сіңірілген сәулелену дозасы"
     ]
    },
    "right": {
     "ru": [
-     "секунда (с)",
+     "грей (Гр)",
      "беккерель (Бк)",
-     "электрон-вольт (эВ)"
+     "секунда (с)"
     ],
     "en": [
-     "second (s)",
+     "gray (Gy)",
      "becquerel (Bq)",
-     "electronvolt (eV)"
+     "second (s)"
     ],
     "kk": [
-     "секунд (с)",
+     "грей (Гр)",
      "беккерель (Бк)",
-     "электрон-вольт (эВ)"
+     "секунд (с)"
     ]
    }
   },
@@ -6633,11 +6860,11 @@ const TASKS_DATABASE_TYPES = [
    ],
    [
     1,
-    0
+    2
    ],
    [
     2,
-    2
+    0
    ]
   ],
   "hint": {
@@ -6646,9 +6873,9 @@ const TASKS_DATABASE_TYPES = [
    "kk": "Алдымен нақты білетін шамалардан баста: мысалы, күш ньютонмен өлшенеді."
   },
   "explanation": {
-   "ru": "Верные пары: активность радиоактивного образца — беккерель (Бк); период полураспада — секунда (с); работа выхода электрона — электрон-вольт (эВ).",
-   "en": "Correct pairs: activity of a radioactive sample — becquerel (Bq); half-life — second (s); work function — electronvolt (eV).",
-   "kk": "Дұрыс жұптар: радиоактивті үлгінің белсенділігі — беккерель (Бк); жартылай ыдырау периоды — секунд (с); электронның шығу жұмысы — электрон-вольт (эВ)."
+   "ru": "Верные пары: активность радиоактивного образца — беккерель (Бк); период полураспада — секунда (с); поглощённая доза излучения — грей (Гр).",
+   "en": "Correct pairs: activity of a radioactive sample — becquerel (Bq); half-life — second (s); absorbed radiation dose — gray (Gy).",
+   "kk": "Дұрыс жұптар: радиоактивті үлгінің белсенділігі — беккерель (Бк); жартылай ыдырау периоды — секунд (с); сіңірілген сәулелену дозасы — грей (Гр)."
   }
  },
  {
@@ -6702,29 +6929,27 @@ const TASKS_DATABASE_TYPES = [
   "topic": "p36",
   "difficulty": 2,
   "question": {
-   "ru": "В каких единицах СИ измеряется величина «энергия фотона»? Запиши единицу.",
-   "en": "Which SI unit is used to measure «photon energy»? Write the unit.",
-   "kk": "«фотон энергиясы» шамасы ХБЖ-да қандай бірлікпен өлшенеді? Бірлікті жаз."
+   "ru": "В каких единицах СИ измеряется величина «эквивалентная доза»? Запиши единицу.",
+   "en": "Which SI unit is used to measure «equivalent dose»? Write the unit.",
+   "kk": "«эквивалентті доза» шамасы ХБЖ-да қандай бірлікпен өлшенеді? Бірлікті жаз."
   },
   "correctAnswer": {
    "ru": [
-    "джоуль",
-    "дж",
-    "j",
-    "J",
-    "Дж"
+    "зиверт",
+    "зв",
+    "sv",
+    "Sv"
    ],
    "en": [
-    "joule",
-    "j",
-    "J"
+    "sievert",
+    "sv",
+    "Sv"
    ],
    "kk": [
-    "джоуль",
-    "дж",
-    "j",
-    "J",
-    "Дж"
+    "зиверт",
+    "зв",
+    "sv",
+    "Sv"
    ]
   },
   "hint": {
@@ -6733,9 +6958,9 @@ const TASKS_DATABASE_TYPES = [
    "kk": "Шама қай топқа жататынын ойла: жылу, электр, толқын немесе қозғалыс. Сол топтың бірлігі дұрыс жауап."
   },
   "explanation": {
-   "ru": "Единица СИ для величины «энергия фотона» — джоуль (Дж).",
-   "en": "The SI unit of «photon energy» is joule (J).",
-   "kk": "«фотон энергиясы» шамасының ХБЖ бірлігі — джоуль (Дж)."
+   "ru": "Единица СИ для величины «эквивалентная доза» — зиверт (Зв).",
+   "en": "The SI unit of «equivalent dose» is sievert (Sv).",
+   "kk": "«эквивалентті доза» шамасының ХБЖ бірлігі — зиверт (Зв)."
   }
  },
  {
@@ -6744,31 +6969,43 @@ const TASKS_DATABASE_TYPES = [
   "topic": "p36",
   "difficulty": 2,
   "question": {
-   "ru": "В единицах «мегаэлектрон-вольт (МэВ)» измеряется величина ___.",
-   "en": "The quantity measured in megaelectronvolt (MeV) is ___.",
-   "kk": "«мегаэлектрон-вольт (МэВ)» бірлігімен өлшенетін шама — ___."
+   "ru": "Назови единицу СИ для величины «энергия связи ядра»: ___.",
+   "en": "Name the SI unit of «nuclear binding energy»: ___.",
+   "kk": "«ядроның байланыс энергиясы» шамасының ХБЖ бірлігін ата: ___."
   },
   "correctAnswer": {
    "ru": [
-    "энергия связи ядра",
-    "энергия связи"
+    "мегаэлектрон-вольт (МэВ)",
+    "мегаэлектрон-вольт",
+    "МэВ",
+    "мэв",
+    "mev",
+    "MeV"
    ],
    "en": [
-    "nuclear binding energy"
+    "megaelectronvolt (MeV)",
+    "megaelectronvolt",
+    "MeV",
+    "mev"
    ],
    "kk": [
-    "ядроның байланыс энергиясы"
+    "мегаэлектрон-вольт (МэВ)",
+    "мегаэлектрон-вольт",
+    "МэВ",
+    "мэв",
+    "mev",
+    "MeV"
    ]
   },
   "hint": {
-   "ru": "Название единицы подсказывает, какую величину она измеряет. Это величина из этой темы.",
-   "en": "The unit's name hints at the quantity it measures. It belongs to this topic.",
-   "kk": "Бірліктің атауы қандай шама өлшенетінін көрсетеді. Бұл — осы тақырыптың шамасы."
+   "ru": "Подумай, к какой группе относится величина: теплота, электричество, волны или движение. Единица этой группы и будет ответом.",
+   "en": "Think about the group this quantity belongs to: heat, electricity, waves or motion. The unit of that group is the answer.",
+   "kk": "Шама қай топқа жататынын ойла: жылу, электр, толқын немесе қозғалыс. Сол топтың бірлігі дұрыс жауап."
   },
   "explanation": {
-   "ru": "В мегаэлектрон-вольт (МэВ) измеряется энергия связи ядра.",
-   "en": "The quantity measured in megaelectronvolt (MeV) is nuclear binding energy.",
-   "kk": "мегаэлектрон-вольт (МэВ) бірлігімен ядроның байланыс энергиясы өлшенеді."
+   "ru": "Единица СИ для величины «энергия связи ядра» — мегаэлектрон-вольт (МэВ).",
+   "en": "The SI unit of «nuclear binding energy» is megaelectronvolt (MeV).",
+   "kk": "«ядроның байланыс энергиясы» шамасының ХБЖ бірлігі — мегаэлектрон-вольт (МэВ)."
   }
  },
  {
@@ -6777,43 +7014,43 @@ const TASKS_DATABASE_TYPES = [
   "topic": "p36",
   "difficulty": 2,
   "question": {
-   "ru": "Сопоставь физическую величину и её единицу измерения в СИ.",
-   "en": "Match each physical quantity with its SI unit.",
-   "kk": "Физикалық шаманы оның ХБЖ-дағы өлшем бірлігімен сәйкестендір."
+   "ru": "Сопоставь величины из темы «Опыт Резерфорда, строение атома» и их единицы измерения в СИ.",
+   "en": "Match the quantities from «Rutherford experiment, atomic structure» with their SI units.",
+   "kk": "«Резерфорд тәжірибесі, атомның құрылысы» тақырыбындағы шамаларды олардың ХБЖ бірліктерімен сәйкестендір."
   },
   "pairs": {
    "left": {
     "ru": [
-     "работа выхода электрона",
-     "период полураспада",
-     "активность радиоактивного образца"
+     "энергия фотона",
+     "эквивалентная доза",
+     "энергия связи ядра"
     ],
     "en": [
-     "work function",
-     "half-life",
-     "activity of a radioactive sample"
+     "photon energy",
+     "equivalent dose",
+     "nuclear binding energy"
     ],
     "kk": [
-     "электронның шығу жұмысы",
-     "жартылай ыдырау периоды",
-     "радиоактивті үлгінің белсенділігі"
+     "фотон энергиясы",
+     "эквивалентті доза",
+     "ядроның байланыс энергиясы"
     ]
    },
    "right": {
     "ru": [
-     "электрон-вольт (эВ)",
-     "секунда (с)",
-     "беккерель (Бк)"
+     "джоуль (Дж)",
+     "зиверт (Зв)",
+     "мегаэлектрон-вольт (МэВ)"
     ],
     "en": [
-     "electronvolt (eV)",
-     "second (s)",
-     "becquerel (Bq)"
+     "joule (J)",
+     "sievert (Sv)",
+     "megaelectronvolt (MeV)"
     ],
     "kk": [
-     "электрон-вольт (эВ)",
-     "секунд (с)",
-     "беккерель (Бк)"
+     "джоуль (Дж)",
+     "зиверт (Зв)",
+     "мегаэлектрон-вольт (МэВ)"
     ]
    }
   },
@@ -6837,9 +7074,9 @@ const TASKS_DATABASE_TYPES = [
    "kk": "Алдымен нақты білетін шамалардан баста: мысалы, күш ньютонмен өлшенеді."
   },
   "explanation": {
-   "ru": "Верные пары: работа выхода электрона — электрон-вольт (эВ); период полураспада — секунда (с); активность радиоактивного образца — беккерель (Бк).",
-   "en": "Correct pairs: work function — electronvolt (eV); half-life — second (s); activity of a radioactive sample — becquerel (Bq).",
-   "kk": "Дұрыс жұптар: электронның шығу жұмысы — электрон-вольт (эВ); жартылай ыдырау периоды — секунд (с); радиоактивті үлгінің белсенділігі — беккерель (Бк)."
+   "ru": "Верные пары: энергия фотона — джоуль (Дж); эквивалентная доза — зиверт (Зв); энергия связи ядра — мегаэлектрон-вольт (МэВ).",
+   "en": "Correct pairs: photon energy — joule (J); equivalent dose — sievert (Sv); nuclear binding energy — megaelectronvolt (MeV).",
+   "kk": "Дұрыс жұптар: фотон энергиясы — джоуль (Дж); эквивалентті доза — зиверт (Зв); ядроның байланыс энергиясы — мегаэлектрон-вольт (МэВ)."
   }
  },
  {
@@ -6893,26 +7130,22 @@ const TASKS_DATABASE_TYPES = [
   "topic": "p37",
   "difficulty": 2,
   "question": {
-   "ru": "В каких единицах СИ измеряется величина «период полураспада»? Запиши единицу.",
-   "en": "Which SI unit is used to measure «half-life»? Write the unit.",
-   "kk": "«жартылай ыдырау периоды» шамасы ХБЖ-да қандай бірлікпен өлшенеді? Бірлікті жаз."
+   "ru": "В каких единицах СИ измеряется величина «угловая скорость»? Запиши единицу.",
+   "en": "Which SI unit is used to measure «angular velocity»? Write the unit.",
+   "kk": "«бұрыштық жылдамдық» шамасы ХБЖ-да қандай бірлікпен өлшенеді? Бірлікті жаз."
   },
   "correctAnswer": {
    "ru": [
-    "секунда",
-    "с",
-    "s",
-    "сек"
+    "рад/с",
+    "rad/s"
    ],
    "en": [
-    "second",
-    "s",
-    "sec"
+    "rad/s",
+    "radian per second"
    ],
    "kk": [
-    "секунд",
-    "с",
-    "s"
+    "рад/с",
+    "rad/s"
    ]
   },
   "hint": {
@@ -6921,9 +7154,9 @@ const TASKS_DATABASE_TYPES = [
    "kk": "Шама қай топқа жататынын ойла: жылу, электр, толқын немесе қозғалыс. Сол топтың бірлігі дұрыс жауап."
   },
   "explanation": {
-   "ru": "Единица СИ для величины «период полураспада» — секунда (с).",
-   "en": "The SI unit of «half-life» is second (s).",
-   "kk": "«жартылай ыдырау периоды» шамасының ХБЖ бірлігі — секунд (с)."
+   "ru": "Единица СИ для величины «угловая скорость» — рад/с.",
+   "en": "The SI unit of «angular velocity» is rad/s.",
+   "kk": "«бұрыштық жылдамдық» шамасының ХБЖ бірлігі — рад/с."
   }
  },
  {
@@ -6932,19 +7165,19 @@ const TASKS_DATABASE_TYPES = [
   "topic": "p37",
   "difficulty": 2,
   "question": {
-   "ru": "В единицах «зиверт (Зв)» измеряется величина ___.",
-   "en": "The quantity measured in sievert (Sv) is ___.",
-   "kk": "«зиверт (Зв)» бірлігімен өлшенетін шама — ___."
+   "ru": "Единица «беккерель (Бк)» соответствует величине ___.",
+   "en": "The unit becquerel (Bq) corresponds to the quantity ___.",
+   "kk": "«беккерель (Бк)» бірлігі ___ шамасына сәйкес келеді."
   },
   "correctAnswer": {
    "ru": [
-    "эквивалентная доза"
+    "активность радиоактивного образца"
    ],
    "en": [
-    "equivalent dose"
+    "activity of a radioactive sample"
    ],
    "kk": [
-    "эквивалентті доза"
+    "радиоактивті үлгінің белсенділігі"
    ]
   },
   "hint": {
@@ -6953,9 +7186,9 @@ const TASKS_DATABASE_TYPES = [
    "kk": "Бірліктің атауы қандай шама өлшенетінін көрсетеді. Бұл — осы тақырыптың шамасы."
   },
   "explanation": {
-   "ru": "В зиверт (Зв) измеряется эквивалентная доза.",
-   "en": "The quantity measured in sievert (Sv) is equivalent dose.",
-   "kk": "зиверт (Зв) бірлігімен эквивалентті доза өлшенеді."
+   "ru": "В беккерель (Бк) измеряется активность радиоактивного образца.",
+   "en": "The quantity measured in becquerel (Bq) is activity of a radioactive sample.",
+   "kk": "беккерель (Бк) бірлігімен радиоактивті үлгінің белсенділігі өлшенеді."
   }
  },
  {
@@ -6964,50 +7197,50 @@ const TASKS_DATABASE_TYPES = [
   "topic": "p37",
   "difficulty": 2,
   "question": {
-   "ru": "Сопоставь физическую величину и её единицу измерения в СИ.",
-   "en": "Match each physical quantity with its SI unit.",
-   "kk": "Физикалық шаманы оның ХБЖ-дағы өлшем бірлігімен сәйкестендір."
+   "ru": "Сопоставь величины из темы «Ядерное взаимодействие. Дефект масс, энергия связи» и их единицы измерения в СИ.",
+   "en": "Match the quantities from «Nuclear interaction. Mass defect, binding energy» with their SI units.",
+   "kk": "«Ядролық өзара әрекеттесу. Масса ақауы, байланыс энергиясы» тақырыбындағы шамаларды олардың ХБЖ бірліктерімен сәйкестендір."
   },
   "pairs": {
    "left": {
     "ru": [
      "энергия связи ядра",
      "дефект масс",
-     "эквивалентная доза"
+     "активность радиоактивного образца"
     ],
     "en": [
      "nuclear binding energy",
      "mass defect",
-     "equivalent dose"
+     "activity of a radioactive sample"
     ],
     "kk": [
      "ядроның байланыс энергиясы",
      "масса ақауы",
-     "эквивалентті доза"
+     "радиоактивті үлгінің белсенділігі"
     ]
    },
    "right": {
     "ru": [
      "атомная единица массы (а.е.м.)",
-     "мегаэлектрон-вольт (МэВ)",
-     "зиверт (Зв)"
+     "беккерель (Бк)",
+     "мегаэлектрон-вольт (МэВ)"
     ],
     "en": [
      "atomic mass unit (u)",
-     "megaelectronvolt (MeV)",
-     "sievert (Sv)"
+     "becquerel (Bq)",
+     "megaelectronvolt (MeV)"
     ],
     "kk": [
      "атомдық масса бірлігі (а.е.м.)",
-     "мегаэлектрон-вольт (МэВ)",
-     "зиверт (Зв)"
+     "беккерель (Бк)",
+     "мегаэлектрон-вольт (МэВ)"
     ]
    }
   },
   "correctPairs": [
    [
     0,
-    1
+    2
    ],
    [
     1,
@@ -7015,7 +7248,7 @@ const TASKS_DATABASE_TYPES = [
    ],
    [
     2,
-    2
+    1
    ]
   ],
   "hint": {
@@ -7024,9 +7257,9 @@ const TASKS_DATABASE_TYPES = [
    "kk": "Алдымен нақты білетін шамалардан баста: мысалы, күш ньютонмен өлшенеді."
   },
   "explanation": {
-   "ru": "Верные пары: энергия связи ядра — мегаэлектрон-вольт (МэВ); дефект масс — атомная единица массы (а.е.м.); эквивалентная доза — зиверт (Зв).",
-   "en": "Correct pairs: nuclear binding energy — megaelectronvolt (MeV); mass defect — atomic mass unit (u); equivalent dose — sievert (Sv).",
-   "kk": "Дұрыс жұптар: ядроның байланыс энергиясы — мегаэлектрон-вольт (МэВ); масса ақауы — атомдық масса бірлігі (а.е.м.); эквивалентті доза — зиверт (Зв)."
+   "ru": "Верные пары: энергия связи ядра — мегаэлектрон-вольт (МэВ); дефект масс — атомная единица массы (а.е.м.); активность радиоактивного образца — беккерель (Бк).",
+   "en": "Correct pairs: nuclear binding energy — megaelectronvolt (MeV); mass defect — atomic mass unit (u); activity of a radioactive sample — becquerel (Bq).",
+   "kk": "Дұрыс жұптар: ядроның байланыс энергиясы — мегаэлектрон-вольт (МэВ); масса ақауы — атомдық масса бірлігі (а.е.м.); радиоактивті үлгінің белсенділігі — беккерель (Бк)."
   }
  },
  {
@@ -7080,24 +7313,29 @@ const TASKS_DATABASE_TYPES = [
   "topic": "p38",
   "difficulty": 2,
   "question": {
-   "ru": "В каких единицах СИ измеряется величина «энергия связи ядра»? Запиши единицу.",
-   "en": "Which SI unit is used to measure «nuclear binding energy»? Write the unit.",
-   "kk": "«ядроның байланыс энергиясы» шамасы ХБЖ-да қандай бірлікпен өлшенеді? Бірлікті жаз."
+   "ru": "В каких единицах СИ измеряется величина «частота обращения»? Запиши единицу.",
+   "en": "Which SI unit is used to measure «frequency of revolution»? Write the unit.",
+   "kk": "«айналу жиілігі» шамасы ХБЖ-да қандай бірлікпен өлшенеді? Бірлікті жаз."
   },
   "correctAnswer": {
    "ru": [
-    "мэв",
-    "mev",
-    "MeV"
+    "герц",
+    "гц",
+    "hz",
+    "Hz",
+    "Гц"
    ],
    "en": [
-    "mev",
-    "MeV"
+    "hertz",
+    "hz",
+    "Hz"
    ],
    "kk": [
-    "мэв",
-    "mev",
-    "MeV"
+    "герц",
+    "гц",
+    "hz",
+    "Hz",
+    "Гц"
    ]
   },
   "hint": {
@@ -7106,9 +7344,9 @@ const TASKS_DATABASE_TYPES = [
    "kk": "Шама қай топқа жататынын ойла: жылу, электр, толқын немесе қозғалыс. Сол топтың бірлігі дұрыс жауап."
   },
   "explanation": {
-   "ru": "Единица СИ для величины «энергия связи ядра» — мегаэлектрон-вольт (МэВ).",
-   "en": "The SI unit of «nuclear binding energy» is megaelectronvolt (MeV).",
-   "kk": "«ядроның байланыс энергиясы» шамасының ХБЖ бірлігі — мегаэлектрон-вольт (МэВ)."
+   "ru": "Единица СИ для величины «частота обращения» — герц (Гц).",
+   "en": "The SI unit of «frequency of revolution» is hertz (Hz).",
+   "kk": "«айналу жиілігі» шамасының ХБЖ бірлігі — герц (Гц)."
   }
  },
  {
@@ -7117,20 +7355,19 @@ const TASKS_DATABASE_TYPES = [
   "topic": "p38",
   "difficulty": 2,
   "question": {
-   "ru": "В единицах «электрон-вольт (эВ)» измеряется величина ___.",
-   "en": "The quantity measured in electronvolt (eV) is ___.",
-   "kk": "«электрон-вольт (эВ)» бірлігімен өлшенетін шама — ___."
+   "ru": "В единицах «атомная единица массы (а.е.м.)» измеряется величина ___.",
+   "en": "The quantity measured in atomic mass unit (u) is ___.",
+   "kk": "«атомдық масса бірлігі (а.е.м.)» бірлігімен өлшенетін шама — ___."
   },
   "correctAnswer": {
    "ru": [
-    "работа выхода электрона",
-    "работа выхода"
+    "дефект масс"
    ],
    "en": [
-    "work function"
+    "mass defect"
    ],
    "kk": [
-    "электронның шығу жұмысы"
+    "масса ақауы"
    ]
   },
   "hint": {
@@ -7139,9 +7376,9 @@ const TASKS_DATABASE_TYPES = [
    "kk": "Бірліктің атауы қандай шама өлшенетінін көрсетеді. Бұл — осы тақырыптың шамасы."
   },
   "explanation": {
-   "ru": "В электрон-вольт (эВ) измеряется работа выхода электрона.",
-   "en": "The quantity measured in electronvolt (eV) is work function.",
-   "kk": "электрон-вольт (эВ) бірлігімен электронның шығу жұмысы өлшенеді."
+   "ru": "В атомная единица массы (а.е.м.) измеряется дефект масс.",
+   "en": "The quantity measured in atomic mass unit (u) is mass defect.",
+   "kk": "атомдық масса бірлігі (а.е.м.) бірлігімен масса ақауы өлшенеді."
   }
  },
  {
@@ -7150,9 +7387,9 @@ const TASKS_DATABASE_TYPES = [
   "topic": "p38",
   "difficulty": 2,
   "question": {
-   "ru": "Сопоставь физическую величину и её единицу измерения в СИ.",
-   "en": "Match each physical quantity with its SI unit.",
-   "kk": "Физикалық шаманы оның ХБЖ-дағы өлшем бірлігімен сәйкестендір."
+   "ru": "Сопоставь величины из темы «Ядерные реакции, закон радиоактивного распада» и их единицы измерения в СИ.",
+   "en": "Match the quantities from «Nuclear reactions, law of radioactive decay» with their SI units.",
+   "kk": "«Ядролық реакциялар, радиоактивтік ыдырап кету заңы» тақырыбындағы шамаларды олардың ХБЖ бірліктерімен сәйкестендір."
   },
   "pairs": {
    "left": {
@@ -7266,27 +7503,29 @@ const TASKS_DATABASE_TYPES = [
   "topic": "p39",
   "difficulty": 2,
   "question": {
-   "ru": "В каких единицах СИ измеряется величина «работа выхода электрона»? Запиши единицу.",
-   "en": "Which SI unit is used to measure «work function»? Write the unit.",
-   "kk": "«электронның шығу жұмысы» шамасы ХБЖ-да қандай бірлікпен өлшенеді? Бірлікті жаз."
+   "ru": "В каких единицах СИ измеряется величина «мощность»? Запиши единицу.",
+   "en": "Which SI unit is used to measure «power»? Write the unit.",
+   "kk": "«қуат» шамасы ХБЖ-да қандай бірлікпен өлшенеді? Бірлікті жаз."
   },
   "correctAnswer": {
    "ru": [
-    "эв",
-    "электрон-вольт",
-    "ev",
-    "eV"
+    "ватт",
+    "вт",
+    "w",
+    "W",
+    "Вт"
    ],
    "en": [
-    "ev",
-    "eV",
-    "electronvolt"
+    "watt",
+    "w",
+    "W"
    ],
    "kk": [
-    "эв",
-    "электрон-вольт",
-    "ev",
-    "eV"
+    "ватт",
+    "вт",
+    "w",
+    "W",
+    "Вт"
    ]
   },
   "hint": {
@@ -7295,9 +7534,9 @@ const TASKS_DATABASE_TYPES = [
    "kk": "Шама қай топқа жататынын ойла: жылу, электр, толқын немесе қозғалыс. Сол топтың бірлігі дұрыс жауап."
   },
   "explanation": {
-   "ru": "Единица СИ для величины «работа выхода электрона» — электрон-вольт (эВ).",
-   "en": "The SI unit of «work function» is electronvolt (eV).",
-   "kk": "«электронның шығу жұмысы» шамасының ХБЖ бірлігі — электрон-вольт (эВ)."
+   "ru": "Единица СИ для величины «мощность» — ватт (Вт).",
+   "en": "The SI unit of «power» is watt (W).",
+   "kk": "«қуат» шамасының ХБЖ бірлігі — ватт (Вт)."
   }
  },
  {
@@ -7306,31 +7545,43 @@ const TASKS_DATABASE_TYPES = [
   "topic": "p39",
   "difficulty": 2,
   "question": {
-   "ru": "В единицах «грей (Гр)» измеряется величина ___.",
-   "en": "The quantity measured in gray (Gy) is ___.",
-   "kk": "«грей (Гр)» бірлігімен өлшенетін шама — ___."
+   "ru": "Назови единицу СИ для величины «эквивалентная доза»: ___.",
+   "en": "Name the SI unit of «equivalent dose»: ___.",
+   "kk": "«эквивалентті доза» шамасының ХБЖ бірлігін ата: ___."
   },
   "correctAnswer": {
    "ru": [
-    "поглощённая доза излучения",
-    "поглощённая доза"
+    "зиверт (Зв)",
+    "зиверт",
+    "Зв",
+    "зв",
+    "sv",
+    "Sv"
    ],
    "en": [
-    "absorbed radiation dose"
+    "sievert (Sv)",
+    "sievert",
+    "Sv",
+    "sv"
    ],
    "kk": [
-    "сіңірілген сәулелену дозасы"
+    "зиверт (Зв)",
+    "зиверт",
+    "Зв",
+    "зв",
+    "sv",
+    "Sv"
    ]
   },
   "hint": {
-   "ru": "Название единицы подсказывает, какую величину она измеряет. Это величина из этой темы.",
-   "en": "The unit's name hints at the quantity it measures. It belongs to this topic.",
-   "kk": "Бірліктің атауы қандай шама өлшенетінін көрсетеді. Бұл — осы тақырыптың шамасы."
+   "ru": "Подумай, к какой группе относится величина: теплота, электричество, волны или движение. Единица этой группы и будет ответом.",
+   "en": "Think about the group this quantity belongs to: heat, electricity, waves or motion. The unit of that group is the answer.",
+   "kk": "Шама қай топқа жататынын ойла: жылу, электр, толқын немесе қозғалыс. Сол топтың бірлігі дұрыс жауап."
   },
   "explanation": {
-   "ru": "В грей (Гр) измеряется поглощённая доза излучения.",
-   "en": "The quantity measured in gray (Gy) is absorbed radiation dose.",
-   "kk": "грей (Гр) бірлігімен сіңірілген сәулелену дозасы өлшенеді."
+   "ru": "Единица СИ для величины «эквивалентная доза» — зиверт (Зв).",
+   "en": "The SI unit of «equivalent dose» is sievert (Sv).",
+   "kk": "«эквивалентті доза» шамасының ХБЖ бірлігі — зиверт (Зв)."
   }
  },
  {
@@ -7339,42 +7590,42 @@ const TASKS_DATABASE_TYPES = [
   "topic": "p39",
   "difficulty": 2,
   "question": {
-   "ru": "Сопоставь физическую величину и её единицу измерения в СИ.",
-   "en": "Match each physical quantity with its SI unit.",
-   "kk": "Физикалық шаманы оның ХБЖ-дағы өлшем бірлігімен сәйкестендір."
+   "ru": "Сопоставь величины из темы «Деление тяжёлых ядер, цепная реакция. Ядерный реактор» и их единицы измерения в СИ.",
+   "en": "Match the quantities from «Fission of heavy nuclei, chain reaction. Nuclear reactor» with their SI units.",
+   "kk": "«Ауыр ядролардың бөлінуі, тізбекті реакция. Ядролық реактор» тақырыбындағы шамаларды олардың ХБЖ бірліктерімен сәйкестендір."
   },
   "pairs": {
    "left": {
     "ru": [
      "энергия связи ядра",
-     "период полураспада",
-     "эквивалентная доза"
+     "эквивалентная доза",
+     "работа выхода электрона"
     ],
     "en": [
      "nuclear binding energy",
-     "half-life",
-     "equivalent dose"
+     "equivalent dose",
+     "work function"
     ],
     "kk": [
      "ядроның байланыс энергиясы",
-     "жартылай ыдырау периоды",
-     "эквивалентті доза"
+     "эквивалентті доза",
+     "электронның шығу жұмысы"
     ]
    },
    "right": {
     "ru": [
      "зиверт (Зв)",
-     "секунда (с)",
+     "электрон-вольт (эВ)",
      "мегаэлектрон-вольт (МэВ)"
     ],
     "en": [
      "sievert (Sv)",
-     "second (s)",
+     "electronvolt (eV)",
      "megaelectronvolt (MeV)"
     ],
     "kk": [
      "зиверт (Зв)",
-     "секунд (с)",
+     "электрон-вольт (эВ)",
      "мегаэлектрон-вольт (МэВ)"
     ]
    }
@@ -7386,11 +7637,11 @@ const TASKS_DATABASE_TYPES = [
    ],
    [
     1,
-    1
+    0
    ],
    [
     2,
-    0
+    1
    ]
   ],
   "hint": {
@@ -7399,9 +7650,9 @@ const TASKS_DATABASE_TYPES = [
    "kk": "Алдымен нақты білетін шамалардан баста: мысалы, күш ньютонмен өлшенеді."
   },
   "explanation": {
-   "ru": "Верные пары: энергия связи ядра — мегаэлектрон-вольт (МэВ); период полураспада — секунда (с); эквивалентная доза — зиверт (Зв).",
-   "en": "Correct pairs: nuclear binding energy — megaelectronvolt (MeV); half-life — second (s); equivalent dose — sievert (Sv).",
-   "kk": "Дұрыс жұптар: ядроның байланыс энергиясы — мегаэлектрон-вольт (МэВ); жартылай ыдырау периоды — секунд (с); эквивалентті доза — зиверт (Зв)."
+   "ru": "Верные пары: энергия связи ядра — мегаэлектрон-вольт (МэВ); эквивалентная доза — зиверт (Зв); работа выхода электрона — электрон-вольт (эВ).",
+   "en": "Correct pairs: nuclear binding energy — megaelectronvolt (MeV); equivalent dose — sievert (Sv); work function — electronvolt (eV).",
+   "kk": "Дұрыс жұптар: ядроның байланыс энергиясы — мегаэлектрон-вольт (МэВ); эквивалентті доза — зиверт (Зв); электронның шығу жұмысы — электрон-вольт (эВ)."
   }
  },
  {
@@ -7455,27 +7706,26 @@ const TASKS_DATABASE_TYPES = [
   "topic": "p40",
   "difficulty": 2,
   "question": {
-   "ru": "В каких единицах СИ измеряется величина «поглощённая доза излучения»? Запиши единицу.",
-   "en": "Which SI unit is used to measure «absorbed radiation dose»? Write the unit.",
-   "kk": "«сіңірілген сәулелену дозасы» шамасы ХБЖ-да қандай бірлікпен өлшенеді? Бірлікті жаз."
+   "ru": "В каких единицах СИ измеряется величина «высота подъёма тела»? Запиши единицу.",
+   "en": "Which SI unit is used to measure «height of a body above the ground»? Write the unit.",
+   "kk": "«дененің көтерілу биіктігі» шамасы ХБЖ-да қандай бірлікпен өлшенеді? Бірлікті жаз."
   },
   "correctAnswer": {
    "ru": [
-    "грей",
-    "гр",
-    "gy",
-    "Gy"
+    "метр",
+    "м",
+    "m",
+    "M"
    ],
    "en": [
-    "gray",
-    "gy",
-    "Gy"
+    "metre",
+    "meter",
+    "m"
    ],
    "kk": [
-    "грей",
-    "гр",
-    "gy",
-    "Gy"
+    "метр",
+    "м",
+    "m"
    ]
   },
   "hint": {
@@ -7484,9 +7734,9 @@ const TASKS_DATABASE_TYPES = [
    "kk": "Шама қай топқа жататынын ойла: жылу, электр, толқын немесе қозғалыс. Сол топтың бірлігі дұрыс жауап."
   },
   "explanation": {
-   "ru": "Единица СИ для величины «поглощённая доза излучения» — грей (Гр).",
-   "en": "The SI unit of «absorbed radiation dose» is gray (Gy).",
-   "kk": "«сіңірілген сәулелену дозасы» шамасының ХБЖ бірлігі — грей (Гр)."
+   "ru": "Единица СИ для величины «высота подъёма тела» — метр (м).",
+   "en": "The SI unit of «height of a body above the ground» is metre (m).",
+   "kk": "«дененің көтерілу биіктігі» шамасының ХБЖ бірлігі — метр (м)."
   }
  },
  {
@@ -7495,30 +7745,39 @@ const TASKS_DATABASE_TYPES = [
   "topic": "p40",
   "difficulty": 2,
   "question": {
-   "ru": "В единицах «беккерель (Бк)» измеряется величина ___.",
-   "en": "The quantity measured in becquerel (Bq) is ___.",
-   "kk": "«беккерель (Бк)» бірлігімен өлшенетін шама — ___."
+   "ru": "Назови единицу СИ для величины «дефект масс»: ___.",
+   "en": "Name the SI unit of «mass defect»: ___.",
+   "kk": "«масса ақауы» шамасының ХБЖ бірлігін ата: ___."
   },
   "correctAnswer": {
    "ru": [
-    "активность радиоактивного образца"
+    "атомная единица массы (а.е.м.)",
+    "атомная единица массы",
+    "а.е.м.",
+    "аем"
    ],
    "en": [
-    "activity of a radioactive sample"
+    "atomic mass unit (u)",
+    "atomic mass unit",
+    "u",
+    "amu"
    ],
    "kk": [
-    "радиоактивті үлгінің белсенділігі"
+    "атомдық масса бірлігі (а.е.м.)",
+    "атомдық масса бірлігі",
+    "а.е.м.",
+    "аем"
    ]
   },
   "hint": {
-   "ru": "Название единицы подсказывает, какую величину она измеряет. Это величина из этой темы.",
-   "en": "The unit's name hints at the quantity it measures. It belongs to this topic.",
-   "kk": "Бірліктің атауы қандай шама өлшенетінін көрсетеді. Бұл — осы тақырыптың шамасы."
+   "ru": "Подумай, к какой группе относится величина: теплота, электричество, волны или движение. Единица этой группы и будет ответом.",
+   "en": "Think about the group this quantity belongs to: heat, electricity, waves or motion. The unit of that group is the answer.",
+   "kk": "Шама қай топқа жататынын ойла: жылу, электр, толқын немесе қозғалыс. Сол топтың бірлігі дұрыс жауап."
   },
   "explanation": {
-   "ru": "В беккерель (Бк) измеряется активность радиоактивного образца.",
-   "en": "The quantity measured in becquerel (Bq) is activity of a radioactive sample.",
-   "kk": "беккерель (Бк) бірлігімен радиоактивті үлгінің белсенділігі өлшенеді."
+   "ru": "Единица СИ для величины «дефект масс» — атомная единица массы (а.е.м.).",
+   "en": "The SI unit of «mass defect» is atomic mass unit (u).",
+   "kk": "«масса ақауы» шамасының ХБЖ бірлігі — атомдық масса бірлігі (а.е.м.)."
   }
  },
  {
@@ -7527,54 +7786,54 @@ const TASKS_DATABASE_TYPES = [
   "topic": "p40",
   "difficulty": 2,
   "question": {
-   "ru": "Сопоставь физическую величину и её единицу измерения в СИ.",
-   "en": "Match each physical quantity with its SI unit.",
-   "kk": "Физикалық шаманы оның ХБЖ-дағы өлшем бірлігімен сәйкестендір."
+   "ru": "Сопоставь величины из темы «Термоядерные реакции. Радиоизотопы, защита от радиации» и их единицы измерения в СИ.",
+   "en": "Match the quantities from «Thermonuclear reactions. Radioisotopes, radiation protection» with their SI units.",
+   "kk": "«Термоядролық реакциялар. Радиоизотоптар, радиациядан қорғау» тақырыбындағы шамаларды олардың ХБЖ бірліктерімен сәйкестендір."
   },
   "pairs": {
    "left": {
     "ru": [
-     "энергия связи ядра",
      "поглощённая доза излучения",
-     "эквивалентная доза"
+     "эквивалентная доза",
+     "энергия связи ядра"
     ],
     "en": [
-     "nuclear binding energy",
      "absorbed radiation dose",
-     "equivalent dose"
+     "equivalent dose",
+     "nuclear binding energy"
     ],
     "kk": [
-     "ядроның байланыс энергиясы",
      "сіңірілген сәулелену дозасы",
-     "эквивалентті доза"
+     "эквивалентті доза",
+     "ядроның байланыс энергиясы"
     ]
    },
    "right": {
     "ru": [
      "грей (Гр)",
-     "мегаэлектрон-вольт (МэВ)",
-     "зиверт (Зв)"
+     "зиверт (Зв)",
+     "мегаэлектрон-вольт (МэВ)"
     ],
     "en": [
      "gray (Gy)",
-     "megaelectronvolt (MeV)",
-     "sievert (Sv)"
+     "sievert (Sv)",
+     "megaelectronvolt (MeV)"
     ],
     "kk": [
      "грей (Гр)",
-     "мегаэлектрон-вольт (МэВ)",
-     "зиверт (Зв)"
+     "зиверт (Зв)",
+     "мегаэлектрон-вольт (МэВ)"
     ]
    }
   },
   "correctPairs": [
    [
     0,
-    1
+    0
    ],
    [
     1,
-    0
+    1
    ],
    [
     2,
@@ -7587,9 +7846,9 @@ const TASKS_DATABASE_TYPES = [
    "kk": "Алдымен нақты білетін шамалардан баста: мысалы, күш ньютонмен өлшенеді."
   },
   "explanation": {
-   "ru": "Верные пары: энергия связи ядра — мегаэлектрон-вольт (МэВ); поглощённая доза излучения — грей (Гр); эквивалентная доза — зиверт (Зв).",
-   "en": "Correct pairs: nuclear binding energy — megaelectronvolt (MeV); absorbed radiation dose — gray (Gy); equivalent dose — sievert (Sv).",
-   "kk": "Дұрыс жұптар: ядроның байланыс энергиясы — мегаэлектрон-вольт (МэВ); сіңірілген сәулелену дозасы — грей (Гр); эквивалентті доза — зиверт (Зв)."
+   "ru": "Верные пары: поглощённая доза излучения — грей (Гр); эквивалентная доза — зиверт (Зв); энергия связи ядра — мегаэлектрон-вольт (МэВ).",
+   "en": "Correct pairs: absorbed radiation dose — gray (Gy); equivalent dose — sievert (Sv); nuclear binding energy — megaelectronvolt (MeV).",
+   "kk": "Дұрыс жұптар: сіңірілген сәулелену дозасы — грей (Гр); эквивалентті доза — зиверт (Зв); ядроның байланыс энергиясы — мегаэлектрон-вольт (МэВ)."
   }
  },
  {
@@ -7643,27 +7902,26 @@ const TASKS_DATABASE_TYPES = [
   "topic": "p41",
   "difficulty": 2,
   "question": {
-   "ru": "В каких единицах СИ измеряется величина «работа выхода электрона»? Запиши единицу.",
-   "en": "Which SI unit is used to measure «work function»? Write the unit.",
-   "kk": "«электронның шығу жұмысы» шамасы ХБЖ-да қандай бірлікпен өлшенеді? Бірлікті жаз."
+   "ru": "Назови единицу измерения величины «расстояние до небесного тела» в СИ.",
+   "en": "Name the SI unit of «distance to a celestial body».",
+   "kk": "«аспан денесіне дейінгі қашықтық» шамасының ХБЖ-дағы өлшем бірлігін ата."
   },
   "correctAnswer": {
    "ru": [
-    "эв",
-    "электрон-вольт",
-    "ev",
-    "eV"
+    "метр",
+    "м",
+    "m",
+    "M"
    ],
    "en": [
-    "ev",
-    "eV",
-    "electronvolt"
+    "metre",
+    "meter",
+    "m"
    ],
    "kk": [
-    "эв",
-    "электрон-вольт",
-    "ev",
-    "eV"
+    "метр",
+    "м",
+    "m"
    ]
   },
   "hint": {
@@ -7672,9 +7930,9 @@ const TASKS_DATABASE_TYPES = [
    "kk": "Шама қай топқа жататынын ойла: жылу, электр, толқын немесе қозғалыс. Сол топтың бірлігі дұрыс жауап."
   },
   "explanation": {
-   "ru": "Единица СИ для величины «работа выхода электрона» — электрон-вольт (эВ).",
-   "en": "The SI unit of «work function» is electronvolt (eV).",
-   "kk": "«электронның шығу жұмысы» шамасының ХБЖ бірлігі — электрон-вольт (эВ)."
+   "ru": "Единица СИ для величины «расстояние до небесного тела» — метр (м).",
+   "en": "The SI unit of «distance to a celestial body» is metre (m).",
+   "kk": "«аспан денесіне дейінгі қашықтық» шамасының ХБЖ бірлігі — метр (м)."
   }
  },
  {
@@ -7683,9 +7941,9 @@ const TASKS_DATABASE_TYPES = [
   "topic": "p41",
   "difficulty": 2,
   "question": {
-   "ru": "В единицах «атомная единица массы (а.е.м.)» измеряется величина ___.",
-   "en": "The quantity measured in atomic mass unit (u) is ___.",
-   "kk": "«атомдық масса бірлігі (а.е.м.)» бірлігімен өлшенетін шама — ___."
+   "ru": "Какую величину измеряют в «атомная единица массы (а.е.м.)»? Запиши название величины.",
+   "en": "Which quantity is measured in atomic mass unit (u)? Write its name.",
+   "kk": "«атомдық масса бірлігі (а.е.м.)» бірлігімен қандай шама өлшенеді? Шаманың атауын жаз."
   },
   "correctAnswer": {
    "ru": [
@@ -7715,43 +7973,43 @@ const TASKS_DATABASE_TYPES = [
   "topic": "p41",
   "difficulty": 2,
   "question": {
-   "ru": "Сопоставь физическую величину и её единицу измерения в СИ.",
-   "en": "Match each physical quantity with its SI unit.",
-   "kk": "Физикалық шаманы оның ХБЖ-дағы өлшем бірлігімен сәйкестендір."
+   "ru": "Сопоставь величины из темы «Элементарные частицы» и их единицы измерения в СИ.",
+   "en": "Match the quantities from «Elementary particles» with their SI units.",
+   "kk": "«Элементарлық бөлшектер» тақырыбындағы шамаларды олардың ХБЖ бірліктерімен сәйкестендір."
   },
   "pairs": {
    "left": {
     "ru": [
+     "дефект масс",
      "энергия фотона",
-     "работа выхода электрона",
-     "дефект масс"
+     "период полураспада"
     ],
     "en": [
+     "mass defect",
      "photon energy",
-     "work function",
-     "mass defect"
+     "half-life"
     ],
     "kk": [
+     "масса ақауы",
      "фотон энергиясы",
-     "электронның шығу жұмысы",
-     "масса ақауы"
+     "жартылай ыдырау периоды"
     ]
    },
    "right": {
     "ru": [
+     "секунда (с)",
      "атомная единица массы (а.е.м.)",
-     "джоуль (Дж)",
-     "электрон-вольт (эВ)"
+     "джоуль (Дж)"
     ],
     "en": [
+     "second (s)",
      "atomic mass unit (u)",
-     "joule (J)",
-     "electronvolt (eV)"
+     "joule (J)"
     ],
     "kk": [
+     "секунд (с)",
      "атомдық масса бірлігі (а.е.м.)",
-     "джоуль (Дж)",
-     "электрон-вольт (эВ)"
+     "джоуль (Дж)"
     ]
    }
   },
@@ -7775,9 +8033,9 @@ const TASKS_DATABASE_TYPES = [
    "kk": "Алдымен нақты білетін шамалардан баста: мысалы, күш ньютонмен өлшенеді."
   },
   "explanation": {
-   "ru": "Верные пары: энергия фотона — джоуль (Дж); работа выхода электрона — электрон-вольт (эВ); дефект масс — атомная единица массы (а.е.м.).",
-   "en": "Correct pairs: photon energy — joule (J); work function — electronvolt (eV); mass defect — atomic mass unit (u).",
-   "kk": "Дұрыс жұптар: фотон энергиясы — джоуль (Дж); электронның шығу жұмысы — электрон-вольт (эВ); масса ақауы — атомдық масса бірлігі (а.е.м.)."
+   "ru": "Верные пары: дефект масс — атомная единица массы (а.е.м.); энергия фотона — джоуль (Дж); период полураспада — секунда (с).",
+   "en": "Correct pairs: mass defect — atomic mass unit (u); photon energy — joule (J); half-life — second (s).",
+   "kk": "Дұрыс жұптар: масса ақауы — атомдық масса бірлігі (а.е.м.); фотон энергиясы — джоуль (Дж); жартылай ыдырау периоды — секунд (с)."
   }
  },
  {
@@ -7831,9 +8089,9 @@ const TASKS_DATABASE_TYPES = [
   "topic": "p42",
   "difficulty": 2,
   "question": {
-   "ru": "В каких единицах СИ измеряется величина «период полураспада»? Запиши единицу.",
-   "en": "Which SI unit is used to measure «half-life»? Write the unit.",
-   "kk": "«жартылай ыдырау периоды» шамасы ХБЖ-да қандай бірлікпен өлшенеді? Бірлікті жаз."
+   "ru": "Назови единицу измерения величины «период колебаний» в СИ.",
+   "en": "Name the SI unit of «period of oscillation».",
+   "kk": "«тербеліс периоды» шамасының ХБЖ-дағы өлшем бірлігін ата."
   },
   "correctAnswer": {
    "ru": [
@@ -7859,9 +8117,9 @@ const TASKS_DATABASE_TYPES = [
    "kk": "Шама қай топқа жататынын ойла: жылу, электр, толқын немесе қозғалыс. Сол топтың бірлігі дұрыс жауап."
   },
   "explanation": {
-   "ru": "Единица СИ для величины «период полураспада» — секунда (с).",
-   "en": "The SI unit of «half-life» is second (s).",
-   "kk": "«жартылай ыдырау периоды» шамасының ХБЖ бірлігі — секунд (с)."
+   "ru": "Единица СИ для величины «период колебаний» — секунда (с).",
+   "en": "The SI unit of «period of oscillation» is second (s).",
+   "kk": "«тербеліс периоды» шамасының ХБЖ бірлігі — секунд (с)."
   }
  },
  {
@@ -7870,20 +8128,19 @@ const TASKS_DATABASE_TYPES = [
   "topic": "p42",
   "difficulty": 2,
   "question": {
-   "ru": "В единицах «мегаэлектрон-вольт (МэВ)» измеряется величина ___.",
-   "en": "The quantity measured in megaelectronvolt (MeV) is ___.",
-   "kk": "«мегаэлектрон-вольт (МэВ)» бірлігімен өлшенетін шама — ___."
+   "ru": "В единицах «беккерель (Бк)» измеряется величина ___.",
+   "en": "The quantity measured in becquerel (Bq) is ___.",
+   "kk": "«беккерель (Бк)» бірлігімен өлшенетін шама — ___."
   },
   "correctAnswer": {
    "ru": [
-    "энергия связи ядра",
-    "энергия связи"
+    "активность радиоактивного образца"
    ],
    "en": [
-    "nuclear binding energy"
+    "activity of a radioactive sample"
    ],
    "kk": [
-    "ядроның байланыс энергиясы"
+    "радиоактивті үлгінің белсенділігі"
    ]
   },
   "hint": {
@@ -7892,9 +8149,9 @@ const TASKS_DATABASE_TYPES = [
    "kk": "Бірліктің атауы қандай шама өлшенетінін көрсетеді. Бұл — осы тақырыптың шамасы."
   },
   "explanation": {
-   "ru": "В мегаэлектрон-вольт (МэВ) измеряется энергия связи ядра.",
-   "en": "The quantity measured in megaelectronvolt (MeV) is nuclear binding energy.",
-   "kk": "мегаэлектрон-вольт (МэВ) бірлігімен ядроның байланыс энергиясы өлшенеді."
+   "ru": "В беккерель (Бк) измеряется активность радиоактивного образца.",
+   "en": "The quantity measured in becquerel (Bq) is activity of a radioactive sample.",
+   "kk": "беккерель (Бк) бірлігімен радиоактивті үлгінің белсенділігі өлшенеді."
   }
  },
  {
@@ -7926,54 +8183,54 @@ const TASKS_DATABASE_TYPES = [
   "topic": "p42",
   "difficulty": 2,
   "question": {
-   "ru": "Сопоставь физическую величину и её единицу измерения в СИ.",
-   "en": "Match each physical quantity with its SI unit.",
-   "kk": "Физикалық шаманы оның ХБЖ-дағы өлшем бірлігімен сәйкестендір."
+   "ru": "Сопоставь величины из темы «Мировоззренческое значение физики и астрономии» и их единицы измерения в СИ.",
+   "en": "Match the quantities from «Worldview significance of physics and astronomy» with their SI units.",
+   "kk": "«Физика мен астрономияның дүниетанымдық мәні» тақырыбындағы шамаларды олардың ХБЖ бірліктерімен сәйкестендір."
   },
   "pairs": {
    "left": {
     "ru": [
      "скорость света",
-     "активность радиоактивного образца",
-     "работа выхода электрона"
+     "работа выхода электрона",
+     "период полураспада"
     ],
     "en": [
      "speed of light",
-     "activity of a radioactive sample",
-     "work function"
+     "work function",
+     "half-life"
     ],
     "kk": [
      "жарық жылдамдығы",
-     "радиоактивті үлгінің белсенділігі",
-     "электронның шығу жұмысы"
+     "электронның шығу жұмысы",
+     "жартылай ыдырау периоды"
     ]
    },
    "right": {
     "ru": [
-     "электрон-вольт (эВ)",
-     "беккерель (Бк)",
-     "м/с"
+     "секунда (с)",
+     "м/с",
+     "электрон-вольт (эВ)"
     ],
     "en": [
-     "electronvolt (eV)",
-     "becquerel (Bq)",
-     "m/s"
+     "second (s)",
+     "m/s",
+     "electronvolt (eV)"
     ],
     "kk": [
-     "электрон-вольт (эВ)",
-     "беккерель (Бк)",
-     "м/с"
+     "секунд (с)",
+     "м/с",
+     "электрон-вольт (эВ)"
     ]
    }
   },
   "correctPairs": [
    [
     0,
-    2
+    1
    ],
    [
     1,
-    1
+    2
    ],
    [
     2,
@@ -7986,9 +8243,9 @@ const TASKS_DATABASE_TYPES = [
    "kk": "Алдымен нақты білетін шамалардан баста: мысалы, күш ньютонмен өлшенеді."
   },
   "explanation": {
-   "ru": "Верные пары: скорость света — м/с; активность радиоактивного образца — беккерель (Бк); работа выхода электрона — электрон-вольт (эВ).",
-   "en": "Correct pairs: speed of light — m/s; activity of a radioactive sample — becquerel (Bq); work function — electronvolt (eV).",
-   "kk": "Дұрыс жұптар: жарық жылдамдығы — м/с; радиоактивті үлгінің белсенділігі — беккерель (Бк); электронның шығу жұмысы — электрон-вольт (эВ)."
+   "ru": "Верные пары: скорость света — м/с; работа выхода электрона — электрон-вольт (эВ); период полураспада — секунда (с).",
+   "en": "Correct pairs: speed of light — m/s; work function — electronvolt (eV); half-life — second (s).",
+   "kk": "Дұрыс жұптар: жарық жылдамдығы — м/с; электронның шығу жұмысы — электрон-вольт (эВ); жартылай ыдырау периоды — секунд (с)."
   }
  },
  {
@@ -8042,26 +8299,27 @@ const TASKS_DATABASE_TYPES = [
   "topic": "p43",
   "difficulty": 2,
   "question": {
-   "ru": "В каких единицах СИ измеряется величина «период полураспада»? Запиши единицу.",
-   "en": "Which SI unit is used to measure «half-life»? Write the unit.",
-   "kk": "«жартылай ыдырау периоды» шамасы ХБЖ-да қандай бірлікпен өлшенеді? Бірлікті жаз."
+   "ru": "Назови единицу измерения величины «эквивалентная доза» в СИ.",
+   "en": "Name the SI unit of «equivalent dose».",
+   "kk": "«эквивалентті доза» шамасының ХБЖ-дағы өлшем бірлігін ата."
   },
   "correctAnswer": {
    "ru": [
-    "секунда",
-    "с",
-    "s",
-    "сек"
+    "зиверт",
+    "зв",
+    "sv",
+    "Sv"
    ],
    "en": [
-    "second",
-    "s",
-    "sec"
+    "sievert",
+    "sv",
+    "Sv"
    ],
    "kk": [
-    "секунд",
-    "с",
-    "s"
+    "зиверт",
+    "зв",
+    "sv",
+    "Sv"
    ]
   },
   "hint": {
@@ -8070,9 +8328,9 @@ const TASKS_DATABASE_TYPES = [
    "kk": "Шама қай топқа жататынын ойла: жылу, электр, толқын немесе қозғалыс. Сол топтың бірлігі дұрыс жауап."
   },
   "explanation": {
-   "ru": "Единица СИ для величины «период полураспада» — секунда (с).",
-   "en": "The SI unit of «half-life» is second (s).",
-   "kk": "«жартылай ыдырау периоды» шамасының ХБЖ бірлігі — секунд (с)."
+   "ru": "Единица СИ для величины «эквивалентная доза» — зиверт (Зв).",
+   "en": "The SI unit of «equivalent dose» is sievert (Sv).",
+   "kk": "«эквивалентті доза» шамасының ХБЖ бірлігі — зиверт (Зв)."
   }
  },
  {
@@ -8081,30 +8339,43 @@ const TASKS_DATABASE_TYPES = [
   "topic": "p43",
   "difficulty": 2,
   "question": {
-   "ru": "В единицах «зиверт (Зв)» измеряется величина ___.",
-   "en": "The quantity measured in sievert (Sv) is ___.",
-   "kk": "«зиверт (Зв)» бірлігімен өлшенетін шама — ___."
+   "ru": "Единица измерения величины «работа выхода электрона» — ___.",
+   "en": "The unit of «work function» is ___.",
+   "kk": "«электронның шығу жұмысы» шамасының өлшем бірлігі — ___."
   },
   "correctAnswer": {
    "ru": [
-    "эквивалентная доза"
+    "электрон-вольт (эВ)",
+    "электрон-вольт",
+    "эВ",
+    "эв",
+    "ev",
+    "eV"
    ],
    "en": [
-    "equivalent dose"
+    "electronvolt (eV)",
+    "electronvolt",
+    "eV",
+    "ev"
    ],
    "kk": [
-    "эквивалентті доза"
+    "электрон-вольт (эВ)",
+    "электрон-вольт",
+    "эВ",
+    "эв",
+    "ev",
+    "eV"
    ]
   },
   "hint": {
-   "ru": "Название единицы подсказывает, какую величину она измеряет. Это величина из этой темы.",
-   "en": "The unit's name hints at the quantity it measures. It belongs to this topic.",
-   "kk": "Бірліктің атауы қандай шама өлшенетінін көрсетеді. Бұл — осы тақырыптың шамасы."
+   "ru": "Подумай, к какой группе относится величина: теплота, электричество, волны или движение. Единица этой группы и будет ответом.",
+   "en": "Think about the group this quantity belongs to: heat, electricity, waves or motion. The unit of that group is the answer.",
+   "kk": "Шама қай топқа жататынын ойла: жылу, электр, толқын немесе қозғалыс. Сол топтың бірлігі дұрыс жауап."
   },
   "explanation": {
-   "ru": "В зиверт (Зв) измеряется эквивалентная доза.",
-   "en": "The quantity measured in sievert (Sv) is equivalent dose.",
-   "kk": "зиверт (Зв) бірлігімен эквивалентті доза өлшенеді."
+   "ru": "Единица СИ для величины «работа выхода электрона» — электрон-вольт (эВ).",
+   "en": "The SI unit of «work function» is electronvolt (eV).",
+   "kk": "«электронның шығу жұмысы» шамасының ХБЖ бірлігі — электрон-вольт (эВ)."
   }
  },
  {
@@ -8113,58 +8384,58 @@ const TASKS_DATABASE_TYPES = [
   "topic": "p43",
   "difficulty": 2,
   "question": {
-   "ru": "Сопоставь физическую величину и её единицу измерения в СИ.",
-   "en": "Match each physical quantity with its SI unit.",
-   "kk": "Физикалық шаманы оның ХБЖ-дағы өлшем бірлігімен сәйкестендір."
+   "ru": "Сопоставь величины из темы «Экологическая культура» и их единицы измерения в СИ.",
+   "en": "Match the quantities from «Environmental culture» with their SI units.",
+   "kk": "«Экологиялық мәдениет» тақырыбындағы шамаларды олардың ХБЖ бірліктерімен сәйкестендір."
   },
   "pairs": {
    "left": {
     "ru": [
-     "период полураспада",
-     "дефект масс",
-     "работа выхода электрона"
+     "энергия связи ядра",
+     "энергия фотона",
+     "активность радиоактивного образца"
     ],
     "en": [
-     "half-life",
-     "mass defect",
-     "work function"
+     "nuclear binding energy",
+     "photon energy",
+     "activity of a radioactive sample"
     ],
     "kk": [
-     "жартылай ыдырау периоды",
-     "масса ақауы",
-     "электронның шығу жұмысы"
+     "ядроның байланыс энергиясы",
+     "фотон энергиясы",
+     "радиоактивті үлгінің белсенділігі"
     ]
    },
    "right": {
     "ru": [
-     "атомная единица массы (а.е.м.)",
-     "электрон-вольт (эВ)",
-     "секунда (с)"
+     "мегаэлектрон-вольт (МэВ)",
+     "джоуль (Дж)",
+     "беккерель (Бк)"
     ],
     "en": [
-     "atomic mass unit (u)",
-     "electronvolt (eV)",
-     "second (s)"
+     "megaelectronvolt (MeV)",
+     "joule (J)",
+     "becquerel (Bq)"
     ],
     "kk": [
-     "атомдық масса бірлігі (а.е.м.)",
-     "электрон-вольт (эВ)",
-     "секунд (с)"
+     "мегаэлектрон-вольт (МэВ)",
+     "джоуль (Дж)",
+     "беккерель (Бк)"
     ]
    }
   },
   "correctPairs": [
    [
     0,
-    2
-   ],
-   [
-    1,
     0
    ],
    [
-    2,
+    1,
     1
+   ],
+   [
+    2,
+    2
    ]
   ],
   "hint": {
@@ -8173,9 +8444,9 @@ const TASKS_DATABASE_TYPES = [
    "kk": "Алдымен нақты білетін шамалардан баста: мысалы, күш ньютонмен өлшенеді."
   },
   "explanation": {
-   "ru": "Верные пары: период полураспада — секунда (с); дефект масс — атомная единица массы (а.е.м.); работа выхода электрона — электрон-вольт (эВ).",
-   "en": "Correct pairs: half-life — second (s); mass defect — atomic mass unit (u); work function — electronvolt (eV).",
-   "kk": "Дұрыс жұптар: жартылай ыдырау периоды — секунд (с); масса ақауы — атомдық масса бірлігі (а.е.м.); электронның шығу жұмысы — электрон-вольт (эВ)."
+   "ru": "Верные пары: энергия связи ядра — мегаэлектрон-вольт (МэВ); энергия фотона — джоуль (Дж); активность радиоактивного образца — беккерель (Бк).",
+   "en": "Correct pairs: nuclear binding energy — megaelectronvolt (MeV); photon energy — joule (J); activity of a radioactive sample — becquerel (Bq).",
+   "kk": "Дұрыс жұптар: ядроның байланыс энергиясы — мегаэлектрон-вольт (МэВ); фотон энергиясы — джоуль (Дж); радиоактивті үлгінің белсенділігі — беккерель (Бк)."
   }
  },
  {
@@ -8184,9 +8455,9 @@ const TASKS_DATABASE_TYPES = [
   "topic": "lab1",
   "difficulty": 2,
   "question": {
-   "ru": "Отметь все величины, которые относятся к разделу «механическое движение».",
-   "en": "Select all quantities that belong to the section «mechanics of motion».",
-   "kk": "«механикалық қозғалыс» бөліміне жататын барлық шамаларды белгіле."
+   "ru": "Тема «Лаб. №1: Ускорение при равноускоренном движении». Отметь все величины, которые относятся к разделу «механическое движение».",
+   "en": "Topic «Lab #1: Acceleration in uniformly accelerated motion». Select all quantities that belong to the section «mechanics of motion».",
+   "kk": "«Зерт. №1: Бірқалыпты үдемелі қозғалыстың үдеуі» тақырыбы. «механикалық қозғалыс» бөліміне жататын барлық шамаларды белгіле."
   },
   "options": {
    "ru": [
@@ -8229,23 +8500,27 @@ const TASKS_DATABASE_TYPES = [
   "topic": "lab1",
   "difficulty": 2,
   "question": {
-   "ru": "В каких единицах СИ измеряется величина «скорость»? Запиши единицу.",
-   "en": "Which SI unit is used to measure «velocity»? Write the unit.",
-   "kk": "«жылдамдық» шамасы ХБЖ-да қандай бірлікпен өлшенеді? Бірлікті жаз."
+   "ru": "Назови единицу измерения величины «активность радиоактивного образца» в СИ.",
+   "en": "Name the SI unit of «activity of a radioactive sample».",
+   "kk": "«радиоактивті үлгінің белсенділігі» шамасының ХБЖ-дағы өлшем бірлігін ата."
   },
   "correctAnswer": {
    "ru": [
-    "м/с",
-    "m/s",
-    "метр в секунду"
+    "беккерель",
+    "бк",
+    "bq",
+    "Bq"
    ],
    "en": [
-    "m/s",
-    "metre per second"
+    "becquerel",
+    "bq",
+    "Bq"
    ],
    "kk": [
-    "м/с",
-    "m/s"
+    "беккерель",
+    "бк",
+    "bq",
+    "Bq"
    ]
   },
   "hint": {
@@ -8254,9 +8529,9 @@ const TASKS_DATABASE_TYPES = [
    "kk": "Шама қай топқа жататынын ойла: жылу, электр, толқын немесе қозғалыс. Сол топтың бірлігі дұрыс жауап."
   },
   "explanation": {
-   "ru": "Единица СИ для величины «скорость» — м/с.",
-   "en": "The SI unit of «velocity» is m/s.",
-   "kk": "«жылдамдық» шамасының ХБЖ бірлігі — м/с."
+   "ru": "Единица СИ для величины «активность радиоактивного образца» — беккерель (Бк).",
+   "en": "The SI unit of «activity of a radioactive sample» is becquerel (Bq).",
+   "kk": "«радиоактивті үлгінің белсенділігі» шамасының ХБЖ бірлігі — беккерель (Бк)."
   }
  },
  {
@@ -8265,30 +8540,42 @@ const TASKS_DATABASE_TYPES = [
   "topic": "lab1",
   "difficulty": 2,
   "question": {
-   "ru": "В единицах «рад/с» измеряется величина ___.",
-   "en": "The quantity measured in rad/s is ___.",
-   "kk": "«рад/с» бірлігімен өлшенетін шама — ___."
+   "ru": "Единица измерения величины «путь» — ___.",
+   "en": "The unit of «distance travelled» is ___.",
+   "kk": "«жол» шамасының өлшем бірлігі — ___."
   },
   "correctAnswer": {
    "ru": [
-    "угловая скорость"
+    "метр (м)",
+    "метр",
+    "м",
+    "m",
+    "M"
    ],
    "en": [
-    "angular velocity"
+    "metre (m)",
+    "metre",
+    "m",
+    "meter",
+    "M"
    ],
    "kk": [
-    "бұрыштық жылдамдық"
+    "метр (м)",
+    "метр",
+    "м",
+    "m",
+    "M"
    ]
   },
   "hint": {
-   "ru": "Название единицы подсказывает, какую величину она измеряет. Это величина из этой темы.",
-   "en": "The unit's name hints at the quantity it measures. It belongs to this topic.",
-   "kk": "Бірліктің атауы қандай шама өлшенетінін көрсетеді. Бұл — осы тақырыптың шамасы."
+   "ru": "Подумай, к какой группе относится величина: теплота, электричество, волны или движение. Единица этой группы и будет ответом.",
+   "en": "Think about the group this quantity belongs to: heat, electricity, waves or motion. The unit of that group is the answer.",
+   "kk": "Шама қай топқа жататынын ойла: жылу, электр, толқын немесе қозғалыс. Сол топтың бірлігі дұрыс жауап."
   },
   "explanation": {
-   "ru": "В рад/с измеряется угловая скорость.",
-   "en": "The quantity measured in rad/s is angular velocity.",
-   "kk": "рад/с бірлігімен бұрыштық жылдамдық өлшенеді."
+   "ru": "Единица СИ для величины «путь» — метр (м).",
+   "en": "The SI unit of «distance travelled» is metre (m).",
+   "kk": "«жол» шамасының ХБЖ бірлігі — метр (м)."
   }
  },
  {
@@ -8297,50 +8584,50 @@ const TASKS_DATABASE_TYPES = [
   "topic": "lab1",
   "difficulty": 2,
   "question": {
-   "ru": "Сопоставь физическую величину и её единицу измерения в СИ.",
-   "en": "Match each physical quantity with its SI unit.",
-   "kk": "Физикалық шаманы оның ХБЖ-дағы өлшем бірлігімен сәйкестендір."
+   "ru": "Сопоставь величины из темы «Лаб. №1: Ускорение при равноускоренном движении» и их единицы измерения в СИ.",
+   "en": "Match the quantities from «Lab #1: Acceleration in uniformly accelerated motion» with their SI units.",
+   "kk": "«Зерт. №1: Бірқалыпты үдемелі қозғалыстың үдеуі» тақырыбындағы шамаларды олардың ХБЖ бірліктерімен сәйкестендір."
   },
   "pairs": {
    "left": {
     "ru": [
-     "угловая скорость",
-     "перемещение",
+     "путь",
+     "центростремительное ускорение",
      "время"
     ],
     "en": [
-     "angular velocity",
-     "displacement",
+     "distance travelled",
+     "centripetal acceleration",
      "time"
     ],
     "kk": [
-     "бұрыштық жылдамдық",
-     "орын ауыстыру",
+     "жол",
+     "центрге тартқыш үдеу",
      "уақыт"
     ]
    },
    "right": {
     "ru": [
-     "секунда (с)",
      "метр (м)",
-     "рад/с"
+     "м/с²",
+     "секунда (с)"
     ],
     "en": [
-     "second (s)",
      "metre (m)",
-     "rad/s"
+     "m/s²",
+     "second (s)"
     ],
     "kk": [
-     "секунд (с)",
      "метр (м)",
-     "рад/с"
+     "м/с²",
+     "секунд (с)"
     ]
    }
   },
   "correctPairs": [
    [
     0,
-    2
+    0
    ],
    [
     1,
@@ -8348,7 +8635,7 @@ const TASKS_DATABASE_TYPES = [
    ],
    [
     2,
-    0
+    2
    ]
   ],
   "hint": {
@@ -8357,9 +8644,9 @@ const TASKS_DATABASE_TYPES = [
    "kk": "Алдымен нақты білетін шамалардан баста: мысалы, күш ньютонмен өлшенеді."
   },
   "explanation": {
-   "ru": "Верные пары: угловая скорость — рад/с; перемещение — метр (м); время — секунда (с).",
-   "en": "Correct pairs: angular velocity — rad/s; displacement — metre (m); time — second (s).",
-   "kk": "Дұрыс жұптар: бұрыштық жылдамдық — рад/с; орын ауыстыру — метр (м); уақыт — секунд (с)."
+   "ru": "Верные пары: путь — метр (м); центростремительное ускорение — м/с²; время — секунда (с).",
+   "en": "Correct pairs: distance travelled — metre (m); centripetal acceleration — m/s²; time — second (s).",
+   "kk": "Дұрыс жұптар: жол — метр (м); центрге тартқыш үдеу — м/с²; уақыт — секунд (с)."
   }
  },
  {
@@ -8368,9 +8655,9 @@ const TASKS_DATABASE_TYPES = [
   "topic": "lab2",
   "difficulty": 2,
   "question": {
-   "ru": "Отметь все величины, которые относятся к разделу «механическое движение».",
-   "en": "Select all quantities that belong to the section «mechanics of motion».",
-   "kk": "«механикалық қозғалыс» бөліміне жататын барлық шамаларды белгіле."
+   "ru": "Тема «Лаб. №2: Движение тела, брошенного горизонтально». Отметь все величины, которые относятся к разделу «механическое движение».",
+   "en": "Topic «Lab #2: Motion of a body thrown horizontally». Select all quantities that belong to the section «mechanics of motion».",
+   "kk": "«Зерт. №2: Көлденең лақтырылған дененің қозғалысы» тақырыбы. «механикалық қозғалыс» бөліміне жататын барлық шамаларды белгіле."
   },
   "options": {
    "ru": [
@@ -8413,22 +8700,26 @@ const TASKS_DATABASE_TYPES = [
   "topic": "lab2",
   "difficulty": 2,
   "question": {
-   "ru": "В каких единицах СИ измеряется величина «угловая скорость»? Запиши единицу.",
-   "en": "Which SI unit is used to measure «angular velocity»? Write the unit.",
-   "kk": "«бұрыштық жылдамдық» шамасы ХБЖ-да қандай бірлікпен өлшенеді? Бірлікті жаз."
+   "ru": "Назови единицу измерения величины «период полураспада» в СИ.",
+   "en": "Name the SI unit of «half-life».",
+   "kk": "«жартылай ыдырау периоды» шамасының ХБЖ-дағы өлшем бірлігін ата."
   },
   "correctAnswer": {
    "ru": [
-    "рад/с",
-    "rad/s"
+    "секунда",
+    "с",
+    "s",
+    "сек"
    ],
    "en": [
-    "rad/s",
-    "radian per second"
+    "second",
+    "s",
+    "sec"
    ],
    "kk": [
-    "рад/с",
-    "rad/s"
+    "секунд",
+    "с",
+    "s"
    ]
   },
   "hint": {
@@ -8437,9 +8728,9 @@ const TASKS_DATABASE_TYPES = [
    "kk": "Шама қай топқа жататынын ойла: жылу, электр, толқын немесе қозғалыс. Сол топтың бірлігі дұрыс жауап."
   },
   "explanation": {
-   "ru": "Единица СИ для величины «угловая скорость» — рад/с.",
-   "en": "The SI unit of «angular velocity» is rad/s.",
-   "kk": "«бұрыштық жылдамдық» шамасының ХБЖ бірлігі — рад/с."
+   "ru": "Единица СИ для величины «период полураспада» — секунда (с).",
+   "en": "The SI unit of «half-life» is second (s).",
+   "kk": "«жартылай ыдырау периоды» шамасының ХБЖ бірлігі — секунд (с)."
   }
  },
  {
@@ -8448,30 +8739,43 @@ const TASKS_DATABASE_TYPES = [
   "topic": "lab2",
   "difficulty": 2,
   "question": {
-   "ru": "В единицах «рад/с» измеряется величина ___.",
-   "en": "The quantity measured in rad/s is ___.",
-   "kk": "«рад/с» бірлігімен өлшенетін шама — ___."
+   "ru": "Единица измерения величины «частота обращения» — ___.",
+   "en": "The unit of «frequency of revolution» is ___.",
+   "kk": "«айналу жиілігі» шамасының өлшем бірлігі — ___."
   },
   "correctAnswer": {
    "ru": [
-    "угловая скорость"
+    "герц (Гц)",
+    "герц",
+    "Гц",
+    "гц",
+    "hz",
+    "Hz"
    ],
    "en": [
-    "angular velocity"
+    "hertz (Hz)",
+    "hertz",
+    "Hz",
+    "hz"
    ],
    "kk": [
-    "бұрыштық жылдамдық"
+    "герц (Гц)",
+    "герц",
+    "Гц",
+    "гц",
+    "hz",
+    "Hz"
    ]
   },
   "hint": {
-   "ru": "Название единицы подсказывает, какую величину она измеряет. Это величина из этой темы.",
-   "en": "The unit's name hints at the quantity it measures. It belongs to this topic.",
-   "kk": "Бірліктің атауы қандай шама өлшенетінін көрсетеді. Бұл — осы тақырыптың шамасы."
+   "ru": "Подумай, к какой группе относится величина: теплота, электричество, волны или движение. Единица этой группы и будет ответом.",
+   "en": "Think about the group this quantity belongs to: heat, electricity, waves or motion. The unit of that group is the answer.",
+   "kk": "Шама қай топқа жататынын ойла: жылу, электр, толқын немесе қозғалыс. Сол топтың бірлігі дұрыс жауап."
   },
   "explanation": {
-   "ru": "В рад/с измеряется угловая скорость.",
-   "en": "The quantity measured in rad/s is angular velocity.",
-   "kk": "рад/с бірлігімен бұрыштық жылдамдық өлшенеді."
+   "ru": "Единица СИ для величины «частота обращения» — герц (Гц).",
+   "en": "The SI unit of «frequency of revolution» is hertz (Hz).",
+   "kk": "«айналу жиілігі» шамасының ХБЖ бірлігі — герц (Гц)."
   }
  },
  {
@@ -8480,58 +8784,58 @@ const TASKS_DATABASE_TYPES = [
   "topic": "lab2",
   "difficulty": 2,
   "question": {
-   "ru": "Сопоставь физическую величину и её единицу измерения в СИ.",
-   "en": "Match each physical quantity with its SI unit.",
-   "kk": "Физикалық шаманы оның ХБЖ-дағы өлшем бірлігімен сәйкестендір."
+   "ru": "Сопоставь величины из темы «Лаб. №2: Движение тела, брошенного горизонтально» и их единицы измерения в СИ.",
+   "en": "Match the quantities from «Lab #2: Motion of a body thrown horizontally» with their SI units.",
+   "kk": "«Зерт. №2: Көлденең лақтырылған дененің қозғалысы» тақырыбындағы шамаларды олардың ХБЖ бірліктерімен сәйкестендір."
   },
   "pairs": {
    "left": {
     "ru": [
-     "частота обращения",
      "ускорение",
-     "скорость"
+     "путь",
+     "время"
     ],
     "en": [
-     "frequency of revolution",
      "acceleration",
-     "velocity"
+     "distance travelled",
+     "time"
     ],
     "kk": [
-     "айналу жиілігі",
      "үдеу",
-     "жылдамдық"
+     "жол",
+     "уақыт"
     ]
    },
    "right": {
     "ru": [
+     "секунда (с)",
      "м/с²",
-     "м/с",
-     "герц (Гц)"
+     "метр (м)"
     ],
     "en": [
+     "second (s)",
      "m/s²",
-     "m/s",
-     "hertz (Hz)"
+     "metre (m)"
     ],
     "kk": [
+     "секунд (с)",
      "м/с²",
-     "м/с",
-     "герц (Гц)"
+     "метр (м)"
     ]
    }
   },
   "correctPairs": [
    [
     0,
-    2
+    1
    ],
    [
     1,
-    0
+    2
    ],
    [
     2,
-    1
+    0
    ]
   ],
   "hint": {
@@ -8540,9 +8844,9 @@ const TASKS_DATABASE_TYPES = [
    "kk": "Алдымен нақты білетін шамалардан баста: мысалы, күш ньютонмен өлшенеді."
   },
   "explanation": {
-   "ru": "Верные пары: частота обращения — герц (Гц); ускорение — м/с²; скорость — м/с.",
-   "en": "Correct pairs: frequency of revolution — hertz (Hz); acceleration — m/s²; velocity — m/s.",
-   "kk": "Дұрыс жұптар: айналу жиілігі — герц (Гц); үдеу — м/с²; жылдамдық — м/с."
+   "ru": "Верные пары: ускорение — м/с²; путь — метр (м); время — секунда (с).",
+   "en": "Correct pairs: acceleration — m/s²; distance travelled — metre (m); time — second (s).",
+   "kk": "Дұрыс жұптар: үдеу — м/с²; жол — метр (м); уақыт — секунд (с)."
   }
  },
  {
@@ -8551,9 +8855,9 @@ const TASKS_DATABASE_TYPES = [
   "topic": "lab3",
   "difficulty": 2,
   "question": {
-   "ru": "Отметь все величины, которые относятся к разделу «динамика».",
-   "en": "Select all quantities that belong to the section «dynamics».",
-   "kk": "«динамика» бөліміне жататын барлық шамаларды белгіле."
+   "ru": "Тема «Лаб. №3: Ускорение свободного падения (маятник)». Отметь все величины, которые относятся к разделу «динамика».",
+   "en": "Topic «Lab #3: Acceleration due to gravity (pendulum)». Select all quantities that belong to the section «dynamics».",
+   "kk": "«Зерт. №3: Еркін түсу үдеуі (маятник)» тақырыбы. «динамика» бөліміне жататын барлық шамаларды белгіле."
   },
   "options": {
    "ru": [
@@ -8596,24 +8900,32 @@ const TASKS_DATABASE_TYPES = [
   "topic": "lab3",
   "difficulty": 2,
   "question": {
-   "ru": "В каких единицах СИ измеряется величина «импульс тела»? Запиши единицу.",
-   "en": "Which SI unit is used to measure «momentum of a body»? Write the unit.",
-   "kk": "«дене импульсі» шамасы ХБЖ-да қандай бірлікпен өлшенеді? Бірлікті жаз."
+   "ru": "Назови единицу измерения величины «период обращения планеты» в СИ.",
+   "en": "Name the SI unit of «orbital period of a planet».",
+   "kk": "«планетаның айналу периоды» шамасының ХБЖ-дағы өлшем бірлігін ата."
   },
   "correctAnswer": {
    "ru": [
-    "кг·м/с",
-    "кг*м/с",
-    "kg*m/s"
+    "секунда",
+    "с",
+    "s",
+    "сек",
+    "сутки",
+    "год"
    ],
    "en": [
-    "kg·m/s",
-    "kg*m/s",
-    "kg m/s"
+    "second",
+    "s",
+    "sec",
+    "day",
+    "year"
    ],
    "kk": [
-    "кг·м/с",
-    "кг*м/с"
+    "секунд",
+    "с",
+    "s",
+    "тәулік",
+    "жыл"
    ]
   },
   "hint": {
@@ -8622,9 +8934,9 @@ const TASKS_DATABASE_TYPES = [
    "kk": "Шама қай топқа жататынын ойла: жылу, электр, толқын немесе қозғалыс. Сол топтың бірлігі дұрыс жауап."
   },
   "explanation": {
-   "ru": "Единица СИ для величины «импульс тела» — кг·м/с.",
-   "en": "The SI unit of «momentum of a body» is kg·m/s.",
-   "kk": "«дене импульсі» шамасының ХБЖ бірлігі — кг·м/с."
+   "ru": "Единица СИ для величины «период обращения планеты» — секунда (с).",
+   "en": "The SI unit of «orbital period of a planet» is second (s).",
+   "kk": "«планетаның айналу периоды» шамасының ХБЖ бірлігі — секунд (с)."
   }
  },
  {
@@ -8633,21 +8945,19 @@ const TASKS_DATABASE_TYPES = [
   "topic": "lab3",
   "difficulty": 2,
   "question": {
-   "ru": "В единицах «кг·м/с» измеряется величина ___.",
-   "en": "The quantity measured in kg·m/s is ___.",
-   "kk": "«кг·м/с» бірлігімен өлшенетін шама — ___."
+   "ru": "В единицах «килограмм (кг)» измеряется величина ___.",
+   "en": "The quantity measured in kilogram (kg) is ___.",
+   "kk": "«килограмм (кг)» бірлігімен өлшенетін шама — ___."
   },
   "correctAnswer": {
    "ru": [
-    "импульс тела",
-    "импульс"
+    "масса"
    ],
    "en": [
-    "momentum of a body",
-    "momentum"
+    "mass"
    ],
    "kk": [
-    "дене импульсі"
+    "масса"
    ]
   },
   "hint": {
@@ -8656,9 +8966,9 @@ const TASKS_DATABASE_TYPES = [
    "kk": "Бірліктің атауы қандай шама өлшенетінін көрсетеді. Бұл — осы тақырыптың шамасы."
   },
   "explanation": {
-   "ru": "В кг·м/с измеряется импульс тела.",
-   "en": "The quantity measured in kg·m/s is momentum of a body.",
-   "kk": "кг·м/с бірлігімен дене импульсі өлшенеді."
+   "ru": "В килограмм (кг) измеряется масса.",
+   "en": "The quantity measured in kilogram (kg) is mass.",
+   "kk": "килограмм (кг) бірлігімен масса өлшенеді."
   }
  },
  {
@@ -8667,54 +8977,54 @@ const TASKS_DATABASE_TYPES = [
   "topic": "lab3",
   "difficulty": 2,
   "question": {
-   "ru": "Сопоставь физическую величину и её единицу измерения в СИ.",
-   "en": "Match each physical quantity with its SI unit.",
-   "kk": "Физикалық шаманы оның ХБЖ-дағы өлшем бірлігімен сәйкестендір."
+   "ru": "Сопоставь величины из темы «Лаб. №3: Ускорение свободного падения (маятник)» и их единицы измерения в СИ.",
+   "en": "Match the quantities from «Lab #3: Acceleration due to gravity (pendulum)» with their SI units.",
+   "kk": "«Зерт. №3: Еркін түсу үдеуі (маятник)» тақырыбындағы шамаларды олардың ХБЖ бірліктерімен сәйкестендір."
   },
   "pairs": {
    "left": {
     "ru": [
-     "сила",
+     "масса",
      "импульс тела",
-     "масса"
+     "ускорение свободного падения"
     ],
     "en": [
-     "force",
+     "mass",
      "momentum of a body",
-     "mass"
+     "acceleration due to gravity"
     ],
     "kk": [
-     "күш",
+     "масса",
      "дене импульсі",
-     "масса"
+     "еркін түсу үдеуі"
     ]
    },
    "right": {
     "ru": [
-     "ньютон (Н)",
-     "килограмм (кг)",
-     "кг·м/с"
+     "кг·м/с",
+     "м/с²",
+     "килограмм (кг)"
     ],
     "en": [
-     "newton (N)",
-     "kilogram (kg)",
-     "kg·m/s"
+     "kg·m/s",
+     "m/s²",
+     "kilogram (kg)"
     ],
     "kk": [
-     "ньютон (Н)",
-     "килограмм (кг)",
-     "кг·м/с"
+     "кг·м/с",
+     "м/с²",
+     "килограмм (кг)"
     ]
    }
   },
   "correctPairs": [
    [
     0,
-    0
+    2
    ],
    [
     1,
-    2
+    0
    ],
    [
     2,
@@ -8727,9 +9037,9 @@ const TASKS_DATABASE_TYPES = [
    "kk": "Алдымен нақты білетін шамалардан баста: мысалы, күш ньютонмен өлшенеді."
   },
   "explanation": {
-   "ru": "Верные пары: сила — ньютон (Н); импульс тела — кг·м/с; масса — килограмм (кг).",
-   "en": "Correct pairs: force — newton (N); momentum of a body — kg·m/s; mass — kilogram (kg).",
-   "kk": "Дұрыс жұптар: күш — ньютон (Н); дене импульсі — кг·м/с; масса — килограмм (кг)."
+   "ru": "Верные пары: масса — килограмм (кг); импульс тела — кг·м/с; ускорение свободного падения — м/с².",
+   "en": "Correct pairs: mass — kilogram (kg); momentum of a body — kg·m/s; acceleration due to gravity — m/s².",
+   "kk": "Дұрыс жұптар: масса — килограмм (кг); дене импульсі — кг·м/с; еркін түсу үдеуі — м/с²."
   }
  },
  {
@@ -8738,9 +9048,9 @@ const TASKS_DATABASE_TYPES = [
   "topic": "lab4",
   "difficulty": 2,
   "question": {
-   "ru": "Отметь все величины, которые относятся к разделу «квантовая и ядерная физика».",
-   "en": "Select all quantities that belong to the section «quantum and nuclear physics».",
-   "kk": "«кванттық және ядролық физика» бөліміне жататын барлық шамаларды белгіле."
+   "ru": "Тема «Лаб. №4: Скорость поверхностной волны». Отметь все величины, которые относятся к разделу «квантовая и ядерная физика».",
+   "en": "Topic «Lab #4: Speed of a surface wave». Select all quantities that belong to the section «quantum and nuclear physics».",
+   "kk": "«Зерт. №4: Беттік толқынның жылдамдығы» тақырыбы. «кванттық және ядролық физика» бөліміне жататын барлық шамаларды белгіле."
   },
   "options": {
    "ru": [
@@ -8783,29 +9093,29 @@ const TASKS_DATABASE_TYPES = [
   "topic": "lab4",
   "difficulty": 2,
   "question": {
-   "ru": "В каких единицах СИ измеряется величина «энергия фотона»? Запиши единицу.",
-   "en": "Which SI unit is used to measure «photon energy»? Write the unit.",
-   "kk": "«фотон энергиясы» шамасы ХБЖ-да қандай бірлікпен өлшенеді? Бірлікті жаз."
+   "ru": "Назови единицу измерения величины «индуктивность катушки» в СИ.",
+   "en": "Name the SI unit of «inductance of a coil».",
+   "kk": "«шарғы индуктивтілігі» шамасының ХБЖ-дағы өлшем бірлігін ата."
   },
   "correctAnswer": {
    "ru": [
-    "джоуль",
-    "дж",
-    "j",
-    "J",
-    "Дж"
+    "генри",
+    "гн",
+    "h",
+    "H",
+    "Гн"
    ],
    "en": [
-    "joule",
-    "j",
-    "J"
+    "henry",
+    "h",
+    "H"
    ],
    "kk": [
-    "джоуль",
-    "дж",
-    "j",
-    "J",
-    "Дж"
+    "генри",
+    "гн",
+    "h",
+    "H",
+    "Гн"
    ]
   },
   "hint": {
@@ -8814,9 +9124,9 @@ const TASKS_DATABASE_TYPES = [
    "kk": "Шама қай топқа жататынын ойла: жылу, электр, толқын немесе қозғалыс. Сол топтың бірлігі дұрыс жауап."
   },
   "explanation": {
-   "ru": "Единица СИ для величины «энергия фотона» — джоуль (Дж).",
-   "en": "The SI unit of «photon energy» is joule (J).",
-   "kk": "«фотон энергиясы» шамасының ХБЖ бірлігі — джоуль (Дж)."
+   "ru": "Единица СИ для величины «индуктивность катушки» — генри (Гн).",
+   "en": "The SI unit of «inductance of a coil» is henry (H).",
+   "kk": "«шарғы индуктивтілігі» шамасының ХБЖ бірлігі — генри (Гн)."
   }
  },
  {
@@ -8825,30 +9135,43 @@ const TASKS_DATABASE_TYPES = [
   "topic": "lab4",
   "difficulty": 2,
   "question": {
-   "ru": "В единицах «атомная единица массы (а.е.м.)» измеряется величина ___.",
-   "en": "The quantity measured in atomic mass unit (u) is ___.",
-   "kk": "«атомдық масса бірлігі (а.е.м.)» бірлігімен өлшенетін шама — ___."
+   "ru": "В каких единицах измеряется величина «работа выхода электрона»? Запиши единицу.",
+   "en": "In which units is «work function» measured? Write the unit.",
+   "kk": "«электронның шығу жұмысы» шамасы қандай бірліктермен өлшенеді? Бірлікті жаз."
   },
   "correctAnswer": {
    "ru": [
-    "дефект масс"
+    "электрон-вольт (эВ)",
+    "электрон-вольт",
+    "эВ",
+    "эв",
+    "ev",
+    "eV"
    ],
    "en": [
-    "mass defect"
+    "electronvolt (eV)",
+    "electronvolt",
+    "eV",
+    "ev"
    ],
    "kk": [
-    "масса ақауы"
+    "электрон-вольт (эВ)",
+    "электрон-вольт",
+    "эВ",
+    "эв",
+    "ev",
+    "eV"
    ]
   },
   "hint": {
-   "ru": "Название единицы подсказывает, какую величину она измеряет. Это величина из этой темы.",
-   "en": "The unit's name hints at the quantity it measures. It belongs to this topic.",
-   "kk": "Бірліктің атауы қандай шама өлшенетінін көрсетеді. Бұл — осы тақырыптың шамасы."
+   "ru": "Подумай, к какой группе относится величина: теплота, электричество, волны или движение. Единица этой группы и будет ответом.",
+   "en": "Think about the group this quantity belongs to: heat, electricity, waves or motion. The unit of that group is the answer.",
+   "kk": "Шама қай топқа жататынын ойла: жылу, электр, толқын немесе қозғалыс. Сол топтың бірлігі дұрыс жауап."
   },
   "explanation": {
-   "ru": "В атомная единица массы (а.е.м.) измеряется дефект масс.",
-   "en": "The quantity measured in atomic mass unit (u) is mass defect.",
-   "kk": "атомдық масса бірлігі (а.е.м.) бірлігімен масса ақауы өлшенеді."
+   "ru": "Единица СИ для величины «работа выхода электрона» — электрон-вольт (эВ).",
+   "en": "The SI unit of «work function» is electronvolt (eV).",
+   "kk": "«электронның шығу жұмысы» шамасының ХБЖ бірлігі — электрон-вольт (эВ)."
   }
  },
  {
@@ -8857,42 +9180,42 @@ const TASKS_DATABASE_TYPES = [
   "topic": "lab4",
   "difficulty": 2,
   "question": {
-   "ru": "Сопоставь физическую величину и её единицу измерения в СИ.",
-   "en": "Match each physical quantity with its SI unit.",
-   "kk": "Физикалық шаманы оның ХБЖ-дағы өлшем бірлігімен сәйкестендір."
+   "ru": "Сопоставь величины из темы «Лаб. №4: Скорость поверхностной волны» и их единицы измерения в СИ.",
+   "en": "Match the quantities from «Lab #4: Speed of a surface wave» with their SI units.",
+   "kk": "«Зерт. №4: Беттік толқынның жылдамдығы» тақырыбындағы шамаларды олардың ХБЖ бірліктерімен сәйкестендір."
   },
   "pairs": {
    "left": {
     "ru": [
      "дефект масс",
-     "эквивалентная доза",
-     "поглощённая доза излучения"
+     "энергия фотона",
+     "энергия связи ядра"
     ],
     "en": [
      "mass defect",
-     "equivalent dose",
-     "absorbed radiation dose"
+     "photon energy",
+     "nuclear binding energy"
     ],
     "kk": [
      "масса ақауы",
-     "эквивалентті доза",
-     "сіңірілген сәулелену дозасы"
+     "фотон энергиясы",
+     "ядроның байланыс энергиясы"
     ]
    },
    "right": {
     "ru": [
-     "зиверт (Зв)",
-     "грей (Гр)",
+     "джоуль (Дж)",
+     "мегаэлектрон-вольт (МэВ)",
      "атомная единица массы (а.е.м.)"
     ],
     "en": [
-     "sievert (Sv)",
-     "gray (Gy)",
+     "joule (J)",
+     "megaelectronvolt (MeV)",
      "atomic mass unit (u)"
     ],
     "kk": [
-     "зиверт (Зв)",
-     "грей (Гр)",
+     "джоуль (Дж)",
+     "мегаэлектрон-вольт (МэВ)",
      "атомдық масса бірлігі (а.е.м.)"
     ]
    }
@@ -8917,9 +9240,9 @@ const TASKS_DATABASE_TYPES = [
    "kk": "Алдымен нақты білетін шамалардан баста: мысалы, күш ньютонмен өлшенеді."
   },
   "explanation": {
-   "ru": "Верные пары: дефект масс — атомная единица массы (а.е.м.); эквивалентная доза — зиверт (Зв); поглощённая доза излучения — грей (Гр).",
-   "en": "Correct pairs: mass defect — atomic mass unit (u); equivalent dose — sievert (Sv); absorbed radiation dose — gray (Gy).",
-   "kk": "Дұрыс жұптар: масса ақауы — атомдық масса бірлігі (а.е.м.); эквивалентті доза — зиверт (Зв); сіңірілген сәулелену дозасы — грей (Гр)."
+   "ru": "Верные пары: дефект масс — атомная единица массы (а.е.м.); энергия фотона — джоуль (Дж); энергия связи ядра — мегаэлектрон-вольт (МэВ).",
+   "en": "Correct pairs: mass defect — atomic mass unit (u); photon energy — joule (J); nuclear binding energy — megaelectronvolt (MeV).",
+   "kk": "Дұрыс жұптар: масса ақауы — атомдық масса бірлігі (а.е.м.); фотон энергиясы — джоуль (Дж); ядроның байланыс энергиясы — мегаэлектрон-вольт (МэВ)."
   }
  }
 ];

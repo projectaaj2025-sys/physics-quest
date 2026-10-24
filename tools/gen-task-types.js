@@ -244,20 +244,34 @@ function localized(field, lang) {
 /* ---------- 3. Тексты заданий (три языка) ---------- */
 const T = {
     matchQ: {
-        ru: "Сопоставь физическую величину и её единицу измерения в СИ.",
-        en: "Match each physical quantity with its SI unit.",
-        kk: "Физикалық шаманы оның ХБЖ-дағы өлшем бірлігімен сәйкестендір."
+        ru: "Сопоставь величины из темы «{title}» и их единицы измерения в СИ.",
+        en: "Match the quantities from «{title}» with their SI units.",
+        kk: "«{title}» тақырыбындағы шамаларды олардың ХБЖ бірліктерімен сәйкестендір."
     },
     matchHint: {
         ru: "Сначала найди величины, которые ты точно знаешь: например, сила измеряется в ньютонах.",
         en: "Start with the quantities you already know: force, for example, is measured in newtons.",
         kk: "Алдымен нақты білетін шамалардан баста: мысалы, күш ньютонмен өлшенеді."
     },
-    unitQ: {
-        ru: "В каких единицах СИ измеряется величина «{name}»? Запиши единицу.",
-        en: "Which SI unit is used to measure «{name}»? Write the unit.",
-        kk: "«{name}» шамасы ХБЖ-да қандай бірлікпен өлшенеді? Бірлікті жаз."
-    },
+    // Три формулировки одного вопроса: величин меньше, чем уровней,
+    // поэтому одну и ту же величину иногда спрашиваем снова — но другими словами.
+    unitQ: [
+        {
+            ru: "В каких единицах СИ измеряется величина «{name}»? Запиши единицу.",
+            en: "Which SI unit is used to measure «{name}»? Write the unit.",
+            kk: "«{name}» шамасы ХБЖ-да қандай бірлікпен өлшенеді? Бірлікті жаз."
+        },
+        {
+            ru: "Назови единицу измерения величины «{name}» в СИ.",
+            en: "Name the SI unit of «{name}».",
+            kk: "«{name}» шамасының ХБЖ-дағы өлшем бірлігін ата."
+        },
+        {
+            ru: "В чём измеряют величину «{name}»? Запиши единицу СИ.",
+            en: "In what unit is «{name}» measured? Write the SI unit.",
+            kk: "«{name}» шамасы қандай бірлікпен өлшенеді? ХБЖ бірлігін жаз."
+        }
+    ],
     unitHint: {
         ru: "Подумай, к какой группе относится величина: теплота, электричество, волны или движение. Единица этой группы и будет ответом.",
         en: "Think about the group this quantity belongs to: heat, electricity, waves or motion. The unit of that group is the answer.",
@@ -274,9 +288,9 @@ const T = {
         kk: "«{title}» тақырыбында оқылатын барлық шамаларды белгіле."
     },
     msQSec: {
-        ru: "Отметь все величины, которые относятся к разделу «{section}».",
-        en: "Select all quantities that belong to the section «{section}».",
-        kk: "«{section}» бөліміне жататын барлық шамаларды белгіле."
+        ru: "Тема «{title}». Отметь все величины, которые относятся к разделу «{section}».",
+        en: "Topic «{title}». Select all quantities that belong to the section «{section}».",
+        kk: "«{title}» тақырыбы. «{section}» бөліміне жататын барлық шамаларды белгіле."
     },
     msHint: {
         ru: "Убери величины из других разделов физики: они изучаются в других параграфах.",
@@ -293,13 +307,60 @@ const T = {
 /* Если у уровня в банке нет какого-то из семи типов, добиваем его
    коротким заданием того же типа: обратный вопрос про единицу
    (fill-blank) и перевод единиц (numeric). */
+/* Пропуск спрашиваем в двух направлениях:
+   unitToQ — «в чём измеряется эта единица» (ответ — название величины),
+   qToUnit — «в каких единицах измеряется эта величина» (ответ — единица).
+   Формулировок по три, итого шесть разных текстов на одну пару
+   «величина — единица», поэтому повторов в банке класса не бывает. */
 const FILL_TPL = {
-    unitQ: {
-        ru: "В единицах «{unit}» измеряется величина ___.",
-        en: "The quantity measured in {unit} is ___.",
-        kk: "«{unit}» бірлігімен өлшенетін шама — ___."
-    }
+    unitToQ: [
+        {
+            ru: "В единицах «{unit}» измеряется величина ___.",
+            en: "The quantity measured in {unit} is ___.",
+            kk: "«{unit}» бірлігімен өлшенетін шама — ___."
+        },
+        {
+            ru: "Единица «{unit}» соответствует величине ___.",
+            en: "The unit {unit} corresponds to the quantity ___.",
+            kk: "«{unit}» бірлігі ___ шамасына сәйкес келеді."
+        },
+        {
+            ru: "Какую величину измеряют в «{unit}»? Запиши название величины.",
+            en: "Which quantity is measured in {unit}? Write its name.",
+            kk: "«{unit}» бірлігімен қандай шама өлшенеді? Шаманың атауын жаз."
+        }
+    ],
+    qToUnit: [
+        {
+            ru: "В каких единицах измеряется величина «{name}»? Запиши единицу.",
+            en: "In which units is «{name}» measured? Write the unit.",
+            kk: "«{name}» шамасы қандай бірліктермен өлшенеді? Бірлікті жаз."
+        },
+        {
+            ru: "Единица измерения величины «{name}» — ___.",
+            en: "The unit of «{name}» is ___.",
+            kk: "«{name}» шамасының өлшем бірлігі — ___."
+        },
+        {
+            ru: "Назови единицу СИ для величины «{name}»: ___.",
+            en: "Name the SI unit of «{name}»: ___.",
+            kk: "«{name}» шамасының ХБЖ бірлігін ата: ___."
+        }
+    ]
 };
+const FB_HINT_UNIT = {
+    ru: "Название единицы подсказывает, какую величину она измеряет. Это величина из этой темы.",
+    en: "The unit's name hints at the quantity it measures. It belongs to this topic.",
+    kk: "Бірліктің атауы қандай шама өлшенетінін көрсетеді. Бұл — осы тақырыптың шамасы."
+};
+/* Готовые варианты пропусков по разделам: строятся один раз на класс,
+   каждый текст достаётся ровно одному уровню. */
+const FB_POOLS = { 7: null, 8: null, 9: null };
+/* Какие величины уже спрошены коротким ответом — чтобы один и тот же
+   вопрос «в чём измеряется …» не повторялся на разных уровнях. */
+const SA_USES = { 7: {}, 8: {}, 9: {} };
+/* Какие переводы единиц уже разданы — чтобы не повторять один и тот же. */
+const NUM_USES = { 7: {}, 8: {}, 9: {} };
 const CONVERSIONS = [
     { ru: "Переведи в единицы СИ: 250 г = ___ кг.", en: "Convert to SI units: 250 g = ___ kg.", kk: "ХБЖ-ға келтір: 250 г = ___ кг.", answer: 0.25, tolerance: 0.001 },
     { ru: "Переведи в единицы СИ: 40 см = ___ м.", en: "Convert to SI units: 40 cm = ___ m.", kk: "ХБЖ-ға келтір: 40 см = ___ м.", answer: 0.4, tolerance: 0.001 },
@@ -335,6 +396,96 @@ function fillTemplate(str, vars) {
     return String(str).replace(/\{(\w+)\}/g, (m, k) => (vars[k] === undefined ? m : vars[k]));
 }
 
+/* Варианты ответа для величины-единицы: «метр (м)», «метр», «м» и то,
+   что уже перечислено в ans (символ, латиница). */
+function unitAnswerVariants(full, extra) {
+    const out = [];
+    const push = (v) => {
+        const t = String(v == null ? "" : v).trim();
+        if (t && !out.includes(t)) out.push(t);
+    };
+    push(full);
+    /* «килограмм (кг)» → «килограмм» и «кг», но «Дж/(кг·°C)» не трогаем:
+       там скобки — часть единицы, а не подсказка символа. */
+    const m = /^(.*)\s*\((.+?)\)\s*$/.exec(String(full || ""));
+    if (m && !m[1].includes("/") && !m[2].includes("/") && !m[2].includes("·")) { push(m[1]); push(m[2]); }
+    (extra || []).forEach(push);
+    /* °C набирают и латинской, и кириллической «С» — принимаем оба варианта. */
+    for (const v of out.slice()) {
+        if (v.includes("°C")) push(v.split("°C").join("°С"));
+        if (v.includes("°С")) push(v.split("°С").join("°C"));
+    }
+    return out;
+}
+
+/* Пул пропусков класса: по три формулировки на каждую пару
+   «единица → величина» (только если единица однозначна) и на каждую
+   пару «величина → единица». Внутри раздела варианты перемешаны. */
+function buildFillPools(grade, units) {
+    const buckets = {};
+    const add = (section, item) => (buckets[section] || (buckets[section] = [])).push(item);
+    units.forEach(u => {
+        const sameUnit = units.filter(x => x.unit.ru === u.unit.ru).length;
+        if (sameUnit === 1) {
+            FILL_TPL.unitToQ.forEach(tpl => add(u.section, {
+                _dir: "unitToQ",
+                _name: u.name.ru,
+                _unit: u.unit.ru,
+                question: {
+                    ru: fillTemplate(tpl.ru, { unit: u.unit.ru }),
+                    en: fillTemplate(tpl.en, { unit: u.unit.en }),
+                    kk: fillTemplate(tpl.kk, { unit: u.unit.kk })
+                },
+                answer: {
+                    ru: nameVariants(u.name.ru, "ru"),
+                    en: nameVariants(u.name.en, "en"),
+                    kk: nameVariants(u.name.kk, "kk")
+                },
+                hint: FB_HINT_UNIT,
+                explanation: {
+                    ru: `В ${u.unit.ru} измеряется ${u.name.ru}.`,
+                    en: `The quantity measured in ${u.unit.en} is ${u.name.en}.`,
+                    kk: `${u.unit.kk} бірлігімен ${u.name.kk} өлшенеді.`
+                }
+            }));
+        }
+        FILL_TPL.qToUnit.forEach(tpl => add(u.section, {
+            _dir: "qToUnit",
+            _name: u.name.ru,
+            _unit: u.unit.ru,
+            question: {
+                ru: fillTemplate(tpl.ru, { name: u.name.ru }),
+                en: fillTemplate(tpl.en, { name: u.name.en }),
+                kk: fillTemplate(tpl.kk, { name: u.name.kk })
+            },
+            answer: {
+                ru: unitAnswerVariants(u.unit.ru, u.ans && u.ans.ru),
+                en: unitAnswerVariants(u.unit.en, u.ans && u.ans.en),
+                kk: unitAnswerVariants(u.unit.kk, u.ans && u.ans.kk)
+            },
+            hint: T.unitHint,
+            explanation: {
+                ru: fillTemplate(T.unitExpl.ru, { name: u.name.ru, unit: u.unit.ru }),
+                en: fillTemplate(T.unitExpl.en, { name: u.name.en, unit: u.unit.en }),
+                kk: fillTemplate(T.unitExpl.kk, { name: u.name.kk, unit: u.unit.kk })
+            }
+        }));
+    });
+    const rnd = seededRandom(`fill-${grade}`);
+    Object.keys(buckets).forEach(k => { buckets[k] = shuffle(buckets[k], rnd); });
+    return buckets;
+}
+
+/* Берём вариант из раздела уровня; если там пусто — из самого полного раздела. */
+function takeFillVariant(grade, units, section) {
+    if (!FB_POOLS[grade]) FB_POOLS[grade] = buildFillPools(grade, units);
+    const pools = FB_POOLS[grade];
+    if (pools[section] && pools[section].length) return pools[section].pop();
+    const keys = Object.keys(pools).filter(k => pools[k].length)
+        .sort((a, b) => pools[b].length - pools[a].length);
+    return keys.length ? pools[keys[0]].pop() : null;
+}
+
 /* ---------- 4. Генерация ---------- */
 function generate(grade) {
     const learning = loadInVm(`${grade}/content.js`);
@@ -357,7 +508,11 @@ function generate(grade) {
         const isSafety = topic === "safety";
         const cons = conspect[topic] || {};
         const catLevel = (catalog && catalog.levels || []).find(l => l.id === level.id) || {};
-        const stripNum = (str) => String(str || "").replace(/^§\d+\.\s*/, "").trim();
+        // Убираем «§7. » и ведущие эмодзи: они не нужны внутри кавычек вопроса.
+        const stripNum = (str) => String(str || "")
+            .replace(/^§\d+\.\s*/, "")
+            .replace(/^[\p{Extended_Pictographic}\uFE0F]+\s*/u, "")
+            .trim();
         const levelTitle = {
             ru: stripNum((catLevel.name && catLevel.name.ru) || cons.title || level.desc || "§" + level.id),
             en: stripNum((catLevel.name && catLevel.name.en) || cons.titleEn || cons.title || "§" + level.id),
@@ -444,9 +599,9 @@ function generate(grade) {
                 topic,
                 difficulty: 2,
                 question: sectionOnly ? {
-                    ru: fillTemplate(T.msQSec.ru, { section: secTitle.ru }),
-                    en: fillTemplate(T.msQSec.en, { section: secTitle.en }),
-                    kk: fillTemplate(T.msQSec.kk, { section: secTitle.kk })
+                    ru: fillTemplate(T.msQSec.ru, { section: secTitle.ru, title: levelTitle.ru }),
+                    en: fillTemplate(T.msQSec.en, { section: secTitle.en, title: levelTitle.en }),
+                    kk: fillTemplate(T.msQSec.kk, { section: secTitle.kk, title: levelTitle.kk })
                 } : {
                     ru: fillTemplate(T.msQ.ru, { title: levelTitle.ru }),
                     en: fillTemplate(T.msQ.en, { title: levelTitle.en }),
@@ -468,17 +623,38 @@ function generate(grade) {
         }
         if (want("multi-select")) out.push(msTask);
 
+        /* Пропуск выбираем заранее: короткий ответ не должен спрашивать
+           ту же самую величину, что и пропуск этого же уровня. */
+        const fbTask = want("fill-blank") ? takeFillVariant(grade, units, section) : null;
+
         /* --- short-answer: единица измерения величины --- */
-        const saUnit = shuffle(pool, rnd)[0] || units[0];
+        // Сначала величины, которых ещё не было в коротких ответах класса,
+        // и не та, что попала в пропуск этого уровня.
+        const saUsed = SA_USES[grade] || (SA_USES[grade] = {});
+        const notFb = (u) => !fbTask || u.name.ru !== fbTask._name;
+        const use = (u) => saUsed[u.name.ru] || 0;
+        // 1) ещё не спрошенные величины этой темы, 2) ещё не спрошенные в классе,
+        // 3) если весь курс исчерпан — самые редкие по числу использований.
+        const saFreeLocal = pool.filter(u => notFb(u) && !use(u));
+        const saFreeAll = units.filter(u => notFb(u) && !use(u));
+        let saChoices = saFreeLocal.length ? saFreeLocal : saFreeAll;
+        if (!saChoices.length) {
+            const minUse = Math.min(...units.filter(notFb).map(use));
+            saChoices = units.filter(u => notFb(u) && use(u) === minUse);
+        }
+        const saUnit = shuffle(saChoices.length ? saChoices : pool, rnd)[0] || units[0];
+        const saN = use(saUnit);
+        saUsed[saUnit.name.ru] = saN + 1;
+        const saTpl = T.unitQ[saN % T.unitQ.length];
         if (want("short-answer")) out.push({
             id: `t${grade}_l${level.id}_${topic}_sa`,
             type: "short-answer",
             topic,
             difficulty: 2,
             question: {
-                ru: fillTemplate(T.unitQ.ru, { name: saUnit.name.ru }),
-                en: fillTemplate(T.unitQ.en, { name: saUnit.name.en }),
-                kk: fillTemplate(T.unitQ.kk, { name: saUnit.name.kk })
+                ru: fillTemplate(saTpl.ru, { name: saUnit.name.ru }),
+                en: fillTemplate(saTpl.en, { name: saUnit.name.en }),
+                kk: fillTemplate(saTpl.kk, { name: saUnit.name.kk })
             },
             correctAnswer: {
                 ru: saUnit.ans.ru,
@@ -519,67 +695,24 @@ function generate(grade) {
         }
         const rightOrder = shuffle(matchUnits.map((_, i) => i), rnd);
         /* --- добивка: если в пуле уровня нет fill-blank или numeric --- */
-        if (want("fill-blank") && matchUnits.length) {
-            // Берём величину, чья единица в этом классе встречается ровно один раз, —
-            // иначе вопрос «какая величина измеряется в секундах» был бы неоднозначным.
-            const uniqueUnit = (u) => units.filter(x => x.unit.ru === u.unit.ru).length === 1;
-            const fbCandidates = matchUnits.concat(units.filter(u => u.section === section))
-                .filter((u, i, arr) => arr.indexOf(u) === i && uniqueUnit(u))
-                .sort((a, b) => a.name.ru.length - b.name.ru.length);
-            // Разные уровни получают разные вопросы — берём по кругу
-            const fbUnit = fbCandidates.length ? fbCandidates[level.id % fbCandidates.length] : null;
-            if (fbUnit) {
-                out.push({
-                    id: `t${grade}_l${level.id}_${topic}_fb`,
-                    type: "fill-blank",
-                    topic,
-                    difficulty: 2,
-                    question: {
-                        ru: fillTemplate(FILL_TPL.unitQ.ru, { unit: fbUnit.unit.ru }),
-                        en: fillTemplate(FILL_TPL.unitQ.en, { unit: fbUnit.unit.en }),
-                        kk: fillTemplate(FILL_TPL.unitQ.kk, { unit: fbUnit.unit.kk })
-                    },
-                    correctAnswer: {
-                        ru: nameVariants(fbUnit.name.ru, "ru"),
-                        en: nameVariants(fbUnit.name.en, "en"),
-                        kk: nameVariants(fbUnit.name.kk, "kk")
-                    },
-                    hint: {
-                        ru: "Название единицы подсказывает, какую величину она измеряет. Это величина из этой темы.",
-                        en: "The unit's name hints at the quantity it measures. It belongs to this topic.",
-                        kk: "Бірліктің атауы қандай шама өлшенетінін көрсетеді. Бұл — осы тақырыптың шамасы."
-                    },
-                    explanation: {
-                        ru: `В ${fbUnit.unit.ru} измеряется ${fbUnit.name.ru}.`,
-                        en: `The quantity measured in ${fbUnit.unit.en} is ${fbUnit.name.en}.`,
-                        kk: `${fbUnit.unit.kk} бірлігімен ${fbUnit.name.kk} өлшенеді.`
-                    }
-                });
-            } else {
-                // Резерв: спрашиваем единицу величины (ответ — единица)
-                const fbAlt = pool.slice().sort((a, b) => a.name.ru.length - b.name.ru.length)[0] || units[0];
-                out.push({
-                    id: `t${grade}_l${level.id}_${topic}_fb`,
-                    type: "fill-blank",
-                    topic,
-                    difficulty: 2,
-                    question: {
-                        ru: `Единица измерения величины «${fbAlt.name.ru}» в СИ — ___.`,
-                        en: `The SI unit of «${fbAlt.name.en}» is ___.`,
-                        kk: `«${fbAlt.name.kk}» шамасының ХБЖ-дағы бірлігі — ___.`
-                    },
-                    correctAnswer: { ru: fbAlt.ans.ru, en: fbAlt.ans.en, kk: fbAlt.ans.kk },
-                    hint: T.unitHint,
-                    explanation: {
-                        ru: fillTemplate(T.unitExpl.ru, { name: fbAlt.name.ru, unit: fbAlt.unit.ru }),
-                        en: fillTemplate(T.unitExpl.en, { name: fbAlt.name.en, unit: fbAlt.unit.en }),
-                        kk: fillTemplate(T.unitExpl.kk, { name: fbAlt.name.kk, unit: fbAlt.unit.kk })
-                    }
-                });
-            }
+        if (fbTask) {
+            const fb = fbTask;
+            out.push({
+                id: `t${grade}_l${level.id}_${topic}_fb`,
+                type: "fill-blank",
+                topic,
+                difficulty: 2,
+                question: fb.question,
+                correctAnswer: fb.answer,
+                hint: fb.hint,
+                explanation: fb.explanation
+            });
         }
         if (want("numeric")) {
-            const conv = CONVERSIONS[(level.id + grade) % CONVERSIONS.length];
+            const numUsed = NUM_USES[grade] || (NUM_USES[grade] = {});
+            const numFresh = CONVERSIONS.filter(c => !numUsed[c.ru]);
+            const conv = (numFresh.length ? numFresh : CONVERSIONS)[(level.id + grade) % (numFresh.length || CONVERSIONS.length)];
+            numUsed[conv.ru] = (numUsed[conv.ru] || 0) + 1;
             out.push({
                 id: `t${grade}_l${level.id}_${topic}_num`,
                 type: "numeric",
@@ -606,7 +739,11 @@ function generate(grade) {
             type: "matching",
             topic,
             difficulty: 2,
-            question: T.matchQ,
+            question: {
+                ru: fillTemplate(T.matchQ.ru, { title: levelTitle.ru }),
+                en: fillTemplate(T.matchQ.en, { title: levelTitle.en }),
+                kk: fillTemplate(T.matchQ.kk, { title: levelTitle.kk })
+            },
             pairs: {
                 left: {
                     ru: matchUnits.map(u => u.name.ru),
@@ -637,7 +774,7 @@ const banner = (grade, tasks) => `/* ===== Задания новых типов,
    Сгенерировано tools/gen-task-types.js — правки вносить в генератор.
    Типы: multi-select (отметь все), short-answer (короткий ответ),
    matching (сопоставление величины и единицы СИ).
-   Всего заданий: ${tasks.length} (по 3 на каждый уровень). */
+   Всего заданий: ${tasks.length} (набор зависит от того, каких типов не хватает в банке уровня). */
 const TASKS_DATABASE_TYPES = ${JSON.stringify(tasks, null, 1)};
 window.TASKS_DATABASE_TYPES = TASKS_DATABASE_TYPES;
 `;

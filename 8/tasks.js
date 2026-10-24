@@ -23897,28 +23897,28 @@ const TASKS_DATABASE_EXT = [
     "topic": "p35",
     "difficulty": 1,
     "question": {
-      "ru": "Какое действие тока используется в электродвигателе?",
-      "en": "What effect of current is used in an electric motor?",
-      "kk": "Электр қозғалтқышында токтың қандай әсері қолданылады?"
+      "ru": "Что заставляет ротор электродвигателя вращаться?",
+      "en": "What makes the rotor of an electric motor turn?",
+      "kk": "Электр қозғалтқышының роторын не айналдырады?"
     },
     "options": {
       "ru": [
-        "Магнитное",
-        "Только химическое",
-        "Только световое",
-        "Гравитационное"
+        "Действие магнитного поля на проводник с током",
+        "Нагревание проводника током",
+        "Химическое действие тока",
+        "Излучение света проводником"
       ],
       "en": [
-        "Magnetic",
-        "Chemical only",
-        "Light only",
-        "Gravitational"
+        "Magnetic field acting on a current-carrying conductor",
+        "Heating of the conductor by current",
+        "Chemical action of current",
+        "Light emission by the conductor"
       ],
       "kk": [
-        "Магниттік",
-        "Тек химиялық",
-        "Тек жарық",
-        "Гравитациялық"
+        "Магнит өрісінің ток бар өткізгішке әсері",
+        "Токтың өткізгішті қыздыруы",
+        "Токтың химиялық әсері",
+        "Өткізгіштің жарық шығаруы"
       ]
     },
     "correctAnswer": 0,
@@ -31263,9 +31263,9 @@ const TASKS_DATABASE_EXT = [
     "topic": "lab3",
     "difficulty": 1,
     "question": {
-      "ru": "Прибор для измерения напряжения называется ___.",
-      "en": "The voltage measuring device is called ___.",
-      "kk": "Кернеуді өлшейтін құрылғы ___ деп аталады."
+      "ru": "В лабораторной работе напряжение на участке цепи измеряют прибором, который называется ___.",
+      "en": "In the lab work the voltage across a circuit section is measured by a device called ___.",
+      "kk": "Зертханалық жұмыста тізбек бөлігіндегі кернеу ___ деп аталатын құрылғымен өлшенеді."
     },
     "correctAnswer": {
       "ru": [
@@ -31747,9 +31747,9 @@ const TASKS_DATABASE_EXT = [
     "topic": "lab3",
     "difficulty": 1,
     "question": {
-      "ru": "Вольтметр имеет большое сопротивление.",
-      "en": "The voltmeter has high resistance.",
-      "kk": "Вольтметрдің кедергісі жоғары."
+      "ru": "Вольтметр подключают параллельно участку цепи.",
+      "en": "A voltmeter is connected in parallel with the circuit section.",
+      "kk": "Вольтметр тізбек бөлігіне параллель жалғанады."
     },
     "correctAnswer": true,
     "explanation": {
@@ -32221,9 +32221,9 @@ const TASKS_DATABASE_EXT = [
     "topic": "lab4",
     "difficulty": 2,
     "question": {
-      "ru": "Сопротивление проводника зависит от напряжения.",
-      "en": "The resistance of the conductor depends on the voltage.",
-      "kk": "Өткізгіштің кедергісі кернеуге байланысты."
+      "ru": "Сопротивление проводника можно изменить, меняя только напряжение на нём.",
+      "en": "The resistance of a conductor can be changed by changing only the voltage across it.",
+      "kk": "Өткізгіштің кедергісін тек оның кернеуін өзгерту арқылы өзгертуге болады."
     },
     "correctAnswer": false,
     "explanation": {
@@ -33849,9 +33849,9 @@ const TASKS_DATABASE_EXT = [
     "topic": "lab7",
     "difficulty": 1,
     "question": {
-      "ru": "Работа тока вычисляется по формуле A = P * ___.",
-      "en": "The work done by the current is calculated using the formula A = P * ___.",
-      "kk": "Токпен орындалатын жұмыс A = P * ___. формуласы арқылы есептеледі."
+      "ru": "Работу тока за время t находят по формуле A = P * ___.",
+      "en": "The work of current over the time t is found by the formula A = P * ___.",
+      "kk": "Токтың t уақыт ішіндегі жұмысы A = P * ___ формуласымен табылады."
     },
     "correctAnswer": {
       "ru": [
@@ -33909,9 +33909,9 @@ const TASKS_DATABASE_EXT = [
     "topic": "lab7",
     "difficulty": 2,
     "question": {
-      "ru": "1 кВт·ч = 3,6·10⁶ Дж.",
-      "en": "1 kW·h = 3.6·10⁶ J.",
-      "kk": "1 кВт·ч = 3,6·10⁶ Дж."
+      "ru": "Счётчик электроэнергии в лабораторной работе показывает работу тока в кВт·ч.",
+      "en": "In the lab work the electricity meter shows the work of current in kWh.",
+      "kk": "Зертханалық жұмыста электр есептегіш токтың жұмысын кВт·сағ-пен көрсетеді."
     },
     "correctAnswer": true,
     "explanation": {
@@ -34001,9 +34001,9 @@ const TASKS_DATABASE_EXT = [
     "topic": "lab7",
     "difficulty": 1,
     "question": {
-      "ru": "В каких единицах измеряется мощность?",
-      "en": "In what units is power measured?",
-      "kk": "Қуат қандай өлшем бірліктермен өлшенеді?"
+      "ru": "В каких единицах записывают мощность лампы в лабораторной работе?",
+      "en": "In what units is the power of a lamp written in the lab work?",
+      "kk": "Зертханалық жұмыста шамның қуаты қандай бірліктермен жазылады?"
     },
     "options": {
       "ru": [
@@ -34097,9 +34097,9 @@ const TASKS_DATABASE_EXT = [
     "topic": "lab7",
     "difficulty": 2,
     "question": {
-      "ru": "Как изменится мощность, если напряжение увеличить в 2 раза при постоянном сопротивлении?",
-      "en": "How will the power change if the voltage is increased by 2 times at constant resistance?",
-      "kk": "Тұрақты кедергіде кернеуді 2 есе арттырса, қуат қалай өзгереді?"
+      "ru": "Лампу подключили к источнику с вдвое большим напряжением, сопротивление не изменилось. Как изменится её мощность?",
+      "en": "A lamp was connected to a source with twice the voltage; its resistance did not change. How will its power change?",
+      "kk": "Шамды кернеуі екі есе үлкен көзге қосты, кедергі өзгерген жоқ. Шамның қуаты қалай өзгереді?"
     },
     "options": {
       "ru": [
@@ -34273,9 +34273,9 @@ const TASKS_DATABASE_EXT = [
     "topic": "lab7",
     "difficulty": 1,
     "question": {
-      "ru": "Мощность тока вычисляется по формуле P = U * ___.",
-      "en": "The current power is calculated using the formula P = U * ___.",
-      "kk": "Ток қуаты P = U * ___. формуласы арқылы есептеледі."
+      "ru": "В лабораторной работе мощность лампы считают по формуле P = U * ___.",
+      "en": "In the lab work the power of a lamp is calculated by the formula P = U * ___.",
+      "kk": "Зертханалық жұмыста шамның қуаты P = U * ___ формуласымен есептеледі."
     },
     "correctAnswer": {
       "ru": [
@@ -35454,9 +35454,9 @@ const TASKS_DATABASE_EXT = [
     "topic": "lab9",
     "difficulty": 2,
     "question": {
-      "ru": "Сколько полюсов у электромагнита?",
-      "en": "How many poles does an electromagnet have?",
-      "kk": "Электромагниттің неше полюсі бар?"
+      "ru": "Сколько полюсов обнаруживают у собранного в лабораторной работе электромагнита?",
+      "en": "How many poles does the electromagnet assembled in the lab work have?",
+      "kk": "Зертханалық жұмыста жиналған электромагниттің қанша полюсі болады?"
     },
     "correctAnswer": 2,
     "tolerance": 0,
@@ -35876,9 +35876,9 @@ const TASKS_DATABASE_EXT = [
     "topic": "lab10",
     "difficulty": 2,
     "question": {
-      "ru": "Как изменится угол преломления при увеличении угла падения?",
-      "en": "How does the angle of refraction change as the angle of incidence increases?",
-      "kk": "Түсу бұрышы өскен сайын сыну бұрышы қалай өзгереді?"
+      "ru": "В опыте со стеклянной пластинкой увеличили угол падения. Что произойдёт с углом преломления?",
+      "en": "In the experiment with a glass plate the angle of incidence was increased. What happens to the angle of refraction?",
+      "kk": "Шыны пластинкамен тәжірибеде түсу бұрышын үлкейтті. Сыну бұрышы не болады?"
     },
     "options": {
       "ru": [
@@ -36434,9 +36434,9 @@ const TASKS_DATABASE_EXT = [
     "topic": "lab11",
     "difficulty": 1,
     "question": {
-      "ru": "Единица измерения оптической силы — ___.",
-      "en": "The unit of optical power is ___.",
-      "kk": "Оптикалық қуат бірлігі ___."
+      "ru": "В лабораторной работе оптическую силу линзы выражают в ___.",
+      "en": "In the lab work the optical power of a lens is expressed in ___.",
+      "kk": "Зертханалық жұмыста линзаның оптикалық күші ___ өрнектеледі."
     },
     "correctAnswer": {
       "ru": [
