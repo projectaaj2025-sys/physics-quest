@@ -1229,7 +1229,7 @@ html[data-theme="light"] .pq-net-badge.is-offline {
     background: var(--gradient-card);
     box-shadow: var(--shadow);
 }
-.pq-story-h3 {
+.story-content .pq-story-h3 {
     margin: 0 0 12px;
     font-size: 15px;
     font-weight: 900;
@@ -1280,16 +1280,16 @@ html[data-theme="light"] .pq-net-badge.is-offline {
     letter-spacing: 0.02em;
     color: var(--primary-dark);
 }
-.pq-story-cast-bio {
+.story-content .pq-story-cast-bio {
     margin: 0;
     font-size: 12.5px;
     line-height: 1.5;
     color: var(--text-dim);
 }
 /* Сюжет остаётся сплошным текстом — без карточек и списков */
-.pq-story-plot { font-size: 14px; line-height: 1.7; color: var(--text); }
-.pq-story-plot-p { margin: 0 0 10px; }
-.pq-story-plot-p:last-child { margin-bottom: 0; }
+.story-content .pq-story-plot { font-size: 14px; line-height: 1.7; color: var(--text); }
+.story-content .pq-story-plot-p { margin: 0 0 10px; }
+.story-content .pq-story-plot-p:last-child { margin-bottom: 0; }
 
 /* --- Комикс внутри окна лора --- */
 .pq-comic-zone .pq-td-sec-head {
