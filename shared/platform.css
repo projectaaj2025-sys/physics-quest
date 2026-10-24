@@ -1451,3 +1451,82 @@ html[data-theme="dark"] .pq-story-jump {
     border-color: rgba(125, 211, 252, 0.5);
     color: #bae6fd;
 }
+
+/* ---------- разбор задачи внутри светлого окна задания ----------
+   Панель «Разбор задачи» и «Формулы §» рассчитаны на тёмный фон.
+   В окне задания (светлая тема) перекрашиваем их в светлые тона,
+   иначе текст почти не читается. В тёмной теме остаётся исходный вид. */
+#task-modal .pq-solver-btn {
+    border-color: #b9dced;
+    background: linear-gradient(135deg, #eaf7fd, #ffffff);
+    color: #14425c;
+}
+#task-modal .pq-solver-btn:hover { border-color: var(--primary, #00b8d4); }
+#task-modal .pq-solver-btn-text small { color: #5c7f92; }
+#task-modal .pq-solver-btn.active {
+    border-color: var(--primary, #00b8d4);
+    box-shadow: 0 0 0 2px rgba(0, 184, 212, 0.18) inset;
+    background: linear-gradient(135deg, #d9f3fb, #ffffff);
+}
+#task-modal .pq-solver-panel {
+    background: #f5fbff;
+    border-color: #cfe6f3;
+    color: #14314a;
+}
+#task-modal .pq-solver-block {
+    background: #ffffff;
+    border-color: #dceaf4;
+}
+#task-modal .pq-solver-block h4 { color: #0b7d99; }
+#task-modal .pq-given-table th { color: #5c7f92; border-bottom-color: #dceaf4; }
+#task-modal .pq-given-table td { border-bottom-color: #eaf3f9; }
+#task-modal .pq-given-table .pq-sym { color: #a2650a; }
+#task-modal .pq-given-table .pq-val { color: #14314a; }
+#task-modal .pq-given-table .pq-si { color: #19733b; }
+#task-modal .pq-solver-note,
+#task-modal .pq-solver-empty,
+#task-modal .pq-solver-help-note { color: #4f6d80; }
+#task-modal .pq-formula-big {
+    background: #fff8e6; border-left-color: #e0a51c; color: #7a4f00;
+}
+#task-modal .pq-subst { color: #0b6f8a; }
+#task-modal .pq-formula-list span { color: #43657a; }
+#task-modal .pq-steps { color: #14314a; }
+#task-modal .pq-steps li.pq-step-answer { color: #19733b; }
+#task-modal .pq-answer-box {
+    background: #eafaf0; border-color: #a9dcbe; color: #14532d;
+}
+#task-modal .pq-answer-box strong { color: #19733b; }
+#task-modal .pq-solver-template-note {
+    background: #eaf6fd; border-color: #9fcbe3; color: #17435c;
+}
+#task-modal .pq-fc-kicker { color: #0b7d99; }
+#task-modal .pq-fc-sub { color: #5c7f92; }
+#task-modal .pq-fc-list li { background: #ffffff; border-color: #dceaf4; }
+#task-modal .pq-fc-formula { color: #7a4f00; }
+#task-modal .pq-fc-desc { color: #4f6d80; }
+#task-modal .pq-fc-legend h5 { color: #5c7f92; }
+#task-modal .pq-fc-chip { background: #eaf7fd; border-color: #b9dced; color: #14425c; }
+#task-modal .pq-fc-chip b { color: #a2650a; }
+
+html[data-theme="dark"] #task-modal .pq-solver-btn {
+    border-color: rgba(0, 217, 255, 0.4);
+    background: linear-gradient(135deg, rgba(0, 150, 199, 0.22), rgba(20, 40, 80, 0.5));
+    color: #dff6ff;
+}
+html[data-theme="dark"] #task-modal .pq-solver-btn-text small { color: #8fc7e6; }
+html[data-theme="dark"] #task-modal .pq-solver-panel {
+    background: linear-gradient(160deg, rgba(12, 24, 48, 0.94), rgba(7, 14, 30, 0.96));
+    border-color: rgba(96, 165, 250, 0.3);
+    color: #e8f2ff;
+}
+html[data-theme="dark"] #task-modal .pq-solver-block { background: rgba(255, 255, 255, 0.035); border-color: rgba(255, 255, 255, 0.07); }
+html[data-theme="dark"] #task-modal .pq-given-table th { color: #8ea8c9; border-bottom-color: rgba(255,255,255,.08); }
+html[data-theme="dark"] #task-modal .pq-given-table td { border-bottom-color: rgba(255,255,255,.07); }
+html[data-theme="dark"] #task-modal .pq-given-table .pq-sym { color: #ffd479; }
+html[data-theme="dark"] #task-modal .pq-given-table .pq-val { color: #eaf6ff; }
+html[data-theme="dark"] #task-modal .pq-formula-big { background: rgba(255, 213, 79, 0.08); border-left-color: #ffd479; color: #ffe6a3; }
+html[data-theme="dark"] #task-modal .pq-steps { color: #d7e6fb; }
+html[data-theme="dark"] #task-modal .pq-answer-box { background: rgba(72, 214, 148, 0.12); border-color: rgba(72, 214, 148, 0.4); color: #d8ffe9; }
+html[data-theme="dark"] #task-modal .pq-fc-list li { background: rgba(255, 255, 255, 0.04); border-color: rgba(255, 255, 255, 0.07); }
+html[data-theme="dark"] #task-modal .pq-fc-formula { color: #ffe6a3; }

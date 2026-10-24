@@ -12,7 +12,7 @@
         ru: {
             open: "Разбор задачи",
             openHint: "Дано → СИ → Формула → Решение",
-            formulas: "📐 Формулы §",
+            formulas: "Формулы §",
             formulasHint: "Карточка формул параграфа",
             tabSolution: "Дано → Решение",
             tabFormulas: "Карточка формул",
@@ -53,7 +53,7 @@
         kk: {
             open: "Есепті талдау",
             openHint: "Берілгені → ХБ → Формула → Шешуі",
-            formulas: "📐 § формулалары",
+            formulas: "§ формулалары",
             formulasHint: "Параграф формулаларының карточкасы",
             tabSolution: "Берілгені → Шешуі",
             tabFormulas: "Формулалар карточкасы",
@@ -94,7 +94,7 @@
         en: {
             open: "Solve step by step",
             openHint: "Given → SI → Formula → Solution",
-            formulas: "📐 § formulas",
+            formulas: "§ formulas",
             formulasHint: "Formula card of the paragraph",
             tabSolution: "Given → Solution",
             tabFormulas: "Formula card",
