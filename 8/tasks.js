@@ -1516,7 +1516,7 @@ const TASKS_DATABASE_EXT = [
     "correctAnswer": 2,
     "explanation": {
       "ru": "Абсолютный ноль по шкале Кельвина соответствует -273,15 °C (приблизительно -273 °C).",
-      "en": "Absolute zero on the Kelvin scale corresponds to -273,15 °C (approximately -273 °C).",
+      "en": "Absolute zero on the Kelvin scale corresponds to -273.15 °C (approximately -273 °C).",
       "kk": "Кельвин шкаласы бойынша абсолютті нөл -273,15 °C (шамамен -273 °C) сәйкес келеді."
     },
     "hint": {
@@ -12831,7 +12831,7 @@ const TASKS_DATABASE_EXT = [
     "difficulty": 1,
     "question": {
       "ru": "Заряд электрона равен -1,6·10⁻¹⁹ ___.",
-      "en": "The charge of an electron is -1,6·10⁻¹⁹ ___.",
+      "en": "The charge of an electron is -1.6·10⁻¹⁹ ___.",
       "kk": "Электронның заряды -1,6·10⁻¹⁹ ___."
     },
     "correctAnswer": {
@@ -18821,7 +18821,7 @@ const TASKS_DATABASE_EXT = [
     "correctAnswer": true,
     "explanation": {
       "ru": "1 кВт·ч = 1000 Вт * 3600 с = 3 600 000 Дж.",
-      "en": "1 kW·h = 1000 W * 3600 s = 3 600 000 J.",
+      "en": "1 kW·h = 1000 W * 3600 s = 3,600,000 J.",
       "kk": "1 кВт·ч = 1000 Вт * 3600 с = 3 600 000 Дж."
     },
     "hint": {
@@ -27240,7 +27240,7 @@ const TASKS_DATABASE_EXT = [
     "difficulty": 2,
     "question": {
       "ru": "sin α = 0,75, sin γ = 0,50. Найдите показатель преломления.",
-      "en": "sin α = 0,75, sin γ = 0,50. Find the refractive index.",
+      "en": "sin α = 0.75, sin γ = 0.50. Find the refractive index.",
       "kk": "sin α = 0,75, sin γ = 0,50. Сыну көрсеткішін табыңыз."
     },
     "correctAnswer": 1.5,
@@ -27636,7 +27636,7 @@ const TASKS_DATABASE_EXT = [
     "difficulty": 2,
     "question": {
       "ru": "Показатель преломления стекла 1,5. Во сколько раз скорость света в стекле меньше, чем в вакууме?",
-      "en": "The refractive index of glass is 1,5. How many times is the speed of light in glass less than in vacuum?",
+      "en": "The refractive index of glass is 1.5. How many times is the speed of light in glass less than in vacuum?",
       "kk": "Шынының сыну көрсеткіші 1,5. Шыныдағы жарық жылдамдығы вакуумдағыдан неше есе аз?"
     },
     "correctAnswer": 1.5,
@@ -27770,7 +27770,7 @@ const TASKS_DATABASE_EXT = [
     "difficulty": 2,
     "question": {
       "ru": "sin α = 0,6, n = 1,5. Найдите sin γ.",
-      "en": "sin α = 0,6, n = 1,5. Find sin γ.",
+      "en": "sin α = 0.6, n = 1.5. Find sin γ.",
       "kk": "sin α = 0,6, n = 1,5. Табу sin γ."
     },
     "correctAnswer": 0.4,
@@ -35661,7 +35661,7 @@ const TASKS_DATABASE_EXT = [
     "difficulty": 2,
     "question": {
       "ru": "sin α = 0,866, sin γ = 0,5. Найдите показатель преломления стекла.",
-      "en": "sin α = 0,866, sin γ = 0,5. Find the refractive index of the glass.",
+      "en": "sin α = 0.866, sin γ = 0.5. Find the refractive index of the glass.",
       "kk": "sin α = 0,866, sin γ = 0,5. Әйнектің сыну көрсеткішін табыңыз."
     },
     "correctAnswer": 1.732,
@@ -35827,7 +35827,7 @@ const TASKS_DATABASE_EXT = [
     "difficulty": 2,
     "question": {
       "ru": "sin α = 0,6, sin γ = 0,4. Найдите n.",
-      "en": "sin α = 0,6, sin γ = 0,4. Find n.",
+      "en": "sin α = 0.6, sin γ = 0.4. Find n.",
       "kk": "sin α = 0,6, sin γ = 0,4. Табу n."
     },
     "correctAnswer": 1.5,
@@ -35919,7 +35919,7 @@ const TASKS_DATABASE_EXT = [
     "difficulty": 2,
     "question": {
       "ru": "n = 1,5. sin α = 0,75. Найдите sin γ.",
-      "en": "n = 1,5. sin α = 0,75. Find sin γ.",
+      "en": "n = 1.5. sin α = 0.75. Find sin γ.",
       "kk": "n = 1,5. sin α = 0,75. Табу sin γ."
     },
     "correctAnswer": 0.5,
@@ -36085,7 +36085,7 @@ const TASKS_DATABASE_EXT = [
     "difficulty": 2,
     "question": {
       "ru": "sin α = 0,5, n = 1,5. Найдите sin γ.",
-      "en": "sin α = 0,5, n = 1,5. Find sin γ.",
+      "en": "sin α = 0.5, n = 1.5. Find sin γ.",
       "kk": "sin α = 0,5, n = 1,5. Табу sin γ."
     },
     "correctAnswer": 0.333,
@@ -36251,7 +36251,7 @@ const TASKS_DATABASE_EXT = [
     "difficulty": 2,
     "question": {
       "ru": "n = 1,6, sin γ = 0,5. Найдите sin α.",
-      "en": "n = 1,6, sin γ = 0,5. Find sin α.",
+      "en": "n = 1.6, sin γ = 0.5. Find sin α.",
       "kk": "n = 1,6, sin γ = 0,5. Табу sin α."
     },
     "correctAnswer": 0.8,

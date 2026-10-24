@@ -151,7 +151,9 @@
             });
             this.injectButtons();
             const root = document.getElementById("pq-battle");
-            if (root && !this.state) this.renderSetup();
+            if (!root) return;
+            if (!this.state) this.renderSetup();
+            else this.renderQuestion(true);
         },
 
         injectButtons() {
@@ -394,14 +396,20 @@
             `;
         },
 
-        renderQuestion() {
+        renderQuestion(reuse) {
             const root = document.getElementById("pq-battle");
             const s = this.state;
             if (!root || !s) return;
-            const q = s.pool[s.index % s.pool.length];
-            s.index++;
-            s.question = q;
-            s.answered = false;
+            let q;
+            if (reuse && s.question) {
+                // повторный рендер (например, смена языка) — тот же вопрос и тот же таймер
+                q = s.question;
+            } else {
+                q = s.pool[s.index % s.pool.length];
+                s.index++;
+                s.question = q;
+                s.answered = false;
+            }
             const crew = s.crews[s.turn];
             const question = loc(q.question);
             const type = q.type;
@@ -448,15 +456,21 @@
                     btn.addEventListener("click", () => this.answerChoice(Number(btn.dataset.battleAnswer)));
                 });
             }
-            this.startTimer(45);
+            if (reuse) {
+                const left = s.deadline ? Math.max(1, Math.ceil((s.deadline - Date.now()) / 1000)) : 45;
+                this.startTimer(left, s.deadline);
+            } else {
+                this.startTimer(45);
+            }
         },
 
-        startTimer(seconds) {
+        startTimer(seconds, deadline) {
             if (this.timer) clearInterval(this.timer);
             const total = seconds * 1000;
-            const start = Date.now();
+            const end = deadline || (Date.now() + total);
+            if (this.state) this.state.deadline = end;
             this.timer = setInterval(() => {
-                const left = Math.max(0, total - (Date.now() - start));
+                const left = Math.max(0, end - Date.now());
                 const bar = document.getElementById("pq-battle-timer-bar");
                 const label = document.getElementById("pq-battle-time");
                 if (bar) bar.style.width = (left / total) * 100 + "%";
