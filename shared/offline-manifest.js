@@ -119,11 +119,11 @@ window.PQ_OFFLINE_FILES = [
     "shared/simulators-89.js",
     "shared/sound.js",
     "shared/storage.js",
+    "shared/story-cast.js",
     "shared/styles.css",
     "shared/teacher.js",
     "shared/team-battle.js",
     "shared/theme.js",
-    "shared/story-cast.js",
     "shared/trilogy-diary.js",
     "sw.js"
 ];
