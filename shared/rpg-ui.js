@@ -654,12 +654,14 @@ Object.assign(RPG, {
     renderHubTabs() {
         const tabs = this.dom.hubTabs;
         if (!tabs) return;
+        const queue = this.reviewQueue ? this.reviewQueue().length : 0;
         const items = [
             ["char", rpgT("tabChar")],
             ["skills", rpgT("tabSkills")],
             ["ach", rpgT("tabAch")],
             ["shop", rpgT("tabShop")],
-            ["quests", rpgT("tabQuests")]
+            ["quests", rpgT("tabQuests")],
+            ["mistakes", rpgT("tabMistakes") + (queue ? ` · ${queue}` : "")]
         ];
         tabs.innerHTML = items.map(([id, label]) =>
             `<button class="rpg-hub-tab ${this._hubTab === id ? "active" : ""}" type="button" data-hub-tab="${id}">${escapeHtml(label)}</button>`
@@ -674,8 +676,51 @@ Object.assign(RPG, {
             case "ach": body.innerHTML = this.renderAchievements(); break;
             case "shop": body.innerHTML = this.renderShop(); break;
             case "quests": body.innerHTML = this.renderQuests(); break;
+            case "mistakes": body.innerHTML = this.renderMistakes(); break;
             default: body.innerHTML = this.renderCharacter();
         }
+    },
+
+    // Вкладка «Ошибки»: тот же чёрный ящик, но открывается из штаба,
+    // а не только с экрана победы. Отсюда же запускается техобслуживание.
+    renderMistakes() {
+        const queue = this.reviewQueue ? this.reviewQueue() : [];
+        const understood = Number(this.state && this.state.review && this.state.review.understood) || 0;
+        const fixed = Number(this.state && this.state.review && this.state.review.fixed) || 0;
+        const sessions = Number(this.state && this.state.review && this.state.review.sessions) || 0;
+        const supported = new Set(["multiple-choice", "true-false", "fill-blank", "numeric", "short-answer", "multi-select", "matching"]);
+        const ready = queue.filter(q => supported.has(q.type)).length;
+        const list = queue.slice(0, 6).map(item => {
+            const topic = item.topicName || (typeof rpgTopicLabel === "function" ? rpgTopicLabel(item.topic) : item.topic);
+            return `<div class="rpg-bb-row">
+                <div class="rpg-bb-row-main">
+                    <div class="rpg-bb-row-topic">${escapeHtml(topic || "")}</div>
+                    <div class="rpg-bb-row-q">${formatFormula(String(item.question || ""))}</div>
+                </div>
+                <span class="rpg-bb-row-tag">${escapeHtml(item.type || "")}</span>
+            </div>`;
+        }).join("");
+        return `
+            <div class="rpg-bb-panel">
+                <div class="rpg-bb-head">
+                    <div class="rpg-bb-icon">🛠</div>
+                    <div class="rpg-bb-head-main">
+                        <div class="rpg-bb-kicker">${escapeHtml(rpgT("bbKicker"))}</div>
+                        <div class="rpg-bb-title">${escapeHtml(rpgT("bbArchiveTitle"))}</div>
+                    </div>
+                </div>
+                <p class="rpg-bb-sub">${escapeHtml(rpgT("bbArchiveSub"))}</p>
+                <div class="rpg-bb-stats">
+                    <span>${escapeHtml(rpgT("bbQueueLine", queue.length, understood))}</span>
+                    <span>${escapeHtml(rpgT("maintStatFixed", fixed, sessions))}</span>
+                </div>
+                ${queue.length ? `<div class="rpg-bb-rows">${list}</div>` : `<div class="rpg-bb-empty">✅ ${escapeHtml(rpgT("bbEmpty"))}</div>`}
+                <div class="rpg-bb-foot">
+                    <button type="button" class="btn btn-primary rpg-bb-maint" data-bb="maint" ${ready ? "" : "disabled"}>${escapeHtml(rpgT("bbMaintenance"))}</button>
+                    <button type="button" class="btn btn-secondary" data-bb="archive">${escapeHtml(rpgT("bbOpenArchive"))}</button>
+                </div>
+                ${ready ? `<p class="rpg-bb-note">${escapeHtml(rpgT("maintFromHubHint"))}</p>` : ""}
+            </div>`;
     },
 
     renderCharacter() {

@@ -579,9 +579,9 @@ body.pq-in-gameplay .pq-sound-fab { display: none; }
     color: #8ea8c9; font-weight: 700; padding: 2px 6px 6px; border-bottom: 1px solid rgba(255,255,255,.08);
 }
 .pq-given-table td { padding: 6px; border-bottom: 1px dashed rgba(255, 255, 255, 0.07); }
-.pq-given-table .pq-sym { font-weight: 800; color: #ffd479; font-family: "Cambria Math", Georgia, serif; font-size: 15px; width: 24%; }
-.pq-given-table .pq-val { color: #eaf6ff; }
-.pq-given-table .pq-si { color: #8fe3b0; }
+.pq-given-table .pq-g-sym { font-weight: 800; color: #ffd479; font-family: "Cambria Math", Georgia, serif; font-size: 15px; width: 24%; }
+.pq-given-table .pq-g-val { color: #eaf6ff; }
+.pq-given-table .pq-g-si { color: #8fe3b0; }
 .pq-solver-note { margin: 8px 0 0; font-size: 11.5px; line-height: 1.45; color: #93a9c7; }
 .pq-solver-empty { margin: 0; font-size: 12.5px; line-height: 1.5; color: #9fb3cf; }
 .pq-formula-big {
@@ -1452,81 +1452,169 @@ html[data-theme="dark"] .pq-story-jump {
     color: #bae6fd;
 }
 
-/* ---------- разбор задачи внутри светлого окна задания ----------
+/* ---------- разбор задачи и формулы в светлых окнах ----------
    Панель «Разбор задачи» и «Формулы §» рассчитаны на тёмный фон.
-   В окне задания (светлая тема) перекрашиваем их в светлые тона,
-   иначе текст почти не читается. В тёмной теме остаётся исходный вид. */
-#task-modal .pq-solver-btn {
+   В окне задания и в окне теории (светлая тема) перекрашиваем их в светлые тона,
+   иначе текст почти не читается. В тёмной теме возвращаем исходный вид. */
+#task-modal .pq-solver-btn,
+#theory-modal .pq-solver-btn {
     border-color: #b9dced;
     background: linear-gradient(135deg, #eaf7fd, #ffffff);
     color: #14425c;
 }
-#task-modal .pq-solver-btn:hover { border-color: var(--primary, #00b8d4); }
-#task-modal .pq-solver-btn-text small { color: #5c7f92; }
-#task-modal .pq-solver-btn.active {
+#task-modal .pq-solver-btn:hover,
+#theory-modal .pq-solver-btn:hover { border-color: var(--primary, #00b8d4); }
+#task-modal .pq-solver-btn-text small,
+#theory-modal .pq-solver-btn-text small { color: #5c7f92; }
+#task-modal .pq-solver-btn.active,
+#theory-modal .pq-solver-btn.active {
     border-color: var(--primary, #00b8d4);
     box-shadow: 0 0 0 2px rgba(0, 184, 212, 0.18) inset;
     background: linear-gradient(135deg, #d9f3fb, #ffffff);
 }
-#task-modal .pq-solver-panel {
+#task-modal .pq-solver-panel,
+#theory-modal .pq-solver-panel {
     background: #f5fbff;
     border-color: #cfe6f3;
     color: #14314a;
 }
-#task-modal .pq-solver-block {
+#task-modal .pq-solver-block,
+#theory-modal .pq-solver-block {
     background: #ffffff;
     border-color: #dceaf4;
 }
-#task-modal .pq-solver-block h4 { color: #0b7d99; }
-#task-modal .pq-given-table th { color: #5c7f92; border-bottom-color: #dceaf4; }
-#task-modal .pq-given-table td { border-bottom-color: #eaf3f9; }
-#task-modal .pq-given-table .pq-sym { color: #a2650a; }
-#task-modal .pq-given-table .pq-val { color: #14314a; }
-#task-modal .pq-given-table .pq-si { color: #19733b; }
+#task-modal .pq-solver-block h4,
+#theory-modal .pq-solver-block h4 { color: #0b7d99; }
+#task-modal .pq-given-table th,
+#theory-modal .pq-given-table th { color: #5c7f92; border-bottom-color: #dceaf4; }
+#task-modal .pq-given-table td,
+#theory-modal .pq-given-table td { border-bottom-color: #eaf3f9; }
+#task-modal .pq-given-table .pq-g-sym,
+#theory-modal .pq-given-table .pq-g-sym { color: #a2650a; }
+#task-modal .pq-given-table .pq-g-name,
+#theory-modal .pq-given-table .pq-g-name { color: #42617a; }
+#task-modal .pq-given-table .pq-g-si,
+#theory-modal .pq-given-table .pq-g-si { color: #19733b; }
+#task-modal .pq-given-table .pq-g-val,
+#theory-modal .pq-given-table .pq-g-val { color: #14314a; }
+#task-modal .pq-given-table .pq-g-si,
+#theory-modal .pq-given-table .pq-g-si { color: #19733b; }
 #task-modal .pq-solver-note,
+#theory-modal .pq-solver-note,
 #task-modal .pq-solver-empty,
-#task-modal .pq-solver-help-note { color: #4f6d80; }
-#task-modal .pq-formula-big {
+#theory-modal .pq-solver-empty,
+#task-modal .pq-solver-help-note,
+#theory-modal .pq-solver-help-note { color: #4f6d80; }
+#task-modal .pq-si-note,
+#theory-modal .pq-si-note { color: #1d5b73; }
+#task-modal .pq-formula-inline,
+#theory-modal .pq-formula-inline { color: #7a4f00; }
+#task-modal .pq-answer-label,
+#theory-modal .pq-answer-label { color: #19733b; }
+#task-modal .pq-formula-big,
+#theory-modal .pq-formula-big {
     background: #fff8e6; border-left-color: #e0a51c; color: #7a4f00;
 }
-#task-modal .pq-subst { color: #0b6f8a; }
-#task-modal .pq-formula-list span { color: #43657a; }
-#task-modal .pq-steps { color: #14314a; }
-#task-modal .pq-steps li.pq-step-answer { color: #19733b; }
-#task-modal .pq-answer-box {
+#task-modal .pq-subst,
+#theory-modal .pq-subst { color: #0b6f8a; }
+#task-modal .pq-formula-list span,
+#theory-modal .pq-formula-list span { color: #43657a; }
+#task-modal .pq-steps,
+#theory-modal .pq-steps { color: #14314a; }
+#task-modal .pq-steps li.pq-step-answer,
+#theory-modal .pq-steps li.pq-step-answer { color: #19733b; }
+#task-modal .pq-answer-box,
+#theory-modal .pq-answer-box {
     background: #eafaf0; border-color: #a9dcbe; color: #14532d;
 }
-#task-modal .pq-answer-box strong { color: #19733b; }
-#task-modal .pq-solver-template-note {
+#task-modal .pq-answer-box strong,
+#theory-modal .pq-answer-box strong { color: #19733b; }
+#task-modal .pq-solver-template-note,
+#theory-modal .pq-solver-template-note {
     background: #eaf6fd; border-color: #9fcbe3; color: #17435c;
 }
-#task-modal .pq-fc-kicker { color: #0b7d99; }
-#task-modal .pq-fc-sub { color: #5c7f92; }
-#task-modal .pq-fc-list li { background: #ffffff; border-color: #dceaf4; }
-#task-modal .pq-fc-formula { color: #7a4f00; }
-#task-modal .pq-fc-desc { color: #4f6d80; }
-#task-modal .pq-fc-legend h5 { color: #5c7f92; }
-#task-modal .pq-fc-chip { background: #eaf7fd; border-color: #b9dced; color: #14425c; }
-#task-modal .pq-fc-chip b { color: #a2650a; }
+#task-modal .pq-fc-kicker,
+#theory-modal .pq-fc-kicker { color: #0b7d99; }
+#task-modal .pq-fc-sub,
+#theory-modal .pq-fc-sub { color: #5c7f92; }
+#task-modal .pq-fc-list li,
+#theory-modal .pq-fc-list li { background: #ffffff; border-color: #dceaf4; }
+#task-modal .pq-fc-formula,
+#theory-modal .pq-fc-formula { color: #7a4f00; }
+#task-modal .pq-fc-desc,
+#theory-modal .pq-fc-desc { color: #4f6d80; }
+#task-modal .pq-fc-legend h5,
+#theory-modal .pq-fc-legend h5 { color: #5c7f92; }
+#task-modal .pq-fc-chip,
+#theory-modal .pq-fc-chip { background: #eaf7fd; border-color: #b9dced; color: #14425c; }
+#task-modal .pq-fc-chip b,
+#theory-modal .pq-fc-chip b { color: #a2650a; }
 
-html[data-theme="dark"] #task-modal .pq-solver-btn {
+/* тёмная тема: возвращаем исходные значения панели */
+html[data-theme="dark"] #task-modal .pq-solver-btn,
+html[data-theme="dark"] #theory-modal .pq-solver-btn {
     border-color: rgba(0, 217, 255, 0.4);
     background: linear-gradient(135deg, rgba(0, 150, 199, 0.22), rgba(20, 40, 80, 0.5));
     color: #dff6ff;
 }
-html[data-theme="dark"] #task-modal .pq-solver-btn-text small { color: #8fc7e6; }
-html[data-theme="dark"] #task-modal .pq-solver-panel {
+html[data-theme="dark"] #task-modal .pq-solver-btn-text small,
+html[data-theme="dark"] #theory-modal .pq-solver-btn-text small { color: #8fc7e6; }
+html[data-theme="dark"] #task-modal .pq-solver-panel,
+html[data-theme="dark"] #theory-modal .pq-solver-panel {
     background: linear-gradient(160deg, rgba(12, 24, 48, 0.94), rgba(7, 14, 30, 0.96));
     border-color: rgba(96, 165, 250, 0.3);
     color: #e8f2ff;
 }
-html[data-theme="dark"] #task-modal .pq-solver-block { background: rgba(255, 255, 255, 0.035); border-color: rgba(255, 255, 255, 0.07); }
-html[data-theme="dark"] #task-modal .pq-given-table th { color: #8ea8c9; border-bottom-color: rgba(255,255,255,.08); }
-html[data-theme="dark"] #task-modal .pq-given-table td { border-bottom-color: rgba(255,255,255,.07); }
-html[data-theme="dark"] #task-modal .pq-given-table .pq-sym { color: #ffd479; }
-html[data-theme="dark"] #task-modal .pq-given-table .pq-val { color: #eaf6ff; }
-html[data-theme="dark"] #task-modal .pq-formula-big { background: rgba(255, 213, 79, 0.08); border-left-color: #ffd479; color: #ffe6a3; }
-html[data-theme="dark"] #task-modal .pq-steps { color: #d7e6fb; }
-html[data-theme="dark"] #task-modal .pq-answer-box { background: rgba(72, 214, 148, 0.12); border-color: rgba(72, 214, 148, 0.4); color: #d8ffe9; }
-html[data-theme="dark"] #task-modal .pq-fc-list li { background: rgba(255, 255, 255, 0.04); border-color: rgba(255, 255, 255, 0.07); }
-html[data-theme="dark"] #task-modal .pq-fc-formula { color: #ffe6a3; }
+html[data-theme="dark"] #task-modal .pq-solver-block,
+html[data-theme="dark"] #theory-modal .pq-solver-block { background: rgba(255, 255, 255, 0.035); border-color: rgba(255, 255, 255, 0.07); }
+html[data-theme="dark"] #task-modal .pq-given-table th,
+html[data-theme="dark"] #theory-modal .pq-given-table th { color: #8ea8c9; border-bottom-color: rgba(255,255,255,.08); }
+html[data-theme="dark"] #task-modal .pq-given-table td,
+html[data-theme="dark"] #theory-modal .pq-given-table td { border-bottom-color: rgba(255,255,255,.07); }
+html[data-theme="dark"] #task-modal .pq-given-table .pq-g-sym,
+html[data-theme="dark"] #theory-modal .pq-given-table .pq-g-sym { color: #ffd479; }
+html[data-theme="dark"] #task-modal .pq-given-table .pq-g-name,
+html[data-theme="dark"] #theory-modal .pq-given-table .pq-g-name { color: #a9c1dd; }
+html[data-theme="dark"] #task-modal .pq-given-table .pq-g-val,
+html[data-theme="dark"] #theory-modal .pq-given-table .pq-g-val { color: #eaf6ff; }
+html[data-theme="dark"] #task-modal .pq-given-table .pq-g-val,
+html[data-theme="dark"] #theory-modal .pq-given-table .pq-g-val { color: #eaf6ff; }
+html[data-theme="dark"] #task-modal .pq-si-note,
+html[data-theme="dark"] #theory-modal .pq-si-note { color: #bfe9ff; }
+html[data-theme="dark"] #task-modal .pq-formula-inline,
+html[data-theme="dark"] #theory-modal .pq-formula-inline { color: #ffe6a3; }
+html[data-theme="dark"] #task-modal .pq-formula-big,
+html[data-theme="dark"] #theory-modal .pq-formula-big { background: rgba(255, 213, 79, 0.08); border-left-color: #ffd479; color: #ffe6a3; }
+html[data-theme="dark"] #task-modal .pq-steps,
+html[data-theme="dark"] #theory-modal .pq-steps { color: #d7e6fb; }
+html[data-theme="dark"] #task-modal .pq-answer-box,
+html[data-theme="dark"] #theory-modal .pq-answer-box { background: rgba(72, 214, 148, 0.12); border-color: rgba(72, 214, 148, 0.4); color: #d8ffe9; }
+html[data-theme="dark"] #task-modal .pq-fc-list li,
+html[data-theme="dark"] #theory-modal .pq-fc-list li { background: rgba(255, 255, 255, 0.04); border-color: rgba(255, 255, 255, 0.07); }
+html[data-theme="dark"] #task-modal .pq-fc-formula,
+html[data-theme="dark"] #theory-modal .pq-fc-formula { color: #ffe6a3; }
+
+/* ---------- теория перед уровнем: разбор задачи и формулы ---------- */
+#theory-modal.theory-wide .modal-content { max-width: 940px; }
+.pq-theory { display: flex; flex-direction: column; gap: 12px; }
+.pq-theory-head h4 { margin: 2px 0 4px; font-size: 17px; color: #0b4a63; }
+.pq-theory-head p { margin: 0; font-size: 13px; line-height: 1.5; color: #4f6d80; }
+.pq-theory-kicker {
+    font-size: 11px; letter-spacing: .08em; text-transform: uppercase;
+    font-weight: 900; color: #0b7d99;
+}
+.pq-theory-question {
+    padding: 12px 14px; border-radius: 12px;
+    background: #eef8ff; border: 1px dashed #b9dced; color: #14314a;
+    font-size: 13.5px; line-height: 1.55;
+}
+.pq-theory-panel { margin: 0; }
+.pq-theory .pq-solver-panel { border-radius: 14px; padding: 14px; }
+.pq-theory .pq-solver-grid { align-items: start; }
+.pq-theory .pq-solver-block { display: flex; flex-direction: column; gap: 6px; }
+html[data-theme="dark"] .pq-theory-head h4 { color: #d8f1ff; }
+html[data-theme="dark"] .pq-theory-head p { color: #9fb3cf; }
+html[data-theme="dark"] .pq-theory-kicker { color: #7fd7ff; }
+html[data-theme="dark"] .pq-theory-question {
+    background: rgba(56, 189, 248, 0.08); border-color: rgba(125, 211, 252, 0.35); color: #dff6ff;
+}

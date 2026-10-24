@@ -558,6 +558,8 @@
             <div class="theory-tabs" id="theory-tabs" style="display:none">
                 <button type="button" class="theory-tab active" data-tab="textbook" data-i18n="theoryTabTextbook">📖 Учебник</button>
                 <button type="button" class="theory-tab" data-tab="conspekt" data-i18n="theoryTabConspekt">📘 Конспект</button>
+                <button type="button" class="theory-tab" data-tab="solution" data-i18n="theoryTabSolution">🧮 Разбор задачи</button>
+                <button type="button" class="theory-tab" data-tab="formulas" data-i18n="theoryTabFormulas">📐 Формулы §</button>
                 <button type="button" class="theory-tab" data-tab="experiment" data-i18n="theoryTabExperiment">🧪 Эксперимент</button>
             </div>
             <div class="theory-content" id="theory-content"></div>
@@ -757,6 +759,7 @@
         // Знакомство с героями и общий сюжет — показывается в «Лор и сюжет» перед комиксом
         scripts.push("./shared/story-cast.js");
         // Единый визуальный комикс-дневник трилогии (7 → 8 → 9) для всех параллелей
+        scripts.push("./shared/trilogy-comics-extra.js");
         scripts.push("./shared/trilogy-diary.js");
         // Визуальные canvas-симуляторы для 8 и 9 классов:
         // сначала светлый фотореалистичный движок, затем сами лаборатории

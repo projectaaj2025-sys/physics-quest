@@ -116,7 +116,7 @@
             [37, 43, ["observatory", "crystal"]]
         ],
         9: [
-            [1, 6, ["desert", "city"]],
+            [1, 6, ["desert", "clouds"]],
             [7, 12, ["desert", "tundra"]],
             [13, 19, ["volcano", "grid"]],
             [20, 27, ["ocean", "aurora"]],
@@ -149,6 +149,10 @@
         _cache: null,
         _stars: null,
 
+        themeById(id) {
+            return THEMES[id] || THEMES.asteria;
+        },
+
         pickFor(levelId, config) {
             let grade = Number(window.CURRENT_GRADE) || 8;
             const cfg = config || (typeof getLevelConfig === "function" ? getLevelConfig(levelId) : null) || {};
@@ -159,7 +163,7 @@
             if (chapter.indexOf("lab") === 0) {
                 const key = chapter;
                 const pair = TOPIC_THEMES[key] || ["grid", "crystal"];
-                return { theme: THEMES[pair[num % pair.length]], variant: num % 2 };
+                return { theme: this.themeById(pair[num % pair.length]), variant: num % 2 };
             }
 
             const pNum = parseInt(chapter.replace("p", ""), 10);
@@ -167,7 +171,7 @@
                 const table = CHAPTER_THEMES[grade] || CHAPTER_THEMES[8];
                 for (const [from, to, ids] of table) {
                     if (pNum >= from && pNum <= to) {
-                        return { theme: THEMES[ids[num % ids.length]], variant: num % 3 };
+                        return { theme: this.themeById(ids[num % ids.length]), variant: num % 3 };
                     }
                 }
             }
@@ -177,11 +181,11 @@
             for (const topic of topics) {
                 if (TOPIC_THEMES[topic]) {
                     const pair = TOPIC_THEMES[topic];
-                    return { theme: THEMES[pair[num % pair.length]], variant: num % 3 };
+                    return { theme: this.themeById(pair[num % pair.length]), variant: num % 3 };
                 }
             }
             const order = ["asteria", "ocean", "desert", "aurora", "crystal", "solar", "grid", "tundra"];
-            return { theme: THEMES[order[(num + grade) % order.length]], variant: num % 3 };
+            return { theme: this.themeById(order[(num + grade) % order.length]), variant: num % 3 };
         },
 
         get(levelId, config) {

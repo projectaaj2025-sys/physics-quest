@@ -25,7 +25,9 @@
             actLabel: "Акт сюжета",
             lockedTitle: "Глава пока закрыта",
             lockedText: "Комикс откроется, когда ты дойдёшь до миссии #{0}. Пройденные главы доступны сразу.",
-            lockedHint: "Откроется с миссии #{0}"
+            lockedHint: "Откроется с миссии #{0}",
+            pageTwo: "Страница 2. Продолжение",
+            pageTwoKicker: "Вторая страница главы"
         },
         kk: {
             modalTitle: "📖 «Физика-Квест» трилогиясының комикс-күнделігі",
@@ -45,7 +47,9 @@
             actLabel: "Сюжет актісі",
             lockedTitle: "Тарау әзірге жабық",
             lockedText: "Комикс #{0}-миссияға жеткенде ашылады. Әзірге өткен тараулар қолжетімді.",
-            lockedHint: "#{0}-миссиядан ашылады"
+            lockedHint: "#{0}-миссиядан ашылады",
+            pageTwo: "2-бет. Жалғасы",
+            pageTwoKicker: "Тараудың екінші беті"
         },
         en: {
             modalTitle: "📖 Physics Quest Trilogy Comic Diary",
@@ -65,7 +69,9 @@
             actLabel: "Story act",
             lockedTitle: "This chapter is still locked",
             lockedText: "The comic unlocks when you reach mission #{0}. Chapters you have already passed are available.",
-            lockedHint: "Unlocks from mission #{0}"
+            lockedHint: "Unlocks from mission #{0}",
+            pageTwo: "Page 2. Continuation",
+            pageTwoKicker: "Second page of the chapter"
         }
     };
 
@@ -1386,6 +1392,16 @@
                 gap: 10px;
                 margin-bottom: 12px;
             }
+            /* Вторая страница главы: отдельная секция под основной */
+            .pq-td-extra {
+                margin-top: 16px; padding-top: 14px;
+                border-top: 1px dashed rgba(125, 211, 252, 0.32);
+            }
+            .pq-td-extra-kicker {
+                font-size: 10px; font-weight: 900; letter-spacing: 1.2px;
+                text-transform: uppercase; color: #7fd7ff; margin-bottom: 10px;
+            }
+            .pq-td-art-extra { aspect-ratio: 3 / 2; }
             .pq-td-bubble {
                 padding: 12px 14px;
                 border-radius: 14px;
@@ -1615,6 +1631,46 @@
             setTimeout(() => this.open(g, idx), 650);
         },
 
+        // Дополнительные страницы главы: вторая иллюстрация и ещё несколько реплик.
+        // Данные лежат в shared/trilogy-comics-extra.js, чтобы основной файл не разрастался.
+        extraFor(item) {
+            const book = window.TRILOGY_EXTRA && window.TRILOGY_EXTRA[this.grade];
+            if (!book) return null;
+            return book[item.ep] || null;
+        },
+
+        extraHtml(item) {
+            const extra = this.extraFor(item);
+            if (!extra) return "";
+            const bubbles = (extra.panels || []).map(p => `
+                <div class="pq-td-bubble" style="--sp-color:${p.color || '#38bdf8'}">
+                    <div class="pq-td-who">${esc(loc(p.who))}</div>
+                    <div>${esc(loc(p.text))}</div>
+                </div>`).join("");
+            const art = extra.img ? `
+                <div class="pq-td-art-wrap pq-td-art-extra">
+                    <img src="${esc(extra.img)}" alt="${esc(loc(item.title))}" loading="lazy">
+                    <div class="pq-td-art-caption">
+                        <div>
+                            <div class="pq-td-ch-date">${esc(loc(item.date))}</div>
+                            <div class="pq-td-ch-title">${esc(ui("pageTwo", item.ep))}</div>
+                        </div>
+                        <span class="pq-td-range">${esc(ui("levelsRange", item.from, item.to))}</span>
+                    </div>
+                </div>` : "";
+            const note = extra.note ? `
+                <div class="pq-td-keybox">
+                    <div><strong>${esc(ui("physKey"))}</strong> ${esc(loc(extra.note))}</div>
+                </div>` : "";
+            return `
+                <div class="pq-td-extra">
+                    <div class="pq-td-extra-kicker">📖 ${esc(ui("pageTwoKicker"))}</div>
+                    ${art}
+                    <div class="pq-td-bubbles">${bubbles}</div>
+                    ${note}
+                </div>`;
+        },
+
         /* Отрисовка комикса внутри секции окна «Лор и сюжет» */
         renderInto(host) {
             if (!host) return;
@@ -1692,6 +1748,7 @@
                         <div><strong>${esc(ui("physKey"))}</strong> ${esc(loc(item.note))}</div>
                         <span class="pq-td-formula">${esc(item.formula)}</span>
                     </div>
+                    ${this.extraHtml(item)}
                     </div>`}
 
                     ${item.teaser ? `

@@ -814,22 +814,28 @@ let currentTheoryKey = null;
 
 function openTheory(levelId) {
     currentTheoryKey = theoryKeyFor(levelId);
+    pendingLevelId = levelId;
     document.getElementById("theory-title").textContent = levelTitleText(levelId);
     const tabs = document.getElementById("theory-tabs");
     const conspektTab = tabs.querySelector('[data-tab="conspekt"]');
     const experimentTab = tabs.querySelector('[data-tab="experiment"]');
+    const solutionTab = tabs.querySelector('[data-tab="solution"]');
+    const formulasTab = tabs.querySelector('[data-tab="formulas"]');
     const hasConspekt = !!CONSPECT[currentTheoryKey];
     const hasExperiment = !!getExperimentResource(currentTheoryKey);
+    // «Разбор задачи» и «Формулы §» переехали из окна задания в теорию перед уровнем.
+    const hasSolver = !!(window.PQProblemSolver && typeof PQProblemSolver.renderTheory === "function");
     if (conspektTab) conspektTab.style.display = hasConspekt ? "inline-flex" : "none";
     if (experimentTab) experimentTab.style.display = hasExperiment ? "inline-flex" : "none";
-    if (hasConspekt || hasExperiment) {
+    if (solutionTab) solutionTab.style.display = hasSolver ? "inline-flex" : "none";
+    if (formulasTab) formulasTab.style.display = hasSolver ? "inline-flex" : "none";
+    if (hasConspekt || hasExperiment || hasSolver) {
         tabs.style.display = "flex";
         setTheoryTab("textbook");
     } else {
         tabs.style.display = "none";
         renderTheoryContent("textbook");
     }
-    pendingLevelId = levelId;
     document.getElementById("theory-modal").classList.add("active");
 }
 
@@ -837,6 +843,9 @@ function setTheoryTab(tab) {
     document.querySelectorAll("#theory-tabs .theory-tab").forEach(b => {
         b.classList.toggle("active", b.dataset.tab === tab);
     });
+    // разбору задачи и карточке формул нужно больше места, чем тексту учебника
+    const modal = document.getElementById("theory-modal");
+    if (modal) modal.classList.toggle("theory-wide", tab === "solution" || tab === "formulas");
     renderTheoryContent(tab);
 }
 
@@ -908,6 +917,17 @@ function renderResourceBox(data, lab = false) {
 function renderTheoryContent(tab) {
     const key = currentTheoryKey;
     const box = document.getElementById("theory-content");
+    if (tab === "solution" || tab === "formulas") {
+        if (window.PQProblemSolver && typeof PQProblemSolver.renderTheory === "function") {
+            if (tab === "solution") PQProblemSolver.renderTheory(box, pendingLevelId);
+            else PQProblemSolver.renderTheoryFormulas(box, pendingLevelId);
+        } else {
+            box.innerHTML = "";
+        }
+        const mc = document.querySelector("#theory-modal .modal-content");
+        if (mc) mc.scrollTop = 0;
+        return;
+    }
     if (tab === "experiment") {
         const resource = getExperimentResource(key);
         box.innerHTML = resource

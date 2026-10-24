@@ -48,7 +48,14 @@
             close: "Свернуть",
             givenIntro: "Выпиши из условия все величины с единицами измерения.",
             siIntro: "Переведи единицы в СИ: г → кг, см → м, л → м³, мин → с, ч → 3600 с.",
-            answerIntro: "Ответ записывай с единицей измерения и округляй до 2–3 значащих цифр."
+            answerIntro: "Ответ записывай с единицей измерения и округляй до 2–3 значащих цифр.",
+            theoryKicker: "Теория перед уровнем",
+            theorySolutionTitle: "Как решать задачи этого уровня",
+            theorySolutionNote: "Один пример по теме уровня, разложенный на четыре блока. Он показывает, как оформлять решение, — в забеге пригодятся те же шаги.",
+            theoryAnswerHint: "Ответ спрятан: сначала пройди шаги сам, потом открой его и сверь.",
+            theoryFormulasTitle: "Формулы параграфа",
+            theoryFormulasNote: "Карточка формул, которые понадобятся на этом уровне. Держи её под рукой до старта.",
+            theoryNoTask: "Для этого уровня нет расчётного примера — открой вкладку «Конспект»."
         },
         kk: {
             open: "Есепті талдау",
@@ -89,7 +96,14 @@
             close: "Жию",
             givenIntro: "Шарттан барлық шамаларды өлшем бірліктерімен қатар жаз.",
             siIntro: "Бірліктерді ХБ-ге келтір: г → кг, см → м, л → м³, мин → с, сағ → 3600 с.",
-            answerIntro: "Жауапты өлшем бірлігімен жазып, 2–3 мәнді цифрға дейін дөңгелекте."
+            answerIntro: "Жауапты өлшем бірлігімен жазып, 2–3 мәнді цифрға дейін дөңгелекте.",
+            theoryKicker: "Деңгей алдындағы теория",
+            theorySolutionTitle: "Осы деңгейдегі есептерді қалай шығару керек",
+            theorySolutionNote: "Деңгей тақырыбы бойынша төрт блокқа бөлінген бір мысал. Ол шешімді қалай рәсімдеу керегін көрсетеді — жарыста дәл осы қадамдар керек болады.",
+            theoryAnswerHint: "Жауап жасырылған: алдымен қадамдарды өзің өт, сосын ашып салыстыр.",
+            theoryFormulasTitle: "Параграф формулалары",
+            theoryFormulasNote: "Осы деңгейде қажет болатын формулалар карточкасы. Бастауға дейін қолыңда ұста.",
+            theoryNoTask: "Бұл деңгейде есептеу мысалы жоқ — «Конспект» қойындысын аш."
         },
         en: {
             open: "Solve step by step",
@@ -130,7 +144,14 @@
             close: "Collapse",
             givenIntro: "Write out every quantity from the statement with its unit.",
             siIntro: "Convert to SI: g → kg, cm → m, L → m³, min → s, h → 3600 s.",
-            answerIntro: "Give the answer with a unit and round to 2–3 significant digits."
+            answerIntro: "Give the answer with a unit and round to 2–3 significant digits.",
+            theoryKicker: "Theory before the level",
+            theorySolutionTitle: "How to solve tasks of this level",
+            theorySolutionNote: "One example on the level topic, split into the four blocks. It shows how to format a solution — the same steps will help you in the run.",
+            theoryAnswerHint: "The answer is hidden: go through the steps yourself first, then open it and check.",
+            theoryFormulasTitle: "Formulas of the paragraph",
+            theoryFormulasNote: "A card of the formulas you will need on this level. Keep it handy before you start.",
+            theoryNoTask: "There is no calculation example for this level — open the “Notes” tab."
         }
     };
 
@@ -141,12 +162,18 @@
     };
 
     function currentLang() {
+        // I18n объявлен через const — он не попадает в window, поэтому обращаемся к обоим.
         try {
-            if (window.I18n && I18n.currentLang) return I18n.currentLang;
+            if (window.I18n && window.I18n.currentLang) return window.I18n.currentLang;
         } catch (e) {}
         try {
-            const l = localStorage.getItem("pq_lang");
-            if (l && T[l]) return l;
+            if (typeof I18n !== "undefined" && I18n.currentLang) return I18n.currentLang;
+        } catch (e) {}
+        try {
+            if (typeof Storage !== "undefined" && Storage.getSettings) {
+                const lang = Storage.getSettings().language;
+                if (lang && T[lang]) return lang;
+            }
         } catch (e) {}
         return "ru";
     }
@@ -179,66 +206,66 @@
 
     // aliases -> { sym, base, k, kind }
     const UNITS = [
-        { a: ["дж/(кг·°c)", "дж/(кг·град)", "дж/кг·°c"], sym: "c", base: "Дж/(кг·°C)", k: 1, kind: "heatcap" },
-        { a: ["кдж/(кг·°c)", "кдж/(кг·град)"], sym: "c", base: "Дж/(кг·°C)", k: 1000, kind: "heatcap" },
-        { a: ["кг/м3", "кг/м³"], sym: "ρ", base: "кг/м³", k: 1, kind: "density" },
-        { a: ["г/см3", "г/см³"], sym: "ρ", base: "кг/м³", k: 1000, kind: "density" },
-        { a: ["мдж/кг"], sym: "q", base: "Дж/кг", k: 1000000, kind: "heat" },
-        { a: ["кдж/кг"], sym: "q", base: "Дж/кг", k: 1000, kind: "heat" },
-        { a: ["дж/кг"], sym: "q", base: "Дж/кг", k: 1, kind: "heat" },
-        { a: ["км/ч"], sym: "v", base: "м/с", k: 1 / 3.6, kind: "speed" },
-        { a: ["м/с"], sym: "v", base: "м/с", k: 1, kind: "speed" },
-        { a: ["см/с"], sym: "v", base: "м/с", k: 0.01, kind: "speed" },
-        { a: ["м/с2", "м/с²"], sym: "a", base: "м/с²", k: 1, kind: "accel" },
-        { a: ["кн"], sym: "F", base: "Н", k: 1000, kind: "force" },
-        { a: ["мн"], sym: "F", base: "Н", k: 1000000, kind: "force" },
-        { a: ["н"], sym: "F", base: "Н", k: 1, kind: "force" },
-        { a: ["мдж"], sym: "Q", base: "Дж", k: 1000000, kind: "energy" },
-        { a: ["кдж"], sym: "Q", base: "Дж", k: 1000, kind: "energy" },
-        { a: ["дж"], sym: "Q", base: "Дж", k: 1, kind: "energy" },
-        { a: ["квт"], sym: "P", base: "Вт", k: 1000, kind: "power" },
-        { a: ["вт"], sym: "P", base: "Вт", k: 1, kind: "power" },
-        { a: ["мпа"], sym: "p", base: "Па", k: 1000000, kind: "pressure" },
-        { a: ["кпа"], sym: "p", base: "Па", k: 1000, kind: "pressure" },
-        { a: ["па"], sym: "p", base: "Па", k: 1, kind: "pressure" },
+        { a: ["дж/(кг·°c)", "дж/(кг·град)", "дж/кг·°c", "j/(kg·°c)", "j/(kg·c)"], sym: "c", base: "Дж/(кг·°C)", k: 1, kind: "heatcap" },
+        { a: ["кдж/(кг·°c)", "кдж/(кг·град)", "kj/(kg·°c)", "kj/(kg·c)"], sym: "c", base: "Дж/(кг·°C)", k: 1000, kind: "heatcap" },
+        { a: ["кг/м3", "кг/м³", "kg/m3", "kg/m³"], sym: "ρ", base: "кг/м³", k: 1, kind: "density" },
+        { a: ["г/см3", "г/см³", "g/cm3", "g/cm³"], sym: "ρ", base: "кг/м³", k: 1000, kind: "density" },
+        { a: ["мдж/кг", "mj/kg"], sym: "q", base: "Дж/кг", k: 1000000, kind: "heat" },
+        { a: ["кдж/кг", "kj/kg"], sym: "q", base: "Дж/кг", k: 1000, kind: "heat" },
+        { a: ["дж/кг", "j/kg"], sym: "q", base: "Дж/кг", k: 1, kind: "heat" },
+        { a: ["км/ч", "km/h"], sym: "v", base: "м/с", k: 1 / 3.6, kind: "speed" },
+        { a: ["м/с", "m/s"], sym: "v", base: "м/с", k: 1, kind: "speed" },
+        { a: ["см/с", "cm/s"], sym: "v", base: "м/с", k: 0.01, kind: "speed" },
+        { a: ["м/с2", "м/с²", "m/s2", "m/s²"], sym: "a", base: "м/с²", k: 1, kind: "accel" },
+        { a: ["кн", "kn"], sym: "F", base: "Н", k: 1000, kind: "force" },
+        { a: ["мн", "mn"], sym: "F", base: "Н", k: 1000000, kind: "force" },
+        { a: ["н", "n"], sym: "F", base: "Н", k: 1, kind: "force" },
+        { a: ["мдж", "mj"], sym: "Q", base: "Дж", k: 1000000, kind: "energy" },
+        { a: ["кдж", "kj"], sym: "Q", base: "Дж", k: 1000, kind: "energy" },
+        { a: ["дж", "j"], sym: "Q", base: "Дж", k: 1, kind: "energy" },
+        { a: ["квт", "kw"], sym: "P", base: "Вт", k: 1000, kind: "power" },
+        { a: ["вт", "w"], sym: "P", base: "Вт", k: 1, kind: "power" },
+        { a: ["мпа", "mpa"], sym: "p", base: "Па", k: 1000000, kind: "pressure" },
+        { a: ["кпа", "kpa"], sym: "p", base: "Па", k: 1000, kind: "pressure" },
+        { a: ["па", "pa"], sym: "p", base: "Па", k: 1, kind: "pressure" },
         { a: ["мом"], sym: "R", base: "Ом", k: 1000000, kind: "resistance" },
-        { a: ["ком"], sym: "R", base: "Ом", k: 1000, kind: "resistance" },
-        { a: ["ом"], sym: "R", base: "Ом", k: 1, kind: "resistance" },
-        { a: ["кв"], sym: "U", base: "В", k: 1000, kind: "voltage" },
+        { a: ["ком", "kohm", "kω"], sym: "R", base: "Ом", k: 1000, kind: "resistance" },
+        { a: ["ом", "ohm", "ω"], sym: "R", base: "Ом", k: 1, kind: "resistance" },
+        { a: ["кв", "kv"], sym: "U", base: "В", k: 1000, kind: "voltage" },
         { a: ["мв"], sym: "U", base: "В", k: 0.001, kind: "voltage" },
-        { a: ["в"], sym: "U", base: "В", k: 1, kind: "voltage" },
+        { a: ["в", "v"], sym: "U", base: "В", k: 1, kind: "voltage" },
         { a: ["ма"], sym: "I", base: "А", k: 0.001, kind: "current" },
-        { a: ["а"], sym: "I", base: "А", k: 1, kind: "current" },
+        { a: ["а", "a"], sym: "I", base: "А", k: 1, kind: "current" },
         { a: ["мккл"], sym: "q", base: "Кл", k: 0.000001, kind: "charge" },
         { a: ["нкл"], sym: "q", base: "Кл", k: 0.000000001, kind: "charge" },
-        { a: ["кл"], sym: "q", base: "Кл", k: 1, kind: "charge" },
+        { a: ["кл", "c"], sym: "q", base: "Кл", k: 1, kind: "charge" },
         { a: ["мтл"], sym: "B", base: "Тл", k: 0.001, kind: "field" },
         { a: ["тл"], sym: "B", base: "Тл", k: 1, kind: "field" },
-        { a: ["мгц"], sym: "ν", base: "Гц", k: 1000000, kind: "freq" },
-        { a: ["кгц"], sym: "ν", base: "Гц", k: 1000, kind: "freq" },
-        { a: ["гц"], sym: "ν", base: "Гц", k: 1, kind: "freq" },
-        { a: ["км"], sym: "s", base: "м", k: 1000, kind: "length" },
-        { a: ["дм"], sym: "s", base: "м", k: 0.1, kind: "length" },
-        { a: ["см"], sym: "s", base: "м", k: 0.01, kind: "length" },
-        { a: ["мм"], sym: "s", base: "м", k: 0.001, kind: "length" },
-        { a: ["м"], sym: "s", base: "м", k: 1, kind: "length" },
-        { a: ["сут"], sym: "t", base: "с", k: 86400, kind: "time" },
-        { a: ["ч", "сағ", "час"], sym: "t", base: "с", k: 3600, kind: "time" },
-        { a: ["мин"], sym: "t", base: "с", k: 60, kind: "time" },
+        { a: ["мгц", "mhz"], sym: "ν", base: "Гц", k: 1000000, kind: "freq" },
+        { a: ["кгц", "khz"], sym: "ν", base: "Гц", k: 1000, kind: "freq" },
+        { a: ["гц", "hz"], sym: "ν", base: "Гц", k: 1, kind: "freq" },
+        { a: ["км", "km"], sym: "s", base: "м", k: 1000, kind: "length" },
+        { a: ["дм", "dm"], sym: "s", base: "м", k: 0.1, kind: "length" },
+        { a: ["см", "cm"], sym: "s", base: "м", k: 0.01, kind: "length" },
+        { a: ["мм", "mm"], sym: "s", base: "м", k: 0.001, kind: "length" },
+        { a: ["м", "m"], sym: "s", base: "м", k: 1, kind: "length" },
+        { a: ["сут", "day", "days"], sym: "t", base: "с", k: 86400, kind: "time" },
+        { a: ["ч", "сағ", "час", "h", "hr", "hour", "hours"], sym: "t", base: "с", k: 3600, kind: "time" },
+        { a: ["мин", "min", "mins"], sym: "t", base: "с", k: 60, kind: "time" },
         { a: ["мс"], sym: "t", base: "с", k: 0.001, kind: "time" },
-        { a: ["с"], sym: "t", base: "с", k: 1, kind: "time" },
-        { a: ["т"], sym: "m", base: "кг", k: 1000, kind: "mass" },
-        { a: ["кг"], sym: "m", base: "кг", k: 1, kind: "mass" },
+        { a: ["с", "s"], sym: "t", base: "с", k: 1, kind: "time" },
+        { a: ["т", "ton", "tons"], sym: "m", base: "кг", k: 1000, kind: "mass" },
+        { a: ["кг", "kg"], sym: "m", base: "кг", k: 1, kind: "mass" },
         { a: ["мг"], sym: "m", base: "кг", k: 0.000001, kind: "mass" },
-        { a: ["г"], sym: "m", base: "кг", k: 0.001, kind: "mass" },
-        { a: ["см2", "см²"], sym: "S", base: "м²", k: 0.0001, kind: "area" },
+        { a: ["г", "g"], sym: "m", base: "кг", k: 0.001, kind: "mass" },
+        { a: ["см2", "см²", "cm2", "cm²"], sym: "S", base: "м²", k: 0.0001, kind: "area" },
         { a: ["мм2", "мм²"], sym: "S", base: "м²", k: 0.000001, kind: "area" },
-        { a: ["м2", "м²"], sym: "S", base: "м²", k: 1, kind: "area" },
-        { a: ["см3", "см³"], sym: "V", base: "м³", k: 0.000001, kind: "volume" },
+        { a: ["м2", "м²", "m2", "m²"], sym: "S", base: "м²", k: 1, kind: "area" },
+        { a: ["см3", "см³", "cm3", "cm³"], sym: "V", base: "м³", k: 0.000001, kind: "volume" },
         { a: ["мл"], sym: "V", base: "м³", k: 0.000001, kind: "volume" },
-        { a: ["л"], sym: "V", base: "м³", k: 0.001, kind: "volume" },
-        { a: ["м3", "м³"], sym: "V", base: "м³", k: 1, kind: "volume" },
-        { a: ["°c", "c°"], sym: "t", base: "°C", k: 1, kind: "temperature" },
+        { a: ["л", "l"], sym: "V", base: "м³", k: 0.001, kind: "volume" },
+        { a: ["м3", "м³", "m3", "m³"], sym: "V", base: "м³", k: 1, kind: "volume" },
+        { a: ["°c", "c°", "°c."], sym: "t", base: "°C", k: 1, kind: "temperature" },
         { a: ["к", "k", "°k"], sym: "T", base: "К", k: 1, kind: "temperature" },
         { a: ["дж/к", "дж/(кг·к)"], sym: "C", base: "Дж/К", k: 1, kind: "heatcap" },
         { a: ["вб"], sym: "Φ", base: "Вб", k: 1, kind: "flux" },
@@ -401,8 +428,10 @@
             const found = findUnit(match[2]);
             if (!found) continue;
             const unit = found.unit;
-            // «1 г меди» — единица должна занимать начало захваченного куска
-            if (normUnit(match[2]).indexOf(normUnit(unit.a[0])) !== 0) continue;
+            // «1 г меди» — единица должна занимать начало захваченного куска.
+            // Сверяем со всеми обозначениями (км/km, ч/h, кг/kg …), а не только с первым.
+            const chunk = normUnit(match[2]);
+            if (!unit.a.some((alias) => chunk.indexOf(normUnit(alias)) === 0)) continue;
             const symbol = unit.sym;
             if (items.some((it) => it.kind === unit.kind && Math.abs(it.base - value * unit.k) < 1e-9)) continue;
             items.push(makeItem("", unit.sym, unit, value, match[1], match[2]));
@@ -446,6 +475,25 @@
         return unit.sym;
     }
 
+    // NAME для t/T/S/P и т.п. перечисляет два смысла через « / »:
+    // выбираем тот, который подходит по единице измерения.
+    const NAME_PAIR = { ru: " / ", kk: " / ", en: " / " };
+    function nameByKind(rawName, kind) {
+        if (!rawName) return rawName;
+        const ru = String(rawName.ru || "");
+        if (ru.indexOf(" / ") < 0) return rawName;
+        const take = (text, idx) => {
+            const parts = String(text || "").split(" / ");
+            return (parts[idx] || parts[0] || "").trim();
+        };
+        const idx = kind === "temperature" ? 1 : 0;
+        return {
+            ru: take(rawName.ru, idx),
+            kk: take(rawName.kk, idx),
+            en: take(rawName.en, idx)
+        };
+    }
+
     function makeItem(explicitSymbol, symbol, unit, value, rawText, rawUnit) {
         const k = unit.k || 1;
         return {
@@ -459,7 +507,7 @@
             rawUnit: rawUnit || unit.a[0],
             base: value * k,
             siText: k === 1 ? "—" : `${fmt(value * k)} ${unit.base}`,
-            name: NAME[symbol] || NAME[unit.sym] || { ru: "", kk: "", en: "" }
+            name: nameByKind(NAME[symbol] || NAME[unit.sym] || { ru: "", kk: "", en: "" }, unit.kind)
         };
     }
 
@@ -914,6 +962,8 @@
     function solveMarkup(data) {
         const lang = data.lang;
         const pack = T[lang] || T.ru;
+        // формулы с нижними индексами показываем как в учебнике: v_ср → v<sub>ср</sub>
+        const rich = (text) => (typeof formatFormula === "function" ? formatFormula(String(text == null ? "" : text)) : esc(text));
         const rows = data.givens.map((item) => `
             <tr>
                 <td class="pq-g-sym">${esc(item.label)}</td>
@@ -935,14 +985,14 @@
             : pack.convertNone;
 
         const steps = [];
-        steps.push(`<li><b>1.</b> ${esc(pack.stepFormula)}: <span class="pq-formula-inline">${esc(data.formula)}</span></li>`);
+        steps.push(`<li><b>1.</b> ${esc(pack.stepFormula)}: <span class="pq-formula-inline">${rich(data.formula)}</span></li>`);
         if (data.givens.length) {
-            steps.push(`<li><b>2.</b> ${esc(pack.stepSub)}: <span class="pq-formula-inline">${esc(data.parts ? data.parts.lhs + " = " + data.substituted : "—")}</span></li>`);
+            steps.push(`<li><b>2.</b> ${esc(pack.stepSub)}: <span class="pq-formula-inline">${rich(data.parts ? data.parts.lhs + " = " + data.substituted : "—")}</span></li>`);
             if (isFinite(data.numeric)) {
                 const unit = data.task && data.task.type === "numeric" ? (data.task.unit || unitFromQuestion(data.task) || "") : "";
                 // Ответ не показываем сразу: задача должна учить оформлению,
                 // а не выдавать готовое число. Расчёт открывается по кнопке.
-                steps.push(`<li class="pq-step-answer" hidden><b>3.</b> ${esc(pack.stepCalc)}: <span class="pq-formula-inline">${esc(data.parts.lhs)} = ${esc(fmt(data.numeric))} ${esc(unit)}</span></li>`);
+                steps.push(`<li class="pq-step-answer" hidden><b>3.</b> ${esc(pack.stepCalc)}: <span class="pq-formula-inline">${rich(data.parts.lhs)} = ${esc(fmt(data.numeric))} ${esc(unit)}</span></li>`);
             } else if (!data.reliable && data.parts) {
                 steps.push(`<li><b>3.</b> ${esc(pack.stepCalc)}: <span class="pq-formula-inline">${esc(data.parts.lhs)} = ?</span> — ${esc({ ru: "подставь свои значения", kk: "өз мәндеріңді қой", en: "substitute your values" }[lang])}</li>`);
             }
@@ -991,7 +1041,7 @@
                 </section>
                 <section class="pq-solver-block pq-block-formula">
                     <h4>📐 ${esc(pack.formula)}</h4>
-                    <div class="pq-formula-big">${esc(data.formula)}</div>
+                    <div class="pq-formula-big">${rich(data.formula)}</div>
                     <p class="pq-solver-hint">${esc(pack.stepFormula)}.</p>
                 </section>
                 <section class="pq-solver-block pq-block-solution">
@@ -1019,7 +1069,7 @@
         const pack = T[data.lang] || T.ru;
         const items = data.formulas.map((formula) => {
             const legend = formulaLegend(formula, data.lang);
-            return `<li><span class="pq-fc-f">${esc(formula)}</span>${legend ? `<span class="pq-fc-legend">${esc(legend)}</span>` : ""}</li>`;
+            return `<li><span class="pq-fc-f">${typeof formatFormula === "function" ? formatFormula(String(formula)) : esc(formula)}</span>${legend ? `<span class="pq-fc-legend">${esc(legend)}</span>` : ""}</li>`;
         }).join("");
         return `
             <div class="pq-formula-card">
@@ -1048,217 +1098,156 @@
         return found.slice(0, 4).map((key) => `${key} — ${NAME[key][lang] || NAME[key].ru}`).join("; ");
     }
 
-    /* ---------- UI ---------- */
+    /* ---------- ТЕОРИЯ ПЕРЕД УРОВНЕМ ----------
+       «Разбор задачи» и «Формулы §» больше не открываются внутри задания:
+       ученик видит их в окне теории перед уровнем (#theory-modal). */
 
-    const state = {
-        task: null,
-        open: false,
-        tab: "solution",
-        data: null,
-        revealed: false,
-        autoOpened: false
-    };
+    const state = { revealed: false };
 
-    function ensureBar() {
-        const modal = document.getElementById("task-modal");
-        if (!modal) return null;
-        let bar = document.getElementById("pq-solver-bar");
-        if (bar) return bar;
-        bar = document.createElement("div");
-        bar.id = "pq-solver-bar";
-        bar.className = "pq-solver-bar";
-        bar.innerHTML = `
-            <button type="button" class="pq-solver-btn" id="pq-solver-toggle">
-                <span class="pq-solver-btn-icon">🧮</span>
-                <span class="pq-solver-btn-text"><b>${esc(tr("open"))}</b><small>${esc(tr("openHint"))}</small></span>
-            </button>
-            <button type="button" class="pq-solver-btn pq-solver-btn-formula" id="pq-formula-toggle">
-                <span class="pq-solver-btn-icon">📐</span>
-                <span class="pq-solver-btn-text"><b>${esc(tr("formulas"))}</b><small>${esc(tr("formulasHint"))}</small></span>
-            </button>`;
-        const feedback = document.getElementById("task-feedback");
-        if (feedback && feedback.parentNode) feedback.parentNode.insertBefore(bar, feedback);
-        else (modal.querySelector(".task-content") || modal).appendChild(bar);
-
-        bar.querySelector("#pq-solver-toggle").addEventListener("click", () => toggle("solution"));
-        bar.querySelector("#pq-formula-toggle").addEventListener("click", () => toggle("formulas"));
-        return bar;
+    function bindReveal(panel) {
+        const reveal = panel.querySelector("#pq-solver-reveal");
+        if (!reveal) return;
+        reveal.addEventListener("click", () => {
+            state.revealed = !state.revealed;
+            const slot = panel.querySelector("#pq-answer-value");
+            if (slot) slot.hidden = !state.revealed;
+            panel.querySelectorAll(".pq-step-answer").forEach((el) => { el.hidden = !state.revealed; });
+            reveal.textContent = state.revealed ? tr("hideAnswer") : tr("showAnswer");
+            try { if (window.PQSound) PQSound.play("energy"); } catch (e) {}
+        });
     }
 
-    function ensurePanel() {
-        let panel = document.getElementById("pq-solver-panel");
-        if (panel) return panel;
-        panel = document.createElement("div");
-        panel.id = "pq-solver-panel";
-        panel.className = "pq-solver-panel";
-        panel.hidden = true;
-        const bar = ensureBar();
-        if (bar && bar.parentNode) bar.parentNode.insertBefore(panel, bar.nextSibling);
-        return panel;
+    function levelConfigFor(levelId) {
+        try {
+            if (typeof LEVELS_CONFIG === "undefined" || !Array.isArray(LEVELS_CONFIG)) return null;
+            return LEVELS_CONFIG.find((l) => String(l.id) === String(levelId)) || null;
+        } catch (e) { return null; }
     }
 
-    function toggle(tab) {
-        const panel = ensurePanel();
-        if (!panel) return;
-        if (state.open && state.tab === tab) {
-            closePanel();
+    function levelPool(levelId) {
+        try {
+            if (typeof Teacher === "undefined" || typeof Teacher.getAllTasks !== "function") return [];
+            const cfg = levelConfigFor(levelId);
+            const topics = (cfg && Array.isArray(cfg.topics)) ? cfg.topics : [];
+            const lessonKey = "lesson:" + String(levelId);
+            return Teacher.getAllTasks().filter((t) => t && (
+                t.topic === lessonKey || topics.indexOf(t.topic) >= 0
+            ));
+        } catch (e) { return []; }
+    }
+
+    // Пример задачи уровня: расчётная задача с числовыми данными.
+    // Выбор детерминированный и не зависит от языка интерфейса — считаем «Дано»
+    // по русскому тексту, чтобы пример не менялся при переключении языка.
+    const sampleCache = {};
+    function theorySample(levelId) {
+        const key = String(levelId);
+        if (Object.prototype.hasOwnProperty.call(sampleCache, key)) return sampleCache[key];
+        const pool = levelPool(levelId);
+        const scored = pool.map((task) => {
+            const ruText = task.question && typeof task.question === "object"
+                ? (task.question.ru || task.question.en || task.question.kk || "")
+                : String(task.question || "");
+            let givens = 0;
+            try { givens = parseGivens(ruText, task).length; } catch (e) { givens = 0; }
+            const hasFormula = !!taskFormula(task);
+            const numericAnswer = Number.isFinite(Number(task.correctAnswer));
+            const score = givens * 6 + (givens >= 2 ? 12 : 0) + (numericAnswer ? 6 : 0)
+                + (hasFormula ? 4 : 0) + (task.type === "numeric" ? 3 : 0);
+            return { task, score, givens };
+        }).filter((row) => row.givens > 0 || row.task.type === "numeric");
+        scored.sort((a, b) => b.score - a.score);
+        const result = (scored[0] && scored[0].task) || pool[0] || null;
+        sampleCache[key] = result;
+        return result;
+    }
+
+    function theorySampleId(levelId) {
+        const task = theorySample(levelId);
+        return task ? String(task.id) : "";
+    }
+
+    function levelFormulas(levelId) {
+        const list = [];
+        const push = (f) => {
+            const clean = String(f || "").split(";")[0].replace(/^>\s*/, "").trim();
+            if (!clean || clean.indexOf("=") < 0) return;
+            const norm = clean.replace(/\s+/g, "");
+            if (!list.some((item) => item.replace(/\s+/g, "") === norm)) list.push(clean);
+        };
+        levelPool(levelId).forEach((task) => push(pick(task.formula)));
+        if (list.length < 3) {
+            const grade = Number(window.CURRENT_GRADE) || 7;
+            (CURRICULUM[grade] || CURRICULUM[7]).forEach((f) => { if (list.length < 6) push(f); });
+        }
+        return list.slice(0, 8);
+    }
+
+    function levelTitle(levelId) {
+        try {
+            if (typeof levelTitleText === "function") return levelTitleText(levelId);
+            if (typeof getLevelConfig === "function") {
+                const cfg = getLevelConfig(levelId);
+                if (cfg && cfg.title) return String(pick(cfg.title) || "");
+            }
+        } catch (e) {}
+        return "";
+    }
+
+    function theoryHead(icon, kicker, title, text) {
+        return `<div class="pq-theory-head">
+            <div class="pq-theory-kicker">${icon} ${esc(kicker)}</div>
+            <h4>${esc(title)}</h4>
+            <p>${esc(text)}</p>
+        </div>`;
+    }
+
+    function renderTheory(box, levelId) {
+        if (!box) return;
+        const task = theorySample(levelId);
+        if (!task) {
+            box.innerHTML = `<p class="pq-solver-empty">${esc(tr("theoryNoTask"))}</p>`;
             return;
         }
-        state.open = true;
-        state.tab = tab;
         state.revealed = false;
-        render();
-        panel.hidden = false;
-        const bar = document.getElementById("pq-solver-bar");
-        if (bar) {
-            bar.querySelectorAll(".pq-solver-btn").forEach((btn) => btn.classList.remove("active"));
-            const active = bar.querySelector(tab === "formulas" ? "#pq-formula-toggle" : "#pq-solver-toggle");
-            if (active) active.classList.add("active");
+        let data = null;
+        try { data = analyze(task); } catch (e) { data = null; }
+        if (!data) {
+            box.innerHTML = `<p class="pq-solver-empty">${esc(tr("theoryNoTask"))}</p>`;
+            return;
         }
-        try {
-            if (window.PQSound && PQSound.play) PQSound.play("click");
-        } catch (e) {}
-        setTimeout(() => {
-            const target = panel.getBoundingClientRect();
-            if (target.bottom > window.innerHeight) panel.scrollIntoView({ block: "nearest", behavior: "smooth" });
-        }, 40);
-    }
-
-    function closePanel() {
-        const panel = document.getElementById("pq-solver-panel");
-        if (panel) panel.hidden = true;
-        state.open = false;
-        const bar = document.getElementById("pq-solver-bar");
-        if (bar) bar.querySelectorAll(".pq-solver-btn").forEach((btn) => btn.classList.remove("active"));
-    }
-
-    function render() {
-        const panel = ensurePanel();
-        if (!panel) return;
-        const task = state.task || (window.Game && Game.currentTask);
-        if (!task) return;
-        state.task = task;
-        const data = analyze(task);
-        state.data = data;
-        const tabs = `
-            <div class="pq-solver-tabs" role="tablist">
-                <button type="button" class="pq-solver-tab ${state.tab === "solution" ? "active" : ""}" data-pq-tab="solution">📋 ${esc(tr("tabSolution"))}</button>
-                <button type="button" class="pq-solver-tab ${state.tab === "formulas" ? "active" : ""}" data-pq-tab="formulas">📐 ${esc(tr("tabFormulas"))}</button>
-                <button type="button" class="pq-solver-collapse" id="pq-solver-collapse" aria-label="${esc(tr("close"))}">×</button>
+        box.innerHTML = `
+            <div class="pq-theory">
+                ${theoryHead("🧮", tr("theoryKicker"), tr("theorySolutionTitle"), tr("theorySolutionNote"))}
+                <div class="pq-theory-question">${esc(pick(task.question))}</div>
+                <div class="pq-solver-panel pq-theory-panel">${solveMarkup(data)}</div>
+                <p class="pq-solver-hint">${esc(tr("theoryAnswerHint"))}</p>
             </div>`;
-        const body = state.tab === "formulas" ? formulaMarkup(data) : solveMarkup(data);
-        const autoNote = state.autoOpened ? `<p class="pq-solver-auto">💡 ${esc(tr("autoNote"))}</p>` : "";
-        panel.innerHTML = tabs + autoNote + body;
-
-        panel.querySelectorAll("[data-pq-tab]").forEach((btn) => {
-            btn.addEventListener("click", () => {
-                state.tab = btn.getAttribute("data-pq-tab");
-                state.revealed = false;
-                render();
-            });
-        });
-        const collapse = panel.querySelector("#pq-solver-collapse");
-        if (collapse) collapse.addEventListener("click", closePanel);
-        const reveal = panel.querySelector("#pq-solver-reveal");
-        if (reveal) {
-            reveal.addEventListener("click", () => {
-                state.revealed = !state.revealed;
-                const slot = panel.querySelector("#pq-answer-value");
-                if (slot) slot.hidden = !state.revealed;
-                panel.querySelectorAll(".pq-step-answer").forEach((el) => { el.hidden = !state.revealed; });
-                reveal.textContent = state.revealed ? tr("hideAnswer") : tr("showAnswer");
-                try { if (window.PQSound) PQSound.play("energy"); } catch (e) {}
-            });
-        }
+        bindReveal(box);
     }
 
-    function reset() {
-        state.open = false;
-        state.revealed = false;
-        state.autoOpened = false;
-        state.lastLang = currentLang();
-        const panel = document.getElementById("pq-solver-panel");
-        if (panel) { panel.hidden = true; panel.innerHTML = ""; }
-        const bar = document.getElementById("pq-solver-bar");
-        if (bar) {
-            bar.querySelectorAll(".pq-solver-btn").forEach((btn) => btn.classList.remove("active"));
-            const label = bar.querySelector("#pq-solver-toggle .pq-solver-btn-text b");
-            if (label) label.textContent = tr("open");
-            const hint = bar.querySelector("#pq-solver-toggle .pq-solver-btn-text small");
-            if (hint) hint.textContent = tr("openHint");
-            const fLabel = bar.querySelector("#pq-formula-toggle .pq-solver-btn-text b");
-            if (fLabel) fLabel.textContent = tr("formulas");
-        }
+    function renderTheoryFormulas(box, levelId) {
+        if (!box) return;
+        const formulas = levelFormulas(levelId);
+        const data = { lang: currentLang(), formulas, topic: levelTitle(levelId) };
+        box.innerHTML = `
+            <div class="pq-theory">
+                ${theoryHead("📐", tr("theoryKicker"), tr("theoryFormulasTitle"), tr("theoryFormulasNote"))}
+                <div class="pq-solver-panel pq-theory-panel">${formulaMarkup(data)}</div>
+            </div>`;
     }
 
-    /* ---------- ИНТЕГРАЦИЯ ---------- */
-
-    function install() {
-        if (typeof Game === "undefined" || !Game) return false;
-        if (Game.__pqSolverInstalled) return true;
-        Game.__pqSolverInstalled = true;
-
-        const origShowTask = Game.showTask;
-        Game.showTask = function (task) {
-            const result = origShowTask.apply(this, arguments);
-            try {
-                state.task = task;
-                reset();
-                ensureBar();
-                ensurePanel();
-            } catch (e) { console.warn("PQProblemSolver.showTask", e); }
-            return result;
-        };
-
-        if (typeof Game.renderTaskBody === "function") {
-            const origRenderBody = Game.renderTaskBody;
-            Game.renderTaskBody = function (task) {
-                const result = origRenderBody.apply(this, arguments);
-                try {
-                    if (state.lastLang && state.lastLang !== currentLang()) reset();
-                    ensureBar();
-                    if (state.open) render();
-                } catch (e) {}
-                return result;
-            };
-        }
-
-        if (typeof Game.checkAnswer === "function") {
-            const origCheck = Game.checkAnswer;
-            Game.checkAnswer = function () {
-                const before = this.taskAttempts || 0;
-                const result = origCheck.apply(this, arguments);
-                try {
-                    const now = this.taskAttempts || 0;
-                    if (now > before && now >= 2 && !state.open) {
-                        state.autoOpened = true;
-                        state.tab = "solution";
-                        // даём игре отрисовать фидбек, затем мягко открываем разбор
-                        setTimeout(() => { state.open = true; render(); const p = document.getElementById("pq-solver-panel"); if (p) p.hidden = false; }, 420);
-                    }
-                } catch (e) {}
-                return result;
-            };
-        }
-
-        document.addEventListener("pq:lang-changed", () => {
-            try {
-                reset();
-                if (state.open) render();
-            } catch (e) {}
-        });
-        return true;
-    }
+    /* ---------- ИНТЕГРАЦИЯ ----------
+       В окно задания ничего не добавляем: разбор и формулы живут в теории. */
 
     function boot() {
-        if (!install()) {
-            let tries = 0;
-            const timer = setInterval(() => {
-                tries += 1;
-                if (install() || tries > 40) clearInterval(timer);
-            }, 250);
-        }
-        ensureBar();
+        // на всякий случай убираем панель, оставшуюся от прежней версии
+        try {
+            const oldBar = document.getElementById("pq-solver-bar");
+            if (oldBar && oldBar.parentNode) oldBar.parentNode.removeChild(oldBar);
+            const oldPanel = document.getElementById("pq-solver-panel");
+            if (oldPanel && oldPanel.parentNode && oldPanel.closest("#task-modal")) oldPanel.parentNode.removeChild(oldPanel);
+        } catch (e) {}
     }
 
     if (document.readyState === "loading") {
@@ -1269,9 +1258,9 @@
 
     window.PQProblemSolver = {
         version: VERSION,
-        open: () => toggle("solution"),
-        openFormulas: () => toggle("formulas"),
-        close: closePanel,
+        renderTheory,
+        renderTheoryFormulas,
+        theorySampleId,
         analyze,
         parseGivens,
         _tokenize: tokenize,

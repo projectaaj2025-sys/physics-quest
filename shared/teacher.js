@@ -865,11 +865,19 @@ const Teacher = {
     // План уровня: 20 случайных заданий из пула темы.
     // Гарантирует, что за один заход не будет повторов, попадут практические
     // вопросы и встретятся все доступные типы заданий (в 7–9 классах — до 7 типов).
-    buildLevelTaskPlan(levelConfig, count = 20) {
+    buildLevelTaskPlan(levelConfig, count = 20, options = {}) {
         const all = this.getAllTasks();
         const cfgId = String(levelConfig.id);
         const lessonKey = cfgId.indexOf("custom:") === 0 ? cfgId : "lesson:" + cfgId;
-        const pool = all.filter(t => t.topic === lessonKey || (levelConfig.topics || []).includes(t.topic));
+        // exclude — задания, которые не нужно ставить в план (например, образец из теории).
+        // Если без такого задания из плана пропадает целый тип, возвращаем его: набор
+        // форматов важнее, чем однократный повтор образца.
+        const exclude = new Set((options.exclude || []).map(String));
+        const base = all.filter(t => t.topic === lessonKey || (levelConfig.topics || []).includes(t.topic));
+        const free = base.filter(t => !exclude.has(String(t.id)));
+        const freeTypes = new Set(free.map(t => t.type));
+        const rescued = base.filter(t => exclude.has(String(t.id)) && !freeTypes.has(t.type));
+        const pool = free.concat(rescued);
         if (pool.length === 0) return [];
         const target = Math.max(1, Math.min(Number(count) || 20, pool.length));
         const plan = [];

@@ -452,8 +452,12 @@ const Game = {
         const configuredTaskTotal = Number(this.levelConfig.tasksTotal) || 20;
         // План уровня: 20 случайных заданий из пула темы, собранных при старте.
         // Так каждый заход даёт новый набор, без повторов, со всеми типами заданий.
+        // образец из «Теории перед уровнем» не должен попадаться в самом забеге
+        const theorySampleId = (window.PQProblemSolver && typeof PQProblemSolver.theorySampleId === "function")
+            ? PQProblemSolver.theorySampleId(levelId)
+            : "";
         this.taskPlan = typeof Teacher.buildLevelTaskPlan === "function"
-            ? Teacher.buildLevelTaskPlan(this.levelConfig, configuredTaskTotal)
+            ? Teacher.buildLevelTaskPlan(this.levelConfig, configuredTaskTotal, { exclude: theorySampleId ? [theorySampleId] : [] })
             : [];
         this.levelTasksTotal = this.taskPlan.length > 0
             ? this.taskPlan.length

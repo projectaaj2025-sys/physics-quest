@@ -5,7 +5,7 @@
 
 const RPG_DAY_MS = 86400000;
 const RPG_REVIEW_MAX = 40;
-const RPG_MAINT_LEN = 3;
+const RPG_MAINT_LEN = 5; // короткая смена: 5 вопросов из чёрного ящика
 
 /* ---------------- ЛОКАЛЬНЫЕ ХЕЛПЕРЫ ---------------- */
 function rpgL(ru, en, kk) {
@@ -489,7 +489,12 @@ Object.assign(RPG, {
 
     /* ===== A1-БОНУС. ТЕХОБСЛУЖИВАНИЕ ===== */
     maintCandidates() {
-        const supported = new Set(["multiple-choice", "true-false", "fill-blank"]);
+        // Техобслуживание принимает все семь форматов заданий: раньше очередь
+        // «чинила» только три типа, а остальные ошибки висели в чёрном ящике.
+        const supported = new Set([
+            "multiple-choice", "true-false", "fill-blank",
+            "numeric", "short-answer", "multi-select", "matching"
+        ]);
         const list = [];
         this.reviewQueue().forEach(item => {
             if (!supported.has(item.type)) return;
@@ -508,7 +513,9 @@ Object.assign(RPG, {
             return;
         }
         const due = all.filter(x => x.due <= Date.now());
-        const picked = (due.length ? due : all).slice(0, RPG_MAINT_LEN);
+        // сначала «просроченные» вопросы, затем остальные; одна смена — до 5 штук
+        const ordered = due.concat(all.filter(x => due.indexOf(x) < 0));
+        const picked = ordered.slice(0, RPG_MAINT_LEN);
         this._maint = {
             items: picked,
             idx: 0,
@@ -533,9 +540,15 @@ Object.assign(RPG, {
         const progress = st.items.map((_, i) =>
             `<i class="${i < st.idx ? "done" : i === st.idx ? "now" : ""}"></i>`).join("");
         let inputHtml = "";
-        if (task.type === "fill-blank") {
+        if (task.type === "fill-blank" || task.type === "short-answer" || task.type === "numeric") {
+            const numeric = task.type === "numeric";
+            const hint = numeric
+                ? (task.unit ? rpgT("maintEnterUnit", task.unit) : rpgT("maintEnterNumber"))
+                : rpgT("maintEnter");
             inputHtml = `<div class="rpg-maint-fill">
-                <input type="text" id="rpg-maint-input" autocomplete="off" placeholder="${escapeHtml(rpgT("maintEnter"))}" />
+                <input type="text" id="rpg-maint-input" autocomplete="off"
+                    inputmode="${numeric ? "decimal" : "text"}"
+                    placeholder="${escapeHtml(hint)}" />
                 <button type="button" class="btn btn-primary" data-maint="check">${escapeHtml(rpgT("maintCheck"))}</button>
             </div>`;
         }
@@ -562,15 +575,61 @@ Object.assign(RPG, {
     },
 
     maintOptionsHtml(task) {
-        if (task.type === "fill-blank") return "";
+        if (task.type === "fill-blank" || task.type === "short-answer" || task.type === "numeric") return "";
+        if (task.type === "matching") return this.maintPairsHtml(task);
         let options = [];
         if (task.type === "true-false") {
             options = [I18n.t("trueLabel"), I18n.t("falseLabel")];
         } else {
             options = Array.isArray(I18n.getLocalized(task, "options")) ? I18n.getLocalized(task, "options") : [];
         }
-        return options.map((opt, i) =>
-            `<button type="button" class="rpg-maint-opt" data-maint-opt="${i}">${formatFormula(String(opt))}</button>`).join("");
+        const multi = task.type === "multi-select";
+        const head = multi
+            ? `<div class="rpg-maint-hintline">☑ ${escapeHtml(rpgT("maintMultiHint"))}</div>`
+            : "";
+        const buttons = options.map((opt, i) =>
+            `<button type="button" class="rpg-maint-opt${multi ? " multi" : ""}" data-maint-opt="${i}"${multi ? ` data-maint-multi="${i}"` : ""}>${formatFormula(String(opt))}</button>`).join("");
+        const check = multi
+            ? `<div class="rpg-maint-fill"><button type="button" class="btn btn-primary" data-maint="check-multi">${escapeHtml(rpgT("maintCheck"))}</button></div>`
+            : "";
+        return head + buttons + check;
+    },
+
+    // «Сопоставь» в техобслуживании — компактно: слева величина, справа выпадающий список.
+    maintPairsHtml(task) {
+        // пары лежат в task.pairs.{left,right} с переводами внутри
+        let left = [];
+        let right = [];
+        try {
+            const pairs = task.pairs || {};
+            const L = pairs.left ? I18n.getLocalized(pairs, "left") : null;
+            const R = pairs.right ? I18n.getLocalized(pairs, "right") : null;
+            left = Array.isArray(L) ? L : [];
+            right = Array.isArray(R) ? R : [];
+        } catch (e) {
+            left = [];
+            right = [];
+        }
+        if (!left.length || !right.length) {
+            return `<div class="rpg-maint-hintline">${escapeHtml(rpgT("maintPairsUnavailable"))}</div>`;
+        }
+        const order = right.map((_, i) => i);
+        // стабильное перемешивание: один и тот же порядок на всех вопросах сессии
+        for (let i = order.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [order[i], order[j]] = [order[j], order[i]];
+        }
+        const rows = left.map((text, i) => {
+            const options = order.map((j) =>
+                `<option value="${j}">${escapeHtml(String(right[j]))}</option>`).join("");
+            return `<label class="rpg-maint-pair">
+                <span>${formatFormula(String(text))}</span>
+                <select data-maint-pair="${i}"><option value="-1">—</option>${options}</select>
+            </label>`;
+        }).join("");
+        return `<div class="rpg-maint-hintline">🔗 ${escapeHtml(rpgT("maintPairsHint"))}</div>
+            <div class="rpg-maint-pairs">${rows}</div>
+            <div class="rpg-maint-fill"><button type="button" class="btn btn-primary" data-maint="check-pairs">${escapeHtml(rpgT("maintCheck"))}</button></div>`;
     },
 
     answerMaintenance(rawValue) {
@@ -579,7 +638,9 @@ Object.assign(RPG, {
         const entry = st.items[st.idx];
         const task = entry.task;
         let value = rawValue;
-        if (task.type !== "fill-blank") value = Number(rawValue);
+        if (task.type === "multiple-choice") value = Number(rawValue);
+        // в «верно/неверно» кнопка 0 — «Верно», 1 — «Неверно»
+        else if (task.type === "true-false") value = Number(rawValue) === 0;
         const isCorrect = this.maintCheck(task, value);
         st.answered = true;
         const item = entry.item;
@@ -606,13 +667,33 @@ Object.assign(RPG, {
         document.querySelectorAll("#rpg-maint-options .rpg-maint-opt").forEach(btn => {
             const idx = Number(btn.getAttribute("data-maint-opt"));
             btn.disabled = true;
+            btn.classList.remove("on");
             if (task.type === "true-false") {
                 if (idx === (task.correctAnswer ? 0 : 1)) btn.classList.add("right");
+            } else if (task.type === "multi-select") {
+                if ((task.correctAnswer || []).map(Number).includes(idx)) btn.classList.add("right");
+                else if (Array.isArray(value) && value.map(Number).includes(idx)) btn.classList.add("wrong");
             } else if (idx === Number(task.correctAnswer)) {
                 btn.classList.add("right");
             }
-            if (!isCorrect && String(idx) === String(value)) btn.classList.add("wrong");
+            if (!isCorrect && task.type === "multiple-choice" && String(idx) === String(value)) {
+                btn.classList.add("wrong");
+            }
+            if (!isCorrect && task.type === "true-false" && idx === (value ? 0 : 1)) {
+                btn.classList.add("wrong");
+            }
         });
+        if (task.type === "matching") {
+            const pairs = Array.isArray(task.correctPairs) ? task.correctPairs : [];
+            document.querySelectorAll("#rpg-maint-options [data-maint-pair]").forEach(sel => {
+                const leftIdx = Number(sel.getAttribute("data-maint-pair"));
+                const pair = pairs.find(p => Number(p[0]) === leftIdx);
+                sel.disabled = true;
+                if (pair) {
+                    sel.classList.add(Number(sel.value) === Number(pair[1]) ? "right" : "wrong");
+                }
+            });
+        }
         const input = document.getElementById("rpg-maint-input");
         if (input) {
             input.disabled = true;
@@ -642,6 +723,25 @@ Object.assign(RPG, {
         }
         if (task.type === "multiple-choice") {
             return Number(value) === Number(task.correctAnswer);
+        }
+        if (task.type === "multi-select") {
+            const want = (Array.isArray(task.correctAnswer) ? task.correctAnswer : []).map(Number).sort().join(",");
+            const got = (Array.isArray(value) ? value : []).map(Number).sort().join(",");
+            return want.length > 0 && want === got;
+        }
+        if (task.type === "matching") {
+            // пары приходят как объект «индекс слева → индекс справа»
+            const pairs = Array.isArray(task.correctPairs) ? task.correctPairs : [];
+            if (!pairs.length) return false;
+            return pairs.every(pair => Number((value || {})[pair[0]]) === Number(pair[1]))
+                && Object.keys(value || {}).length === pairs.length;
+        }
+        if (task.type === "numeric") {
+            const num = Number(String(value).replace(",", "."));
+            const official = Number(task.correctAnswer);
+            if (!isFinite(num) || !isFinite(official)) return false;
+            const tol = Math.max(Number(task.tolerance) || 0, Math.abs(official) * 0.02, 0.01);
+            return Math.abs(num - official) <= tol;
         }
         const normalized = typeof normalizeAnswerText === "function" ? normalizeAnswerText(String(value || "")) : String(value || "").trim().toLowerCase();
         if (!normalized) return false;
@@ -1535,7 +1635,7 @@ Object.assign(RPG, {
             if (bbBtn) {
                 const what = bbBtn.getAttribute("data-bb");
                 if (what === "maint") R.startMaintenance();
-                else if (what === "archive") R.openBlackBox();
+                else if (what === "archive") { R.closeHub(); R.openBlackBox(); }
                 else if (what === "close") R.closeBlackBox();
                 return;
             }
@@ -1549,10 +1649,30 @@ Object.assign(RPG, {
                     const input = document.getElementById("rpg-maint-input");
                     R.answerMaintenance(input ? input.value : "");
                 }
+                else if (what === "check-multi") {
+                    const picked = [...document.querySelectorAll("#rpg-maint-options [data-maint-multi].on")]
+                        .map(b => b.getAttribute("data-maint-multi"));
+                    R.answerMaintenance(picked);
+                }
+                else if (what === "check-pairs") {
+                    const map = {};
+                    document.querySelectorAll("#rpg-maint-options [data-maint-pair]").forEach(sel => {
+                        const v = Number(sel.value);
+                        if (v >= 0) map[sel.getAttribute("data-maint-pair")] = v;
+                    });
+                    R.answerMaintenance(map);
+                }
                 return;
             }
             const maintOpt = e.target.closest("[data-maint-opt]");
             if (maintOpt) {
+                // в «отметь все» клик только отмечает варианты, проверка — по кнопке
+                if (maintOpt.hasAttribute("data-maint-multi")) {
+                    const st = R._maint;
+                    if (st && st.answered) return;
+                    maintOpt.classList.toggle("on");
+                    return;
+                }
                 R.answerMaintenance(maintOpt.getAttribute("data-maint-opt"));
                 return;
             }
