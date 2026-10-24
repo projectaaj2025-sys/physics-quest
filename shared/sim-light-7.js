@@ -456,15 +456,16 @@
         chipBtn(ctx, 350, 24, 92, "Луна", moon);
         hit({ kind: "tap", key: "body", value: "Earth", x: 296, y: 35, r: 26 });
         hit({ kind: "tap", key: "body", value: "Moon", x: 396, y: 35, r: 26 });
-        // динамометр
-        const sx = 540;
-        steelBar(ctx, sx - 96, 56, 176, 7, 3.5);
-        steelBar(ctx, sx + 76, 56, 7, 108, 3.5);
-        springScale(ctx, sx, 70, moon ? 30 : 62, st.massKg);
+        // динамометр на штативе: стойка доходит до пола, подпись — слева от пружины
+        const sx = 604;
+        steelBar(ctx, sx - 132, 46, 172, 7, 3.5);
+        steelBar(ctx, sx + 36, 46, 8, base - 66, 3.5);
+        fillRR(ctx, sx + 10, base - 20, 60, 10, 5, lin(ctx, 0, base - 20, 0, base - 10, [[0, "#eef4fa"], [1, "#9aa9ba"]]));
+        springScale(ctx, sx, 56, moon ? 26 : 46, st.massKg);
         const wgt = st.massKg * g;
-        pill(ctx, `P = ${wgt.toFixed(1)} Н`, sx + 34, 74, { size: 11, color: "#227a4d" });
+        pill(ctx, `P = ${wgt.toFixed(1).replace(".", ",")} Н`, sx - 132, 78, { size: 11, color: "#227a4d" });
         // груз висит на крючке динамометра
-        const hookY = 70 + 52 + (moon ? 30 : 62);
+        const hookY = 56 + 52 + (moon ? 26 : 46);
         ctx.strokeStyle = "rgba(90,110,135,0.75)"; ctx.lineWidth = 1.6;
         ctx.beginPath(); ctx.moveTo(sx, hookY - 10); ctx.lineTo(sx, hookY + 2); ctx.stroke();
         crate(ctx, sx - 26, hookY + 2, 52, 34, `${st.massKg} кг`);
@@ -476,9 +477,9 @@
         gripChip(ctx, 250, 226, "выбери планету и массу");
         if (st.earthWeight || st.moonWeight) {
             const list = [];
-            if (st.earthWeight) list.push(`Земля: ${st.earthWeight.toFixed(1)} Н`);
-            if (st.moonWeight) list.push(`Луна: ${st.moonWeight.toFixed(1)} Н`);
-            text(ctx, list.join("  ·  "), 540, 40, { size: 10, color: C.ink2, weight: 700 });
+            if (st.earthWeight) list.push(`Земля: ${st.earthWeight.toFixed(1).replace(".", ",")} Н`);
+            if (st.moonWeight) list.push(`Луна: ${st.moonWeight.toFixed(1).replace(".", ",")} Н`);
+            pill(ctx, list.join("  ·  "), 250, 154, { size: 10, color: C.ink2 });
         }
     };
 

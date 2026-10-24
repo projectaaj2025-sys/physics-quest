@@ -327,7 +327,13 @@
                 if (typeof Teacher !== "undefined" && Teacher.getAllTasks) tasks = Teacher.getAllTasks();
             } catch (_) {}
             if (!tasks.length) {
-                try { tasks = (typeof TASKS_DATABASE !== "undefined" && TASKS_DATABASE) || []; } catch (_) {}
+                // без Teacher (например, страница без teacher.js) собираем все банки заданий сами,
+                // иначе битва молча оставалась без вопросов
+                try { if (typeof TASKS_DATABASE !== "undefined" && Array.isArray(TASKS_DATABASE)) tasks = tasks.concat(TASKS_DATABASE); } catch (_) {}
+                try { if (typeof TASKS_DATABASE_EXT !== "undefined" && Array.isArray(TASKS_DATABASE_EXT)) tasks = tasks.concat(TASKS_DATABASE_EXT); } catch (_) {}
+                try { if (typeof TASKS_DATABASE_CH !== "undefined" && Array.isArray(TASKS_DATABASE_CH)) tasks = tasks.concat(TASKS_DATABASE_CH); } catch (_) {}
+                try { if (typeof TASKS_DATABASE_EXT2 !== "undefined" && Array.isArray(TASKS_DATABASE_EXT2)) tasks = tasks.concat(TASKS_DATABASE_EXT2); } catch (_) {}
+                try { if (typeof TASKS_DATABASE_PRACTICAL !== "undefined" && Array.isArray(TASKS_DATABASE_PRACTICAL)) tasks = tasks.concat(TASKS_DATABASE_PRACTICAL); } catch (_) {}
             }
             const grade = Number(window.CURRENT_GRADE) || 8;
             const allowed = ["multiple-choice", "true-false", "numeric"];
@@ -478,9 +484,10 @@
                 const expected = typeof q.correctAnswer === "string" ? q.correctAnswer === "true" : !!q.correctAnswer;
                 correct = (idx === 0) === expected;
             }
+            const truth = typeof q.correctAnswer === "string" ? q.correctAnswer === "true" : !!q.correctAnswer;
             const answerText = q.type === "multiple-choice"
                 ? loc((q.options[lang()] || q.options.ru || [])[q.correctAnswer])
-                : (q.correctAnswer ? (lang() === "en" ? "True" : lang() === "kk" ? "Шын" : "Верно") : (lang() === "en" ? "False" : lang() === "kk" ? "Жалған" : "Неверно"));
+                : (truth ? (lang() === "en" ? "True" : lang() === "kk" ? "Шын" : "Верно") : (lang() === "en" ? "False" : lang() === "kk" ? "Жалған" : "Неверно"));
             this.resolve(correct, answerText, idx);
         },
 
@@ -504,7 +511,7 @@
             if (fb) {
                 fb.innerHTML = `
                     <div class="pq-battle-result ${correct ? "good" : "bad"}">
-                        <strong>${correct ? esc(t("correct")) : esc(t("timeout") + " · " + t("wrong"))}</strong>
+                        <strong>${correct ? esc(t("correct")) : (answerText ? esc(t("wrong")) : esc(t("timeout") + " · " + t("wrong")))}</strong>
                         ${answerText ? `<span>${esc(t("right"))}: <b>${esc(answerText)}</b></span>` : ""}
                     </div>
                     <button type="button" class="btn btn-primary pq-battle-next" id="pq-battle-next">${esc(t("next"))}</button>`;
@@ -537,6 +544,7 @@
             const root = document.getElementById("pq-battle");
             const s = this.state;
             if (!root || !s) return;
+            s.phase = "results";
             if (this.timer) { clearInterval(this.timer); this.timer = null; }
             const sorted = [...s.crews].sort((a, b) => b.score - a.score || b.shield - a.shield);
             const best = sorted[0];

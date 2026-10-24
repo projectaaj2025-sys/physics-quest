@@ -1490,7 +1490,8 @@
                 btn.type = "button";
                 btn.id = "pq-story-comics";
                 btn.className = "btn btn-primary pq-story-comics";
-                const actions = content.querySelector(".modal-actions");
+                // в play.html у модалки «Лор и сюжет» разметка .story-actions
+                const actions = content.querySelector(".modal-actions, .story-actions");
                 if (actions) actions.insertBefore(btn, actions.firstChild);
                 else content.appendChild(btn);
                 btn.addEventListener("click", (e) => {
