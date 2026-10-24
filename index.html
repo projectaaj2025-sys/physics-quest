@@ -1,0 +1,1464 @@
+<!DOCTYPE html>
+<html lang="ru" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="theme-color" content="#eef4fb">
+    <title>Физика-Квест (7–9 классы) — Образовательная RPG-трилогия</title>
+    <link rel="manifest" href="./manifest.json">
+    <link rel="icon" type="image/png" sizes="192x192" href="./assets/icons/icon-192.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="./assets/icons/icon-180.png">
+    <script>
+        // Тема применяется до отрисовки: светлая по умолчанию, тёмная — по выбору ученика
+        (function () {
+            var t = "light";
+            try { t = localStorage.getItem("pq-theme") === "dark" ? "dark" : "light"; } catch (e) {}
+            document.documentElement.setAttribute("data-theme", t);
+            var m = document.querySelector('meta[name="theme-color"]');
+            if (m) m.setAttribute("content", t === "dark" ? "#081121" : "#eef4fb");
+        })();
+    </script>
+    <link rel="stylesheet" href="./shared/platform.css">
+    <style>
+        :root {
+            --bg-deep: #070e1c;
+            --bg-card: rgba(15, 27, 51, 0.84);
+            --bg-card-hover: rgba(20, 36, 68, 0.95);
+            --border-soft: rgba(125, 211, 252, 0.2);
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --cyan: #38bdf8;
+            --amber: #fbbf24;
+            --emerald: #34d399;
+            --violet: #a78bfa;
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            min-height: 100vh;
+            font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+            color: var(--text-main);
+            background:
+                radial-gradient(950px 520px at 12% -6%, rgba(56, 189, 248, 0.20), transparent 60%),
+                radial-gradient(850px 480px at 88% 4%, rgba(167, 139, 250, 0.17), transparent 60%),
+                radial-gradient(700px 460px at 50% 100%, rgba(16, 185, 129, 0.12), transparent 65%),
+                linear-gradient(180deg, #060c18 0%, #0b162c 55%, #070e1c 100%);
+            line-height: 1.5;
+            overflow-x: hidden;
+        }
+        a { color: inherit; text-decoration: none; }
+
+        /* Шапка портала */
+        .hub-nav {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            padding: 12px 24px;
+            background: rgba(7, 14, 28, 0.86);
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+            border-bottom: 1px solid var(--border-soft);
+        }
+        .hub-brand {
+            display: flex;
+            align-items: center;
+            gap: 11px;
+            font-weight: 900;
+            font-size: 18px;
+            letter-spacing: 0.02em;
+        }
+        .hub-brand-logo {
+            width: 38px;
+            height: 38px;
+            border-radius: 11px;
+            background: linear-gradient(135deg, #0284c7, #6366f1);
+            display: grid;
+            place-items: center;
+            font-size: 20px;
+            box-shadow: 0 6px 18px rgba(56, 189, 248, 0.32);
+        }
+        .hub-brand-sub {
+            display: block;
+            font-size: 11px;
+            font-weight: 700;
+            color: var(--cyan);
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+        }
+        .hub-nav-right {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        .hub-langs {
+            display: inline-flex;
+            padding: 3px;
+            border-radius: 999px;
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid rgba(148, 163, 184, 0.22);
+        }
+        .hub-langs button {
+            border: none;
+            background: transparent;
+            color: #cbd5e1;
+            font-size: 12px;
+            font-weight: 800;
+            padding: 5px 11px;
+            border-radius: 999px;
+            cursor: pointer;
+            transition: all 0.16s ease;
+        }
+        .hub-langs button.active {
+            background: var(--cyan);
+            color: #061224;
+        }
+        .hub-acc-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 6px 13px;
+            border-radius: 999px;
+            border: 1px solid rgba(56, 189, 248, 0.4);
+            background: rgba(14, 116, 144, 0.24);
+            color: #f0f9ff;
+            font-size: 13px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.16s ease;
+        }
+        .hub-acc-pill:hover {
+            background: rgba(14, 116, 144, 0.4);
+            transform: translateY(-1px);
+        }
+        .hub-acc-pill.teacher {
+            border-color: rgba(251, 191, 36, 0.5);
+            background: rgba(180, 83, 9, 0.28);
+            color: #fef3c7;
+        }
+        .hub-code-badge {
+            padding: 2px 8px;
+            border-radius: 6px;
+            background: rgba(56, 189, 248, 0.22);
+            border: 1px solid rgba(125, 211, 252, 0.45);
+            font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+            font-weight: 900;
+            letter-spacing: 0.08em;
+            color: #7dd3fc;
+        }
+
+        /* Контейнер */
+        .hub-wrap {
+            max-width: 1180px;
+            margin: 0 auto;
+            padding: 32px 20px 64px;
+        }
+
+        /* Hero */
+        .hub-hero {
+            display: grid;
+            grid-template-columns: 1.35fr 0.9fr;
+            gap: 24px;
+            align-items: stretch;
+            margin-bottom: 30px;
+        }
+        .hero-main {
+            padding: 30px 32px;
+            border-radius: 24px;
+            background: linear-gradient(145deg, rgba(15, 29, 58, 0.9), rgba(9, 18, 36, 0.92));
+            border: 1px solid var(--border-soft);
+            box-shadow: 0 22px 50px rgba(0, 0, 0, 0.42);
+            position: relative;
+            overflow: hidden;
+        }
+        .hero-kicker {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 5px 12px;
+            border-radius: 999px;
+            background: rgba(56, 189, 248, 0.14);
+            border: 1px solid rgba(56, 189, 248, 0.35);
+            color: #7dd3fc;
+            font-size: 12px;
+            font-weight: 800;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            margin-bottom: 14px;
+        }
+        .hero-title {
+            font-size: clamp(28px, 4vw, 42px);
+            font-weight: 900;
+            line-height: 1.12;
+            margin-bottom: 12px;
+            background: linear-gradient(95deg, #ffffff 0%, #bae6fd 52%, #fde68a 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .hero-lead {
+            color: #cbd5e1;
+            font-size: 15.5px;
+            max-width: 640px;
+            margin-bottom: 20px;
+        }
+        .hero-metrics {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        .hero-metric {
+            padding: 8px 14px;
+            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.045);
+            border: 1px solid rgba(148, 163, 184, 0.18);
+            font-size: 13px;
+            color: #e2e8f0;
+        }
+        .hero-metric b {
+            color: var(--cyan);
+            font-weight: 900;
+        }
+
+        /* Правая карточка прогресса и кода ученика */
+        .hero-side {
+            padding: 24px 24px;
+            border-radius: 24px;
+            background: linear-gradient(155deg, rgba(16, 36, 68, 0.92), rgba(11, 22, 43, 0.95));
+            border: 1px solid rgba(56, 189, 248, 0.28);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            gap: 14px;
+            box-shadow: 0 22px 50px rgba(0, 0, 0, 0.38);
+        }
+        .id-box {
+            padding: 14px 16px;
+            border-radius: 16px;
+            background: rgba(8, 47, 73, 0.45);
+            border: 1px dashed rgba(56, 189, 248, 0.55);
+        }
+        .id-box-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 6px;
+        }
+        .id-box-label {
+            font-size: 11.5px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: #bae6fd;
+        }
+        .id-code-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+        }
+        .id-code-val {
+            font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+            font-size: 26px;
+            font-weight: 900;
+            letter-spacing: 0.14em;
+            color: #38bdf8;
+        }
+        .btn-mini {
+            padding: 6px 11px;
+            border-radius: 9px;
+            border: 1px solid rgba(125, 211, 252, 0.4);
+            background: rgba(56, 189, 248, 0.16);
+            color: #e0f2fe;
+            font-size: 12px;
+            font-weight: 800;
+            cursor: pointer;
+            transition: all 0.15s ease;
+        }
+        .btn-mini:hover { background: rgba(56, 189, 248, 0.3); }
+
+        .series-progress-box {
+            padding: 14px 16px;
+            border-radius: 16px;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(148, 163, 184, 0.18);
+        }
+        .sp-head {
+            display: flex;
+            justify-content: space-between;
+            font-size: 13px;
+            font-weight: 800;
+            margin-bottom: 8px;
+        }
+        .sp-track {
+            height: 10px;
+            border-radius: 999px;
+            background: rgba(15, 23, 42, 0.9);
+            overflow: hidden;
+            border: 1px solid rgba(148, 163, 184, 0.2);
+        }
+        .sp-fill {
+            height: 100%;
+            border-radius: 999px;
+            background: linear-gradient(90deg, #38bdf8, #34d399, #fbbf24);
+            transition: width 0.35s ease;
+        }
+        .sp-sub {
+            margin-top: 7px;
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+
+        /* Карточки 7, 8, 9 классов */
+        .section-heading {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: baseline;
+            justify-content: space-between;
+            gap: 6px 12px;
+            margin: 8px 0 16px;
+        }
+        .section-heading h2 {
+            font-size: 21px;
+            font-weight: 900;
+        }
+        .section-heading span {
+            font-size: 13px;
+            color: var(--text-muted);
+        }
+
+        .grades-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            margin-bottom: 28px;
+        }
+        .grade-card {
+            border-radius: 22px;
+            padding: 24px;
+            background: var(--bg-card);
+            border: 1px solid var(--border-soft);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            gap: 16px;
+            transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        .grade-card:hover {
+            transform: translateY(-4px);
+            background: var(--bg-card-hover);
+            border-color: var(--card-accent, #38bdf8);
+            box-shadow: 0 18px 42px rgba(0, 0, 0, 0.45);
+        }
+        .grade-card::before {
+            content: "";
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 4px;
+            background: var(--card-accent, #38bdf8);
+        }
+        .gc-top {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+        }
+        .gc-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 5px 12px;
+            border-radius: 999px;
+            font-size: 12.5px;
+            font-weight: 900;
+            background: rgba(255, 255, 255, 0.08);
+            color: var(--card-accent, #38bdf8);
+            border: 1px solid rgba(255, 255, 255, 0.14);
+        }
+        .gc-part {
+            font-size: 11.5px;
+            font-weight: 700;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        .gc-title {
+            font-size: 21px;
+            font-weight: 900;
+            line-height: 1.22;
+            margin-top: 8px;
+        }
+        .gc-world {
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--card-accent, #38bdf8);
+            margin-top: 4px;
+        }
+        .gc-desc {
+            font-size: 13.5px;
+            color: #cbd5e1;
+            margin-top: 8px;
+        }
+        .gc-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin-top: 12px;
+        }
+        .gc-tag {
+            font-size: 11.5px;
+            font-weight: 700;
+            padding: 4px 9px;
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(148, 163, 184, 0.16);
+            color: #e2e8f0;
+        }
+        .gc-prog {
+            padding: 10px 12px;
+            border-radius: 12px;
+            background: rgba(7, 14, 28, 0.65);
+            border: 1px solid rgba(148, 163, 184, 0.15);
+        }
+        .gc-prog-row {
+            display: flex;
+            justify-content: space-between;
+            font-size: 12px;
+            font-weight: 800;
+            margin-bottom: 6px;
+            color: #e2e8f0;
+        }
+        .gc-actions {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        .btn-play {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 12px 16px;
+            border-radius: 13px;
+            font-size: 14.5px;
+            font-weight: 900;
+            border: none;
+            cursor: pointer;
+            color: #061224;
+            background: var(--card-accent, #38bdf8);
+            box-shadow: 0 8px 22px rgba(0, 0, 0, 0.3);
+            transition: transform 0.15s ease, filter 0.15s ease;
+        }
+        .btn-play:hover {
+            transform: translateY(-1px);
+            filter: brightness(1.08);
+        }
+        .gc-subactions {
+            display: flex;
+            gap: 8px;
+        }
+        .btn-ghost {
+            flex: 1;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            padding: 8px 10px;
+            border-radius: 11px;
+            font-size: 12px;
+            font-weight: 800;
+            color: #cbd5e1;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(148, 163, 184, 0.22);
+            cursor: pointer;
+            transition: all 0.15s ease;
+            text-align: center;
+        }
+        .btn-ghost:hover {
+            background: rgba(255, 255, 255, 0.11);
+            color: #fff;
+        }
+
+        /* Двухколоночный блок: Быстрый код задания ученика + Единый кабинет учителя */
+        .hub-panels {
+            display: grid;
+            grid-template-columns: 1fr 1.1fr;
+            gap: 20px;
+            margin-bottom: 28px;
+        }
+        .hub-panel {
+            padding: 24px;
+            border-radius: 22px;
+            background: var(--bg-card);
+            border: 1px solid var(--border-soft);
+        }
+        .hub-panel.teacher-panel {
+            border-color: rgba(251, 191, 36, 0.32);
+            background: linear-gradient(155deg, rgba(28, 25, 43, 0.88), rgba(15, 23, 42, 0.92));
+        }
+        .hub-panel h3 {
+            font-size: 19px;
+            font-weight: 900;
+            margin-bottom: 6px;
+        }
+        .hub-panel p {
+            font-size: 13.5px;
+            color: #cbd5e1;
+            margin-bottom: 14px;
+        }
+        .code-form {
+            display: flex;
+            gap: 8px;
+        }
+        .code-form input {
+            flex: 1;
+            padding: 12px 14px;
+            border-radius: 12px;
+            border: 1px solid rgba(125, 211, 252, 0.35);
+            background: rgba(7, 14, 28, 0.85);
+            color: #fff;
+            font-size: 15px;
+            font-weight: 800;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            outline: none;
+        }
+        .code-form input:focus { border-color: var(--cyan); }
+        .code-form button {
+            padding: 12px 18px;
+            border-radius: 12px;
+            border: none;
+            background: linear-gradient(135deg, #0ea5e9, #2563eb);
+            color: #fff;
+            font-weight: 900;
+            font-size: 14px;
+            cursor: pointer;
+            white-space: nowrap;
+        }
+        .code-status {
+            margin-top: 8px;
+            font-size: 12.5px;
+            min-height: 18px;
+            font-weight: 700;
+        }
+        .active-assign-list {
+            margin-top: 10px;
+            display: flex;
+            flex-direction: column;
+            gap: 7px;
+        }
+        .active-assign-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            padding: 9px 12px;
+            border-radius: 11px;
+            background: rgba(56, 189, 248, 0.09);
+            border: 1px solid rgba(56, 189, 248, 0.25);
+            font-size: 12.5px;
+        }
+
+        .teacher-kpis {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin-bottom: 14px;
+        }
+        .tkpi {
+            padding: 10px 12px;
+            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.045);
+            border: 1px solid rgba(251, 191, 36, 0.22);
+            text-align: center;
+        }
+        .tkpi b {
+            display: block;
+            font-size: 20px;
+            font-weight: 900;
+            color: #fde68a;
+        }
+        .tkpi span {
+            font-size: 11.5px;
+            color: #cbd5e1;
+        }
+        .teacher-btns {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        .btn-teacher-main {
+            flex: 1.3;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 12px 16px;
+            border-radius: 12px;
+            background: linear-gradient(135deg, #f59e0b, #d97706);
+            color: #1c1102;
+            font-weight: 900;
+            font-size: 14px;
+            border: none;
+            cursor: pointer;
+        }
+        .btn-teacher-sec {
+            flex: 1;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            padding: 12px 14px;
+            border-radius: 12px;
+            background: rgba(251, 191, 36, 0.12);
+            border: 1px solid rgba(251, 191, 36, 0.38);
+            color: #fef3c7;
+            font-weight: 800;
+            font-size: 13px;
+            cursor: pointer;
+        }
+
+        /* О серии и дипломном проекте */
+        .about-series {
+            padding: 26px 28px;
+            border-radius: 22px;
+            background: rgba(12, 23, 44, 0.8);
+            border: 1px solid rgba(148, 163, 184, 0.18);
+        }
+        .about-series h3 {
+            font-size: 19px;
+            font-weight: 900;
+            margin-bottom: 10px;
+            color: #e0f2fe;
+        }
+        .about-cols {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+            margin-top: 14px;
+        }
+        .about-col {
+            padding: 14px 16px;
+            border-radius: 14px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(148, 163, 184, 0.14);
+        }
+        .about-col h4 {
+            font-size: 14px;
+            font-weight: 800;
+            color: var(--cyan);
+            margin-bottom: 6px;
+        }
+        .about-col p {
+            font-size: 13px;
+            color: #cbd5e1;
+        }
+        .hub-footer {
+            margin-top: 24px;
+            text-align: center;
+            font-size: 12.5px;
+            color: var(--text-muted);
+        }
+
+        @media (max-width: 960px) {
+            .hub-hero, .grades-grid, .hub-panels, .about-cols {
+                grid-template-columns: 1fr;
+            }
+            .hub-nav { padding: 10px 14px; }
+        }
+
+        .hub-features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+            gap: 14px;
+            margin: 26px 0 8px;
+        }
+        .hub-feature-link { text-decoration: none; color: inherit; border-color: rgba(56, 189, 248, .45); }
+        .hub-feature-link:hover { transform: translateY(-2px); border-color: rgba(56, 189, 248, .8); }
+        .hub-feature {
+            background: linear-gradient(160deg, rgba(17, 30, 58, 0.9), rgba(9, 18, 38, 0.94));
+            border: 1px solid rgba(96, 165, 250, 0.22);
+            border-radius: 18px;
+            padding: 16px 18px;
+            box-shadow: 0 16px 40px rgba(2, 8, 22, 0.35);
+        }
+        .hf-icon { font-size: 26px; margin-bottom: 6px; }
+        .hf-title { font-weight: 800; font-size: 15px; color: #eaf3ff; margin-bottom: 4px; }
+        .hf-desc { font-size: 12.8px; line-height: 1.5; color: #9fb3cf; }
+
+        /* ============================================================
+           СВЕТЛАЯ ТЕМА ГЛАВНОЙ СТРАНИЦЫ (по умолчанию)
+           Тёмная тема остаётся как есть — включается кнопкой на шапке
+           ============================================================ */
+        html[data-theme="light"] {
+            --bg-deep: #eef4fb;
+            --bg-card: rgba(255, 255, 255, 0.94);
+            --bg-card-hover: #ffffff;
+            --border-soft: rgba(2, 132, 199, 0.18);
+            --text-main: #16233b;
+            --text-muted: #56678a;
+            --cyan: #0284c7;
+            --amber: #b45309;
+            --emerald: #047857;
+            --violet: #6d28d9;
+        }
+        html[data-theme="light"] body {
+            color: #16233b;
+            background:
+                radial-gradient(900px 500px at 12% -6%, rgba(2, 132, 199, 0.10), transparent 60%),
+                radial-gradient(820px 460px at 88% 4%, rgba(109, 40, 217, 0.08), transparent 60%),
+                radial-gradient(700px 460px at 50% 100%, rgba(4, 120, 87, 0.07), transparent 65%),
+                linear-gradient(180deg, #f7fbff 0%, #eef4fb 55%, #e9f1fa 100%);
+        }
+        html[data-theme="light"] .hub-nav {
+            background: rgba(255, 255, 255, 0.9);
+            border-bottom: 1px solid rgba(2, 132, 199, 0.14);
+            box-shadow: 0 2px 18px rgba(15, 40, 80, 0.06);
+        }
+        html[data-theme="light"] .hub-brand-sub { color: #0369a1; }
+        html[data-theme="light"] .hub-langs {
+            background: #eaf2fb;
+            border-color: rgba(2, 132, 199, 0.16);
+        }
+        html[data-theme="light"] .hub-langs button { color: #46597a; }
+        html[data-theme="light"] .hub-langs button.active { background: #0284c7; color: #ffffff; }
+        html[data-theme="light"] .hub-acc-pill {
+            background: #eaf8ff;
+            border-color: rgba(2, 132, 199, 0.38);
+            color: #0c3b57;
+        }
+        html[data-theme="light"] .hub-acc-pill:hover { background: #d9f1fe; }
+        html[data-theme="light"] .hub-acc-pill.teacher {
+            background: #fff7e6;
+            border-color: rgba(180, 83, 9, 0.4);
+            color: #7c3d05;
+        }
+        html[data-theme="light"] .hub-code-badge {
+            background: #e0f2fe;
+            border-color: rgba(2, 132, 199, 0.32);
+            color: #0369a1;
+        }
+        html[data-theme="light"] .hero-main {
+            background: linear-gradient(145deg, #ffffff 0%, #f1f8ff 100%);
+            box-shadow: 0 18px 44px rgba(15, 40, 80, 0.10);
+        }
+        html[data-theme="light"] .hero-kicker {
+            background: #e6f6ff;
+            border-color: rgba(2, 132, 199, 0.28);
+            color: #0369a1;
+        }
+        html[data-theme="light"] .hero-title {
+            background: linear-gradient(95deg, #0b3d91 0%, #0284c7 52%, #b45309 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        html[data-theme="light"] .hero-lead { color: #3d5170; }
+        html[data-theme="light"] .hero-metric {
+            background: #ffffff;
+            border-color: rgba(2, 132, 199, 0.16);
+            color: #1d2f4b;
+            box-shadow: 0 4px 14px rgba(15, 40, 80, 0.05);
+        }
+        html[data-theme="light"] .hero-side {
+            background: linear-gradient(155deg, #ffffff 0%, #eef7ff 100%);
+            border-color: rgba(2, 132, 199, 0.2);
+            box-shadow: 0 18px 44px rgba(15, 40, 80, 0.10);
+        }
+        html[data-theme="light"] .id-box {
+            background: #eef9ff;
+            border-color: rgba(2, 132, 199, 0.42);
+        }
+        html[data-theme="light"] .id-box-label { color: #0369a1; }
+        html[data-theme="light"] .id-code-val { color: #0284c7; }
+        html[data-theme="light"] .btn-mini {
+            background: #e0f2fe;
+            border-color: rgba(2, 132, 199, 0.32);
+            color: #075985;
+        }
+        html[data-theme="light"] .btn-mini:hover { background: #c9e9fe; }
+        html[data-theme="light"] .series-progress-box {
+            background: #ffffff;
+            border-color: rgba(2, 132, 199, 0.16);
+        }
+        html[data-theme="light"] .sp-track {
+            background: #e6eef8;
+            border-color: rgba(2, 132, 199, 0.14);
+        }
+        html[data-theme="light"] .grade-card {
+            background: #ffffff;
+            border-color: rgba(2, 132, 199, 0.16);
+            box-shadow: 0 10px 30px rgba(15, 40, 80, 0.07);
+        }
+        html[data-theme="light"] .grade-card:hover { box-shadow: 0 18px 42px rgba(15, 40, 80, 0.14); }
+        html[data-theme="light"] .gc-badge {
+            background: #f1f8ff;
+            color: var(--card-accent-ink, var(--card-accent, #0284c7));
+            border-color: rgba(2, 132, 199, 0.16);
+        }
+        html[data-theme="light"] .gc-world { color: var(--card-accent-ink, var(--card-accent, #0284c7)); }
+        html[data-theme="light"] .gc-desc { color: #42566f; }
+        html[data-theme="light"] .gc-tag {
+            background: #f4f9ff;
+            border-color: rgba(2, 132, 199, 0.16);
+            color: #263a55;
+        }
+        html[data-theme="light"] .gc-prog {
+            background: #f5faff;
+            border-color: rgba(2, 132, 199, 0.14);
+        }
+        html[data-theme="light"] .gc-prog-row { color: #24384f; }
+        html[data-theme="light"] .btn-play {
+            color: #0b1a2b;
+            box-shadow: 0 8px 22px rgba(15, 40, 80, 0.16);
+        }
+        html[data-theme="light"] .btn-ghost {
+            color: #2b4463;
+            background: #f3f9ff;
+            border-color: rgba(2, 132, 199, 0.2);
+        }
+        html[data-theme="light"] .btn-ghost:hover { background: #e3f2fd; color: #0b2b4a; }
+        html[data-theme="light"] .hub-panel {
+            background: #ffffff;
+            border-color: rgba(2, 132, 199, 0.16);
+            box-shadow: 0 10px 30px rgba(15, 40, 80, 0.06);
+        }
+        html[data-theme="light"] .hub-panel.teacher-panel {
+            background: linear-gradient(155deg, #fffdf7 0%, #fff6e8 100%);
+            border-color: rgba(180, 83, 9, 0.24);
+        }
+        html[data-theme="light"] .hub-panel p { color: #42566f; }
+        html[data-theme="light"] .code-form input {
+            background: #ffffff;
+            border-color: rgba(2, 132, 199, 0.28);
+            color: #12233b;
+        }
+        html[data-theme="light"] .active-assign-item {
+            background: #f0f9ff;
+            border-color: rgba(2, 132, 199, 0.22);
+        }
+        html[data-theme="light"] .tkpi {
+            background: #fffdf6;
+            border-color: rgba(180, 83, 9, 0.2);
+        }
+        html[data-theme="light"] .tkpi b { color: #b45309; }
+        html[data-theme="light"] .tkpi span { color: #4d5f7d; }
+        html[data-theme="light"] .btn-teacher-sec {
+            background: #fff4e0;
+            border-color: rgba(180, 83, 9, 0.3);
+            color: #7c3d05;
+        }
+        html[data-theme="light"] .about-series {
+            background: #ffffff;
+            border-color: rgba(2, 132, 199, 0.16);
+            box-shadow: 0 10px 30px rgba(15, 40, 80, 0.06);
+        }
+        html[data-theme="light"] .about-series h3 { color: #102a45; }
+        html[data-theme="light"] .about-col {
+            background: #f6fbff;
+            border-color: rgba(2, 132, 199, 0.14);
+        }
+        html[data-theme="light"] .about-col p { color: #42566f; }
+        html[data-theme="light"] .hub-feature {
+            background: linear-gradient(160deg, #ffffff 0%, #f4faff 100%);
+            border-color: rgba(2, 132, 199, 0.18);
+            box-shadow: 0 10px 28px rgba(15, 40, 80, 0.07);
+        }
+        html[data-theme="light"] .hub-feature-link { border-color: rgba(2, 132, 199, 0.42); }
+        html[data-theme="light"] .hub-feature-link:hover { border-color: #0284c7; }
+        html[data-theme="light"] .hf-title { color: #102a45; }
+        html[data-theme="light"] .hf-desc { color: #4b6079; }
+    </style>
+</head>
+<body>
+    <header class="hub-nav">
+        <div class="hub-brand">
+            <div class="hub-brand-logo">⚛️</div>
+            <div>
+                <span id="brand-title">ФИЗИКА-КВЕСТ</span>
+                <span class="hub-brand-sub" id="brand-sub">ОБРАЗОВАТЕЛЬНАЯ RPG-СЕРИЯ · 7–9 КЛАССЫ</span>
+            </div>
+        </div>
+        <div class="hub-nav-right">
+            <div class="hub-langs" role="group" aria-label="Language">
+                <button type="button" data-lang="ru" class="active">RU</button>
+                <button type="button" data-lang="kk">ҚАЗ</button>
+                <button type="button" data-lang="en">EN</button>
+            </div>
+            <button type="button" class="hub-acc-pill" id="hub-account-btn"></button>
+        </div>
+    </header>
+
+    <main class="hub-wrap" id="hub-app"></main>
+
+    <script src="./shared/account.js"></script>
+    <script src="./shared/theme.js"></script>
+    <script src="./shared/catalog-789.js"></script>
+    <script src="./shared/levels.js"></script>
+    <script src="./shared/storage.js"></script>
+    <script src="./shared/offline-manifest.js"></script>
+    <script src="./shared/sound.js"></script>
+    <script src="./shared/offline.js"></script>
+    <script>
+    (function () {
+        // Если на главную страницу пришли со ссылкой #a=… или #res=… — сразу направляем в нужную параллель!
+        const hash = String(window.location.hash || "");
+        if (hash.indexOf("#a=") === 0) {
+            const m = hash.match(/#a=[A-Z0-9]+\.g([789])l\d+/i) || hash.match(/#a=Q([789])/i);
+            const g = m ? Number(m[1]) : 8;
+            window.location.replace("./play.html?grade=" + g + hash);
+            return;
+        }
+        if (hash.indexOf("#res=") === 0) {
+            window.location.replace("./play.html?grade=8" + hash);
+            return;
+        }
+
+        const PORTAL_TEXT = {
+            ru: {
+                brandTitle: "ФИЗИКА-КВЕСТ",
+                brandSub: "ОБРАЗОВАТЕЛЬНАЯ RPG-СЕРИЯ · 7–9 КЛАССЫ",
+                heroKicker: "🚀 ЕДИНАЯ ПЛАТФОРМА ТРИЛОГИИ · RU / ҚАЗ / EN",
+                heroTitle: "Серия RPG-игр «Физика-Квест» для 7–9 классов",
+                heroLead: "Защищай научно-технические города и орбитальные станции с помощью законов физики! Три сюжетные кампании по школьной программе 7, 8 и 9 классов в единой игровой экосистеме с общим профилем ученика и сквозным журналом учителя.",
+                mLevels: "<b>153</b> игровых уровня",
+                mTasks: "<b>3 675</b> задач по программе",
+                mLabs: "<b>58</b> лаб. работ и интерактивных симуляторов",
+                mLangs: "<b>3 языка</b> (RU · ҚАЗ · EN)",
+                permCodeLabel: "Постоянный код ученика (7–9 кл.)",
+                copyBtn: "📋 Копировать",
+                copiedBtn: "✓ Скопировано",
+                changeRoleBtn: "⚙️ Аккаунт / Сменить роль",
+                seriesProgTitle: "Общий прогресс трилогии",
+                seriesProgSub: "Пройдено {0} из {1} миссий · Прогресс каждого класса хранится отдельно",
+                chooseHeading: "Выбери свой класс и начинай игру",
+                chooseSub: "У каждого класса своя история, свои миссии и свой полный конспект. Класс можно менять прямо во время игры.",
+                part1: "Часть I · 7 класс",
+                part2: "Часть II · 8 класс",
+                part3: "Часть III · 9 класс",
+                g7Title: "Энергетический щит Астерии",
+                g7World: "🛡 Город-купол Астерия · Начало трилогии",
+                g7Desc: "Механическое движение, плотность, сила упругости и трения, давление в жидкостях и газах, закон Архимеда, работа, мощность и простые механизмы.",
+                g7Tags: ["50 уровней", "1 096 заданий", "15 симуляторов", "10 лаб. работ", "Полный конспект (69 стр.)"],
+                g8Title: "Хроники щита Эквилибриума",
+                g8World: "⚡ Мегаполис Эквилибриум · Сердце купола",
+                g8Desc: "Тепловые явления и термодинамика, агрегатные состояния, электростатика, законы постоянного тока, электромагнитные явления и геометрическая оптика.",
+                g8Tags: ["55 уровней", "1 381 задание", "9 симуляторов", "11 лаб. работ", "Полный конспект (52–54 стр.)"],
+                g9Title: "Орбита-9: Щит Земли",
+                g9World: "🛰 Орбитальная станция «Орбита-9» · Финал",
+                g9Desc: "Векторная кинематика, основы астрономии, законы динамики и сохранения, механические и электромагнитные колебания, волны, квантовая и ядерная физика.",
+                g9Tags: ["48 уровней", "1 198 заданий", "9 симуляторов", "4 лаб. работы", "Полный конспект (56–58 стр.)"],
+                completedLabel: "Пройдено миссий",
+                playStart: "▶ Начать игру",
+                playContinue: "▶ Продолжить (уровень #{0})",
+                levelsListBtn: "🗺 Все уровни",
+                pdfBtn: "📥 Полный конспект",
+                conspektBtn: "📘 Конспект в игре",
+                studentPanelTitle: "🎯 Быстрый вход по коду задания",
+                studentPanelDesc: "Получил короткий код задания от учителя (например, Q704ABC или Q812XYZ)? Введи его здесь — игра сама откроет нужный класс и параграф!",
+                codePh: "Код задания (напр. Q805ABC)",
+                openCodeBtn: "Открыть →",
+                codeErrEmpty: "Введи код задания от учителя.",
+                codeErrNotFound: "Код не распознан. Проверь символы (код начинается с буквы Q).",
+                myAssignsTitle: "Твои подключённые задания:",
+                openAssignBtn: "Играть →",
+                teacherPanelTitle: "👩‍🏫 Единый кабинет учителя (7–9 классы)",
+                teacherPanelDesc: "Сквозной журнал результатов сразу по 7, 8 и 9 классам: списки классов с постоянными короткими кодами учеников, мастер назначений с QR-ссылками, приём кодов R1/R2 и конструктор уроков. Кабинет также открыт для учеников.",
+                kpiClasses: "Классов (7–9)",
+                kpiAssigns: "Назначений",
+                kpiResults: "Результатов",
+                openJournalBtn: "📊 Открыть Единый журнал 7–9",
+                teacherLoginBtn: "🔐 Вход для учителя",
+                aboutTitle: "О серии «Физика-Квест» и научно-методической концепции",
+                aboutLead: "Образовательная веб-платформа разработана в рамках дипломного исследования «Разработка и применение серии RPG-игр «Физика-Квест» как средства повышения учебной мотивации обучающихся 7–9 классов».",
+                ab1Title: "📚 Полное соответствие ГОСО РК",
+                ab1Text: "Структура миссий синхронизирована с параграфами и лабораторными работами школьных учебников физики 7–9 классов (Р. Башарулы, Ш. Б. Закирова и др.) на русском, казахском и английском языках.",
+                ab2Title: "🎮 Механики учебной мотивации",
+                ab2Text: "Сочетает теорию самодетерминации (SDT) и состояние потока: мгновенная обратная связь с объяснением формул, прокачка корабля, «Чёрный ящик» разбора ошибок и полевые физические симуляторы.",
+                ab3Title: "🔗 Без установки и регистрации на сервере",
+                ab3Text: "Работает мгновенно в любом браузере на компьютере, интерактивной доске и смартфоне. Обмен заданиями и результатами между учителем и классом идёт через сверхкороткие коды и QR-ссылки.",
+                footer: "Физика-Квест (7–9 классы) · Автор-разработчик: Богомолова Дарья · Павлодарский педагогический университет им. Ә. Марғұлан, 2026"
+            },
+            kk: {
+                brandTitle: "ФИЗИКА-КВЕСТ",
+                brandSub: "БІЛІМ БЕРУ RPG-СЕРИЯСЫ · 7–9 СЫНЫПТАР",
+                heroKicker: "🚀 ТРИЛОГИЯНЫҢ БІРЫҢҒАЙ ПЛАТФОРМАСЫ · RU / ҚАЗ / EN",
+                heroTitle: "7–9 сыныптарға арналған «Физика-Квест» RPG-ойындар сериясы",
+                heroLead: "Физика заңдарының көмегімен ғылыми қалалар мен орбиталық станцияларды қорға! 7, 8 және 9-сынып бағдарламасы бойынша үш сюжеттік кампания бірыңғай оқушы профилімен және ортақ мұғалім журналымен біріктірілген.",
+                mLevels: "<b>153</b> ойын деңгейі",
+                mTasks: "<b>3 675</b> оқу есебі",
+                mLabs: "<b>58</b> зертханалық жұмыс пен интерактивті симулятор",
+                mLangs: "<b>3 тіл</b> (ҚАЗ · RU · EN)",
+                permCodeLabel: "Оқушының тұрақты коды (7–9 сын.)",
+                copyBtn: "📋 Көшіру",
+                copiedBtn: "✓ Көшірілді",
+                changeRoleBtn: "⚙️ Аккаунт / Рөлді ауыстыру",
+                seriesProgTitle: "Трилогияның жалпы прогресі",
+                seriesProgSub: "{1} миссияның {0}-і өтілді · Әр сыныптың прогресі бөлек сақталады",
+                chooseHeading: "Сыныбыңды таңда да, ойынды баста",
+                chooseSub: "Әр сыныптың өз оқиғасы, өз миссиялары және толық конспектісі бар. Сыныпты ойын барысында ауыстыруға болады.",
+                part1: "I бөлім · 7-сынып",
+                part2: "II бөлім · 8-сынып",
+                part3: "III бөлім · 9-сынып",
+                g7Title: "Астерияның энергетикалық қалқаны",
+                g7World: "🛡 Астерия күмбез-қаласы · Трилогия бастауы",
+                g7Desc: "Механикалық қозғалыс, тығыздық, серпімділік пен үйкеліс күштері, сұйықтар мен газдардағы қысым, Архимед заңы, жұмыс, қуат және жай механизмдер.",
+                g7Tags: ["50 деңгей", "1 096 тапсырма", "15 симулятор", "10 зерт. жұмыс", "Толық конспект (69 бет)"],
+                g8Title: "Эквилибриум қалқанының шежіресі",
+                g8World: "⚡ Эквилибриум мегаполисі · Күмбез жүрегі",
+                g8Desc: "Жылу құбылыстары мен термодинамика, агрегаттық күйлер, электростатика, тұрақты ток заңдары, электромагниттік құбылыстар және геометриялық оптика.",
+                g8Tags: ["55 деңгей", "1 381 тапсырма", "9 симулятор", "11 зерт. жұмыс", "Толық конспект (52–54 бет)"],
+                g9Title: "Орбита-9: Жер қалқаны",
+                g9World: "🛰 «Орбита-9» станциясы · Финал",
+                g9Desc: "Векторлық кинематика, астрономия негіздері, динамика және сақталу заңдары, тербелістер мен толқындар, кванттық және ядролық физика.",
+                g9Tags: ["48 деңгей", "1 198 тапсырма", "9 симулятор", "4 зерт. жұмыс", "Толық конспект (56–58 бет)"],
+                completedLabel: "Өтілген миссиялар",
+                playStart: "▶ Ойынды бастау",
+                playContinue: "▶ Жалғастыру (#{0}-деңгей)",
+                levelsListBtn: "🗺 Барлық деңгейлер",
+                pdfBtn: "📥 Толық конспект",
+                conspektBtn: "📘 Ойындағы конспект",
+                studentPanelTitle: "🎯 Тапсырма коды бойынша жылдам кіру",
+                studentPanelDesc: "Мұғалімнен қысқа тапсырма кодын алдың ба (мысалы, Q704ABC немесе Q812XYZ)? Оны осында енгіз — ойын қажетті сынып пен параграфты бірден ашады!",
+                codePh: "Тапсырма коды (мыс. Q805ABC)",
+                openCodeBtn: "Ашу →",
+                codeErrEmpty: "Мұғалім берген тапсырма кодын енгіз.",
+                codeErrNotFound: "Код танылмады. Таңбаларды тексер (код Q әрпінен басталады).",
+                myAssignsTitle: "Қосылған тапсырмаларың:",
+                openAssignBtn: "Ойнау →",
+                teacherPanelTitle: "👩‍🏫 Бірыңғай мұғалім кабинеті (7–9 сыныптар)",
+                teacherPanelDesc: "7, 8 және 9-сыныптар бойынша ортақ нәтижелер журналы: оқушылардың тұрақты қысқа кодтары бар сынып тізімдері, QR-сілтемелі тапсырма шебері, R1/R2 кодтарын қабылдау және сабақ конструкторы. Кабинет оқушылар үшін де ашық.",
+                kpiClasses: "Сыныптар (7–9)",
+                kpiAssigns: "Тапсырмалар",
+                kpiResults: "Нәтижелер",
+                openJournalBtn: "📊 7–9 Бірыңғай журналын ашу",
+                teacherLoginBtn: "🔐 Мұғалім кіруі",
+                aboutTitle: "«Физика-Квест» сериясы және ғылыми-әдістемелік тұжырымдама",
+                aboutLead: "Веб-платформа «7–9 сынып білім алушыларының оқу мотивациясын арттыру құралы ретінде «Физика-Квест» RPG-ойындар сериясын әзірлеу және қолдану» дипломдық зерттеуі аясында жасалған.",
+                ab1Title: "📚 ҚР МЖМБС толық сәйкестігі",
+                ab1Text: "Барлық миссиялар 7–9 сынып физика оқулықтарының (Р. Башарұлы, Ш. Б. Закирова және т.б.) параграфтары мен зертханалық жұмыстарына үш тілде (ҚАЗ / RU / EN) сәйкестендірілген.",
+                ab2Title: "🎮 Оқу мотивациясының механикасы",
+                ab2Text: "Өзін-өзі детерминациялау теориясы (SDT) мен «ағын» күйін біріктіреді: формулалар түсіндірмесі бар лездік кері байланыс, кемені дамыту, қатемен жұмыс («Қара жәшік») және симуляторлар.",
+                ab3Title: "🔗 Орнатусыз кез келген құрылғыда",
+                ab3Text: "Компьютерде, интерактивті тақтада және смартфонда тікелей браузерде жұмыс істейді. Мұғалім мен сынып арасындағы алмасу қысқа кодтар мен QR-сілтемелер арқылы жүзеге асады.",
+                footer: "Физика-Квест (7–9 сыныптар) · Автор-әзірлеуші: Богомолова Дарья · Ә. Марғұлан атындағы Павлодар педагогикалық университеті, 2026"
+            },
+            en: {
+                brandTitle: "PHYSICS QUEST",
+                brandSub: "EDUCATIONAL RPG SERIES · GRADES 7–9",
+                heroKicker: "🚀 UNIFIED TRILOGY PLATFORM · RU / ҚАЗ / EN",
+                heroTitle: "Physics Quest RPG Series for Grades 7–9",
+                heroLead: "Defend scientific cities and orbital stations using the laws of physics! Three story-driven campaigns covering the full Grade 7, 8, and 9 curriculum inside one unified platform with a permanent student ID and cross-grade teacher journal.",
+                mLevels: "<b>153</b> playable missions",
+                mTasks: "<b>3,675</b> physics problems",
+                mLabs: "<b>58</b> lab works & interactive simulators",
+                mLangs: "<b>3 languages</b> (RU · ҚАЗ · EN)",
+                permCodeLabel: "Permanent Student Code (Gr. 7–9)",
+                copyBtn: "📋 Copy",
+                copiedBtn: "✓ Copied",
+                changeRoleBtn: "⚙️ Account / Switch Role",
+                seriesProgTitle: "Overall Trilogy Progress",
+                seriesProgSub: "{0} of {1} missions completed · Progress saved separately per grade",
+                chooseHeading: "Pick your grade and start playing",
+                chooseSub: "Each grade has its own story, missions and full study guide. You can switch grades while playing.",
+                part1: "Part I · Grade 7",
+                part2: "Part II · Grade 8",
+                part3: "Part III · Grade 9",
+                g7Title: "Energy Shield of Asteria",
+                g7World: "🛡 Dome City Asteria · Part I",
+                g7Desc: "Kinematics, density, elasticity & friction, hydrostatics and atmospheric pressure, Archimedes' principle, work, power, energy, and simple machines.",
+                g7Tags: ["50 levels", "1,096 tasks", "15 simulators", "10 lab works", "Full study guide (69 pp.)"],
+                g8Title: "Chronicles of Equilibrium's Shield",
+                g8World: "⚡ Metropolis Equilibrium · Part II",
+                g8Desc: "Thermal physics & thermodynamics, phase transitions, electrostatics, DC circuits & Ohm's law, electromagnetism, and geometrical optics.",
+                g8Tags: ["55 levels", "1,381 tasks", "9 simulators", "11 lab works", "Full study guide (52–54 pp.)"],
+                g9Title: "Orbita-9: Shield of Earth",
+                g9World: "🛰 Orbital Station Orbita-9 · Finale",
+                g9Desc: "Vector kinematics, astronomy, Newtonian dynamics, conservation laws, mechanical & EM oscillations, waves, quantum and nuclear physics.",
+                g9Tags: ["48 levels", "1,198 tasks", "9 simulators", "4 lab works", "Full study guide (56–58 pp.)"],
+                completedLabel: "Missions completed",
+                playStart: "▶ Start game",
+                playContinue: "▶ Continue (Mission #{0})",
+                levelsListBtn: "🗺 All levels",
+                pdfBtn: "📥 Full guide",
+                conspektBtn: "📘 In-game guide",
+                studentPanelTitle: "🎯 Quick Launch by Assignment Code",
+                studentPanelDesc: "Got a short assignment code from your teacher (e.g., Q704ABC or Q812XYZ)? Enter it below to jump straight into the assigned grade and mission!",
+                codePh: "Assignment code (e.g. Q805ABC)",
+                openCodeBtn: "Launch →",
+                codeErrEmpty: "Please enter an assignment code.",
+                codeErrNotFound: "Unrecognized code. Make sure it starts with Q.",
+                myAssignsTitle: "Your active assignments:",
+                openAssignBtn: "Play →",
+                teacherPanelTitle: "👩‍🏫 Unified Teacher Cabinet (Grades 7–9)",
+                teacherPanelDesc: "Manage classes, permanent 4-char student codes, QR assignments, custom lessons, and R1/R2 result codes across Grades 7, 8, and 9 in one place. Also open for student exploration.",
+                kpiClasses: "Classes (7–9)",
+                kpiAssigns: "Assignments",
+                kpiResults: "Result Codes",
+                openJournalBtn: "📊 Open Unified 7–9 Journal",
+                teacherLoginBtn: "🔐 Teacher Sign-In",
+                aboutTitle: "About the Physics Quest Series & Thesis Research",
+                aboutLead: "Developed within the diploma thesis “Development and Application of the ‘Physics-Quest’ RPG Game Series as a Means of Increasing Learning Motivation of Grade 7–9 Students”.",
+                ab1Title: "📚 Curriculum-Aligned (Grades 7–9)",
+                ab1Text: "Every mission maps directly to textbook chapters and laboratory works (R. Basharuly, Sh. B. Zakirova et al.) in Russian, Kazakh, and English.",
+                ab2Title: "🎮 Motivation & Flow Design",
+                ab2Text: "Grounded in Self-Determination Theory (SDT) and Flow: instant formula explanations, ship upgrades, Blackbox error review, and interactive lab simulators.",
+                ab3Title: "🔗 Zero-Install Web & PWA",
+                ab3Text: "Runs directly in any browser on desktop, smartboards, and mobile devices, syncing student results via ultra-short offline-friendly codes and QR links.",
+                footer: "Physics Quest (Grades 7–9) · Created by Darya Bogomolova · Pavlodar Pedagogical University named after A. Margulan, 2026"
+            }
+        };
+
+        function esc(s) {
+            return String(s == null ? "" : s)
+                .replace(/&/g, "&amp;")
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;")
+                .replace(/"/g, "&quot;");
+        }
+
+        function getLang() {
+            const acc = window.PQAccount ? window.PQAccount.get() : null;
+            return (acc && acc.language) || "ru";
+        }
+
+        function tr(key, ...args) {
+            const L = getLang();
+            let text = (PORTAL_TEXT[L] && PORTAL_TEXT[L][key]) || PORTAL_TEXT.ru[key] || key;
+            args.forEach((a, idx) => { text = text.replace("{" + idx + "}", a); });
+            return text;
+        }
+
+        function countCompleted(g) {
+            const prog = Storage.getProgressForGrade(g);
+            const completed = (prog && prog.completedLevels) || {};
+            const total = (window.GRADE_CATALOG && window.GRADE_CATALOG[g] && window.GRADE_CATALOG[g].levels.length) || 50;
+            let done = 0;
+            for (let i = 1; i <= total; i++) {
+                if (completed[i]) done++;
+            }
+            let nextLvl = 1;
+            for (let i = 1; i <= total; i++) {
+                if (!completed[i]) { nextLvl = i; break; }
+            }
+            return { done, total, nextLvl };
+        }
+
+        function renderPortal() {
+            const L = getLang();
+            document.documentElement.lang = L;
+            const acc = window.PQAccount.get();
+            const isTeacher = acc.role === "teacher";
+
+            document.getElementById("brand-title").textContent = tr("brandTitle");
+            document.getElementById("brand-sub").textContent = tr("brandSub");
+
+            document.querySelectorAll(".hub-langs button").forEach(btn => {
+                btn.classList.toggle("active", btn.dataset.lang === L);
+            });
+
+            const accBtn = document.getElementById("hub-account-btn");
+            accBtn.className = "hub-acc-pill" + (isTeacher ? " teacher" : "");
+            if (isTeacher) {
+                accBtn.innerHTML = `<span>👩‍🏫</span><span>${esc(acc.teacher.name || window.PQAccount.t("teacherBadge"))}</span>`;
+            } else {
+                accBtn.innerHTML = `<span>🎒</span><span>${esc(acc.student.name || window.PQAccount.t("studentFallback"))}</span><span class="hub-code-badge">${esc(acc.student.studentCode)}</span>`;
+            }
+
+            const p7 = countCompleted(7);
+            const p8 = countCompleted(8);
+            const p9 = countCompleted(9);
+            const totalDone = p7.done + p8.done + p9.done;
+            const totalLevels = p7.total + p8.total + p9.total;
+            const totalPct = Math.round((totalDone / totalLevels) * 100);
+
+            const classesCount = (Storage.getClasses() || []).length;
+            const assignsAll = Storage.getAssignments() || [];
+            const uniqueBatches = new Set(assignsAll.map(a => a.assignmentCode || a.id)).size;
+            const teacherResults = (Storage.load("physicsquest_unified_teacher_results", null) || Storage.load("physicsquest8_teacher_results", []) || []).length
+                || (Storage.getAllGradesHistory() || []).length;
+
+            const myAssigns = Storage.getAssignmentsForCurrentPlayer().slice(0, 4);
+
+            const cards = [
+                {
+                    g: 7, accent: "#38bdf8", accentInk: "#0369a1", part: tr("part1"),
+                    title: tr("g7Title"), world: tr("g7World"), desc: tr("g7Desc"),
+                    tags: tr("g7Tags"), prog: p7,
+                    pdfUrl: `./assets/pdf/grade7-${L}.pdf`,
+                    pdfName: `Физика-Квест_7-класс_Конспект_${L.toUpperCase()}.pdf`
+                },
+                {
+                    g: 8, accent: "#fbbf24", accentInk: "#b45309", part: tr("part2"),
+                    title: tr("g8Title"), world: tr("g8World"), desc: tr("g8Desc"),
+                    tags: tr("g8Tags"), prog: p8,
+                    pdfUrl: `./assets/pdf/grade8-${L}.pdf`,
+                    pdfName: `Физика-Квест_8-класс_Конспект_${L.toUpperCase()}.pdf`
+                },
+                {
+                    g: 9, accent: "#a78bfa", accentInk: "#6d28d9", part: tr("part3"),
+                    title: tr("g9Title"), world: tr("g9World"), desc: tr("g9Desc"),
+                    tags: tr("g9Tags"), prog: p9,
+                    pdfUrl: `./assets/pdf/grade9-${L}.pdf`,
+                    pdfName: `Физика-Квест_9-класс_Конспект_${L.toUpperCase()}.pdf`
+                }
+            ];
+
+            const app = document.getElementById("hub-app");
+            app.innerHTML = `
+                <section class="hub-hero">
+                    <div class="hero-main">
+                        <div class="hero-kicker">${tr("heroKicker")}</div>
+                        <h1 class="hero-title">${esc(tr("heroTitle"))}</h1>
+                        <p class="hero-lead">${esc(tr("heroLead"))}</p>
+                        <div class="hero-metrics">
+                            <div class="hero-metric">${tr("mLevels")}</div>
+                            <div class="hero-metric">${tr("mTasks")}</div>
+                            <div class="hero-metric">${tr("mLabs")}</div>
+                            <div class="hero-metric">${tr("mLangs")}</div>
+                        </div>
+                    </div>
+                    <aside class="hero-side">
+                        <div class="id-box">
+                            <div class="id-box-top">
+                                <span class="id-box-label">${esc(tr("permCodeLabel"))}</span>
+                                <button type="button" class="btn-mini" id="btn-switch-role">${esc(tr("changeRoleBtn"))}</button>
+                            </div>
+                            <div class="id-code-row">
+                                <span class="id-code-val">${esc(acc.student.studentCode)}</span>
+                                <button type="button" class="btn-mini" id="btn-copy-perm-code">${esc(tr("copyBtn"))}</button>
+                            </div>
+                        </div>
+                        <div class="series-progress-box">
+                            <div class="sp-head">
+                                <span>${esc(tr("seriesProgTitle"))}</span>
+                                <span>${totalPct}%</span>
+                            </div>
+                            <div class="sp-track"><div class="sp-fill" style="width:${totalPct}%"></div></div>
+                            <div class="sp-sub">${esc(tr("seriesProgSub", totalDone, totalLevels))}</div>
+                        </div>
+                    </aside>
+                </section>
+
+                <div class="section-heading">
+                    <h2>${esc(tr("chooseHeading"))}</h2>
+                    <span>${esc(tr("chooseSub"))}</span>
+                </div>
+
+                <section class="grades-grid">
+                    ${cards.map(c => {
+                        const pct = Math.round((c.prog.done / c.prog.total) * 100);
+                        const hasStarted = c.prog.done > 0;
+                        const playHref = hasStarted
+                            ? `./play.html?grade=${c.g}&autostart=${c.prog.nextLvl}`
+                            : `./play.html?grade=${c.g}`;
+                        const playText = hasStarted
+                            ? tr("playContinue", c.prog.nextLvl)
+                            : tr("playStart");
+                        return `
+                        <article class="grade-card" style="--card-accent:${c.accent};--card-accent-ink:${c.accentInk || c.accent}">
+                            <div>
+                                <div class="gc-top">
+                                    <span class="gc-badge">⚛️ ${esc(c.part)}</span>
+                                    <span class="gc-part">${pct}%</span>
+                                </div>
+                                <h3 class="gc-title">${esc(c.title)}</h3>
+                                <div class="gc-world">${esc(c.world)}</div>
+                                <p class="gc-desc">${esc(c.desc)}</p>
+                                <div class="gc-tags">
+                                    ${c.tags.map(t => `<span class="gc-tag">${esc(t)}</span>`).join("")}
+                                </div>
+                            </div>
+                            <div>
+                                <div class="gc-prog" style="margin-bottom:12px;">
+                                    <div class="gc-prog-row">
+                                        <span>${esc(tr("completedLabel"))}</span>
+                                        <span>${c.prog.done} / ${c.prog.total}</span>
+                                    </div>
+                                    <div class="sp-track"><div class="sp-fill" style="width:${pct}%;background:${c.accent}"></div></div>
+                                </div>
+                                <div class="gc-actions">
+                                    <a class="btn-play" href="${playHref}">${esc(playText)}</a>
+                                    <div class="gc-subactions">
+                                        <a class="btn-ghost" href="./play.html?grade=${c.g}">${esc(tr("levelsListBtn"))}</a>
+                                        ${c.pdfUrl
+                                            ? `<a class="btn-ghost" href="${c.pdfUrl}" download="${esc(c.pdfName)}">${esc(tr("pdfBtn"))}</a>`
+                                            : `<a class="btn-ghost" href="./play.html?grade=8">${esc(tr("conspektBtn"))}</a>`
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+                        </article>`;
+                    }).join("")}
+                </section>
+
+                <section class="hub-panels">
+                    <div class="hub-panel">
+                        <h3>${esc(tr("studentPanelTitle"))}</h3>
+                        <p>${esc(tr("studentPanelDesc"))}</p>
+                        <form class="code-form" id="portal-code-form">
+                            <input type="text" id="portal-assign-input" placeholder="${esc(tr("codePh"))}" maxlength="12" autocomplete="off">
+                            <button type="submit">${esc(tr("openCodeBtn"))}</button>
+                        </form>
+                        <div class="code-status" id="portal-code-status"></div>
+                        ${myAssigns.length ? `
+                            <div class="active-assign-list">
+                                <div style="font-size:12px;font-weight:800;color:var(--text-muted);">${esc(tr("myAssignsTitle"))}</div>
+                                ${myAssigns.map(a => {
+                                    const parsed = parseLevelRef(a.levelId, a.grade || 8);
+                                    const label = catalogLevelLabel(parsed.canonical, parsed.grade, true);
+                                    const href = `./play.html?grade=${parsed.grade}&autostart=${encodeURIComponent(parsed.levelId)}&assign=${encodeURIComponent(a.assignmentCode || "")}`;
+                                    return `<div class="active-assign-item">
+                                        <span><b>${esc(a.assignmentCode || "")}</b> · ${esc(label)}</span>
+                                        <a class="btn-mini" href="${href}">${esc(tr("openAssignBtn"))}</a>
+                                    </div>`;
+                                }).join("")}
+                            </div>
+                        ` : ""}
+                    </div>
+
+                    <div class="hub-panel teacher-panel">
+                        <h3>${esc(tr("teacherPanelTitle"))}</h3>
+                        <p>${esc(tr("teacherPanelDesc"))}</p>
+                        <div class="teacher-kpis">
+                            <div class="tkpi"><b>${classesCount}</b><span>${esc(tr("kpiClasses"))}</span></div>
+                            <div class="tkpi"><b>${uniqueBatches}</b><span>${esc(tr("kpiAssigns"))}</span></div>
+                            <div class="tkpi"><b>${teacherResults}</b><span>${esc(tr("kpiResults"))}</span></div>
+                        </div>
+                        <div class="teacher-btns">
+                            <a class="btn-teacher-main" href="./play.html?grade=${acc.student.grade || 8}#teacher">${esc(tr("openJournalBtn"))}</a>
+                            <button type="button" class="btn-teacher-sec" id="btn-portal-teacher-login">${esc(tr("teacherLoginBtn"))}</button>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="about-series">
+                    <h3>${esc(tr("aboutTitle"))}</h3>
+                    <p style="font-size:14px;color:var(--text-muted);">${esc(tr("aboutLead"))}</p>
+                    <div class="about-cols">
+                        <div class="about-col">
+                            <h4>${esc(tr("ab1Title"))}</h4>
+                            <p>${esc(tr("ab1Text"))}</p>
+                        </div>
+                        <div class="about-col">
+                            <h4>${esc(tr("ab2Title"))}</h4>
+                            <p>${esc(tr("ab2Text"))}</p>
+                        </div>
+                        <div class="about-col">
+                            <h4>${esc(tr("ab3Title"))}</h4>
+                            <p>${esc(tr("ab3Text"))}</p>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="hub-features" id="pq-hub-features">
+                    ${[
+                        { icon: "🎮", t: { ru: "Игра и полные конспекты", kk: "Ойын және толық конспектілер", en: "The game and its guides" },
+                          d: { ru: "153 миссии по параграфам 7–9 классов и полный конспект каждого класса (7 кл. — 69 стр., 8 кл. — 52–54 стр., 9 кл. — 56–58 стр.): краткая теория, карточки формул, образцы оформления. Методика: теория → разбор примера → задача с подсказкой → работа над ошибками.",
+                               kk: "7–9 сынып параграфтары бойынша 153 миссия және әр сыныптың толық конспектісі (7-сын. — 69 бет, 8-сын. — 52–54 бет, 9-сын. — 56–58 бет): қысқаша теория, формула карточкалары, безендіру үлгілері. Әдістеме: теория → мысалды талдау → кеңесі бар есеп → қателермен жұмыс.",
+                               en: "153 missions mapped to Grades 7–9 chapters plus a full study guide for every grade (G7 — 69 pp., G8 — 52–54 pp., G9 — 56–58 pp.): short theory, formula cards and worked-example templates. Method: theory → worked example → guided task → error review." } },
+                        { icon: "📖", t: { ru: "Лор и комикс", kk: "Лор және комикс", en: "Story and comic" },
+                          d: { ru: "Герои серии, общий сюжет трилогии и комикс из 22 глав: каждая глава открывается по прогрессу и объясняет физический ключ опыта.",
+                               kk: "Серия кейіпкерлері, трилогияның жалпы сюжеті және 22 тараудан тұратын комикс: әр тарау прогресс бойынша ашылып, тәжірибенің физикалық кілтін түсіндіреді.",
+                               en: "The characters, the overarching story of the trilogy and a 22-chapter comic: every chapter unlocks with progress and explains the physics key of the experiment." } },
+                        { icon: "🏟", t: { ru: "Битва команд", kk: "Командалық сайыс", en: "Team battle" },
+                          d: { ru: "Режим интерактивной доски: 2–3 команды защищают щит города у проектора.", kk: "Интерактивті тақта режимі: 2–3 команда проекторда қала қалқанын қорғайды.", en: "Interactive whiteboard mode: 2–3 teams defend the city shield on the projector." } },
+                        { icon: "🎖", t: { ru: "Паспорт пилота", kk: "Пилот паспорты", en: "Pilot passport" },
+                          d: { ru: "Именной сертификат с рангами по 7, 8 и 9 классам — PNG или PDF для портфолио.", kk: "7, 8 және 9 сынып рангылары бар атаулы сертификат — портфолио үшін PNG немесе PDF.", en: "A personalised certificate with ranks for Grades 7, 8 and 9 — PNG or PDF for your portfolio." } },
+                        { icon: "📥", t: { ru: "Офлайн-режим", kk: "Офлайн режим", en: "Offline mode" },
+                          d: { ru: "PWA-кэш и скачивание ZIP: игра работает даже без интернета в кабинете.", kk: "PWA кэші және ZIP жүктеу: ойын кабинетте интернетсіз де жұмыс істейді.", en: "PWA caching and ZIP download: the game works even without internet in the classroom." } }
+                    ].map(f => `
+                        <${f.href ? "a" : "article"} class="hub-feature${f.href ? " hub-feature-link" : ""}" ${f.href ? `href="${f.href}"` : ""}>
+                            <div class="hf-icon">${f.icon}</div>
+                            <div class="hf-title">${esc(f.t[L] || f.t.ru)}</div>
+                            <div class="hf-desc">${esc(f.d[L] || f.d.ru)}</div>
+                        </${f.href ? "a" : "article"}>`).join("")}
+                </section>
+
+                <footer class="hub-footer">${esc(tr("footer"))}</footer>
+            `;
+
+            // Обработчики внутри портала
+            document.getElementById("btn-switch-role")?.addEventListener("click", () => {
+                window.PQAccount.openModal({ onboarding: false, onComplete: renderPortal });
+            });
+
+            document.getElementById("btn-copy-perm-code")?.addEventListener("click", (e) => {
+                const btn = e.currentTarget;
+                const code = window.PQAccount.get().student.studentCode;
+                if (navigator.clipboard && navigator.clipboard.writeText) {
+                    navigator.clipboard.writeText(code).catch(() => {});
+                }
+                btn.textContent = tr("copiedBtn");
+                setTimeout(() => { btn.textContent = tr("copyBtn"); }, 1600);
+            });
+
+            document.getElementById("btn-portal-teacher-login")?.addEventListener("click", () => {
+                window.PQAccount.openModal({
+                    onboarding: false,
+                    role: "teacher",
+                    onComplete: (updated) => {
+                        renderPortal();
+                        if (updated && updated.role === "teacher") {
+                            window.location.href = "./play.html?grade=8#teacher";
+                        }
+                    }
+                });
+            });
+
+            document.getElementById("portal-code-form")?.addEventListener("submit", (e) => {
+                e.preventDefault();
+                const input = document.getElementById("portal-assign-input");
+                const status = document.getElementById("portal-code-status");
+                const raw = String(input?.value || "").trim().toUpperCase();
+                if (!raw) {
+                    status.style.color = "#fca5a5";
+                    status.textContent = tr("codeErrEmpty");
+                    return;
+                }
+                const outcome = Storage.attachAssignmentCode(raw);
+                if (outcome.notFound || !outcome.assignment) {
+                    status.style.color = "#fca5a5";
+                    status.textContent = tr("codeErrNotFound");
+                    return;
+                }
+                const parsed = parseLevelRef(outcome.assignment.levelId, outcome.assignment.grade || 8);
+                window.location.href = `./play.html?grade=${parsed.grade}&autostart=${encodeURIComponent(parsed.levelId)}&assign=${encodeURIComponent(outcome.assignment.assignmentCode || raw)}`;
+            });
+        }
+
+        // Языковые кнопки шапки
+        document.querySelectorAll(".hub-langs button").forEach(btn => {
+            btn.addEventListener("click", () => {
+                window.PQAccount.setLanguage(btn.dataset.lang);
+                renderPortal();
+            });
+        });
+
+        document.getElementById("hub-account-btn")?.addEventListener("click", () => {
+            window.PQAccount.openModal({ onboarding: false, onComplete: renderPortal });
+        });
+
+        window.addEventListener("pq:account-changed", renderPortal);
+        window.addEventListener("pq:lang-changed", renderPortal);
+
+        renderPortal();
+
+        // Показываем однократный стартовый экран выбора аккаунта (Ученик / Учитель) при первом входе!
+        window.PQAccount.maybeShowOnboarding({
+            onComplete: (acc) => {
+                renderPortal();
+                if (acc && acc.role === "teacher") {
+                    window.location.href = "./play.html?grade=8#teacher";
+                }
+            }
+        });
+    })();
+    </script>
+</body>
+</html>

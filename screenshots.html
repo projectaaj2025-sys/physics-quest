@@ -1,0 +1,1239 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Физика-Квест — скриншоты симуляторов</title>
+<meta name="theme-color" content="#050b18">
+<link rel="icon" type="image/png" sizes="192x192" href="./assets/icons/icon-192.png">
+<style>
+    :root {
+        --bg: #050b18;
+        --panel: #0a172c;
+        --panel-2: #0d1f3a;
+        --line: rgba(96, 165, 250, .22);
+        --text: #eaf4ff;
+        --muted: #93a9c7;
+        --accent: #38bdf8;
+        --gold: #ffd479;
+    }
+    * { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; }
+    body {
+        font-family: "Trebuchet MS", "Segoe UI", system-ui, sans-serif;
+        background:
+            radial-gradient(1200px 700px at 50% -10%, rgba(56, 189, 248, .18), transparent 60%),
+            radial-gradient(900px 600px at 90% 20%, rgba(179, 136, 255, .12), transparent 55%),
+            var(--bg);
+        color: var(--text);
+        min-height: 100vh;
+    }
+    a { color: inherit; }
+    .wrap { max-width: 1240px; margin: 0 auto; padding: 26px 22px 60px; }
+    .topbar { display: flex; justify-content: space-between; align-items: center; gap: 14px; flex-wrap: wrap; }
+    .brand { display: flex; align-items: center; gap: 10px; font-weight: 900; letter-spacing: .04em; }
+    .brand .logo {
+        width: 38px; height: 38px; border-radius: 12px;
+        background: linear-gradient(135deg, #0ea5e9, #6d28d9);
+        display: grid; place-items: center; font-size: 19px;
+        box-shadow: 0 8px 22px rgba(14, 165, 233, .35);
+    }
+    .topbar-actions { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+    .langs { display: flex; gap: 4px; padding: 4px; border-radius: 12px; background: rgba(13, 31, 58, .8); border: 1px solid var(--line); }
+    .langs button {
+        border: 0; background: transparent; color: var(--muted); font-weight: 800; font-size: 12px;
+        padding: 7px 10px; border-radius: 9px; cursor: pointer;
+    }
+    .langs button.active { background: #16375c; color: #eaf6ff; }
+    .btn {
+        display: inline-flex; align-items: center; gap: 8px; text-decoration: none;
+        padding: 10px 16px; border-radius: 12px; font-weight: 800; font-size: 13px;
+        border: 1px solid var(--line); background: rgba(13, 31, 58, .8); color: var(--text);
+        cursor: pointer; transition: transform .15s ease, border-color .15s ease;
+    }
+    .btn:hover { transform: translateY(-1px); border-color: rgba(56, 189, 248, .6); }
+    .btn.primary { background: linear-gradient(135deg, #0ea5e9, #2563eb); border-color: transparent; color: #fff; }
+    .hero { margin: 34px 0 22px; }
+    .kicker { font-size: 12px; letter-spacing: .18em; color: var(--accent); font-weight: 900; }
+    h1 {
+        font-size: clamp(30px, 4.6vw, 54px); line-height: 1.04; margin: 10px 0 12px;
+        background: linear-gradient(110deg, #fff, #9fe8ff 45%, var(--gold));
+        -webkit-background-clip: text; background-clip: text; color: transparent;
+    }
+    .lead { max-width: 860px; color: var(--muted); font-size: clamp(13.5px, 1.5vw, 17px); line-height: 1.6; }
+    .stats { display: flex; flex-wrap: wrap; gap: 10px; margin: 20px 0 6px; }
+    .stat {
+        padding: 10px 14px; border-radius: 14px; border: 1px solid var(--line);
+        background: rgba(13, 31, 58, .72); font-size: 12.5px; font-weight: 700; color: #cfe6ff;
+    }
+    .stat b { color: var(--gold); }
+    .worlds {
+        margin: 28px 0 6px; padding: 18px; border-radius: 22px;
+        border: 1px solid var(--line); background: rgba(10, 23, 44, .72);
+    }
+    .worlds-head { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; }
+    .worlds h2 { margin: 8px 0 0; font-size: clamp(20px, 2.6vw, 30px); }
+    .worlds-count {
+        min-width: 46px; height: 46px; border-radius: 50%; display: grid; place-items: center;
+        background: rgba(56,189,248,.14); border: 1px solid rgba(56,189,248,.4); color: #9fe8ff; font-weight: 900;
+    }
+    .worlds-lead { color: var(--muted); font-size: 13px; line-height: 1.55; margin: 8px 0 14px; max-width: 900px; }
+    .worlds-img { width: 100%; border-radius: 14px; display: block; border: 1px solid rgba(120,200,255,.2); }
+    .field7 { margin: 22px 0 6px; padding: 18px; border-radius: 22px; border: 1px solid var(--line); background: rgba(10, 23, 44, .62); }
+    .f7-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(214px, 1fr)); gap: 12px; margin-top: 10px; }
+    .f7-item {
+        display: block; padding: 0; overflow: hidden; text-align: left; cursor: zoom-in;
+        border-radius: 14px; border: 1px solid rgba(120, 200, 255, .18); background: rgba(13, 31, 58, .7);
+        font: inherit; color: #d7e8ff; transition: transform .16s, border-color .16s;
+    }
+    .f7-item:hover { transform: translateY(-3px); border-color: rgba(56, 189, 248, .55); }
+    .f7-item img { display: block; width: 100%; aspect-ratio: 760 / 260; object-fit: cover; background: #eef3f9; }
+    .f7-cap { display: flex; align-items: center; gap: 9px; padding: 9px 11px; font-size: 12.5px; font-weight: 700; }
+    .f7-cap .ico { font-size: 17px; }
+    .f7-item small { display: block; font-weight: 600; color: #8ba2bf; font-size: 10.5px; }
+    .mg-grid { grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); }
+    .cert-grid { grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); }
+    .cert-grid .f7-item img { aspect-ratio: 1600 / 1120; object-fit: contain; background: #0b1626; }
+    .cert-ui-lead { margin-top: 18px; }
+    .mg-grid .f7-item img { aspect-ratio: 712 / 475; object-fit: contain; background: #0b1626; }
+    .mg-grid .f7-cap { align-items: flex-start; }
+    .mg-grid .f7-cap small { margin-top: 2px; }
+    .overview { margin: 22px 0 0; }
+    .overview img { width: 100%; border-radius: 16px; display: block; border: 1px solid rgba(120,200,255,.22); }
+    .overview figcaption { margin-top: 8px; font-size: 12.5px; color: var(--muted); }
+    .gal2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 14px; margin-top: 6px; }
+    .gal2 img { width: 100%; border-radius: 14px; display: block; border: 1px solid rgba(120, 200, 255, .2); background: #eef3f9; cursor: zoom-in; }
+    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 18px; margin-top: 26px; }
+    .card {
+        border-radius: 20px; overflow: hidden; border: 1px solid var(--line);
+        background: linear-gradient(180deg, rgba(15, 32, 60, .82), rgba(8, 18, 36, .95));
+        box-shadow: 0 24px 60px rgba(0, 0, 0, .38);
+        display: flex; flex-direction: column;
+        transition: transform .18s ease, border-color .18s ease;
+    }
+    .card:hover { transform: translateY(-3px); border-color: rgba(56, 189, 248, .5); }
+    .shot { position: relative; aspect-ratio: 1200 / 860; overflow: hidden; cursor: zoom-in; background: #050b18; }
+    .shot img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .badge {
+        position: absolute; top: 12px; right: 12px; padding: 6px 10px; border-radius: 999px;
+        font-size: 10.5px; font-weight: 900; letter-spacing: .08em; text-transform: uppercase;
+        background: rgba(34, 197, 94, .92); color: #052012;
+    }
+    .badge.grade { left: 12px; right: auto; background: rgba(2, 132, 199, .9); color: #e0f6ff; }
+    .meta { padding: 15px 17px 17px; display: flex; flex-direction: column; gap: 6px; flex: 1; }
+    .meta-top { display: flex; justify-content: space-between; gap: 12px; align-items: baseline; }
+    .meta h3 { margin: 0; font-size: 16px; }
+    .para { font-size: 11.5px; color: var(--muted); font-weight: 800; white-space: nowrap; }
+    .formula {
+        display: inline-block; align-self: flex-start; margin-top: 2px;
+        font-family: "Cambria Math", Georgia, serif; font-size: 14px; color: var(--gold);
+        background: rgba(255, 212, 121, .08); border-left: 3px solid var(--gold);
+        padding: 5px 10px; border-radius: 8px;
+    }
+    .desc { color: var(--muted); font-size: 12.5px; line-height: 1.5; margin: 2px 0 0; }
+    .foot { margin-top: 46px; display: flex; justify-content: space-between; gap: 14px; flex-wrap: wrap; align-items: center; color: var(--muted); font-size: 12.5px; }
+    .lightbox {
+        position: fixed; inset: 0; background: rgba(2, 6, 14, .92); display: none;
+        align-items: center; justify-content: center; padding: 20px; z-index: 999;
+    }
+    .lightbox.open { display: flex; }
+    .lightbox img { max-width: 100%; max-height: 100%; border-radius: 16px; box-shadow: 0 30px 90px rgba(0,0,0,.7); }
+    .lightbox .x {
+        position: absolute; top: 18px; right: 22px; width: 42px; height: 42px; border-radius: 50%;
+        border: 1px solid rgba(255,255,255,.3); background: rgba(10,20,40,.8); color: #fff;
+        font-size: 20px; cursor: pointer;
+    }
+    @media (max-width: 560px) {
+        .wrap { padding: 18px 14px 40px; }
+        .grid { grid-template-columns: 1fr; }
+    }
+</style>
+</head>
+<body>
+<div class="wrap">
+    <div class="topbar">
+        <a class="brand" href="./index.html" style="text-decoration:none">
+            <span class="logo">⚛️</span>
+            <span>ФИЗИКА-КВЕСТ</span>
+        </a>
+        <div class="topbar-actions">
+            <div class="langs" role="group" aria-label="Language">
+                <button type="button" data-lang="ru" class="active">RU</button>
+                <button type="button" data-lang="kk">ҚАЗ</button>
+                <button type="button" data-lang="en">EN</button>
+            </div>
+            <a class="btn" href="./play.html?grade=8">🎮 <span data-i18n="openGame">Открыть игру</span></a>
+            <a class="btn primary" href="./index.html">🏠 <span data-i18n="toPortal">На портал</span></a>
+        </div>
+    </div>
+
+    <header class="hero">
+        <div class="kicker" data-i18n="kicker">ИНТЕРАКТИВНЫЕ СИМУЛЯТОРЫ · 7–9 КЛАССЫ</div>
+        <h1 data-i18n="title">Скриншоты мини-игр «Физика-Квест»</h1>
+        <p class="lead" data-i18n="lead">50 симуляторов внутри игры: 15 полевых опытов для 7 класса и 35 canvas-лабораторий для 8 и 9 классов — каждая тема курса (§§ 1–43) получила свой опыт. Меняй параметры, следи за телеметрией, выводи установку в целевой режим и вводи расчётное значение. Ниже — все 50 кадров.</p>
+        <div class="stats">
+            <div class="stat"><b>50</b> <span data-i18n="sLabs">симуляторов и лабораторий</span></div>
+            <div class="stat"><b>17</b> <span data-i18n="sNew">новых опытов в этой версии</span></div>
+            <div class="stat"><b>3</b> <span data-i18n="sLangs">языка интерфейса</span></div>
+            <div class="stat"><b>+30 XP</b> <span data-i18n="sReward">за каждый подтверждённый опыт</span></div>
+        </div>
+    </header>
+
+    <section class="worlds">
+        <div class="worlds-head">
+            <div>
+                <div class="kicker" data-i18n="worldsKicker">ОФОРМЛЕНИЕ УРОВНЕЙ</div>
+                <h2 data-i18n="worldsTitle">14 разных миров внутри игры</h2>
+            </div>
+            <span class="worlds-count">14</span>
+        </div>
+        <p class="worlds-lead" data-i18n="worldsLead">Фон уровня больше не один и тот же: каждая глава получает свой мир — небо, силуэты, частицы и свечение. Ниже — реальные кадры фонов, которые рисует движок.</p>
+        <img class="worlds-img" src="./assets/screenshots/level-worlds.png" alt="Миры уровней" loading="lazy">
+    </section>
+
+    <figure class="overview">
+        <img src="./assets/screenshots/overview-simulators.png" alt="Все 35 canvas-лабораторий 8–9 классов" loading="lazy">
+        <figcaption data-i18n="overview">Все 50 симуляторов одним взглядом: 15 полевых опытов 7 класса и 35 canvas-лабораторий 8–9 классов по темам §§ 1–43 в светлом «реалистичном» стиле — приборы, жидкости, свет и тени рисует canvas, а не эмодзи.</figcaption>
+    </figure>
+
+
+    <section class="worlds">
+        <div class="worlds-head">
+            <div>
+                <div class="kicker" data-i18n="galKicker">8–9 КЛАССЫ · ГАЛЕРЕЯ ПО ТЕМАМ</div>
+                <h2 data-i18n="galTitle">Мини-игры 8 и 9 класса собраны по темам</h2>
+            </div>
+            <span class="worlds-count">35</span>
+        </div>
+        <p class="worlds-lead" data-i18n="galLead">Как и в 7 классе, лаборатории сгруппированы по темам курса: у каждой темы свой набор опытов и своя карточка с параграфом, целью и подсказкой. Ниже — реальные экраны галереи 8 и 9 класса.</p>
+        <div class="gal2">
+            <img class="zoom" data-img="./assets/screenshots/sim89-gallery-g8.png" src="./assets/screenshots/sim89-gallery-g8.png" data-i18n-alt="galG8" alt="Галерея 8 класса" loading="lazy">
+            <img class="zoom" data-img="./assets/screenshots/sim89-gallery-g9.png" src="./assets/screenshots/sim89-gallery-g9.png" data-i18n-alt="galG9" alt="Галерея 9 класса" loading="lazy">
+        </div>
+    </section>
+
+    <section class="field7" id="minigames">
+        <div class="worlds-head">
+            <div>
+                <div class="kicker" data-i18n="mgKicker">8–9 КЛАССЫ · МИНИ-ИГРЫ ЛАБОРАТОРНЫХ УРОВНЕЙ</div>
+                <h2 data-i18n="mgTitle">Все 15 мини-игр уровней: как в 7 классе, но по своей теме</h2>
+            </div>
+            <span class="worlds-count">15</span>
+        </div>
+        <p class="worlds-lead" data-i18n="mgLead">На каждом лабораторном уровне 8 и 9 класса открывается своя мини-игра: приборы со слайдерами или сборка электрической цепи. Нужно вывести установку в целевой режим, увидеть зелёный результат и подтвердить расчёт — за это уровень даёт бонус. Ниже — реальные экраны всех 15 мини-игр: 11 в 8 классе (уровни 45–55) и 4 в 9 классе (уровни 45–48), каждая с формулой и целевым значением.</p>
+        <div class="f7-grid mg-grid" id="mg-grid"></div>
+    </section>
+
+    <section class="field7" id="certificates">
+        <div class="worlds-head">
+            <div>
+                <div class="kicker" data-i18n="certKicker">СЕРТИФИКАТЫ · 4 ОФОРМЛЕНИЯ</div>
+                <h2 data-i18n="certTitle">Сертификат пилота: на выбор, с печатью</h2>
+            </div>
+            <span class="worlds-count">4</span>
+        </div>
+        <p class="worlds-lead" data-i18n="certLead">Сертификат за любой класс и за всю трилогию: имя и фамилия вводятся отдельно, внизу — код пилота, дата и круглая печать с номером класса. Четыре оформления: «Космос» — тёмный сгенерированный фон, «Светлый», «Пергамент» и «Небо» — рисуются кодом на белом фоне и печатаются на обычной бумаге без тёмной заливки. Выбор оформления запоминается.</p>
+        <div class="f7-grid mg-grid cert-grid" id="cert-grid"></div>
+        <p class="worlds-lead cert-ui-lead" data-i18n="certUiLead">Так выглядит окно выбора: вкладки класса, плитки оформления, отдельные поля «Фамилия» и «Имя», скачивание в PNG и печать в PDF.</p>
+        <img class="worlds-img" src="./assets/screenshots/cert-ui.jpg" alt="Окно сертификата" loading="lazy">
+    </section>
+
+    <section class="field7">
+        <div class="worlds-head">
+            <div>
+                <div class="kicker" data-i18n="f7Kicker">7 КЛАСС · ПОЛЕВОЙ ЖУРНАЛ</div>
+                <h2 data-i18n="f7Title">15 полевых симуляторов · превью</h2>
+            </div>
+            <span class="worlds-count">15</span>
+        </div>
+        <p class="worlds-lead" data-i18n="f7Lead">Отдельный набор опытов для 7 класса: измерения, плотность, давление, Архимед, рычаг и энергия. Полностью на трёх языках.</p>
+        <div class="f7-grid" id="f7-grid"></div>
+    </section>
+
+    <section class="grid" id="grid"></section>
+
+    <div class="foot">
+        <span data-i18n="footNote">Все изображения получены автоматической отрисовкой реальных canvas-сцен игры: светлая «фотореалистичная» графика, предметы можно тянуть мышью.</span>
+        <span>© Физика-Квест · 7–9</span>
+    </div>
+</div>
+
+<div class="lightbox" id="lightbox">
+    <button type="button" class="x" id="lightbox-x" aria-label="Закрыть">✕</button>
+    <img id="lightbox-img" alt="">
+</div>
+
+<script>
+(function () {
+    const I18N = {
+        ru: {
+            openGame: "Открыть игру", toPortal: "На портал",
+            kicker: "ИНТЕРАКТИВНЫЕ СИМУЛЯТОРЫ · 7–9 КЛАССЫ",
+            title: "Скриншоты мини-игр «Физика-Квест»",
+            lead: "50 симуляторов внутри игры: 15 полевых опытов для 7 класса и 35 canvas-лабораторий для 8 и 9 классов — каждая тема курса (§§ 1–43) получила свой опыт. Меняй параметры, следи за телеметрией, выводи установку в целевой режим и вводи расчётное значение. Ниже — все 50 кадров: 15 превью опытов 7 класса и 35 лабораторий 8–9 классов.",
+            sLabs: "симулятора в игре", sNew: "новых опытов в этой версии", sLangs: "языка интерфейса", sReward: "за каждый подтверждённый опыт",
+            newBadge: "новый", grade: "класс",
+            f7Kicker: "7 КЛАСС · ПОЛЕВОЙ ЖУРНАЛ", f7Title: "15 полевых симуляторов · превью",
+            f7Lead: "Отдельный набор опытов для 7 класса: измерения, плотность, давление, Архимед, рычаг и энергия. Полностью на трёх языках.",
+            overview: "Все 35 canvas-лабораторий 8–9 классов одним взглядом: приборы, жидкости, свет и тени рисует canvas, а не эмодзи — в светлом «реалистичном» стиле.",
+            worldsKicker: "ОФОРМЛЕНИЕ УРОВНЕЙ", worldsTitle: "14 разных миров внутри игры",
+            worldsLead: "Фон уровня больше не один и тот же: каждая глава получает свой мир — небо, силуэты, частицы и свечение. Ниже — реальные кадры фонов, которые рисует движок.",
+            galKicker: "8–9 КЛАССЫ · ГАЛЕРЕЯ ПО ТЕМАМ",
+            galTitle: "Мини-игры 8 и 9 класса собраны по темам",
+            galLead: "Как и в 7 классе, лаборатории сгруппированы по темам курса: у каждой темы свой набор опытов и своя карточка с параграфом, целью и подсказкой. Всего 35 лабораторий — по одной на каждый смысловой блок §§ 1–43.",
+            galG8: "Галерея лабораторий 8 класса по темам", galG9: "Галерея лабораторий 9 класса по темам",
+            mgKicker: "8–9 КЛАССЫ · МИНИ-ИГРЫ ЛАБОРАТОРНЫХ УРОВНЕЙ",
+            certKicker: "СЕРТИФИКАТЫ · 4 ОФОРМЛЕНИЯ",
+            certTitle: "Сертификат пилота: на выбор, с печатью",
+            certLead: "Сертификат за любой класс и за всю трилогию: имя и фамилия вводятся отдельно, внизу — код пилота, дата и круглая печать с номером класса. Четыре оформления: «Космос» — тёмный сгенерированный фон, «Светлый», «Пергамент» и «Небо» — рисуются кодом на белом фоне и печатаются на обычной бумаге без тёмной заливки. Выбор оформления запоминается.",
+            certUiLead: "Так выглядит окно выбора: вкладки класса, плитки оформления, отдельные поля «Фамилия» и «Имя», скачивание в PNG и печать в PDF.",
+            mgTitle: "Все 15 мини-игр уровней: как в 7 классе, но по своей теме",
+            mgLead: "На каждом лабораторном уровне 8 и 9 класса открывается своя мини-игра: приборы со слайдерами или сборка электрической цепи. Нужно вывести установку в целевой режим, увидеть зелёный результат и подтвердить расчёт — за это уровень даёт бонус. Ниже — реальные экраны всех 15 мини-игр: 11 в 8 классе (уровни 45–55) и 4 в 9 классе (уровни 45–48), каждая с формулой и целевым значением.",
+            footNote: "Все изображения получены автоматической отрисовкой реальных canvas-сцен игры: светлая «фотореалистичная» графика, предметы можно тянуть мышью.",
+            items: {
+                "sim-g8-calorimeter": { t: "Калориметр: тепловой баланс", d: "Горячий цилиндр опускают в воду. Нужно вывести смесь в рабочий коридор 32–45 °C и рассчитать теплоту Q = cmΔt." },
+                "sim-g8-hydraulic": { t: "Гидравлический пресс", d: "Малый поршень давит с силой F₁ — большой поднимает 800-килограммовый блок щита. Проверяем выигрыш в силе." },
+                "sim-g8-archimedes": { t: "Плавучесть батискафа", d: "Подбираем объём, жидкость и массу так, чтобы сила Архимеда удержала батискаф на плаву." },
+                "sim-g8-echo": { t: "Эхолот и ультразвук", d: "Импульс уходит ко дну и возвращается. По времени эха и скорости звука находим глубину h = v·t/2." },
+                "sim-g9-coulomb": { t: "Закон Кулона: два заряда", d: "Два заряда удерживают магнитный парус «Беркута». Сила должна попасть в коридор 0,8–2,5 Н." },
+                "sim-g9-decay": { t: "Радиоактивный распад", d: "Энергоячейка Орбиты-9: оставляем 10–25 % ядер, подбирая период полураспада и время." },
+                "sim-g9-induction": { t: "ЭДС индукции в катушке", d: "Магнитное поле исчезает за время Δt и наводит ЭДС. Нужно получить 4–30 В." },
+                "sim-g9-quantum": { t: "Фотоэлемент Эйнштейна", d: "Подбираем металл катода и длину волны, чтобы фотоэлектроны получили E_к = 0,8–2,5 эВ." },
+                "sim-g8-phase": { t: "Фазовые переходы", d: "Плавление и парообразование: сколько тепла нужно, чтобы лёд стал водой, а вода — паром." },
+                "sim-g8-optics": { t: "Линза и изображение", d: "Собирающая линза строит изображение: найди фокус и расстояние до изображения." },
+                "sim-g9-ballistics": { t: "Баллистика «Беркута»", d: "Подбираем угол и скорость, чтобы корабль попал в посадочный коридор." },
+                "sim-g9-oscillator": { t: "Маятник «Тулпар»", d: "Период колебаний зависит от длины подвеса и ускорения свободного падения." }
+            }
+        },
+        kk: {
+            openGame: "Ойынды ашу", toPortal: "Порталға",
+            kicker: "ИНТЕРАКТИВТІ СИМУЛЯТОРЛАР · 7–9 СЫНЫП",
+            title: "«Физика-Квест» мини-ойындарының скриншоттары",
+            lead: "Ойын ішінде 50 симулятор бар: 7 сыныпқа арналған 15 өріс тәжірибесі және 8–9 сыныптарға арналған 35 canvas-зертханасы — курстың әр тақырыбы (§§ 1–43) өз тәжірибесін алды. Параметрлерді өзгерт, телеметрияны бақыла, қондырғыны мақсатты режимге шығарып, есептік мәнді енгіз. Төменде — барлық 50 кадр: 7 сыныптың 15 тәжірибесі және 8–9 сыныптардың 35 зертханасы.",
+            sLabs: "симулятор мен зертхана", sNew: "осы нұсқадағы жаңа тәжірибе", sLangs: "интерфейс тілі", sReward: "әр расталған тәжірибе үшін",
+            newBadge: "жаңа", grade: "сынып",
+            f7Kicker: "7 СЫНЫП · ДАЛАЛЫҚ ЖУРНАЛ", f7Title: "15 далалық симулятор",
+            f7Lead: "7 сыныпқа арналған жеке тәжірибелер жинағы: өлшеу, тығыздық, қысым, Архимед, иінтірек және энергия. Үш тілде толық.",
+            overview: "8–9 сыныптардың барлық 35 canvas-зертханасы бір көріністе: аспаптар, сұйықтықтар, жарық пен көлеңкелерді canvas салады, эмодзи емес — ашық «фотореалистік» стильде.",
+            worldsKicker: "ДЕҢГЕЙЛЕРДІҢ РӘСІМДЕЛУІ", worldsTitle: "Ойын ішіндегі 14 түрлі әлем",
+            worldsLead: "Деңгей фоны енді бірдей емес: әр тарау өз әлемін алады — аспан, сұлбалар, бөлшектер және жарық. Төменде — қозғалтқыш салатын нақты фон кадрлары.",
+            galKicker: "8–9 СЫНЫПТАР · ТАҚЫРЫПТАР БОЙЫНША ГАЛЕРЕЯ",
+            galTitle: "8 және 9 сынып мини-ойындары тақырыптар бойынша жиналған",
+            galLead: "7 сыныптағыдай, зертханалар курс тақырыптары бойынша топтастырылған: әр тақырыптың өз тәжірибелері мен параграфы, мақсаты және кеңесі бар карточкасы бар. Барлығы 35 зертхана — §§ 1–43 мазмұндық блоктарына біреуден.",
+            galG8: "8 сынып зертханаларының галереясы", galG9: "9 сынып зертханаларының галереясы",
+            mgKicker: "8–9 СЫНЫПТАР · ЗЕРТХАНАЛЫҚ ДЕҢГЕЙЛЕРДІҢ МИНИ-ОЙЫНДАРЫ",
+            certKicker: "СЕРТИФИКАТТАР · 4 БЕЗЕНДІРУ",
+            certTitle: "Пилот сертификаты: таңдауға, мөрмен",
+            certLead: "Кез келген сынып үшін және бүкіл трилогия үшін сертификат: тегі мен аты бөлек енгізіледі, төменде — пилот коды, күні және сынып нөмірі бар дөңгелек мөр. Төрт безендіру: «Ғарыш» — қараңғы генерацияланған фон, «Ашық», «Пергамент» және «Аспан» — кодпен ақ фонда салынады және қараңғы толтырусыз қарапайым қағазға басылады. Таңдалған безендіру есте сақталады.",
+            certUiLead: "Таңдау терезесі осылай көрінеді: сынып қойындылары, безендіру плиткалары, «Тегі» мен «Аты» бөлек өрістері, PNG жүктеу және PDF басып шығару.",
+            mgTitle: "Барлық 15 деңгейлік мини-ойын: 7 сыныптағыдай, бірақ өз тақырыбы бойынша",
+            mgLead: "8 және 9 сыныптың әр зертханалық деңгейінде өз мини-ойыны ашылады: слайдері бар аспаптар немесе электр тізбегін жинау. Қондырғыны мақсатты режимге шығарып, жасыл нәтижені көріп, есепті растау керек — соған деңгей бонус береді. Төменде — барлық 15 мини-ойынның нақты кадрлары: 8 сыныпта 11 (45–55 деңгейлер), 9 сыныпта 4 (45–48 деңгейлер), әрқайсысы формуласы мен мақсатты мәнімен.",
+            footNote: "Барлық суреттер ойынның нақты canvas-сахналарын берілген параметрлермен автоматты түрде салу арқылы алынған.",
+            items: {
+                "sim-g8-calorimeter": { t: "Калориметр: жылу балансы", d: "Ыстық цилиндр суға батырылады. Қоспаны 32–45 °C дәлізіне шығарып, Q = cmΔt есептеу керек." },
+                "sim-g8-hydraulic": { t: "Гидравликалық пресс", d: "Кіші поршень F₁ күшімен басады — үлкен поршень 800 кг қалқан блогын көтереді." },
+                "sim-g8-archimedes": { t: "Батискафтың қалқуы", d: "Архимед күші батискафты ұстап тұруы үшін көлем, сұйықтық және массаны таңдаймыз." },
+                "sim-g8-echo": { t: "Эхолот және ультрадыбыс", d: "Импульс түбке жетіп қайтады. Жаңғырық уақыты мен дыбыс жылдамдығы бойынша h = v·t/2 табамыз." },
+                "sim-g9-coulomb": { t: "Кулон заңы: екі заряд", d: "Екі заряд «Беркут» желкенін ұстап тұр. Күш 0,8–2,5 Н дәлізіне түсуі керек." },
+                "sim-g9-decay": { t: "Радиоактивті ыдырау", d: "Орбита-9 энергия ұяшығы: период пен уақытты таңдап, ядролардың 10–25 % қалдырамыз." },
+                "sim-g9-induction": { t: "Орамадағы индукция ЭҚК", d: "Магнит өрісі Δt уақытта жоғалып, ЭҚК тудырады. 4–30 В алу қажет." },
+                "sim-g9-quantum": { t: "Эйнштейн фотоэлементі", d: "Фотоэлектрондар E_к = 0,8–2,5 эВ алуы үшін катод металы мен толқын ұзындығын таңдаймыз." },
+                "sim-g8-phase": { t: "Фазалық ауысулар", d: "Балқу және булану: мұзды суға, суды буды айналдыру үшін қанша жылу керек." },
+                "sim-g8-optics": { t: "Линза және кескін", d: "Жинағыш линза кескін салады: фокус пен кескін қашықтығын тап." },
+                "sim-g9-ballistics": { t: "«Бүркіт» баллистикасы", d: "Кеме қону дәлізіне түсуі үшін бұрыш пен жылдамдықты таңдаймыз." },
+                "sim-g9-oscillator": { t: "«Тұлпар» маятнигі", d: "Тербеліс периоды ілу ұзындығы мен еркін түсу үдеуіне тәуелді." }
+            }
+        },
+        en: {
+            openGame: "Open the game", toPortal: "Portal",
+            kicker: "INTERACTIVE SIMULATORS · GRADES 7–9",
+            title: "Physics Quest mini-game screenshots",
+            lead: "50 simulators inside the game: 15 field experiments for Grade 7 and 35 canvas labs for Grades 8 and 9 — every course topic (§§ 1–43) now has its own trial. Change parameters, watch telemetry, bring the setup into the target regime and enter the calculated value. Below are all 50 frames: 15 Grade 7 previews and 35 Grade 8–9 labs.",
+            sLabs: "simulators and labs", sNew: "new experiments in this version", sLangs: "interface languages", sReward: "for every confirmed experiment",
+            newBadge: "new", grade: "grade",
+            f7Kicker: "GRADE 7 · FIELD LOG", f7Title: "15 field simulators",
+            f7Lead: "A dedicated experiment set for Grade 7: measurement, density, pressure, buoyancy, lever and energy. Fully trilingual.",
+            overview: "All 35 canvas labs of Grades 8–9 at a glance: apparatus, fluids, light and shadows are drawn by canvas, not emoji — in the light “photorealistic” style.",
+            worldsKicker: "LEVEL ART", worldsTitle: "14 different worlds inside the game",
+            worldsLead: "The level background is no longer the same: every chapter gets its own world — sky, silhouettes, particles and glow. Below are real background frames drawn by the engine.",
+            galKicker: "GRADES 8–9 · TOPIC GALLERY",
+            galTitle: "Grade 8–9 mini-games are grouped by topic",
+            galLead: "As in Grade 7, the labs are grouped by course topic: each topic has its own trials and its own card with a paragraph, goal and hint. 35 labs in total — one for every content block of §§ 1–43.",
+            galG8: "Grade 8 lab gallery by topic", galG9: "Grade 9 lab gallery by topic",
+            mgKicker: "GRADES 8–9 · MINI-GAMES OF LAB LEVELS",
+            certKicker: "CERTIFICATES · 4 DESIGNS",
+            certTitle: "Pilot certificate: pick your design, sealed",
+            certLead: "A certificate for any grade and for the whole trilogy: first name and surname are entered separately, with the pilot code, date and a round seal carrying the grade. Four designs: “Space” uses the dark generated background, while “Light”, “Parchment” and “Sky” are drawn in code on white and print on plain paper without a dark fill. Your choice is remembered.",
+            certUiLead: "This is the picker: grade tabs, design tiles, separate “Surname” and “First name” fields, PNG download and PDF printing.",
+            mgTitle: "All 15 level mini-games: like Grade 7, but on their own topics",
+            mgLead: "Every lab level in Grades 8 and 9 opens its own mini-game: slider-driven apparatus or an electrical circuit to assemble. Bring the setup into the target regime, see the green result and confirm the calculation — the level rewards it with a bonus. Below are real frames of all 15 mini-games: 11 in Grade 8 (levels 45–55) and 4 in Grade 9 (levels 45–48), each with its formula and target value.",
+            footNote: "All images are produced by automatically rendering the game's real canvas scenes with the given parameters.",
+            items: {
+                "sim-g8-calorimeter": { t: "Calorimeter: thermal balance", d: "A hot cylinder is lowered into water. Bring the mixture to 32–45 °C and compute Q = cmΔt." },
+                "sim-g8-hydraulic": { t: "Hydraulic press", d: "The small piston pushes with F₁ — the large one lifts an 800 kg shield block." },
+                "sim-g8-archimedes": { t: "Bathyscaphe buoyancy", d: "Tune volume, liquid and mass so the buoyant force keeps the bathyscaphe afloat." },
+                "sim-g8-echo": { t: "Sonar & ultrasound", d: "A pulse travels to the seabed and back. From echo time and sound speed we find h = v·t/2." },
+                "sim-g9-coulomb": { t: "Coulomb's law: two charges", d: "Two charges hold the Berkut magnetic sail. The force must land within 0.8–2.5 N." },
+                "sim-g9-decay": { t: "Radioactive decay", d: "An Orbit-9 power cell: leave 10–25 % of the nuclei by tuning half-life and time." },
+                "sim-g9-induction": { t: "Induced EMF in a coil", d: "The field collapses in Δt and induces an EMF. Reach 4–30 V." },
+                "sim-g9-quantum": { t: "Einstein photocell", d: "Choose the cathode metal and wavelength so photoelectrons get E_k = 0.8–2.5 eV." },
+                "sim-g8-phase": { t: "Phase transitions", d: "Melting and vaporisation: how much heat turns ice into water and water into steam." },
+                "sim-g8-optics": { t: "Lens and image", d: "A converging lens forms an image: find the focal point and image distance." },
+                "sim-g9-ballistics": { t: "Berkut ballistics", d: "Tune the angle and speed so the ship enters the landing corridor." },
+                "sim-g9-oscillator": { t: "Tulpar pendulum", d: "The period depends on the suspension length and free-fall acceleration." }
+            }
+        }
+    };
+
+    const CARDS = [
+        { id: "sim-g8-heat_cond", file: "sim-g8-heat_cond.png", grade: 8, para: "§ 4", formula: "q = λ" },
+        { id: "sim-g8-calorimeter", file: "sim-g8-calorimeter.png", grade: 8, para: "§ 7–9", formula: "Q = cmΔt" },
+        { id: "sim-g8-phase", file: "sim-g8-phase.png", grade: 8, para: "§ 10–14", formula: "Q = λm + cmΔt" },
+        { id: "sim-g8-engine", file: "sim-g8-engine.png", grade: 8, para: "§ 15–16", formula: "η = (Q₁ − Q₂)/Q₁" },
+        { id: "sim-g8-coulomb", file: "sim-g8-coulomb.png", grade: 8, para: "§ 19", formula: "F = k" },
+        { id: "sim-g8-capacitor", file: "sim-g8-capacitor.png", grade: 8, para: "§ 21", formula: "C = ε₀" },
+        { id: "sim-g8-ohm", file: "sim-g8-ohm.png", grade: 8, para: "§ 22–26", formula: "I = U / (R₁ + R₂)" },
+        { id: "sim-g8-hydraulic", file: "sim-g8-hydraulic.png", grade: 8, para: "§ 24–28", formula: "F₂ = F₁" },
+        { id: "sim-g8-resistivity", file: "sim-g8-resistivity.png", grade: 8, para: "§ 25", formula: "R = ρ" },
+        { id: "sim-g8-joule", file: "sim-g8-joule.png", grade: 8, para: "§ 27–30", formula: "P = U²/R" },
+        { id: "sim-g8-echo", file: "sim-g8-echo.png", grade: 8, para: "§ 30–33", formula: "h = v" },
+        { id: "sim-g8-faraday", file: "sim-g8-faraday.png", grade: 8, para: "§ 31–36", formula: "ℰ = N" },
+        { id: "sim-g8-electromagnet", file: "sim-g8-electromagnet.png", grade: 8, para: "§ 33–34", formula: "B = μ₀" },
+        { id: "sim-g8-optics", file: "sim-g8-optics.png", grade: 8, para: "§ 37–43", formula: "1/F = 1/d + 1/f" },
+        { id: "sim-g8-reflection", file: "sim-g8-reflection.png", grade: 8, para: "§ 38", formula: "h = H/2" },
+        { id: "sim-g8-refraction", file: "sim-g8-refraction.png", grade: 8, para: "§ 40", formula: "sin α / sin β = n" },
+        { id: "sim-g8-eye", file: "sim-g8-eye.png", grade: 8, para: "§ 42", formula: "D = 1/d + 1/f" },
+        { id: "sim-g8-archimedes", file: "sim-g8-archimedes.png", grade: 8, para: "§ 46–49", formula: "F_A = ρ_ж" },
+        { id: "sim-g9-coulomb", file: "sim-g9-coulomb.png", grade: 9, para: "§ 1–8", formula: "F = k" },
+        { id: "sim-g9-speed", file: "sim-g9-speed.png", grade: 9, para: "§ 1–2", formula: "v = s/t" },
+        { id: "sim-g9-accel", file: "sim-g9-accel.png", grade: 9, para: "§ 3–4", formula: "a = (v − v₀)/t" },
+        { id: "sim-g9-fall", file: "sim-g9-fall.png", grade: 9, para: "§ 5", formula: "t = √(2h/g)" },
+        { id: "sim-g9-ballistics", file: "sim-g9-ballistics.png", grade: 9, para: "§ 6–10", formula: "L = v₀² sin(2α)/g" },
+        { id: "sim-g9-orbit", file: "sim-g9-orbit.png", grade: 9, para: "§ 15–19", formula: "v₁ = √(GM/(R+h))" },
+        { id: "sim-g9-newton2", file: "sim-g9-newton2.png", grade: 9, para: "§ 15", formula: "a = F/m" },
+        { id: "sim-g9-collision", file: "sim-g9-collision.png", grade: 9, para: "§ 20–23", formula: "m₁v₁ + m₂v₂ = (m₁+m₂)u" },
+        { id: "sim-g9-energy", file: "sim-g9-energy.png", grade: 9, para: "§ 22–23", formula: "E = m" },
+        { id: "sim-g9-oscillator", file: "sim-g9-oscillator.png", grade: 9, para: "§ 24–29", formula: "T = 2π√(l/g)" },
+        { id: "sim-g9-resonance", file: "sim-g9-resonance.png", grade: 9, para: "§ 27", formula: "f = f₀" },
+        { id: "sim-g9-decay", file: "sim-g9-decay.png", grade: 9, para: "§ 29–36", formula: "N = N₀" },
+        { id: "sim-g9-waves", file: "sim-g9-waves.png", grade: 9, para: "§ 30–35", formula: "λ = v / ν" },
+        { id: "sim-g9-emwave", file: "sim-g9-emwave.png", grade: 9, para: "§ 31", formula: "ν = c/λ" },
+        { id: "sim-g9-quantum", file: "sim-g9-quantum.png", grade: 9, para: "§ 36–43", formula: "hν = A_вых + E_к" },
+        { id: "sim-g9-induction", file: "sim-g9-induction.png", grade: 9, para: "§ 37–44", formula: "ε = N" },
+        { id: "sim-g9-binding", file: "sim-g9-binding.png", grade: 9, para: "§ 37", formula: "E = Δm" }
+    ];
+
+    // Подписи ко всем 35 лабораториям на трёх языках (генерируются из данных игры)
+    const LABS_I18N = {
+          "ru": {
+                    "sim-g8-heat_cond": {
+                              "t": "Теплопроводность обшивки",
+                              "d": "Тепловой поток 2–5 кВт/м²: подбери материал, толщину и перепад температур, затем введи q (Вт/м²)."
+                    },
+                    "sim-g8-calorimeter": {
+                              "t": "Калориметр и тепловой баланс",
+                              "d": "Достигни t_уст = 32–45 °C и введи её значение (°C)."
+                    },
+                    "sim-g8-phase": {
+                              "t": "Плавление льда и кривая нагрева",
+                              "d": "Прогрей воду до 40–75 °C и введи затраченную теплоту Q (кДж)."
+                    },
+                    "sim-g8-engine": {
+                              "t": "Тепловой двигатель и КПД",
+                              "d": "КПД 35–45 %: подбери Q₁ и Q₂ и введи η (%)."
+                    },
+                    "sim-g8-coulomb": {
+                              "t": "Закон Кулона: два зонда",
+                              "d": "Сила 200–300 мкН, затем введи F (мкН)."
+                    },
+                    "sim-g8-capacitor": {
+                              "t": "Конденсатор сенсора",
+                              "d": "Ёмкость 35–55 пФ, затем введи C (пФ)."
+                    },
+                    "sim-g8-ohm": {
+                              "t": "Цепь постоянного тока и реостат",
+                              "d": "Выстави ток 1,5–2,5 А и введи силу тока I (А)."
+                    },
+                    "sim-g8-hydraulic": {
+                              "t": "Гидравлический пресс",
+                              "d": "Добейся F₂ ≥ 7,8 кН и введи F₂ в кН."
+                    },
+                    "sim-g8-resistivity": {
+                              "t": "Сопротивление обмотки",
+                              "d": "Сопротивление 4–6 Ом, затем введи R (Ом)."
+                    },
+                    "sim-g8-joule": {
+                              "t": "Энергосеть кварталов · Джоуль–Ленц",
+                              "d": "В параллельном режиме выведи мощность в 1800–3000 Вт и введи P (Вт)."
+                    },
+                    "sim-g8-echo": {
+                              "t": "Эхолот и ультразвук",
+                              "d": "Получи глубину 30–150 м и введи h (м)."
+                    },
+                    "sim-g8-faraday": {
+                              "t": "Электромагнитная индукция Фарадея",
+                              "d": "Получи пиковую ЭДС 12–28 В и введи её значение (В)."
+                    },
+                    "sim-g8-electromagnet": {
+                              "t": "Электромагнит крана",
+                              "d": "Индукция 8–15 мТл, затем введи B (мТл)."
+                    },
+                    "sim-g8-optics": {
+                              "t": "Оптическая скамья и тонкая линза",
+                              "d": "Сфокусируй резкое изображение на экране (|f_экр − f| ≤ 1,5 см) и введи f (см)."
+                    },
+                    "sim-g8-reflection": {
+                              "t": "Зеркало примерочной",
+                              "d": "Высота зеркала должна равняться половине роста (±2 см), затем введи h (см)."
+                    },
+                    "sim-g8-refraction": {
+                              "t": "Преломление в пластине",
+                              "d": "Угол преломления 22–30°, затем введи β (°)."
+                    },
+                    "sim-g8-eye": {
+                              "t": "Глаз и очки",
+                              "d": "Сфокусируй глаз на предмете и введи нужную оптическую силу D (дптр)."
+                    },
+                    "sim-g8-archimedes": {
+                              "t": "Плавучесть батискафа",
+                              "d": "Добейся F_A ≥ mg и введи F_A в кН."
+                    },
+                    "sim-g9-coulomb": {
+                              "t": "Закон Кулона: два заряда",
+                              "d": "Получи F = 0,8–2,5 Н и введи F (Н)."
+                    },
+                    "sim-g9-speed": {
+                              "t": "Трасса разведчика",
+                              "d": "Скорость 6–8 м/с, затем введи v (м/с)."
+                    },
+                    "sim-g9-accel": {
+                              "t": "Разгон платформы",
+                              "d": "Ускорение 1,5–2,5 м/с², затем введи a (м/с²)."
+                    },
+                    "sim-g9-fall": {
+                              "t": "Свободное падение зонда",
+                              "d": "Время падения 1,1–1,8 с, затем введи t (с)."
+                    },
+                    "sim-g9-ballistics": {
+                              "t": "Баллистический полигон",
+                              "d": "Попади в зону 80–120 м и введи дальность полёта L (м)."
+                    },
+                    "sim-g9-orbit": {
+                              "t": "Орбита спутника «Беркут»",
+                              "d": "Стабилизируй круговую орбиту (|v − v_кр| ≤ 0,3 км/с) и введи v_кр (км/с)."
+                    },
+                    "sim-g9-newton2": {
+                              "t": "Второй закон Ньютона",
+                              "d": "Ускорение 2–3 м/с², затем введи a (м/с²)."
+                    },
+                    "sim-g9-collision": {
+                              "t": "Орбитальная стыковка и импульс",
+                              "d": "В режиме сцепки получи скорость u = 1,5–4,0 м/с и введи u (м/с)."
+                    },
+                    "sim-g9-energy": {
+                              "t": "Энергия на наклонной",
+                              "d": "Энергия 100–150 Дж, затем введи E (Дж)."
+                    },
+                    "sim-g9-oscillator": {
+                              "t": "Маятник Гюйгенса и осциллограф",
+                              "d": "Настрой период T = 1,8–2,2 с и введи T (с)."
+                    },
+                    "sim-g9-resonance": {
+                              "t": "Резонанс моста",
+                              "d": "Совпади с собственной частотой (±0,3 Гц) и введи резонансную частоту (Гц)."
+                    },
+                    "sim-g9-decay": {
+                              "t": "Радиоактивный распад",
+                              "d": "Оставь 10–25 % ядер и введи N (шт.)."
+                    },
+                    "sim-g9-waves": {
+                              "t": "Волновая камера и эффект Доплера",
+                              "d": "При v_ист = 0 настрой λ = 4,0–8,0 м и введи λ (м)."
+                    },
+                    "sim-g9-emwave": {
+                              "t": "Антенна и длина волны",
+                              "d": "Частота 90–110 МГц, затем введи ν (МГц)."
+                    },
+                    "sim-g9-quantum": {
+                              "t": "Фотоэлемент Эйнштейна",
+                              "d": "Получи фотоэффект с E_к = 0,8–2,5 эВ и введи E_к (эВ)."
+                    },
+                    "sim-g9-induction": {
+                              "t": "ЭДС индукции в катушке",
+                              "d": "Получи ε = 4–30 В и введи ЭДС (В)."
+                    },
+                    "sim-g9-binding": {
+                              "t": "Энергия связи ядра",
+                              "d": "Энергия связи 50–70 МэВ, затем введи E (МэВ)."
+                    }
+          },
+          "kk": {
+                    "sim-g8-heat_cond": {
+                              "t": "Қаптаманың жылу өткізгіштігі",
+                              "d": "Жылу ағыны 2–5 кВт/м²: материал, қалыңдық және температура айырмасын таңдап, q енгіз (Вт/м²)."
+                    },
+                    "sim-g8-calorimeter": {
+                              "t": "Калориметр және жылу балансы",
+                              "d": "t_орн = 32–45 °C мәніне жетіп, оны енгіз (°C)."
+                    },
+                    "sim-g8-phase": {
+                              "t": "Мұздың балқуы және қыздыру қисығы",
+                              "d": "Суды 40–75 °C дейін қыздырып, жұмсалған Q жылу мөлшерін енгіз (кДж)."
+                    },
+                    "sim-g8-engine": {
+                              "t": "Жылу қозғалтқышы және ПӘК",
+                              "d": "ПӘК 35–45 %: Q₁ мен Q₂ таңдап, η енгіз (%)."
+                    },
+                    "sim-g8-coulomb": {
+                              "t": "Кулон заңы: екі зонд",
+                              "d": "Күш 200–300 мкН, сосын F енгіз (мкН)."
+                    },
+                    "sim-g8-capacitor": {
+                              "t": "Сенсор конденсаторы",
+                              "d": "Сыйымдылық 35–55 пФ, сосын C енгіз (пФ)."
+                    },
+                    "sim-g8-ohm": {
+                              "t": "Тұрақты ток тізбегі және реостат",
+                              "d": "Ток күшін 1,5–2,5 А аралығына қойып, I мәнін енгіз (А)."
+                    },
+                    "sim-g8-hydraulic": {
+                              "t": "Гидравликалық пресс",
+                              "d": "F₂ ≥ 7,8 кН болуын қамтамасыз етіп, F₂ мәнін кН-мен енгіз."
+                    },
+                    "sim-g8-resistivity": {
+                              "t": "Орама кедергісі",
+                              "d": "Кедергі 4–6 Ом, сосын R енгіз (Ом)."
+                    },
+                    "sim-g8-joule": {
+                              "t": "Орамдар желісі · Джоуль–Ленц",
+                              "d": "Параллель режимде қуатты 1800–3000 Вт етіп, P мәнін енгіз (Вт)."
+                    },
+                    "sim-g8-echo": {
+                              "t": "Эхолот және ультрадыбыс",
+                              "d": "30–150 м тереңдікке жетіп, h мәнін енгіз (м)."
+                    },
+                    "sim-g8-faraday": {
+                              "t": "Фарадейдің электромагниттік индукциясы",
+                              "d": "12–28 В индукция ЭҚК-ін алып, мәнін енгіз (В)."
+                    },
+                    "sim-g8-electromagnet": {
+                              "t": "Кран электромагниті",
+                              "d": "Индукция 8–15 мТл, сосын B енгіз (мТл)."
+                    },
+                    "sim-g8-optics": {
+                              "t": "Оптикалық орындық және жұқа линза",
+                              "d": "Экранда анық кескін алып (|f_экр − f| ≤ 1,5 см), f мәнін енгіз (см)."
+                    },
+                    "sim-g8-reflection": {
+                              "t": "Киім бөлмесінің айнасы",
+                              "d": "Айна биіктігі бойдың жартысына тең болуы керек (±2 см), сосын h енгіз (см)."
+                    },
+                    "sim-g8-refraction": {
+                              "t": "Пластинадағы сыну",
+                              "d": "Сыну бұрышы 22–30°, сосын β енгіз (°)."
+                    },
+                    "sim-g8-eye": {
+                              "t": "Көз және көзілдірік",
+                              "d": "Көзді затқа фокустап, қажет оптикалық күшті енгіз D (дптр)."
+                    },
+                    "sim-g8-archimedes": {
+                              "t": "Батискафтың қалқуы",
+                              "d": "F_A ≥ mg болуын қамтамасыз етіп, F_A мәнін кН-мен енгіз."
+                    },
+                    "sim-g9-coulomb": {
+                              "t": "Кулон заңы: екі заряд",
+                              "d": "F = 0,8–2,5 Н алып, F мәнін енгіз (Н)."
+                    },
+                    "sim-g9-speed": {
+                              "t": "Барлаушы трассасы",
+                              "d": "Жылдамдық 6–8 м/с, сосын v енгіз (м/с)."
+                    },
+                    "sim-g9-accel": {
+                              "t": "Платформаның үдеуі",
+                              "d": "Үдеу 1,5–2,5 м/с², сосын a енгіз (м/с²)."
+                    },
+                    "sim-g9-fall": {
+                              "t": "Зондтың еркін құлауы",
+                              "d": "Құлау уақыты 1,1–1,8 с, сосын t енгіз (с)."
+                    },
+                    "sim-g9-ballistics": {
+                              "t": "Баллистикалық полигон",
+                              "d": "80–120 м аймағына дәл түсіп, L ұшу қашықтығын енгіз (м)."
+                    },
+                    "sim-g9-orbit": {
+                              "t": "«Бүркіт» серігінің орбитасы",
+                              "d": "Дөңгелек орбитаны тұрақтандырып (|v − v_дөң| ≤ 0,3 км/с), v_дөң мәнін енгіз (км/с)."
+                    },
+                    "sim-g9-newton2": {
+                              "t": "Ньютонның екінші заңы",
+                              "d": "Үдеу 2–3 м/с², сосын a енгіз (м/с²)."
+                    },
+                    "sim-g9-collision": {
+                              "t": "Орбиталық түйісу және импульс",
+                              "d": "Түйісу режимінде u = 1,5–4,0 м/с жылдамдық алып, u мәнін енгіз (м/с)."
+                    },
+                    "sim-g9-energy": {
+                              "t": "Көлбеудегі энергия",
+                              "d": "Энергия 100–150 Дж, сосын E енгіз (Дж)."
+                    },
+                    "sim-g9-oscillator": {
+                              "t": "Гюйгенс маятнигі және осциллограф",
+                              "d": "Периодты T = 1,8–2,2 с етіп, T мәнін енгіз (с)."
+                    },
+                    "sim-g9-resonance": {
+                              "t": "Көпір резонансы",
+                              "d": "Меншікті жиілікке дәл кел (±0,3 Гц) және резонанс жиілігін енгіз (Гц)."
+                    },
+                    "sim-g9-decay": {
+                              "t": "Радиоактивті ыдырау",
+                              "d": "Ядролардың 10–25 % қалдырып, N мәнін енгіз (дана)."
+                    },
+                    "sim-g9-waves": {
+                              "t": "Толқындық камера және Доплер эффектісі",
+                              "d": "v_көз = 0 кезінде λ = 4,0–8,0 м орнатып, λ мәнін енгіз (м)."
+                    },
+                    "sim-g9-emwave": {
+                              "t": "Антенна және толқын ұзындығы",
+                              "d": "Жиілік 90–110 МГц, сосын ν енгіз (МГц)."
+                    },
+                    "sim-g9-quantum": {
+                              "t": "Эйнштейн фотоэлементі",
+                              "d": "E_к = 0,8–2,5 эВ фотоэффект алып, E_к мәнін енгіз (эВ)."
+                    },
+                    "sim-g9-induction": {
+                              "t": "Орамадағы индукция ЭҚК",
+                              "d": "ε = 4–30 В алып, ЭҚК мәнін енгіз (В)."
+                    },
+                    "sim-g9-binding": {
+                              "t": "Ядроның байланыс энергиясы",
+                              "d": "Байланыс энергиясы 50–70 МэВ, сосын E енгіз (МэВ)."
+                    }
+          },
+          "en": {
+                    "sim-g8-heat_cond": {
+                              "t": "Hull Thermal Conductivity",
+                              "d": "Heat flux 2–5 kW/m²: choose material, thickness and temperature difference, then enter q (W/m²)."
+                    },
+                    "sim-g8-calorimeter": {
+                              "t": "Calorimeter & Thermal Balance",
+                              "d": "Achieve t_eq = 32–45 °C and enter its value (°C)."
+                    },
+                    "sim-g8-phase": {
+                              "t": "Ice Melting & Phase Curve",
+                              "d": "Heat the water to 40–75 °C and enter total supplied heat Q (kJ)."
+                    },
+                    "sim-g8-engine": {
+                              "t": "Heat Engine & Efficiency",
+                              "d": "Efficiency 35–45 %: tune Q₁ and Q₂ and enter η (%)."
+                    },
+                    "sim-g8-coulomb": {
+                              "t": "Coulomb's Law: Two Probes",
+                              "d": "Force 200–300 µN, then enter F (µN)."
+                    },
+                    "sim-g8-capacitor": {
+                              "t": "Sensor Capacitor",
+                              "d": "Capacitance 35–55 pF, then enter C (pF)."
+                    },
+                    "sim-g8-ohm": {
+                              "t": "DC Circuit & Sliding Rheostat",
+                              "d": "Set current to 1.5–2.5 A and enter current I (A)."
+                    },
+                    "sim-g8-hydraulic": {
+                              "t": "Hydraulic Press",
+                              "d": "Reach F₂ ≥ 7.8 kN and enter F₂ in kN."
+                    },
+                    "sim-g8-resistivity": {
+                              "t": "Coil Resistance",
+                              "d": "Resistance 4–6 Ω, then enter R (Ω)."
+                    },
+                    "sim-g8-joule": {
+                              "t": "District Power Grid · Joule–Lenz",
+                              "d": "In parallel mode set total power to 1800–3000 W and enter P (W)."
+                    },
+                    "sim-g8-echo": {
+                              "t": "Sonar & Ultrasound",
+                              "d": "Get a depth of 30–150 m and enter h (m)."
+                    },
+                    "sim-g8-faraday": {
+                              "t": "Faraday Electromagnetic Induction",
+                              "d": "Achieve a peak induced EMF of 12–28 V and enter its value (V)."
+                    },
+                    "sim-g8-electromagnet": {
+                              "t": "Crane Electromagnet",
+                              "d": "Flux density 8–15 mT, then enter B (mT)."
+                    },
+                    "sim-g8-optics": {
+                              "t": "Optical Bench & Thin Converging Lens",
+                              "d": "Focus a sharp image on the screen (|f_scr − f| ≤ 1.5 cm) and enter f (cm)."
+                    },
+                    "sim-g8-reflection": {
+                              "t": "Fitting-Room Mirror",
+                              "d": "Mirror height must equal half the person's height (±2 cm); then enter h (cm)."
+                    },
+                    "sim-g8-refraction": {
+                              "t": "Refraction in a Plate",
+                              "d": "Angle of refraction 22–30°, then enter β (°)."
+                    },
+                    "sim-g8-eye": {
+                              "t": "Eye & Glasses",
+                              "d": "Focus the eye on the object and enter the required optical power D (dpt)."
+                    },
+                    "sim-g8-archimedes": {
+                              "t": "Bathyscaphe Buoyancy",
+                              "d": "Reach F_A ≥ mg and enter F_A in kN."
+                    },
+                    "sim-g9-coulomb": {
+                              "t": "Coulomb's Law: Two Charges",
+                              "d": "Reach F = 0.8–2.5 N and enter F (N)."
+                    },
+                    "sim-g9-speed": {
+                              "t": "Scout Track",
+                              "d": "Speed 6–8 m/s, then enter v (m/s)."
+                    },
+                    "sim-g9-accel": {
+                              "t": "Platform Acceleration",
+                              "d": "Acceleration 1.5–2.5 m/s², then enter a (m/s²)."
+                    },
+                    "sim-g9-fall": {
+                              "t": "Free Fall of a Probe",
+                              "d": "Fall time 1.1–1.8 s, then enter t (s)."
+                    },
+                    "sim-g9-ballistics": {
+                              "t": "Ballistic Trajectory Range",
+                              "d": "Land within 80–120 m and enter horizontal range L (m)."
+                    },
+                    "sim-g9-orbit": {
+                              "t": "Berkut Satellite Orbital Insertion",
+                              "d": "Stabilize a circular orbit (|v − v_circ| ≤ 0.3 km/s) and enter v_circ (km/s)."
+                    },
+                    "sim-g9-newton2": {
+                              "t": "Newton's Second Law",
+                              "d": "Acceleration 2–3 m/s², then enter a (m/s²)."
+                    },
+                    "sim-g9-collision": {
+                              "t": "Orbital Docking & Momentum Track",
+                              "d": "In docking mode achieve coupled velocity u = 1.5–4.0 m/s and enter u (m/s)."
+                    },
+                    "sim-g9-energy": {
+                              "t": "Energy on a Ramp",
+                              "d": "Energy 100–150 J, then enter E (J)."
+                    },
+                    "sim-g9-oscillator": {
+                              "t": "Pendulum & Live Oscilloscope",
+                              "d": "Set period T = 1.8–2.2 s and enter T (s)."
+                    },
+                    "sim-g9-resonance": {
+                              "t": "Bridge Resonance",
+                              "d": "Match the natural frequency (±0.3 Hz) and enter the resonant frequency (Hz)."
+                    },
+                    "sim-g9-decay": {
+                              "t": "Radioactive Decay",
+                              "d": "Leave 10–25 % of the nuclei and enter N (count)."
+                    },
+                    "sim-g9-waves": {
+                              "t": "Wave Tank & Doppler Shift",
+                              "d": "With v_s = 0 set λ = 4.0–8.0 m and enter λ (m)."
+                    },
+                    "sim-g9-emwave": {
+                              "t": "Antenna & Wavelength",
+                              "d": "Frequency 90–110 MHz, then enter ν (MHz)."
+                    },
+                    "sim-g9-quantum": {
+                              "t": "Einstein Vacuum Photocell",
+                              "d": "Achieve photoemission with E_k = 0.8–2.5 eV and enter E_k (eV)."
+                    },
+                    "sim-g9-induction": {
+                              "t": "Induced EMF in a Coil",
+                              "d": "Reach ε = 4–30 V and enter the EMF (V)."
+                    },
+                    "sim-g9-binding": {
+                              "t": "Nuclear Binding Energy",
+                              "d": "Binding energy 50–70 MeV, then enter E (MeV)."
+                    }
+          }
+};
+
+    const MINI_GAMES = [
+    {
+        icon: "🧪",
+        grade: 8,
+        level: 45,
+        file: "lab-g8-45.png",
+        t: {
+            ru: "Смешивание воды — тепловой баланс",
+            kk: "Суды араластыру — жылу балансы",
+            en: "Water mixing — heat balance"
+        },
+        goal: {
+            ru: "Q = c·m·Δt → цель 42 ±1 кДж",
+            kk: "Q = c·m·Δt → мақсат 42 ±1 кДж",
+            en: "Q = c·m·Δt → target 42 ±1 kJ"
+        }
+    },
+    {
+        icon: "🧊",
+        grade: 8,
+        level: 46,
+        file: "lab-g8-46.png",
+        t: {
+            ru: "Плавление льда — удельная теплота",
+            kk: "Мұздың балқуы — меншікті жылу",
+            en: "Melting ice — specific heat"
+        },
+        goal: {
+            ru: "λ = Q / m → цель 334 ±8 кДж/кг",
+            kk: "λ = Q / m → мақсат 334 ±8 кДж/кг",
+            en: "λ = Q / m → target 334 ±8 kJ/kg"
+        }
+    },
+    {
+        icon: "🔌",
+        grade: 8,
+        level: 47,
+        file: "lab-g8-47.png",
+        t: {
+            ru: "Сборка электрической цепи",
+            kk: "Электр тізбегін құрастыру",
+            en: "Assembling the electric circuit"
+        },
+        goal: {
+            ru: "собери цепь из 4 элементов",
+            kk: "тізбекті 4 элементтен жина",
+            en: "assemble a 4-element circuit"
+        }
+    },
+    {
+        icon: "⚡",
+        grade: 8,
+        level: 48,
+        file: "lab-g8-48.png",
+        t: {
+            ru: "Закон Ома — сила тока от напряжения",
+            kk: "Ом заңы — ток күшінің кернеуге тәуелділігі",
+            en: "Ohm's law — current vs voltage"
+        },
+        goal: {
+            ru: "I = U / R → цель 1,5 ±0,02 А",
+            kk: "I = U / R → мақсат 1,5 ±0,02 А",
+            en: "I = U / R → target 1.5 ±0.02 A"
+        }
+    },
+    {
+        icon: "🔗",
+        grade: 8,
+        level: 49,
+        file: "lab-g8-49.png",
+        t: {
+            ru: "Последовательное соединение",
+            kk: "Тізбектей жалғау",
+            en: "Series connection"
+        },
+        goal: {
+            ru: "R = R₁ + R₂ + R₃ → цель 17 ±0,1 Ом",
+            kk: "R = R₁ + R₂ + R₃ → мақсат 17 ±0,1 Ом",
+            en: "R = R₁ + R₂ + R₃ → target 17 ±0.1 Ω"
+        }
+    },
+    {
+        icon: "🔀",
+        grade: 8,
+        level: 50,
+        file: "lab-g8-50.png",
+        t: {
+            ru: "Параллельное соединение",
+            kk: "Параллель жалғау",
+            en: "Parallel connection"
+        },
+        goal: {
+            ru: "R = R₁·R₂ / (R₁+R₂) → цель 2,4 ±0,05 Ом",
+            kk: "R = R₁·R₂ / (R₁+R₂) → мақсат 2,4 ±0,05 Ом",
+            en: "R = R₁·R₂ / (R₁+R₂) → target 2.4 ±0.05 Ω"
+        }
+    },
+    {
+        icon: "💡",
+        grade: 8,
+        level: 51,
+        file: "lab-g8-51.png",
+        t: {
+            ru: "Работа и мощность тока",
+            kk: "Токтың жұмысы мен қуаты",
+            en: "Work and power of current"
+        },
+        goal: {
+            ru: "P = U · I → цель 36 ±0,1 Вт",
+            kk: "P = U · I → мақсат 36 ±0,1 Вт",
+            en: "P = U · I → target 36 ±0.1 W"
+        }
+    },
+    {
+        icon: "🧲",
+        grade: 8,
+        level: 52,
+        file: "lab-g8-52.png",
+        t: {
+            ru: "Магнитное поле — сила Ампера",
+            kk: "Магнит өрісі — Ампер күші",
+            en: "Magnetic field — Ampère force"
+        },
+        goal: {
+            ru: "F = B · I · L → цель 0,3 ±0,01 Н",
+            kk: "F = B · I · L → мақсат 0,3 ±0,01 Н",
+            en: "F = B · I · L → target 0.3 ±0.01 N"
+        }
+    },
+    {
+        icon: "🧲",
+        grade: 8,
+        level: 53,
+        file: "lab-g8-53.png",
+        t: {
+            ru: "Электромагнит — индукция катушки",
+            kk: "Электромагнит — катушка индукциясы",
+            en: "Electromagnet — coil induction"
+        },
+        goal: {
+            ru: "B = μ₀·N·I / L → цель 3 ±0,05 мТл",
+            kk: "B = μ₀·N·I / L → мақсат 3 ±0,05 мТл",
+            en: "B = μ₀·N·I / L → target 3 ±0.05 mT"
+        }
+    },
+    {
+        icon: "📐",
+        grade: 8,
+        level: 54,
+        file: "lab-g8-54.png",
+        t: {
+            ru: "Показатель преломления стекла",
+            kk: "Әйнектің сыну көрсеткіші",
+            en: "Refractive index of glass"
+        },
+        goal: {
+            ru: "n = sin α / sin β → цель 1,5 ±0,03",
+            kk: "n = sin α / sin β → мақсат 1,5 ±0,03",
+            en: "n = sin α / sin β → target 1.5 ±0.03"
+        }
+    },
+    {
+        icon: "🔍",
+        grade: 8,
+        level: 55,
+        file: "lab-g8-55.png",
+        t: {
+            ru: "Фокусное расстояние линзы",
+            kk: "Жұқа линзаның фокус аралығы",
+            en: "Focal length of a thin lens"
+        },
+        goal: {
+            ru: "1/F = 1/d + 1/o → цель 15 ±0,5 см",
+            kk: "1/F = 1/d + 1/o → мақсат 15 ±0,5 см",
+            en: "1/F = 1/d + 1/o → target 15 ±0.5 cm"
+        }
+    },
+    {
+        icon: "📏",
+        grade: 9,
+        level: 45,
+        file: "lab-g9-45.png",
+        t: {
+            ru: "Желоб — ускорение",
+            kk: "Науа — үдеу",
+            en: "Ramp — acceleration"
+        },
+        goal: {
+            ru: "a = 2·s / t² → цель 1,4 ±0,15 м/с²",
+            kk: "a = 2·s / t² → мақсат 1,4 ±0,15 м/с²",
+            en: "a = 2·s / t² → target 1.4 ±0.15 m/s²"
+        }
+    },
+    {
+        icon: "🎯",
+        grade: 9,
+        level: 46,
+        file: "lab-g9-46.png",
+        t: {
+            ru: "Полет со стола",
+            kk: "Үстелден ұшу",
+            en: "Flight off the table"
+        },
+        goal: {
+            ru: "v₀ = s·√(g/2h) → цель 2,2 ±0,2 м/с",
+            kk: "v₀ = s·√(g/2h) → мақсат 2,2 ±0,2 м/с",
+            en: "v₀ = s·√(g/2h) → target 2.2 ±0.2 m/s"
+        }
+    },
+    {
+        icon: "⏱️",
+        grade: 9,
+        level: 47,
+        file: "lab-g9-47.png",
+        t: {
+            ru: "Маятник — измерь g",
+            kk: "Маятник — g өлшеу",
+            en: "Pendulum — measure g"
+        },
+        goal: {
+            ru: "T = 2π·√(L/g) → цель 1,42 ±0,1 с",
+            kk: "T = 2π·√(L/g) → мақсат 1,42 ±0,1 с",
+            en: "T = 2π·√(L/g) → target 1.42 ±0.1 s"
+        }
+    },
+    {
+        icon: "🌊",
+        grade: 9,
+        level: 48,
+        file: "lab-g9-48.png",
+        t: {
+            ru: "Волны на воде",
+            kk: "Судағы толқындар",
+            en: "Waves on water"
+        },
+        goal: {
+            ru: "v = λ·ν → цель 0,45 ±0,06 м/с",
+            kk: "v = λ·ν → мақсат 0,45 ±0,06 м/с",
+            en: "v = λ·ν → target 0.45 ±0.06 m/s"
+        }
+    }
+];
+
+    const CERT_CARDS = [
+        ["🌌", "space", "cert-space.jpg", {
+            ru: "Космос", kk: "Ғарыш", en: "Space",
+            d: { ru: "тёмный фон с реактором Эквилибриума, золотая рамка и печать на подложке",
+                 kk: "Эквилибриум реакторы бар қараңғы фон, алтын жиек және мөр",
+                 en: "dark reactor background, gold frame and seal on a dark plate" }
+        }],
+        ["☀️", "light", "cert-light.jpg", {
+            ru: "Светлый", kk: "Ашық", en: "Light",
+            d: { ru: "белый лист с тонкой сеткой, тёмно-синий текст, экономит краску при печати",
+                 kk: "ақ парақ, жіңішке тор, күңгірт көк мәтін — басып шығарғанда сия аз кетеді",
+                 en: "white sheet with a fine grid, navy text — saves ink when printed" }
+        }],
+        ["📜", "paper", "cert-paper.jpg", {
+            ru: "Пергамент", kk: "Пергамент", en: "Parchment",
+            d: { ru: "тёплый кремовый фон с фактурой бумаги и виньеткой",
+                 kk: "жылы кремді фон, қағаз фактурасы және виньетка",
+                 en: "warm cream paper texture with a soft vignette" }
+        }],
+        ["🛰️", "sky", "cert-sky.jpg", {
+            ru: "Небо", kk: "Аспан", en: "Sky",
+            d: { ru: "голубые орбитальные дуги и солнце — отсылка к «Орбите-9»",
+                 kk: "көгілдір орбиталық доғалар мен күн — «Орбита-9»-ға сілтеме",
+                 en: "blue orbital arcs and a sun — a nod to Orbita-9" }
+        }]
+    ];
+
+    const FIELD7 = [
+        ["📏", "§3", "sim7-units.png", { ru: "Перевод единиц", kk: "Бірліктерді түрлендіру", en: "Unit conversion" }],
+        ["📐", "§5", "sim7-lab-measure.png", { ru: "Метрологический пост", kk: "Метрологиялық бекет", en: "Metrology post" }],
+        ["🚌", "§7", "sim7-lab-relative.png", { ru: "Дождь в автобусе", kk: "Автобустағы жаңбыр", en: "Rain in a bus" }],
+        ["🛰️", "§8–9", "sim7-lab-motion.png", { ru: "Навигация ровера", kk: "Ровер навигациясы", en: "Rover navigation" }],
+        ["⚖️", "§13", "sim7-lab-density.png", { ru: "Плотность вещества", kk: "Заттың тығыздығы", en: "Density" }],
+        ["🪐", "§15", "sim7-lab-gravity.png", { ru: "Вес на Луне", kk: "Айдағы салмақ", en: "Weight on the Moon" }],
+        ["🛞", "§19", "sim7-friction.png", { ru: "Сила трения", kk: "Үйкеліс күші", en: "Friction" }],
+        ["🧱", "§22", "sim7-pressure.png", { ru: "Давление тела", kk: "Дененің қысымы", en: "Pressure of a body" }],
+        ["🌡️", "§24", "sim7-lab-liquid.png", { ru: "Давление жидкости", kk: "Сұйықтық қысымы", en: "Liquid pressure" }],
+        ["🦾", "§25", "sim7-hydraulic.png", { ru: "Гидравлический пресс", kk: "Гидравликалық пресс", en: "Hydraulic press" }],
+        ["🧪", "§26", "sim7-lab-vessels.png", { ru: "Сообщающиеся сосуды", kk: "Кеңейткіш ыдыстар", en: "Communicating vessels" }],
+        ["🌊", "§28", "sim7-lab-buoyancy.png", { ru: "Сила Архимеда", kk: "Архимед күші", en: "Buoyancy" }],
+        ["⚡", "§30", "sim7-power.png", { ru: "Мощность турбины", kk: "Турбина қуаты", en: "Turbine power" }],
+        ["🔋", "§32", "sim7-energy.png", { ru: "Энергия капсулы", kk: "Капсула энергиясы", en: "Capsule energy" }],
+        ["⚙️", "§35", "sim7-lab-lever.png", { ru: "Рычаг и момент", kk: "Иінтірек және момент", en: "Lever & moment" }]
+    ];
+
+    let lang = localStorage.getItem("pq_lang") || "ru";
+    if (!I18N[lang]) lang = "ru";
+
+    function render() {
+        const dict = I18N[lang];
+        document.documentElement.lang = lang;
+        document.querySelectorAll("[data-i18n]").forEach((el) => {
+            const key = el.getAttribute("data-i18n");
+            if (dict[key]) el.textContent = dict[key];
+        });
+        document.querySelectorAll("[data-i18n-alt]").forEach((el) => {
+            const key = el.getAttribute("data-i18n-alt");
+            if (dict[key]) el.setAttribute("alt", dict[key]);
+        });
+        const mg = document.getElementById("mg-grid");
+        if (mg) {
+            const lvlWord = { ru: "уровень", kk: "деңгей", en: "level" };
+            const gradeWord = (g) => lang === "en" ? `Grade ${g}` : lang === "kk" ? `${g} сынып` : `${g} класс`;
+            mg.innerHTML = MINI_GAMES.map((g) => `
+                <button type="button" class="f7-item" data-img="./assets/screenshots/${g.file}">
+                    <img src="./assets/screenshots/${g.file}" alt="${g.t[lang] || g.t.ru}" loading="lazy">
+                    <span class="f7-cap"><span class="ico">${g.icon}</span><span>${g.t[lang] || g.t.ru}<small>${gradeWord(g.grade)} · ${lvlWord[lang] || lvlWord.ru} ${g.level} · ${g.goal[lang] || g.goal.ru}</small></span></span>
+                </button>`).join("");
+        }
+        const cg = document.getElementById("cert-grid");
+        if (cg) {
+            cg.innerHTML = CERT_CARDS.map(([icon, id, file, info]) => `
+                <button type="button" class="f7-item" data-img="./assets/screenshots/${file}">
+                    <img src="./assets/screenshots/${file}" alt="${info[lang] || info.ru}" loading="lazy">
+                    <span class="f7-cap"><span class="ico">${icon}</span><span>${info[lang] || info.ru}<small>${(info.d && (info.d[lang] || info.d.ru)) || ""}</small></span></span>
+                </button>`).join("");
+        }
+        const f7 = document.getElementById("f7-grid");
+        if (f7) {
+            f7.innerHTML = FIELD7.map(([icon, para, file, name]) => `
+                <button type="button" class="f7-item" data-img="./assets/screenshots/${file}">
+                    <img src="./assets/screenshots/${file}" alt="${name[lang] || name.ru}" loading="lazy">
+                    <span class="f7-cap"><span class="ico">${icon}</span><span>${name[lang] || name.ru}<small>${para}</small></span></span>
+                </button>`).join("");
+        }
+        document.getElementById("grid").innerHTML = CARDS.map((c) => {
+            const item = (LABS_I18N[lang] && LABS_I18N[lang][c.id]) || dict.items[c.id] || { t: c.id, d: "" };
+            return `
+                <article class="card">
+                    <div class="shot" data-img="./assets/screenshots/${c.file}">
+                        <img src="./assets/screenshots/${c.file}" alt="${item.t}" loading="lazy">
+                        ${c.isNew ? `<span class="badge">${dict.newBadge}</span>` : ""}
+                        <span class="badge grade">${c.grade} ${dict.grade}</span>
+                    </div>
+                    <div class="meta">
+                        <div class="meta-top">
+                            <h3>${item.t}</h3>
+                            <span class="para">${c.para}</span>
+                        </div>
+                        <span class="formula">${c.formula}</span>
+                        <p class="desc">${item.d}</p>
+                    </div>
+                </article>`;
+        }).join("");
+        bind();
+    }
+
+    function bind() {
+        document.querySelectorAll(".shot, .f7-item, .gal2 img").forEach((el) => {
+            el.addEventListener("click", () => {
+                const img = document.getElementById("lightbox-img");
+                img.src = el.getAttribute("data-img");
+                document.getElementById("lightbox").classList.add("open");
+            });
+        });
+    }
+
+    document.querySelectorAll(".langs button").forEach((btn) => {
+        btn.addEventListener("click", () => {
+            lang = btn.dataset.lang;
+            try { localStorage.setItem("pq_lang", lang); } catch (_) {}
+            document.querySelectorAll(".langs button").forEach((b) => b.classList.toggle("active", b === btn));
+            render();
+        });
+    });
+    document.querySelector('.langs button[data-lang="' + lang + '"]')?.classList.add("active");
+    document.querySelectorAll(".langs button").forEach((b) => b.classList.toggle("active", b.dataset.lang === lang));
+
+    document.getElementById("lightbox-x").addEventListener("click", () => document.getElementById("lightbox").classList.remove("open"));
+    document.getElementById("lightbox").addEventListener("click", (e) => {
+        if (e.target.id === "lightbox") e.currentTarget.classList.remove("open");
+    });
+    document.addEventListener("keydown", (e) => {
+        if (e.key === "Escape") document.getElementById("lightbox").classList.remove("open");
+    });
+
+    render();
+})();
+</script>
+</body>
+</html>

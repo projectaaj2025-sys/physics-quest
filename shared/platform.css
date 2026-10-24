@@ -1,0 +1,1643 @@
+/* ===== ЕДИНАЯ ПЛАТФОРМА «ФИЗИКА-КВЕСТ» (7–9 КЛАССЫ): ШАПКА И АККАУНТ ===== */
+
+:root {
+    --pq-bar-h: 44px;
+}
+
+/* Компактная сквозная панель в play.html (скрывается во время самого аркадного боя) */
+.pq-topbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: var(--pq-bar-h);
+    z-index: 120;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    padding: 0 14px;
+    background: rgba(255, 255, 255, 0.92);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(0, 184, 212, 0.25);
+    box-shadow: 0 2px 14px rgba(15, 35, 70, 0.06);
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    transition: transform 0.22s ease, opacity 0.22s ease;
+}
+
+body.pq-in-gameplay .pq-topbar {
+    transform: translateY(-110%);
+    opacity: 0;
+    pointer-events: none;
+}
+
+/* Смещаем скроллящиеся экраны чуть ниже сквозной шапки, чтобы ничего не перекрывалось */
+body.pq-has-topbar #level-screen,
+body.pq-has-topbar #profile-screen,
+body.pq-has-topbar #teacher-screen .teacher-inner {
+    padding-top: calc(var(--pq-bar-h) + 18px) !important;
+}
+
+body.pq-has-topbar #menu-screen .menu-content {
+    margin-top: calc(var(--pq-bar-h) * 0.5);
+}
+
+.pq-topbar-left,
+.pq-topbar-center,
+.pq-topbar-right {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.pq-portal-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: 800;
+    color: #0d2b45;
+    background: #f0f7fb;
+    border: 1px solid rgba(0, 184, 212, 0.35);
+    padding: 5px 11px;
+    border-radius: 999px;
+    transition: all 0.16s ease;
+    white-space: nowrap;
+}
+
+.pq-portal-link:hover {
+    background: #e0f4fa;
+    border-color: #00b8d4;
+    color: #006978;
+}
+
+.pq-grade-switcher {
+    display: inline-flex;
+    align-items: center;
+    background: #eef4fa;
+    border: 1px solid rgba(26, 41, 66, 0.12);
+    border-radius: 999px;
+    padding: 2px;
+    gap: 2px;
+}
+
+.pq-grade-pill {
+    text-decoration: none;
+    border: 0;
+    background: transparent;
+    color: #4a5d78;
+    font: inherit;
+    font-size: 12.5px;
+    font-weight: 800;
+    padding: 4px 11px;
+    border-radius: 999px;
+    cursor: pointer;
+    transition: all 0.16s ease;
+    white-space: nowrap;
+}
+
+.pq-grade-pill:hover {
+    color: #0a1a38;
+    background: rgba(255, 255, 255, 0.7);
+}
+
+.pq-grade-pill.active[data-g="7"] {
+    background: linear-gradient(135deg, #00b8d4, #008ba3);
+    color: #fff;
+    box-shadow: 0 2px 8px rgba(0, 184, 212, 0.35);
+}
+
+.pq-grade-pill.active[data-g="8"] {
+    background: linear-gradient(135deg, #ff8a00, #e65100);
+    color: #fff;
+    box-shadow: 0 2px 8px rgba(255, 138, 0, 0.35);
+}
+
+.pq-grade-pill.active[data-g="9"] {
+    background: linear-gradient(135deg, #7c4dff, #512da8);
+    color: #fff;
+    box-shadow: 0 2px 8px rgba(124, 77, 255, 0.35);
+}
+
+.pq-account-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    border: 1px solid rgba(0, 184, 212, 0.38);
+    background: #ffffff;
+    color: #10253e;
+    border-radius: 999px;
+    padding: 4px 11px;
+    font: inherit;
+    font-size: 12.5px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.16s ease;
+    max-width: 280px;
+}
+
+.pq-account-btn:hover {
+    border-color: #00b8d4;
+    background: #f4fcff;
+}
+
+.pq-account-btn.is-teacher {
+    border-color: rgba(216, 27, 96, 0.4);
+    background: #fff5f8;
+    color: #880e4f;
+}
+
+.pq-account-name {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    max-width: 130px;
+}
+
+.pq-code-tag {
+    display: inline-block;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    font-size: 12px;
+    font-weight: 900;
+    letter-spacing: 0.08em;
+    padding: 1px 7px;
+    border-radius: 6px;
+    background: #e0f7fa;
+    color: #006064;
+    border: 1px solid rgba(0, 184, 212, 0.35);
+}
+
+/* ===== МОДАЛЬНОЕ ОКНО АККАУНТА (УЧЕНИК / УЧИТЕЛЬ) ===== */
+.pq-acc-backdrop {
+    position: fixed;
+    inset: 0;
+    z-index: 900;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 16px;
+    background: rgba(8, 20, 42, 0.72);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+}
+
+.pq-acc-backdrop.open {
+    display: flex;
+}
+
+.pq-acc-card {
+    position: relative;
+    width: min(540px, 100%);
+    max-height: 94vh;
+    overflow-y: auto;
+    background: #ffffff;
+    color: #142741;
+    border-radius: 24px;
+    border: 2px solid rgba(0, 184, 212, 0.42);
+    box-shadow: 0 28px 80px rgba(5, 16, 36, 0.42);
+    padding: 24px 24px 22px;
+    animation: pqAccIn 0.22s ease;
+}
+
+@keyframes pqAccIn {
+    from { opacity: 0; transform: translateY(10px) scale(0.98); }
+    to { opacity: 1; transform: none; }
+}
+
+.pq-acc-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    margin-bottom: 10px;
+}
+
+.pq-acc-kicker {
+    font-size: 11px;
+    font-weight: 900;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: #008ba3;
+}
+
+.pq-acc-langs {
+    display: inline-flex;
+    gap: 4px;
+    background: #f0f5fb;
+    padding: 3px;
+    border-radius: 999px;
+}
+
+.pq-acc-langs button {
+    border: 0;
+    background: transparent;
+    color: #4f627d;
+    font: inherit;
+    font-size: 11.5px;
+    font-weight: 800;
+    padding: 4px 9px;
+    border-radius: 999px;
+    cursor: pointer;
+}
+
+.pq-acc-langs button.active {
+    background: #00b8d4;
+    color: #fff;
+}
+
+.pq-acc-close {
+    border: 1px solid #d5e2ee;
+    background: #f7fafc;
+    color: #475a75;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    font-size: 15px;
+    font-weight: 800;
+    cursor: pointer;
+}
+
+.pq-acc-title {
+    margin: 2px 0 6px;
+    font-size: clamp(20px, 3.8vw, 25px);
+    color: #0b1d36;
+    line-height: 1.2;
+}
+
+.pq-acc-sub {
+    margin: 0 0 16px;
+    font-size: 13.5px;
+    color: #546681;
+    line-height: 1.5;
+}
+
+.pq-role-tabs {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    margin-bottom: 18px;
+}
+
+.pq-role-tab {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 12px 10px;
+    border-radius: 14px;
+    border: 2px solid #dce7f2;
+    background: #f8fbff;
+    color: #2c405e;
+    font: inherit;
+    font-size: 14px;
+    font-weight: 800;
+    cursor: pointer;
+    transition: all 0.16s ease;
+}
+
+.pq-role-tab:hover {
+    border-color: #9adbea;
+}
+
+.pq-role-tab.active[data-role="student"] {
+    border-color: #00b8d4;
+    background: linear-gradient(135deg, rgba(0, 184, 212, 0.13), rgba(0, 184, 212, 0.03));
+    color: #006978;
+}
+
+.pq-role-tab.active[data-role="teacher"] {
+    border-color: #d81b60;
+    background: linear-gradient(135deg, rgba(216, 27, 96, 0.12), rgba(216, 27, 96, 0.03));
+    color: #880e4f;
+}
+
+.pq-acc-field {
+    margin-bottom: 14px;
+}
+
+.pq-acc-field label {
+    display: block;
+    font-size: 12.5px;
+    font-weight: 800;
+    color: #243854;
+    margin-bottom: 6px;
+}
+
+.pq-acc-input {
+    width: 100%;
+    padding: 11px 13px;
+    font: inherit;
+    font-size: 15px;
+    color: #0f233d;
+    background: #f9fcff;
+    border: 1.5px solid #cbd9e8;
+    border-radius: 12px;
+    box-sizing: border-box;
+    outline: none;
+    transition: border-color 0.16s ease, box-shadow 0.16s ease;
+}
+
+.pq-acc-input:focus {
+    border-color: #00b8d4;
+    box-shadow: 0 0 0 3px rgba(0, 184, 212, 0.16);
+    background: #fff;
+}
+
+.pq-acc-row {
+    display: grid;
+    grid-template-columns: 1.2fr 1fr;
+    gap: 10px;
+}
+
+.pq-code-box {
+    background: linear-gradient(135deg, #ecfcff 0%, #f4f8ff 100%);
+    border: 1.5px solid rgba(0, 184, 212, 0.45);
+    border-radius: 16px;
+    padding: 13px 15px;
+    margin-bottom: 14px;
+}
+
+.pq-code-box-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.pq-code-big {
+    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    font-size: 26px;
+    font-weight: 900;
+    letter-spacing: 0.16em;
+    color: #006978;
+    background: #ffffff;
+    border: 1.5px dashed #00b8d4;
+    border-radius: 11px;
+    padding: 5px 14px;
+    user-select: all;
+}
+
+.pq-code-copy {
+    border: 1px solid #00b8d4;
+    background: #ffffff;
+    color: #007c91;
+    border-radius: 10px;
+    padding: 7px 12px;
+    font: inherit;
+    font-size: 12.5px;
+    font-weight: 800;
+    cursor: pointer;
+}
+
+.pq-code-copy:hover {
+    background: #e0f7fa;
+}
+
+.pq-code-note {
+    margin: 8px 0 0;
+    font-size: 12px;
+    color: #46607d;
+    line-height: 1.45;
+}
+
+.pq-code-custom-toggle {
+    display: inline-block;
+    margin-top: 7px;
+    padding: 0;
+    border: 0;
+    background: none;
+    color: #008ba3;
+    font: inherit;
+    font-size: 12px;
+    font-weight: 800;
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+.pq-acc-error {
+    display: none;
+    padding: 9px 12px;
+    border-radius: 10px;
+    background: #ffebee;
+    border: 1px solid #ef9a9a;
+    color: #b71c1c;
+    font-size: 12.5px;
+    font-weight: 700;
+    margin-bottom: 12px;
+}
+
+.pq-acc-error.show {
+    display: block;
+}
+
+.pq-acc-submit {
+    width: 100%;
+    padding: 13px 18px;
+    border: 0;
+    border-radius: 14px;
+    background: linear-gradient(135deg, #00b8d4, #008ba3);
+    color: #ffffff;
+    font: inherit;
+    font-size: 15.5px;
+    font-weight: 900;
+    cursor: pointer;
+    box-shadow: 0 8px 22px rgba(0, 184, 212, 0.32);
+    transition: transform 0.14s ease, box-shadow 0.14s ease;
+}
+
+.pq-acc-submit.teacher-btn {
+    background: linear-gradient(135deg, #d81b60, #ad1457);
+    box-shadow: 0 8px 22px rgba(216, 27, 96, 0.28);
+}
+
+.pq-acc-submit:hover {
+    transform: translateY(-1px);
+}
+
+.pq-acc-foot {
+    margin-top: 10px;
+    text-align: center;
+    font-size: 12px;
+    color: #6b7d96;
+}
+
+.pq-acc-link {
+    border: 0;
+    background: none;
+    color: #008ba3;
+    font: inherit;
+    font-size: 12px;
+    font-weight: 700;
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+@media (max-width: 640px) {
+    .pq-topbar {
+        padding: 0 8px;
+        gap: 5px;
+    }
+    .pq-portal-link span.pq-portal-txt {
+        display: none;
+    }
+    .pq-grade-pill {
+        padding: 4px 8px;
+        font-size: 11.5px;
+    }
+    .pq-account-name {
+        max-width: 78px;
+    }
+    .pq-acc-row {
+        grid-template-columns: 1fr;
+    }
+    .pq-acc-card {
+        padding: 18px 16px;
+    }
+}
+
+/* ============================================================
+   ТРИЛОГИЯ 2.0 — звук, миры уровней, разбор задач, битва команд,
+   карточки класса, сертификаты и офлайн-режим
+   ============================================================ */
+
+/* ---------- звук ---------- */
+.pq-sound-toggle {
+    width: 38px; height: 38px; border-radius: 12px;
+    border: 1px solid rgba(0, 184, 212, 0.35);
+    background: #f0f7fb;
+    color: #0d2b45; font-size: 17px; cursor: pointer;
+    display: inline-flex; align-items: center; justify-content: center;
+    transition: transform .15s ease, background .15s ease;
+}
+.pq-sound-toggle:hover { transform: translateY(-1px); background: #e0f4fa; }
+.pq-sound-toggle.is-muted { opacity: .65; }
+.pq-sound-fab {
+    position: fixed; right: 16px; bottom: 16px; z-index: 9500;
+    width: 44px; height: 44px; border-radius: 50%;
+    border: 1px solid rgba(0, 184, 212, 0.4);
+    background: #ffffff; color: #0d2b45; font-size: 19px;
+    cursor: pointer; box-shadow: 0 10px 26px rgba(15, 35, 70, .18);
+}
+html[data-theme="dark"] .pq-sound-fab {
+    background: rgba(8, 18, 36, 0.92); color: #eaf6ff;
+    border-color: rgba(120, 190, 255, 0.4);
+}
+body.pq-in-gameplay .pq-sound-fab { display: none; }
+
+/* ---------- мир уровня ---------- */
+.pq-world-chip {
+    display: inline-flex; align-items: center; gap: 7px;
+    padding: 7px 12px; border-radius: 999px;
+    border: 1px solid color-mix(in srgb, var(--pq-world-accent, #00d9ff) 45%, transparent);
+    background: rgba(6, 14, 30, 0.62);
+    font-size: 12px; font-weight: 800; letter-spacing: .02em; color: #e6f2ff;
+    white-space: nowrap; backdrop-filter: blur(6px);
+}
+.pq-world-dot { width: 9px; height: 9px; border-radius: 50%; display: inline-block; }
+#game-screen.active { --hud-accent: var(--pq-level-accent, #00d9ff); }
+
+/* ---------- разбор задачи ---------- */
+.pq-solver-bar {
+    display: flex; flex-wrap: wrap; gap: 8px;
+    margin: 10px 0 4px;
+}
+.pq-solver-btn {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 9px 14px; border-radius: 12px; cursor: pointer;
+    border: 1px solid rgba(0, 217, 255, 0.4);
+    background: linear-gradient(135deg, rgba(0, 150, 199, 0.22), rgba(20, 40, 80, 0.5));
+    color: #dff6ff; font-weight: 800; font-size: 13px;
+    transition: transform .15s ease, border-color .15s ease;
+}
+.pq-solver-btn:hover { transform: translateY(-1px); border-color: rgba(0, 217, 255, 0.75); }
+.pq-solver-btn.ghost { border-color: rgba(179, 136, 255, 0.45); background: linear-gradient(135deg, rgba(120, 80, 220, 0.2), rgba(24, 22, 60, 0.55)); }
+.pq-solver-btn.active { box-shadow: 0 0 0 2px rgba(0, 217, 255, 0.25) inset; }
+.pq-solver-panel {
+    margin: 6px 0 10px; padding: 14px;
+    border-radius: 16px; border: 1px solid rgba(96, 165, 250, 0.3);
+    background: linear-gradient(160deg, rgba(12, 24, 48, 0.94), rgba(7, 14, 30, 0.96));
+    color: #e8f2ff; max-height: 46vh; overflow: auto;
+}
+.pq-solver-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.pq-solver-wide { grid-column: 1 / -1; }
+.pq-solver-block {
+    border-radius: 13px; padding: 12px 14px;
+    background: rgba(255, 255, 255, 0.035);
+    border: 1px solid rgba(255, 255, 255, 0.07);
+}
+.pq-solver-block h4 {
+    margin: 0 0 8px; font-size: 12px; letter-spacing: .08em;
+    text-transform: uppercase; color: #7fd7ff;
+}
+.pq-given-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+.pq-given-table th {
+    text-align: left; font-size: 10.5px; letter-spacing: .06em; text-transform: uppercase;
+    color: #8ea8c9; font-weight: 700; padding: 2px 6px 6px; border-bottom: 1px solid rgba(255,255,255,.08);
+}
+.pq-given-table td { padding: 6px; border-bottom: 1px dashed rgba(255, 255, 255, 0.07); }
+.pq-given-table .pq-g-sym { font-weight: 800; color: #ffd479; font-family: "Cambria Math", Georgia, serif; font-size: 15px; width: 24%; }
+.pq-given-table .pq-g-val { color: #eaf6ff; }
+.pq-given-table .pq-g-si { color: #8fe3b0; }
+.pq-solver-note { margin: 8px 0 0; font-size: 11.5px; line-height: 1.45; color: #93a9c7; }
+.pq-solver-empty { margin: 0; font-size: 12.5px; line-height: 1.5; color: #9fb3cf; }
+.pq-formula-big {
+    font-family: "Cambria Math", Georgia, serif; font-size: 22px; color: #ffe6a3;
+    padding: 8px 12px; border-radius: 10px; background: rgba(255, 213, 79, 0.08);
+    border-left: 3px solid #ffd479; margin-bottom: 8px;
+}
+.pq-subst { font-family: "Cambria Math", Georgia, serif; font-size: 15px; color: #9fe8ff; }
+.pq-formula-list { display: flex; flex-direction: column; gap: 4px; margin-top: 8px; }
+.pq-formula-list span { font-size: 11.5px; color: #a8bdd8; font-family: "Cambria Math", Georgia, serif; }
+.pq-steps { margin: 0 0 10px; padding-left: 20px; font-size: 12.8px; line-height: 1.55; color: #d7e6fb; }
+.pq-steps li { margin-bottom: 4px; }
+.pq-answer-row { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+.pq-show-answer { font-size: 12.5px; padding: 8px 12px; }
+.pq-answer-box {
+    padding: 10px 14px; border-radius: 11px; font-size: 15px;
+    background: rgba(72, 214, 148, 0.12); border: 1px solid rgba(72, 214, 148, 0.4); color: #d8ffe9;
+}
+.pq-answer-box strong { color: #7dffb4; font-size: 17px; }
+.pq-solver-help-note { margin: 10px 0 0; font-size: 11px; color: #8ba2bf; line-height: 1.5; }
+.pq-solver-template-note {
+    margin: 0 0 10px; padding: 8px 10px; border-radius: 10px;
+    font-size: 11.8px; line-height: 1.5; color: #bfe1ff;
+    background: rgba(47, 125, 184, 0.14);
+    border: 1px dashed rgba(127, 215, 255, 0.45);
+}
+.pq-steps li.pq-step-answer { color: #8fe3b0; }
+
+.pq-formula-card { display: flex; flex-direction: column; gap: 10px; }
+.pq-fc-head { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; flex-wrap: wrap; }
+.pq-fc-kicker { font-size: 12px; letter-spacing: .06em; text-transform: uppercase; color: #7fd7ff; font-weight: 800; }
+.pq-fc-sub { font-size: 11.5px; color: #8ea8c9; margin-top: 3px; }
+.pq-fc-conspekt { font-size: 12px; padding: 8px 12px; }
+.pq-fc-list { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.pq-fc-list li {
+    display: flex; flex-direction: column; gap: 3px;
+    padding: 9px 12px; border-radius: 11px;
+    background: rgba(255, 255, 255, 0.04); border: 1px solid rgba(255, 255, 255, 0.07);
+}
+.pq-fc-formula { font-family: "Cambria Math", Georgia, serif; font-size: 15px; color: #ffe6a3; }
+.pq-fc-desc { font-size: 11px; color: #9fb3cf; line-height: 1.4; }
+.pq-fc-legend h5 { margin: 2px 0 6px; font-size: 10.5px; letter-spacing: .07em; text-transform: uppercase; color: #8ea8c9; }
+.pq-fc-chips { display: flex; flex-wrap: wrap; gap: 6px; }
+.pq-fc-chip {
+    font-size: 11.5px; padding: 5px 9px; border-radius: 999px;
+    background: rgba(0, 217, 255, 0.08); border: 1px solid rgba(0, 217, 255, 0.22); color: #cdeeff;
+}
+.pq-fc-chip b { color: #ffd479; }
+
+/* ---------- битва команд ---------- */
+.btn-battle {
+    border: 1px solid rgba(255, 183, 77, 0.45) !important;
+    background: linear-gradient(135deg, rgba(255, 152, 0, 0.22), rgba(120, 40, 10, 0.45)) !important;
+    color: #ffe9c9 !important;
+}
+.pq-battle-teacher { margin: 8px 0 4px; }
+body.pq-battle-open { overflow: hidden; }
+.pq-battle {
+    position: fixed; inset: 0; z-index: 12000;
+    background:
+        radial-gradient(1200px 700px at 50% -10%, rgba(64, 120, 255, 0.28), transparent 65%),
+        radial-gradient(900px 600px at 10% 110%, rgba(255, 120, 40, 0.18), transparent 60%),
+        #040912;
+    color: #eef6ff; overflow: auto;
+    font-family: "Trebuchet MS", "Segoe UI", system-ui, sans-serif;
+    display: flex; flex-direction: column;
+}
+.pq-battle-setup, .pq-battle-results {
+    margin: auto; padding: clamp(24px, 4vw, 56px);
+    max-width: 1100px; width: 100%; text-align: center;
+}
+.pq-battle-kicker { font-size: clamp(11px, 1.2vw, 15px); letter-spacing: .22em; color: #7fd7ff; font-weight: 800; margin-bottom: 12px; }
+.pq-battle-setup h1, .pq-battle-results h1 {
+    font-size: clamp(34px, 5.5vw, 76px); line-height: 1.02; margin: 0 0 18px;
+    background: linear-gradient(120deg, #fff, #9fe8ff 45%, #ffd479);
+    -webkit-background-clip: text; background-clip: text; color: transparent;
+}
+.pq-battle-lead { font-size: clamp(14px, 1.6vw, 21px); line-height: 1.55; color: #c6d7ee; max-width: 900px; margin: 0 auto 26px; }
+.pq-battle-form { display: flex; flex-wrap: wrap; gap: 16px; justify-content: center; margin-bottom: 20px; }
+.pq-battle-field { display: flex; flex-direction: column; gap: 7px; text-align: left; min-width: 210px; }
+.pq-battle-field label { font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: #8fb2d8; font-weight: 800; }
+.pq-battle-field select, .pq-battle-crew-input input {
+    background: rgba(12, 24, 46, 0.9); border: 1px solid rgba(120, 190, 255, 0.3);
+    color: #eaf6ff; border-radius: 12px; padding: 12px 14px; font-size: 15px; font-weight: 700;
+}
+.pq-battle-seg { display: flex; gap: 8px; }
+.pq-battle-seg button {
+    flex: 1; padding: 12px 22px; border-radius: 12px; cursor: pointer; font-size: 17px; font-weight: 800;
+    background: rgba(12, 24, 46, 0.9); color: #cfe6ff; border: 1px solid rgba(120, 190, 255, 0.3);
+}
+.pq-battle-seg button.active { background: linear-gradient(135deg, #1d9bf0, #0a6cb5); color: #fff; border-color: #6cc6ff; }
+.pq-battle-crew-inputs { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; margin-bottom: 24px; }
+.pq-battle-crew-input { display: flex; flex-direction: column; gap: 6px; text-align: left; border-top: 3px solid var(--crew-color); padding-top: 10px; }
+.pq-battle-crew-input span { font-size: 12px; font-weight: 800; color: #a9c6e6; }
+.pq-battle-actions { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; margin-top: 8px; }
+.pq-battle-start { font-size: clamp(16px, 1.5vw, 22px); padding: 16px 34px; }
+.pq-battle-rules { margin-top: 18px; font-size: 12.5px; color: #7f97b5; letter-spacing: .04em; }
+.pq-battle-toast {
+    position: fixed; left: 50%; bottom: 28px; transform: translateX(-50%);
+    background: rgba(255, 120, 40, 0.95); color: #1a0b03; font-weight: 800;
+    padding: 12px 20px; border-radius: 12px; z-index: 13000;
+}
+
+.pq-battle-top {
+    display: flex; align-items: center; gap: 16px; padding: 14px clamp(14px, 2vw, 28px);
+    border-bottom: 1px solid rgba(120, 190, 255, 0.18);
+    background: rgba(4, 10, 22, 0.72); position: relative; flex-wrap: wrap;
+}
+.pq-battle-brand { font-size: clamp(14px, 1.5vw, 19px); font-weight: 900; letter-spacing: .04em; }
+.pq-battle-brand span { display: block; font-size: 11.5px; font-weight: 700; color: #8fb2d8; letter-spacing: .1em; margin-top: 2px; }
+.pq-battle-crews { display: flex; gap: 10px; flex: 1; justify-content: center; flex-wrap: wrap; }
+.pq-battle-crew {
+    min-width: 170px; padding: 8px 13px; border-radius: 14px;
+    border: 1px solid rgba(255, 255, 255, 0.1); background: rgba(10, 20, 40, 0.65);
+    opacity: .62; transition: .2s ease;
+}
+.pq-battle-crew.active {
+    opacity: 1; border-color: var(--crew-color);
+    box-shadow: 0 0 0 1px var(--crew-color), 0 0 26px color-mix(in srgb, var(--crew-color) 45%, transparent);
+}
+.pq-battle-crew-head { display: flex; justify-content: space-between; gap: 10px; font-size: 13px; font-weight: 800; }
+.pq-battle-crew-head b { color: var(--crew-color); font-size: 17px; }
+.pq-battle-shield { height: 7px; border-radius: 99px; background: rgba(255, 255, 255, 0.12); margin: 6px 0 4px; overflow: hidden; }
+.pq-battle-shield i { display: block; height: 100%; background: linear-gradient(90deg, #43e97b, #38f9d7); transition: width .35s ease; }
+.pq-battle-crew-sub { font-size: 10.5px; color: #8fb2d8; letter-spacing: .04em; }
+.pq-battle-close {
+    width: 40px; height: 40px; border-radius: 12px; cursor: pointer;
+    background: rgba(255, 255, 255, 0.06); border: 1px solid rgba(255, 255, 255, 0.16);
+    color: #dbeaff; font-size: 20px;
+}
+.pq-battle-progress { height: 3px; background: rgba(255, 255, 255, 0.08); }
+.pq-battle-progress i { display: block; height: 100%; background: linear-gradient(90deg, #00d9ff, #b388ff); transition: width .3s ease; }
+.pq-battle-stage {
+    flex: 1; display: flex; flex-direction: column; justify-content: center;
+    padding: clamp(18px, 3vw, 44px) clamp(18px, 4vw, 70px); max-width: 1500px; width: 100%; margin: 0 auto;
+}
+.pq-battle-turn { font-size: clamp(13px, 1.4vw, 18px); font-weight: 800; color: var(--crew-color); margin-bottom: 12px; letter-spacing: .04em; }
+.pq-battle-turn span { color: #8fb2d8; text-transform: uppercase; letter-spacing: .12em; font-size: .82em; }
+.pq-battle-question {
+    font-size: clamp(22px, 3.1vw, 44px); line-height: 1.25; font-weight: 700;
+    margin-bottom: clamp(18px, 2.4vw, 34px); text-wrap: balance;
+}
+.pq-battle-answers { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(10px, 1.4vw, 18px); }
+.pq-battle-answers.single { grid-template-columns: 1fr; max-width: 640px; }
+.pq-battle-answer {
+    display: flex; align-items: center; gap: 16px; text-align: left;
+    padding: clamp(14px, 1.8vw, 24px) clamp(16px, 2vw, 26px);
+    border-radius: 18px; cursor: pointer; font-size: clamp(16px, 1.9vw, 26px); font-weight: 600;
+    background: linear-gradient(150deg, rgba(16, 32, 60, 0.9), rgba(8, 16, 32, 0.94));
+    color: #eaf6ff; border: 1px solid rgba(120, 190, 255, 0.24);
+    transition: transform .14s ease, border-color .14s ease, background .14s ease;
+}
+.pq-battle-answer:hover:not(:disabled) { transform: translateY(-2px); border-color: var(--crew-color); }
+.pq-battle-answer:disabled { opacity: .55; cursor: default; }
+.pq-battle-letter {
+    width: clamp(34px, 3vw, 46px); height: clamp(34px, 3vw, 46px); flex: none;
+    display: inline-flex; align-items: center; justify-content: center;
+    border-radius: 12px; background: rgba(0, 217, 255, 0.14); color: #7fd7ff;
+    font-weight: 900; font-size: .8em;
+}
+.pq-battle-numeric { display: flex; gap: 12px; flex-wrap: wrap; }
+.pq-battle-numeric input {
+    flex: 1; min-width: 220px; font-size: clamp(20px, 2.4vw, 32px); font-weight: 800;
+    padding: 14px 18px; border-radius: 16px; border: 1px solid rgba(120, 190, 255, 0.35);
+    background: rgba(10, 20, 40, 0.9); color: #eaf6ff;
+}
+.pq-battle-feedback { margin-top: 22px; }
+.pq-battle-result { display: flex; flex-wrap: wrap; gap: 14px; align-items: center; font-size: clamp(15px, 1.6vw, 21px); font-weight: 700; margin-bottom: 14px; }
+.pq-battle-result.good { color: #7dffb4; }
+.pq-battle-result.bad { color: #ff9b9b; }
+.pq-battle-result span { color: #cfe6ff; font-weight: 600; }
+.pq-battle-next { font-size: clamp(15px, 1.5vw, 20px); padding: 12px 26px; }
+.pq-battle-bottom { padding: 0 clamp(18px, 4vw, 70px) 18px; display: flex; align-items: center; gap: 14px; }
+.pq-battle-timer { flex: 1; height: 8px; border-radius: 99px; background: rgba(255, 255, 255, 0.1); overflow: hidden; }
+.pq-battle-timer i { display: block; height: 100%; width: 100%; background: linear-gradient(90deg, #43e97b, #ffd479, #ff5f6d); transition: width .12s linear; }
+.pq-battle-time { font-size: 13px; font-weight: 800; color: #9fb3cf; min-width: 72px; text-align: right; }
+.pq-battle-podium { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; margin: 26px 0 30px; }
+.pq-battle-place {
+    min-width: 220px; padding: 22px; border-radius: 20px;
+    border: 1px solid color-mix(in srgb, var(--crew-color) 55%, transparent);
+    background: linear-gradient(160deg, rgba(14, 28, 52, 0.94), rgba(6, 12, 26, 0.96));
+}
+.pq-battle-place.place-1 { transform: scale(1.06); box-shadow: 0 0 40px color-mix(in srgb, var(--crew-color) 35%, transparent); }
+.place-medal { font-size: 34px; }
+.place-name { font-size: 18px; font-weight: 900; margin: 6px 0; }
+.place-score { font-size: 26px; font-weight: 900; color: var(--crew-color); }
+.place-shield { font-size: 12px; color: #9fb3cf; margin-top: 6px; }
+
+/* ---------- карточки класса (печать) ---------- */
+body.pq-print-open { overflow: hidden; }
+.pq-print-overlay {
+    position: fixed; inset: 0; z-index: 14000; overflow: auto;
+    background: #0a1220; padding: 18px;
+}
+.pq-print-toolbar {
+    position: sticky; top: 0; z-index: 2; display: flex; justify-content: space-between; align-items: center;
+    gap: 12px; flex-wrap: wrap; margin-bottom: 16px;
+    padding: 12px 16px; border-radius: 14px; background: rgba(12, 24, 44, 0.96);
+    border: 1px solid rgba(120, 190, 255, 0.25); color: #eaf6ff;
+}
+.pq-print-title { font-weight: 800; }
+.pq-print-actions { display: flex; gap: 8px; }
+.pq-print-pages { display: flex; flex-direction: column; gap: 18px; align-items: center; }
+.pq-sheet {
+    width: 210mm; min-height: 297mm; background: #fff; color: #0b1528;
+    padding: 9mm; box-shadow: 0 20px 50px rgba(0, 0, 0, .45);
+    display: flex; flex-direction: column; gap: 4mm;
+}
+.pq-sheet-head, .pq-sheet-foot {
+    display: flex; justify-content: space-between; font-size: 8.5pt; font-weight: 700;
+    color: #5b6b85; letter-spacing: .04em;
+}
+.pq-sheet-foot { margin-top: auto; }
+.pq-card-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 3mm; }
+.pq-card {
+    border: 1.4px dashed #98a8bd; border-radius: 4mm; padding: 4mm;
+    display: flex; flex-direction: column; gap: 2.4mm; position: relative;
+    background: linear-gradient(160deg, #fbfdff, #eef4fb);
+    min-height: 84mm; break-inside: avoid;
+}
+.pq-card-top { display: flex; justify-content: space-between; align-items: flex-start; gap: 3mm; }
+.pq-card-kicker { font-size: 5.6pt; font-weight: 800; letter-spacing: .1em; color: #5b7ba8; }
+.pq-card-class { font-size: 8pt; font-weight: 800; color: #0b1528; margin-top: .6mm; }
+.pq-card-emblem { font-size: 14pt; }
+.pq-card-name { font-size: 13pt; font-weight: 900; line-height: 1.1; }
+.pq-card-code-row { display: flex; justify-content: space-between; align-items: center; gap: 3mm; margin-top: auto; }
+.pq-card-label { font-size: 5.8pt; letter-spacing: .08em; text-transform: uppercase; color: #6b7f9c; font-weight: 800; }
+.pq-card-code { font-family: "Courier New", monospace; font-size: 22pt; font-weight: 900; letter-spacing: .08em; color: #0b3b82; }
+.pq-card-qr { display: flex; flex-direction: column; align-items: center; gap: 1mm; }
+.pq-card-qr svg { display: block; }
+.pq-card-qr span { font-size: 5pt; color: #6b7f9c; letter-spacing: .06em; text-transform: uppercase; }
+.pq-card-hint { font-size: 5.6pt; line-height: 1.35; color: #40536e; }
+.pq-card-cut { position: absolute; right: 2mm; bottom: 1mm; font-size: 5pt; color: #b6c3d3; }
+@media print {
+    @page { size: A4 portrait; margin: 5mm; }
+    body.pq-printing-cards > *:not(.pq-print-overlay) { display: none !important; }
+    body.pq-printing-cards .pq-print-overlay { position: static; inset: auto; padding: 0; background: #fff; overflow: visible; }
+    body.pq-printing-cards .no-print { display: none !important; }
+    body.pq-printing-cards .pq-sheet { box-shadow: none; width: auto; min-height: auto; page-break-after: always; }
+    body.pq-printing-cards .pq-sheet:last-child { page-break-after: auto; }
+}
+
+/* ---------- сертификат ---------- */
+.pq-cert-open { display: inline-flex; gap: 8px; }
+.pq-cert-content { max-width: 1180px; width: 96vw; }
+.pq-cert-head { display: flex; justify-content: space-between; gap: 14px; align-items: flex-start; }
+.pq-cert-title { margin: 0 0 6px; font-size: 22px; }
+.pq-cert-sub { margin: 0; font-size: 12.5px; color: #9fb3cf; max-width: 640px; line-height: 1.5; }
+.pq-cert-body { display: grid; grid-template-columns: 300px 1fr; gap: 18px; margin-top: 14px; }
+.pq-cert-controls { display: flex; flex-direction: column; gap: 10px; }
+.pq-cert-tabs { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
+.pq-cert-tab {
+    padding: 9px 10px; border-radius: 10px; cursor: pointer; font-size: 12px; font-weight: 800;
+    background: rgba(255, 255, 255, 0.05); color: #cfe6ff; border: 1px solid rgba(120, 190, 255, 0.22);
+}
+.pq-cert-tab.active { background: linear-gradient(135deg, #1d9bf0, #0a6cb5); border-color: #6cc6ff; color: #fff; }
+.pq-cert-designs { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
+.pq-cert-design {
+    display: flex; align-items: center; gap: 7px; padding: 7px 9px; border-radius: 10px; cursor: pointer;
+    font-size: 11.5px; font-weight: 800; color: #cfe0f5; text-align: left;
+    background: rgba(255, 255, 255, 0.04); border: 1px solid rgba(120, 190, 255, 0.22);
+}
+.pq-cert-design .dot { width: 14px; height: 14px; border-radius: 50%; flex: none; border: 1px solid rgba(255,255,255,.35); }
+.pq-cert-design .dot-space { background: linear-gradient(135deg, #0b1830, #2b1a4d); }
+.pq-cert-design .dot-light { background: linear-gradient(135deg, #ffffff, #e6ecf5); }
+.pq-cert-design .dot-paper { background: linear-gradient(135deg, #fbf5e6, #e6d3ac); }
+.pq-cert-design .dot-sky { background: linear-gradient(135deg, #eaf6ff, #b9dcf5); }
+.pq-cert-design.active { border-color: #6cc6ff; background: rgba(56, 189, 248, 0.16); color: #ffffff; }
+.pq-cert-label { display: flex; flex-direction: column; gap: 4px; font-size: 11.5px; font-weight: 800; letter-spacing: .06em; text-transform: uppercase; color: #8fb2d8; }
+.pq-cert-label input {
+    padding: 10px 12px; border-radius: 10px; font-size: 15px; font-weight: 700;
+    background: rgba(10, 20, 40, 0.9); color: #eaf6ff; border: 1px solid rgba(120, 190, 255, 0.3);
+}
+.pq-cert-label input.pq-invalid { border-color: #ff6b6b; box-shadow: 0 0 0 2px rgba(255, 107, 107, .2); }
+.pq-cert-get { margin-top: 4px; }
+.pq-cert-row { display: flex; gap: 8px; flex-wrap: wrap; }
+.pq-cert-row .btn { flex: 1; font-size: 12.5px; }
+.pq-cert-note { font-size: 11px; color: #8ba2bf; line-height: 1.5; margin: 2px 0 0; }
+.pq-cert-preview { border-radius: 14px; overflow: hidden; border: 1px solid rgba(120, 190, 255, 0.22); background: #05080f; }
+.pq-cert-preview canvas { display: block; width: 100%; height: auto; }
+
+/* ---------- офлайн ---------- */
+.pq-offline-open { display: inline-flex; gap: 8px; }
+.pq-offline-content { max-width: 640px; width: 94vw; }
+.pq-offline-head { display: flex; justify-content: space-between; gap: 12px; align-items: flex-start; }
+.pq-offline-head h2 { margin: 0 0 6px; font-size: 21px; }
+.pq-offline-head p { margin: 0; font-size: 12.5px; line-height: 1.5; color: #9fb3cf; }
+.pq-offline-status {
+    margin: 14px 0; padding: 11px 14px; border-radius: 12px; font-size: 12.5px; line-height: 1.5;
+    background: rgba(72, 214, 148, 0.1); border: 1px solid rgba(72, 214, 148, 0.35); color: #c9ffdf;
+}
+.pq-offline-status.wait { background: rgba(255, 183, 77, 0.1); border-color: rgba(255, 183, 77, 0.35); color: #ffe3b3; }
+.pq-offline-actions { display: flex; flex-direction: column; gap: 8px; }
+.pq-offline-actions .btn { justify-content: center; }
+.pq-offline-hint, .pq-offline-note { font-size: 11.5px; color: #8ba2bf; line-height: 1.5; margin: 8px 0 0; }
+.pq-offline-progress { margin-top: 12px; }
+.pq-offline-bar { height: 8px; border-radius: 99px; background: rgba(255, 255, 255, 0.1); overflow: hidden; }
+.pq-offline-bar i { display: block; height: 100%; width: 0%; background: linear-gradient(90deg, #00d9ff, #43e97b); transition: width .2s ease; }
+#pq-offline-progress-text { display: block; margin-top: 6px; font-size: 11.5px; color: #9fb3cf; }
+.pq-offline-foot { display: flex; justify-content: space-between; align-items: center; gap: 10px; margin-top: 16px; }
+.pq-net-badge {
+    font-size: 11px; font-weight: 800; padding: 5px 10px; border-radius: 999px;
+    background: rgba(72, 214, 148, 0.12); border: 1px solid rgba(72, 214, 148, 0.35); color: #b9ffd4;
+}
+.pq-net-badge.is-offline { background: rgba(255, 107, 107, 0.12); border-color: rgba(255, 107, 107, 0.4); color: #ffc9c9; }
+
+@media (max-width: 900px) {
+    .pq-solver-grid { grid-template-columns: 1fr; }
+    .pq-fc-list { grid-template-columns: 1fr; }
+    .pq-cert-body { grid-template-columns: 1fr; }
+    .pq-battle-answers { grid-template-columns: 1fr; }
+    .pq-card-grid { grid-template-columns: repeat(2, 1fr); }
+    .pq-sheet { width: 100%; min-height: auto; }
+}
+@media (max-width: 620px) {
+    .pq-card-grid { grid-template-columns: 1fr; }
+    .pq-battle-crew { min-width: 130px; }
+}
+
+/* ===== Problem Solver 2.0 — вкладки, таблица «Дано», ответ ===== */
+.pq-solver-btn-text { display: flex; flex-direction: column; align-items: flex-start; line-height: 1.15; }
+.pq-solver-btn-text small { font-size: 10px; font-weight: 600; color: #8fc7e6; letter-spacing: .02em; }
+.pq-solver-btn-icon { font-size: 17px; }
+.pq-solver-tabs {
+    display: flex; align-items: center; gap: 6px; flex-wrap: wrap;
+    margin: -2px 0 12px; padding-bottom: 10px; border-bottom: 1px solid rgba(255,255,255,.08);
+}
+.pq-solver-tab {
+    padding: 7px 12px; border-radius: 10px; cursor: pointer; font-size: 12px; font-weight: 800;
+    color: #9fc0dd; background: rgba(255,255,255,.04); border: 1px solid rgba(255,255,255,.08);
+}
+.pq-solver-tab.active { color: #041018; background: linear-gradient(135deg, #67e8f9, #38bdf8); border-color: transparent; }
+.pq-solver-collapse {
+    margin-left: auto; width: 30px; height: 30px; border-radius: 50%; cursor: pointer;
+    background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.12); color: #cfdff3; font-size: 16px;
+}
+.pq-solver-auto {
+    margin: 0 0 12px; padding: 9px 12px; border-radius: 11px; font-size: 12px; line-height: 1.45;
+    color: #ffe7a8; background: rgba(255, 212, 121, .08); border: 1px solid rgba(255, 212, 121, .28);
+}
+.pq-given-table .pq-g-sym { font-weight: 800; color: #ffd479; font-family: "Cambria Math", Georgia, serif; font-size: 15px; width: 15%; }
+.pq-given-table .pq-g-name { color: #a9c1dd; font-size: 11.5px; line-height: 1.3; }
+.pq-given-table .pq-g-val { color: #eaf6ff; white-space: nowrap; }
+.pq-given-table .pq-g-si { color: #8fe3b0; white-space: nowrap; }
+.pq-solver-hint { margin: 8px 0 0; font-size: 10.8px; line-height: 1.45; color: #7e97b6; }
+.pq-si-note { margin: 0 0 4px; font-size: 12.5px; line-height: 1.5; color: #bfe9ff; }
+.pq-formula-inline { font-family: "Cambria Math", Georgia, serif; color: #ffe6a3; font-size: 14.5px; }
+.pq-solver-unknown { margin: 6px 0 0; font-size: 11.5px; color: #ffb3b3; }
+.pq-answer-slot { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin-top: 10px; }
+.pq-solver-reveal {
+    padding: 8px 14px; border-radius: 11px; cursor: pointer; font-size: 12.5px; font-weight: 800;
+    color: #04121f; border: 0; background: linear-gradient(135deg, #7dffb4, #34d399);
+    box-shadow: 0 8px 20px rgba(52, 211, 153, .25);
+}
+.pq-answer-value {
+    display: inline-flex; align-items: baseline; gap: 8px; padding: 9px 14px; border-radius: 11px;
+    background: rgba(72, 214, 148, .12); border: 1px solid rgba(72, 214, 148, .4); color: #d8ffe9;
+}
+.pq-answer-label { font-size: 10.5px; letter-spacing: .08em; text-transform: uppercase; color: #8ff0bd; }
+.pq-answer-value b { font-size: 17px; color: #7dffb4; }
+.pq-fc-count {
+    min-width: 34px; height: 34px; border-radius: 50%; display: grid; place-items: center;
+    background: rgba(56,189,248,.14); border: 1px solid rgba(56,189,248,.4); color: #9fe8ff; font-weight: 900; font-size: 13px;
+}
+.pq-fc-f { font-family: "Cambria Math", Georgia, serif; font-size: 16px; color: #ffe6a3; }
+.pq-fc-legend { font-size: 10.8px; line-height: 1.4; color: #93a9c7; }
+.pq-fc-note { margin: 2px 0 0; font-size: 11px; color: #8ba2bf; line-height: 1.45; }
+@media (max-width: 720px) {
+    .pq-solver-btn-text small { display: none; }
+    .pq-solver-collapse { margin-left: 0; }
+    .pq-given-table .pq-g-name { display: none; }
+}
+
+/* ============================================================
+   ТЕМЫ ОФОРМЛЕНИЯ: светлая (по умолчанию) и тёмная
+   Переключатель — кнопка .pq-theme-toggle (shared/theme.js)
+   ============================================================ */
+.pq-theme-toggle {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 4px 10px 4px 6px;
+    border-radius: 999px;
+    border: 1px solid rgba(0, 184, 212, 0.35);
+    background: #f0f7fb;
+    color: #0d2b45;
+    font: inherit;
+    font-size: 12.5px;
+    font-weight: 800;
+    cursor: pointer;
+    transition: background 0.16s ease, border-color 0.16s ease;
+    white-space: nowrap;
+}
+.pq-theme-toggle:hover {
+    background: #e0f4fa;
+    border-color: #00b8d4;
+}
+.pq-theme-toggle:focus-visible {
+    outline: 2px solid var(--primary, #00b8d4);
+    outline-offset: 2px;
+}
+
+/* сам слайдер: дорожка с солнцем слева и луной справа */
+.pq-theme-track {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 54px;
+    height: 26px;
+    padding: 0 5px;
+    border-radius: 999px;
+    background: #dceaf6;
+    box-shadow: inset 0 1px 3px rgba(15, 35, 70, 0.18);
+    transition: background 0.2s ease;
+}
+.pq-theme-opt {
+    position: relative;
+    z-index: 2;
+    font-size: 11px;
+    line-height: 1;
+    opacity: 0.5;
+    transition: opacity 0.2s ease;
+}
+.pq-theme-knob {
+    position: absolute;
+    z-index: 1;
+    top: 3px;
+    left: 3px;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: #ffffff;
+    box-shadow: 0 1px 4px rgba(15, 35, 70, 0.35);
+    transition: transform 0.22s ease;
+}
+.pq-theme-txt { min-width: 52px; text-align: left; }
+
+/* светлая тема — солнце активно, ползунок слева */
+html[data-theme="light"] .pq-theme-opt-light { opacity: 1; }
+/* тёмная тема — луна активна, ползунок справа */
+html[data-theme="dark"] .pq-theme-opt-dark { opacity: 1; }
+html[data-theme="dark"] .pq-theme-track { background: #1d3556; }
+html[data-theme="dark"] .pq-theme-knob { transform: translateX(28px); background: #e8f2ff; }
+.pq-theme-fab {
+    position: fixed;
+    right: 14px;
+    bottom: 14px;
+    z-index: 9500;
+    box-shadow: 0 8px 22px rgba(15, 35, 70, 0.18);
+}
+
+/* ---------- тёмная тема: шапка и аккаунт ---------- */
+html[data-theme="dark"] .pq-topbar {
+    background: rgba(11, 21, 38, 0.94);
+    border-bottom-color: rgba(125, 211, 252, 0.22);
+    box-shadow: 0 2px 14px rgba(0, 0, 0, 0.45);
+    color: #e6f0ff;
+}
+html[data-theme="dark"] .pq-portal-link {
+    background: rgba(23, 43, 70, 0.9);
+    border-color: rgba(125, 211, 252, 0.34);
+    color: #cbe7ff;
+}
+html[data-theme="dark"] .pq-portal-link:hover {
+    background: rgba(32, 58, 92, 0.95);
+    border-color: #38bdf8;
+    color: #ffffff;
+}
+html[data-theme="dark"] .pq-grade-switcher {
+    background: rgba(255, 255, 255, 0.06);
+    border-color: rgba(255, 255, 255, 0.12);
+}
+html[data-theme="dark"] .pq-grade-pill { color: #b7c9e2; }
+html[data-theme="dark"] .pq-grade-pill:hover {
+    color: #ffffff;
+    background: rgba(255, 255, 255, 0.1);
+}
+html[data-theme="dark"] .pq-account-btn {
+    background: #13243c;
+    border-color: rgba(125, 211, 252, 0.34);
+    color: #e6f0ff;
+}
+html[data-theme="dark"] .pq-account-btn:hover {
+    background: #1a2f4a;
+    border-color: #38bdf8;
+}
+html[data-theme="dark"] .pq-account-btn.is-teacher {
+    background: #2a1420;
+    border-color: rgba(216, 27, 96, 0.5);
+    color: #ffc2d8;
+}
+html[data-theme="dark"] .pq-code-tag {
+    background: rgba(0, 184, 212, 0.18);
+    border-color: rgba(0, 184, 212, 0.4);
+    color: #9beaf5;
+}
+html[data-theme="dark"] .pq-sound-toggle {
+    background: #13243c;
+    border-color: rgba(125, 211, 252, 0.34);
+    color: #e6f0ff;
+}
+html[data-theme="dark"] .pq-theme-toggle {
+    background: rgba(23, 43, 70, 0.9);
+    border-color: rgba(125, 211, 252, 0.34);
+    color: #cbe7ff;
+}
+html[data-theme="dark"] .pq-theme-toggle:hover {
+    background: rgba(32, 58, 92, 0.95);
+    border-color: #38bdf8;
+}
+
+
+/* ---------- тёмная тема: окно аккаунта ---------- */
+html[data-theme="dark"] .pq-acc-card {
+    background: #0f1d33;
+    color: #dfe9f8;
+    border-color: rgba(0, 184, 212, 0.36);
+    box-shadow: 0 28px 80px rgba(0, 0, 0, 0.6);
+}
+html[data-theme="dark"] .pq-acc-kicker { color: #5fd8ee; }
+html[data-theme="dark"] .pq-acc-title { color: #f2f8ff; }
+html[data-theme="dark"] .pq-acc-sub { color: #a7bad6; }
+html[data-theme="dark"] .pq-acc-langs { background: rgba(255, 255, 255, 0.07); }
+html[data-theme="dark"] .pq-acc-langs button { color: #b7c9e2; }
+html[data-theme="dark"] .pq-acc-close {
+    background: rgba(255, 255, 255, 0.06);
+    border-color: rgba(255, 255, 255, 0.16);
+    color: #cfe0f5;
+}
+html[data-theme="dark"] .pq-role-tab {
+    background: rgba(255, 255, 255, 0.04);
+    border-color: rgba(255, 255, 255, 0.14);
+    color: #d5e3f5;
+}
+html[data-theme="dark"] .pq-role-tab.active[data-role="student"] {
+    background: linear-gradient(135deg, rgba(0, 184, 212, 0.22), rgba(0, 184, 212, 0.06));
+    color: #a9f0fb;
+}
+html[data-theme="dark"] .pq-role-tab.active[data-role="teacher"] {
+    background: linear-gradient(135deg, rgba(216, 27, 96, 0.24), rgba(216, 27, 96, 0.06));
+    color: #ffc2d8;
+}
+html[data-theme="dark"] .pq-acc-input {
+    background: #0b1728;
+    border-color: #27405f;
+    color: #eaf4ff;
+}
+html[data-theme="dark"] .pq-acc-input:focus { background: #101f35; }
+html[data-theme="dark"] .pq-code-big {
+    background: #10233c;
+    border-color: rgba(0, 184, 212, 0.55);
+    color: #9beaf5;
+}
+html[data-theme="dark"] .pq-code-copy {
+    background: #13243c;
+    border-color: rgba(125, 211, 252, 0.3);
+    color: #d8ecff;
+}
+html[data-theme="dark"] .pq-code-copy:hover { background: rgba(0, 184, 212, 0.22); }
+html[data-theme="dark"] .pq-acc-error {
+    background: rgba(229, 57, 53, 0.16);
+    color: #ffb3b3;
+}
+html[data-theme="dark"] .pq-acc-hint,
+html[data-theme="dark"] .pq-acc-field label { color: #b9cbe4; }
+
+/* ---------- кнопка «Битва команд»: аккуратно в обеих темах ---------- */
+.btn-battle {
+    border: 2px solid rgba(255, 138, 0, 0.6) !important;
+    background: linear-gradient(135deg, #ffb300, #ff8a00) !important;
+    color: #2a1500 !important;
+    box-shadow: 0 10px 24px rgba(255, 138, 0, 0.28);
+}
+.btn-battle:hover {
+    background: linear-gradient(135deg, #ffc233, #ff9d1f) !important;
+    border-color: rgba(255, 138, 0, 0.9) !important;
+    color: #1c0e00 !important;
+}
+html[data-theme="dark"] .btn-battle {
+    border-color: rgba(255, 183, 77, 0.55) !important;
+    background: linear-gradient(135deg, #ffb300, #f47b00) !important;
+    color: #2a1500 !important;
+}
+.btn-battle .btn-icon { font-size: 17px; }
+
+/* ============================================================
+   Светлая тема для «трилогийных» панелей (сертификат, офлайн)
+   Базовая палитра этих блоков была рассчитана на тёмный фон —
+   на белой карточке текст становился нечитаемым.
+   ============================================================ */
+html[data-theme="light"] .pq-cert-sub { color: #51688a; }
+html[data-theme="light"] .pq-cert-tab {
+    background: #f3f8ff;
+    color: #26507a;
+    border-color: rgba(47, 125, 184, 0.25);
+}
+html[data-theme="light"] .pq-cert-tab.active {
+    background: linear-gradient(135deg, #2f8fd6, #1d6bb0);
+    border-color: #5fb4ee;
+    color: #ffffff;
+}
+html[data-theme="light"] .pq-cert-design {
+    background: #f3f8ff;
+    color: #26507a;
+    border-color: rgba(47, 125, 184, 0.25);
+}
+html[data-theme="light"] .pq-cert-design .dot { border-color: rgba(20, 45, 80, 0.25); }
+html[data-theme="light"] .pq-cert-design.active {
+    background: linear-gradient(135deg, #2f8fd6, #1d6bb0);
+    border-color: #5fb4ee;
+    color: #ffffff;
+}
+html[data-theme="light"] .pq-cert-label { color: #33557a; }
+html[data-theme="light"] .pq-cert-label input {
+    background: #ffffff;
+    color: #152a40;
+    border-color: rgba(47, 125, 184, 0.35);
+}
+html[data-theme="light"] .pq-cert-note { color: #5c7392; }
+html[data-theme="light"] .pq-cert-preview {
+    background: #f4f8fd;
+    border-color: rgba(47, 125, 184, 0.25);
+}
+
+html[data-theme="light"] .pq-offline-head p { color: #51688a; }
+html[data-theme="light"] .pq-offline-status {
+    background: rgba(34, 160, 96, 0.10);
+    border-color: rgba(34, 160, 96, 0.35);
+    color: #146b3d;
+}
+html[data-theme="light"] .pq-offline-status.wait {
+    background: rgba(200, 130, 20, 0.12);
+    border-color: rgba(200, 130, 20, 0.35);
+    color: #8a5a08;
+}
+html[data-theme="light"] .pq-offline-hint,
+html[data-theme="light"] .pq-offline-note { color: #5c7392; }
+html[data-theme="light"] .pq-offline-bar { background: rgba(20, 50, 90, 0.10); }
+html[data-theme="light"] #pq-offline-progress-text { color: #5c7392; }
+html[data-theme="light"] .pq-net-badge {
+    background: rgba(34, 160, 96, 0.12);
+    border-color: rgba(34, 160, 96, 0.35);
+    color: #14713f;
+}
+html[data-theme="light"] .pq-net-badge.is-offline {
+    background: rgba(220, 60, 60, 0.10);
+    border-color: rgba(220, 60, 60, 0.35);
+    color: #a32424;
+}
+
+/* ============================================================
+   «Лор и сюжет»: знакомство с героями и общим сюжетом,
+   затем — комикс трилогии внутри того же окна (одна секция).
+   ============================================================ */
+
+/* --- Окно лора с комиксом внутри: шире, чтобы поместились кадры --- */
+.story-modal-content.story-has-comic { max-width: 960px; }
+.story-lore { display: block; }
+.pq-comic-zone { margin-top: 8px; }
+
+/* --- Знакомство с героями --- */
+.pq-story-intro {
+    margin: 0 0 20px;
+    padding: 18px 20px;
+    border-radius: 16px;
+    border: 1px solid var(--border-light);
+    background: var(--gradient-card);
+    box-shadow: var(--shadow);
+}
+.story-content .pq-story-h3 {
+    margin: 0 0 12px;
+    font-size: 15px;
+    font-weight: 900;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--primary-dark);
+}
+.pq-story-h3 + .pq-story-plot { margin-top: 4px; }
+.pq-story-cast {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 10px;
+    margin-bottom: 18px;
+}
+.pq-story-cast-card {
+    display: flex;
+    gap: 11px;
+    align-items: flex-start;
+    padding: 12px 14px;
+    border-radius: 14px;
+    border: 1px solid var(--border-light);
+    border-top: 3px solid var(--cast-color, var(--primary));
+    background: var(--bg-card);
+    box-shadow: 0 2px 10px rgba(15, 35, 70, 0.06);
+}
+.pq-story-cast-icon {
+    flex: 0 0 38px;
+    width: 38px; height: 38px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 21px;
+    border-radius: 50%;
+    /* запасные значения для браузеров без color-mix */
+    background: rgba(56, 189, 248, 0.14);
+    background: color-mix(in srgb, var(--cast-color, #38bdf8) 18%, transparent);
+    border: 1px solid rgba(56, 189, 248, 0.4);
+    border: 1px solid color-mix(in srgb, var(--cast-color, #38bdf8) 45%, transparent);
+}
+.pq-story-cast-name {
+    font-size: 14.5px;
+    font-weight: 900;
+    color: var(--text-bright);
+    line-height: 1.2;
+}
+.pq-story-cast-role {
+    margin: 2px 0 6px;
+    font-size: 11.5px;
+    font-weight: 800;
+    letter-spacing: 0.02em;
+    color: var(--primary-dark);
+}
+.story-content .pq-story-cast-bio {
+    margin: 0;
+    font-size: 12.5px;
+    line-height: 1.5;
+    color: var(--text-dim);
+}
+/* Сюжет остаётся сплошным текстом — без карточек и списков */
+.story-content .pq-story-plot { font-size: 14px; line-height: 1.7; color: var(--text); }
+.story-content .pq-story-plot-p { margin: 0 0 10px; }
+.story-content .pq-story-plot-p:last-child { margin-bottom: 0; }
+
+/* --- Комикс внутри окна лора --- */
+.pq-comic-zone .pq-td-sec-head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin: 22px 0 12px;
+    padding-top: 18px;
+    border-top: 1px dashed var(--border-light);
+}
+.pq-comic-zone .pq-td-sec-title {
+    font-size: 15px;
+    font-weight: 900;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--primary-dark);
+}
+.pq-comic-zone .pq-td-sec-hint { font-size: 12px; font-weight: 700; color: var(--text-dim); }
+.pq-comic-zone .pq-td-card {
+    width: 100%;
+    max-height: none;
+    overflow: visible;
+    padding: 16px 0 0;
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+    box-shadow: none;
+}
+.pq-comic-zone .pq-td-foot { margin-top: 4px; }
+/* Карточка встроена в окно лора: внутренние отступы уже задаёт модалка */
+.pq-comic-zone .pq-td-teaser { margin: 12px 0 4px; }
+.pq-comic-zone .pq-td-act { margin: 0 0 4px; }
+html[data-theme="light"] .pq-comic-zone .pq-td-card,
+html:not([data-theme="dark"]) .pq-comic-zone .pq-td-card { color: var(--text); }
+
+/* Светлая тема: комикс-панель читается на белом фоне */
+html[data-theme="light"] .pq-comic-zone .pq-td-top h2,
+html:not([data-theme="dark"]) .pq-comic-zone .pq-td-top h2 { color: var(--text-bright); }
+html[data-theme="light"] .pq-comic-zone .pq-td-top p,
+html:not([data-theme="dark"]) .pq-comic-zone .pq-td-top p { color: var(--text-dim); }
+html[data-theme="light"] .pq-comic-zone .pq-td-part,
+html:not([data-theme="dark"]) .pq-comic-zone .pq-td-part {
+    background: var(--bg-card);
+    border-color: var(--border-light);
+    color: var(--text);
+}
+html[data-theme="light"] .pq-comic-zone .pq-td-part.active,
+html:not([data-theme="dark"]) .pq-comic-zone .pq-td-part.active {
+    background: var(--gradient-primary);
+    border-color: transparent;
+    color: #ffffff;
+}
+html[data-theme="light"] .pq-comic-zone .pq-td-ep,
+html:not([data-theme="dark"]) .pq-comic-zone .pq-td-ep {
+    background: #ffffff;
+    border-color: var(--border-light);
+    color: var(--text);
+}
+html[data-theme="light"] .pq-comic-zone .pq-td-ep.active,
+html:not([data-theme="dark"]) .pq-comic-zone .pq-td-ep.active {
+    background: var(--primary);
+    border-color: var(--primary);
+    color: #ffffff;
+}
+html[data-theme="light"] .pq-comic-zone .pq-td-bubble,
+html:not([data-theme="dark"]) .pq-comic-zone .pq-td-bubble {
+    background: #f7fbff;
+    border-color: var(--border-light);
+    color: var(--ink-2);
+}
+html[data-theme="light"] .pq-comic-zone .pq-td-keybox,
+html:not([data-theme="dark"]) .pq-comic-zone .pq-td-keybox {
+    background: rgba(0, 184, 212, 0.08);
+    border-color: rgba(0, 184, 212, 0.3);
+    color: var(--text);
+}
+html[data-theme="light"] .pq-comic-zone .pq-td-formula,
+html:not([data-theme="dark"]) .pq-comic-zone .pq-td-formula {
+    background: #ffffff;
+    border: 1px solid var(--border-light);
+    color: var(--primary-dark);
+}
+html[data-theme="light"] .pq-comic-zone .pq-td-navbtn,
+html:not([data-theme="dark"]) .pq-comic-zone .pq-td-navbtn {
+    background: #ffffff;
+    border-color: var(--border-light);
+    color: var(--text);
+}
+html[data-theme="light"] .pq-comic-zone .pq-td-navbtn.primary,
+html:not([data-theme="dark"]) .pq-comic-zone .pq-td-navbtn.primary {
+    background: var(--gradient-primary);
+    border-color: transparent;
+    color: #ffffff;
+}
+html[data-theme="light"] .pq-comic-zone .pq-td-locked,
+html:not([data-theme="dark"]) .pq-comic-zone .pq-td-locked {
+    background: #f7fbff;
+    border-color: var(--border-light);
+    color: var(--text-dim);
+}
+html[data-theme="light"] .pq-comic-zone .pq-td-locked strong,
+html:not([data-theme="dark"]) .pq-comic-zone .pq-td-locked strong { color: var(--text-bright); }
+html[data-theme="light"] .pq-comic-zone .pq-td-locked p,
+html:not([data-theme="dark"]) .pq-comic-zone .pq-td-locked p { color: var(--text-dim); }
+html[data-theme="light"] .pq-comic-zone .pq-td-teaser,
+html:not([data-theme="dark"]) .pq-comic-zone .pq-td-teaser {
+    background: rgba(255, 179, 0, 0.1);
+    border-color: rgba(255, 179, 0, 0.45);
+    color: var(--text);
+}
+html[data-theme="light"] .pq-comic-zone .pq-td-teaser strong,
+html:not([data-theme="dark"]) .pq-comic-zone .pq-td-teaser strong { color: var(--warn-ink); }
+html[data-theme="light"] .pq-comic-zone .pq-td-act,
+html:not([data-theme="dark"]) .pq-comic-zone .pq-td-act {
+    color: var(--primary-dark);
+    background: rgba(0, 184, 212, 0.08);
+    border-color: rgba(0, 184, 212, 0.25);
+}
+html[data-theme="light"] .pq-comic-zone .pq-td-locked-icon,
+html:not([data-theme="dark"]) .pq-comic-zone .pq-td-locked-icon {
+    background: rgba(0, 184, 212, 0.1);
+    border-color: rgba(0, 184, 212, 0.28);
+}
+
+/* Тёмная тема: заголовки секции */
+html[data-theme="dark"] .pq-story-intro { background: var(--gradient-card); }
+html[data-theme="dark"] .pq-story-h3,
+html[data-theme="dark"] .pq-comic-zone .pq-td-sec-title { color: #7dd3fc; }
+html[data-theme="dark"] .pq-comic-zone .pq-td-sec-head { border-top-color: rgba(148, 163, 184, 0.25); }
+
+/* Мобильная раскладка */
+@media (max-width: 640px) {
+    .pq-story-intro { padding: 14px 14px; }
+    .pq-story-cast { grid-template-columns: 1fr; }
+    .story-modal-content.story-has-comic { max-width: none; }
+}
+
+/* Кнопка-переход от знакомства с героями к комиксу */
+.pq-story-jump {
+    margin-top: 12px;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 15px;
+    border-radius: 999px;
+    border: 1px solid var(--primary);
+    background: rgba(0, 184, 212, 0.08);
+    color: var(--primary-dark);
+    font-size: 12.5px;
+    font-weight: 900;
+    cursor: pointer;
+    transition: transform .15s ease, background .15s ease;
+}
+.pq-story-jump:hover { transform: translateY(-1px); background: rgba(0, 184, 212, 0.16); }
+html[data-theme="dark"] .pq-story-jump {
+    background: rgba(56, 189, 248, 0.14);
+    border-color: rgba(125, 211, 252, 0.5);
+    color: #bae6fd;
+}
+
+/* ---------- разбор задачи и формулы в светлых окнах ----------
+   Панель «Разбор задачи» и «Формулы §» рассчитаны на тёмный фон.
+   В окне задания и в окне теории (светлая тема) перекрашиваем их в светлые тона,
+   иначе текст почти не читается. В тёмной теме возвращаем исходный вид. */
+#task-modal .pq-solver-btn,
+#theory-modal .pq-solver-btn {
+    border-color: #b9dced;
+    background: linear-gradient(135deg, #eaf7fd, #ffffff);
+    color: #14425c;
+}
+#task-modal .pq-solver-btn:hover,
+#theory-modal .pq-solver-btn:hover { border-color: var(--primary, #00b8d4); }
+#task-modal .pq-solver-btn-text small,
+#theory-modal .pq-solver-btn-text small { color: #5c7f92; }
+#task-modal .pq-solver-btn.active,
+#theory-modal .pq-solver-btn.active {
+    border-color: var(--primary, #00b8d4);
+    box-shadow: 0 0 0 2px rgba(0, 184, 212, 0.18) inset;
+    background: linear-gradient(135deg, #d9f3fb, #ffffff);
+}
+#task-modal .pq-solver-panel,
+#theory-modal .pq-solver-panel {
+    background: #f5fbff;
+    border-color: #cfe6f3;
+    color: #14314a;
+}
+#task-modal .pq-solver-block,
+#theory-modal .pq-solver-block {
+    background: #ffffff;
+    border-color: #dceaf4;
+}
+#task-modal .pq-solver-block h4,
+#theory-modal .pq-solver-block h4 { color: #0b7d99; }
+#task-modal .pq-given-table th,
+#theory-modal .pq-given-table th { color: #5c7f92; border-bottom-color: #dceaf4; }
+#task-modal .pq-given-table td,
+#theory-modal .pq-given-table td { border-bottom-color: #eaf3f9; }
+#task-modal .pq-given-table .pq-g-sym,
+#theory-modal .pq-given-table .pq-g-sym { color: #a2650a; }
+#task-modal .pq-given-table .pq-g-name,
+#theory-modal .pq-given-table .pq-g-name { color: #42617a; }
+#task-modal .pq-given-table .pq-g-si,
+#theory-modal .pq-given-table .pq-g-si { color: #19733b; }
+#task-modal .pq-given-table .pq-g-val,
+#theory-modal .pq-given-table .pq-g-val { color: #14314a; }
+#task-modal .pq-given-table .pq-g-si,
+#theory-modal .pq-given-table .pq-g-si { color: #19733b; }
+#task-modal .pq-solver-note,
+#theory-modal .pq-solver-note,
+#task-modal .pq-solver-empty,
+#theory-modal .pq-solver-empty,
+#task-modal .pq-solver-help-note,
+#theory-modal .pq-solver-help-note { color: #4f6d80; }
+#task-modal .pq-si-note,
+#theory-modal .pq-si-note { color: #1d5b73; }
+#task-modal .pq-formula-inline,
+#theory-modal .pq-formula-inline { color: #7a4f00; }
+#task-modal .pq-answer-label,
+#theory-modal .pq-answer-label { color: #19733b; }
+#task-modal .pq-formula-big,
+#theory-modal .pq-formula-big {
+    background: #fff8e6; border-left-color: #e0a51c; color: #7a4f00;
+}
+#task-modal .pq-subst,
+#theory-modal .pq-subst { color: #0b6f8a; }
+#task-modal .pq-formula-list span,
+#theory-modal .pq-formula-list span { color: #43657a; }
+#task-modal .pq-steps,
+#theory-modal .pq-steps { color: #14314a; }
+#task-modal .pq-steps li.pq-step-answer,
+#theory-modal .pq-steps li.pq-step-answer { color: #19733b; }
+#task-modal .pq-answer-box,
+#theory-modal .pq-answer-box {
+    background: #eafaf0; border-color: #a9dcbe; color: #14532d;
+}
+#task-modal .pq-answer-box strong,
+#theory-modal .pq-answer-box strong { color: #19733b; }
+#task-modal .pq-solver-template-note,
+#theory-modal .pq-solver-template-note {
+    background: #eaf6fd; border-color: #9fcbe3; color: #17435c;
+}
+#task-modal .pq-fc-kicker,
+#theory-modal .pq-fc-kicker { color: #0b7d99; }
+#task-modal .pq-fc-sub,
+#theory-modal .pq-fc-sub { color: #5c7f92; }
+#task-modal .pq-fc-list li,
+#theory-modal .pq-fc-list li { background: #ffffff; border-color: #dceaf4; }
+#task-modal .pq-fc-formula,
+#theory-modal .pq-fc-formula { color: #7a4f00; }
+#task-modal .pq-fc-desc,
+#theory-modal .pq-fc-desc { color: #4f6d80; }
+#task-modal .pq-fc-legend h5,
+#theory-modal .pq-fc-legend h5 { color: #5c7f92; }
+#task-modal .pq-fc-chip,
+#theory-modal .pq-fc-chip { background: #eaf7fd; border-color: #b9dced; color: #14425c; }
+#task-modal .pq-fc-chip b,
+#theory-modal .pq-fc-chip b { color: #a2650a; }
+
+/* тёмная тема: возвращаем исходные значения панели */
+html[data-theme="dark"] #task-modal .pq-solver-btn,
+html[data-theme="dark"] #theory-modal .pq-solver-btn {
+    border-color: rgba(0, 217, 255, 0.4);
+    background: linear-gradient(135deg, rgba(0, 150, 199, 0.22), rgba(20, 40, 80, 0.5));
+    color: #dff6ff;
+}
+html[data-theme="dark"] #task-modal .pq-solver-btn-text small,
+html[data-theme="dark"] #theory-modal .pq-solver-btn-text small { color: #8fc7e6; }
+html[data-theme="dark"] #task-modal .pq-solver-panel,
+html[data-theme="dark"] #theory-modal .pq-solver-panel {
+    background: linear-gradient(160deg, rgba(12, 24, 48, 0.94), rgba(7, 14, 30, 0.96));
+    border-color: rgba(96, 165, 250, 0.3);
+    color: #e8f2ff;
+}
+html[data-theme="dark"] #task-modal .pq-solver-block,
+html[data-theme="dark"] #theory-modal .pq-solver-block { background: rgba(255, 255, 255, 0.035); border-color: rgba(255, 255, 255, 0.07); }
+html[data-theme="dark"] #task-modal .pq-given-table th,
+html[data-theme="dark"] #theory-modal .pq-given-table th { color: #8ea8c9; border-bottom-color: rgba(255,255,255,.08); }
+html[data-theme="dark"] #task-modal .pq-given-table td,
+html[data-theme="dark"] #theory-modal .pq-given-table td { border-bottom-color: rgba(255,255,255,.07); }
+html[data-theme="dark"] #task-modal .pq-given-table .pq-g-sym,
+html[data-theme="dark"] #theory-modal .pq-given-table .pq-g-sym { color: #ffd479; }
+html[data-theme="dark"] #task-modal .pq-given-table .pq-g-name,
+html[data-theme="dark"] #theory-modal .pq-given-table .pq-g-name { color: #a9c1dd; }
+html[data-theme="dark"] #task-modal .pq-given-table .pq-g-val,
+html[data-theme="dark"] #theory-modal .pq-given-table .pq-g-val { color: #eaf6ff; }
+html[data-theme="dark"] #task-modal .pq-given-table .pq-g-val,
+html[data-theme="dark"] #theory-modal .pq-given-table .pq-g-val { color: #eaf6ff; }
+html[data-theme="dark"] #task-modal .pq-si-note,
+html[data-theme="dark"] #theory-modal .pq-si-note { color: #bfe9ff; }
+html[data-theme="dark"] #task-modal .pq-formula-inline,
+html[data-theme="dark"] #theory-modal .pq-formula-inline { color: #ffe6a3; }
+html[data-theme="dark"] #task-modal .pq-formula-big,
+html[data-theme="dark"] #theory-modal .pq-formula-big { background: rgba(255, 213, 79, 0.08); border-left-color: #ffd479; color: #ffe6a3; }
+html[data-theme="dark"] #task-modal .pq-steps,
+html[data-theme="dark"] #theory-modal .pq-steps { color: #d7e6fb; }
+html[data-theme="dark"] #task-modal .pq-answer-box,
+html[data-theme="dark"] #theory-modal .pq-answer-box { background: rgba(72, 214, 148, 0.12); border-color: rgba(72, 214, 148, 0.4); color: #d8ffe9; }
+html[data-theme="dark"] #task-modal .pq-fc-list li,
+html[data-theme="dark"] #theory-modal .pq-fc-list li { background: rgba(255, 255, 255, 0.04); border-color: rgba(255, 255, 255, 0.07); }
+html[data-theme="dark"] #task-modal .pq-fc-formula,
+html[data-theme="dark"] #theory-modal .pq-fc-formula { color: #ffe6a3; }
+
+/* ---------- теория перед уровнем: разбор задачи и формулы ---------- */
+#theory-modal.theory-wide .modal-content { max-width: 940px; }
+.pq-theory { display: flex; flex-direction: column; gap: 12px; }
+.pq-theory-head h4 { margin: 2px 0 4px; font-size: 17px; color: #0b4a63; }
+.pq-theory-head p { margin: 0; font-size: 13px; line-height: 1.5; color: #4f6d80; }
+.pq-theory-kicker {
+    font-size: 11px; letter-spacing: .08em; text-transform: uppercase;
+    font-weight: 900; color: #0b7d99;
+}
+.pq-theory-question {
+    padding: 12px 14px; border-radius: 12px;
+    background: #eef8ff; border: 1px dashed #b9dced; color: #14314a;
+    font-size: 13.5px; line-height: 1.55;
+}
+.pq-theory-panel { margin: 0; }
+.pq-theory .pq-solver-panel { border-radius: 14px; padding: 14px; }
+.pq-theory .pq-solver-grid { align-items: start; }
+.pq-theory .pq-solver-block { display: flex; flex-direction: column; gap: 6px; }
+html[data-theme="dark"] .pq-theory-head h4 { color: #d8f1ff; }
+html[data-theme="dark"] .pq-theory-head p { color: #9fb3cf; }
+html[data-theme="dark"] .pq-theory-kicker { color: #7fd7ff; }
+html[data-theme="dark"] .pq-theory-question {
+    background: rgba(56, 189, 248, 0.08); border-color: rgba(125, 211, 252, 0.35); color: #dff6ff;
+}

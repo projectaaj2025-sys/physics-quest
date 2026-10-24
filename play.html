@@ -1,0 +1,924 @@
+<!DOCTYPE html>
+<html lang="ru" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="theme-color" content="#eef4fb">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Физика-Квест">
+    <title>Физика-Квест — Образовательная RPG (7–9 классы)</title>
+    <link rel="manifest" href="./manifest.json">
+    <link rel="icon" type="image/png" sizes="192x192" href="./assets/icons/icon-192.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="./assets/icons/icon-180.png">
+    <link rel="stylesheet" href="./shared/styles.css">
+    <script>
+        // Тема применяется до отрисовки: светлая по умолчанию, тёмная — по выбору ученика
+        (function () {
+            var t = "light";
+            try { t = localStorage.getItem("pq-theme") === "dark" ? "dark" : "light"; } catch (e) {}
+            document.documentElement.setAttribute("data-theme", t);
+            var m = document.querySelector('meta[name="theme-color"]');
+            if (m) m.setAttribute("content", t === "dark" ? "#081121" : "#eef4fb");
+        })();
+    </script>
+    <link rel="stylesheet" href="./shared/platform.css">
+</head>
+<body>
+<!-- Экран загрузки -->
+    <div id="loading-screen" class="screen active">
+        <div class="loading-content">
+            <div class="energy-orb"></div>
+            <h1 class="loading-title" data-i18n="loadingTitle">Загрузка энергии...</h1>
+            <div class="loading-bar"><div class="loading-fill" id="loading-fill"></div></div>
+        </div>
+    </div>
+
+    <!-- Главное меню -->
+    <div id="menu-screen" class="screen">
+        <div class="menu-bg"></div>
+        <div class="menu-content">
+            <h1 class="game-title">
+                <span class="title-line-1" data-i18n="titleLine1">ФИЗИКА-КВЕСТ</span>
+                <span class="title-line-2" data-i18n="titleLine2">ТЕПЛОВОЙ И ЭЛЕКТРИЧЕСКИЙ ЩИТ</span>
+            </h1>
+            <p class="game-subtitle" data-i18n="subtitle">Защити город от астероидов знаниями физики</p>
+
+            <div class="menu-buttons">
+                <button class="btn btn-primary" id="btn-start">
+                    <span class="btn-icon">▶</span>
+                    <span data-i18n="startGame">Начать игру</span>
+                </button>
+                <button class="btn btn-secondary" id="btn-continue" style="display:none">
+                    <span class="btn-icon">↻</span>
+                    <span data-i18n="continueGame">Продолжить</span>
+                </button>
+                <button class="btn btn-secondary" id="btn-teacher">
+                    <span class="btn-icon">⚙</span>
+                    <span data-i18n="teacherMode">Режим учителя</span>
+                </button>
+                <button class="btn btn-secondary" id="btn-records">
+                    <span class="btn-icon">🏆</span>
+                    <span data-i18n="records">Рекорды</span>
+                </button>
+                <button class="btn btn-secondary" id="btn-howto">
+                    <span class="btn-icon">?</span>
+                    <span data-i18n="howToPlay">Как играть</span>
+                </button>
+                <button class="btn btn-secondary" id="btn-about">
+                    <span class="btn-icon">ℹ</span>
+                    <span data-i18n="about">О проекте</span>
+                </button>
+                <button class="btn btn-secondary" id="btn-profile">
+                    <span class="btn-icon">👤</span>
+                    <span data-i18n="profile">Профиль</span>
+                </button>
+            </div>
+
+            <div class="language-selector">
+                <label data-i18n="language">Язык:</label>
+                <div class="lang-buttons">
+                    <button class="lang-btn active" data-lang="ru">🇷🇺 Русский</button>
+                    <button class="lang-btn" data-lang="en">🇬🇧 English</button>
+                    <button class="lang-btn" data-lang="kk">🇰🇿 Қазақша</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Экран выбора уровня -->
+    <div id="level-screen" class="screen">
+        <div class="level-topbar">
+            <button class="btn btn-secondary level-story-top" id="btn-level-story" type="button">
+                📜 <span data-i18n="storyLoreButton">Лор и сюжет</span>
+            </button>
+        </div>
+        <div class="level-screen-tabs" role="tablist" aria-label="Навигация по экрану игры">
+            <button class="level-screen-tab active" id="btn-levels-tab" type="button" role="tab" aria-selected="true">
+                📚 <span data-i18n="selectLevel">Выбери уровень</span>
+            </button>
+            <button class="level-screen-tab" id="btn-student-assignments-tab" type="button" role="tab" aria-selected="false">
+                📌 <span data-i18n="studentAssignmentsTab">Назначенные уроки</span>
+                <span class="assignment-count" id="student-assignments-count"></span>
+            </button>
+        </div>
+
+        <div class="pilot-line" id="pilot-line"></div>
+        <div class="level-panel" id="levels-panel">
+            <h2 data-i18n="selectLevel">Выбери уровень</h2>
+            <div class="story-progress" id="story-progress"></div>
+            <div class="levels-grid" id="levels-grid"></div>
+        </div>
+
+        <div class="student-assignments-panel" id="student-assignments-panel" hidden>
+            <div class="student-assignment-code-box">
+                <label for="student-assignment-code" data-i18n="assignmentCodeLabel">Короткий код назначения</label>
+                <div class="student-assignment-code-row">
+                    <input type="text" id="student-assignment-code" maxlength="8" autocomplete="off"
+                           data-i18n-placeholder="assignmentCodePlaceholder" placeholder="Вставьте код, полученный от учителя" />
+                    <button type="button" class="btn btn-secondary" id="btn-add-student-assignment-code">
+                        <span data-i18n="connectAssignmentCode">Загрузить назначение</span>
+                    </button>
+                </div>
+            </div>
+            <div class="student-assignment-list-panel">
+                <h2 data-i18n="studentAssignmentsTitle">Назначенные вам уровни</h2>
+                <div class="student-assignments-list" id="student-assignments-list"></div>
+            </div>
+        </div>
+
+        <button class="btn btn-back" id="btn-back-to-menu">
+            <span data-i18n="back">← Назад</span>
+        </button>
+    </div>
+
+    <!-- Экран профиля пилота -->
+    <div id="profile-screen" class="screen">
+        <div class="profile-wrap">
+            <h2 data-i18n="profileTitle">👤 Профиль пилота</h2>
+            <p class="profile-sub" data-i18n="profileSub">Настрой имя и дизайн ракеты — как в РПГ</p>
+            <div class="profile-field">
+                <label data-i18n="pilotName">Имя пилота</label>
+                <input type="text" id="profile-name" maxlength="24" autocomplete="off"
+                       data-i18n-placeholder="pilotNamePlaceholder" placeholder="Введи своё имя">
+            </div>
+            <div class="profile-field">
+                <label data-i18n="playerIdLabel">Короткий код ученика</label>
+                <input type="text" id="profile-player-id" readonly aria-describedby="profile-player-id-note">
+                <small id="profile-player-id-note" class="profile-sub" style="display:block; margin:6px 0 0" data-i18n="playerIdNote">Передай этот короткий код учителю для точного сопоставления профиля.</small>
+            </div>
+            <div class="profile-field">
+                <label data-i18n="rocketDesign">Дизайн ракеты</label>
+                <div class="rocket-grid" id="rocket-grid"></div>
+            </div>
+            <div class="profile-field">
+                <label data-i18n="questLimitsTitle">⚙ Настройки тренировки</label>
+                <p class="profile-sub" style="margin:0 0 10px" data-i18n="questLimitsSub">Сколько подсказок и попыток даётся на каждое задание в самостоятельной игре.</p>
+                <div class="quest-limits-grid">
+                    <label class="quest-limit">
+                        <span data-i18n="questHintsLabel">Подсказок на задание</span>
+                        <select id="profile-hints">
+                        <option value="0">0</option>
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3" selected>3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                        <option value="6">6</option>
+                        <option value="7">7</option>
+                        <option value="8">8</option>
+                        <option value="9">9</option>
+                        <option value="10">10</option>
+                        </select>
+                    </label>
+                    <label class="quest-limit">
+                        <span data-i18n="questAttemptsLabel">Попыток на задание</span>
+                        <select id="profile-attempts">
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5" selected>5</option>
+                        <option value="6">6</option>
+                        <option value="7">7</option>
+                        <option value="8">8</option>
+                        <option value="9">9</option>
+                        <option value="10">10</option>
+                        </select>
+                    </label>
+                </div>
+                <small class="profile-sub quest-limits-note" data-i18n="questLimitsTeacherNote">Если учитель назначил работу, действуют его настройки из назначения.</small>
+                <small class="profile-sub quest-limits-note quest-marks-note" data-i18n="mark10Note">Дополнительно к процентам: 95–100% — 10, 85–94% — 9, 75–84% — 8, 65–74% — 7, 55–64% — 6, 45–54% — 5, 35–44% — 4, 25–34% — 3, 15–24% — 2, ниже 15% — 1.</small>
+            </div>
+            <div class="profile-field">
+                <label data-i18n="profileConspektTitle">📘 Полный конспект</label>
+                <p class="profile-sub" style="margin:0 0 10px" data-i18n="profileConspektNote">Полный конспект всех 43 параграфов — открой в окне</p>
+                <div class="profile-conspekt-actions">
+                    <button class="btn btn-primary" id="btn-download-conspekt">
+                        ⬇ <span data-i18n="profileConspektDownload">Открыть конспект</span>
+                    </button>
+                </div>
+            </div>
+            <div class="profile-field">
+                <label data-i18n="profileNotesTitle">📥 Полный конспект всех тем</label>
+                <p class="profile-sub" style="margin:0 0 10px" data-i18n="profileNotesNote">Скачай полный конспект по §1–§43 на текущем языке приложения</p>
+                <div class="profile-conspekt-actions">
+                    <a class="btn btn-primary profile-notes-download" id="btn-download-notes-pdf"
+                       href="assets/pdf/grade8-ru.pdf" download>
+                        ⬇ <span data-i18n="profileNotesDownload">Скачать полный конспект</span>
+                    </a>
+                    <span class="profile-notes-language" id="profile-notes-language"></span>
+                </div>
+            </div>
+            <div class="profile-field">
+                <label data-i18n="profileAdditionalNotesTitle">📚 Полный конспект — версия 2</label>
+                <p class="profile-sub" style="margin:0 0 10px" data-i18n="profileAdditionalNotesNote">Версия 2 будет скачана на текущем языке интерфейса.</p>
+                <div class="profile-conspekt-actions">
+                    <a class="btn btn-secondary profile-notes-download" id="btn-download-notes-v2-pdf"
+                       href="assets/pdf/grade8-ru.pdf" download>
+                        ⬇ <span data-i18n="profileAdditionalNotesDownload">Скачать полный конспект (версия 2)</span>
+                    </a>
+                    <span class="profile-notes-language" id="profile-notes-v2-language"></span>
+                </div>
+            </div>
+            <button class="btn btn-back" id="btn-profile-back">
+                <span data-i18n="back">← Назад</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- Игровой экран -->
+    <div id="game-screen" class="screen">
+        <!-- HUD -->
+        <div class="hud">
+            <div class="hud-left">
+                <div class="hud-item" id="hud-score">
+                    <span class="hud-icon">⭐</span>
+                    <span class="hud-label" data-i18n="score">Очки:</span>
+                    <span class="hud-value" id="score-value">0</span>
+                </div>
+                <div class="hud-item" id="hud-level">
+                    <span class="hud-icon">📊</span>
+                    <span class="hud-label" data-i18n="level">Уровень:</span>
+                    <span class="hud-value" id="level-value">1</span>
+                </div>
+                <div class="hud-story" id="hud-story"></div>
+            </div>
+            <div class="hud-center">
+                <div class="city-health">
+                    <span class="health-label" data-i18n="cityHealth">Город</span>
+                    <div class="health-bar">
+                        <div class="health-fill" id="city-health-fill"></div>
+                    </div>
+                    <span class="health-value" id="city-health-value">100%</span>
+                </div>
+            </div>
+            <div class="hud-right">
+                <div class="hud-item" id="hud-shield">
+                    <span class="hud-icon">🛡</span>
+                    <span class="hud-label" data-i18n="shield">Щит:</span>
+                    <span class="hud-value" id="shield-value">0</span>
+                </div>
+                <div class="hud-item" id="hud-time">
+                    <span class="hud-icon">⏱</span>
+                    <span class="hud-value" id="time-value">00:00</span>
+                </div>
+                <button id="btn-lab" class="btn-pause" type="button" data-i18n="labBtnShort" style="display:none; background:#6d4c41; color:#fff; border-color:#6d4c41">🔬 Лаб</button>
+                <button id="btn-pause" class="btn-pause" type="button">⏸ <span data-i18n="pause">Пауза</span></button>
+                <button id="btn-exit-level" class="btn-exit-level" type="button">✕ <span data-i18n="exitLevel">Выход</span></button>
+            </div>
+        </div>
+
+        <!-- Игровое поле -->
+        <canvas id="game-canvas"></canvas>
+
+        <!-- Оверлей паузы -->
+        <div class="pause-overlay" id="pause-overlay">
+            <div class="pause-title" data-i18n="paused">Пауза</div>
+            <div class="pause-sub" data-i18n="pauseHint">Нажмите P или кнопку ⏸, чтобы продолжить</div>
+            <div class="pause-keys"><span class="key">P</span></div>
+            <button class="btn btn-primary" id="btn-resume" type="button">▶ <span data-i18n="resume">Продолжить</span></button>
+        </div>
+
+        <!-- Подсказки управления -->
+        <div class="controls-hint">
+            <span class="key">W A S D</span> / <span class="key">↑ ↓ ← →</span>
+            <span data-i18n="controlsHint">— движение</span>
+            <span style="margin-left: 8px"></span>
+            <span class="key">P</span>
+            <span data-i18n="pauseShort">— пауза</span>
+        </div>
+
+        <!-- Сенсорное управление для телефона -->
+        <div id="mobile-controls" class="mobile-controls" aria-label="Сенсорное управление">
+            <button class="mobile-control-btn mobile-control-up" type="button" data-mobile-key="arrowup" aria-label="Вверх">▲</button>
+            <button class="mobile-control-btn mobile-control-left" type="button" data-mobile-key="arrowleft" aria-label="Влево">◀</button>
+            <button class="mobile-control-btn mobile-control-center" type="button" tabindex="-1" aria-hidden="true">✦</button>
+            <button class="mobile-control-btn mobile-control-right" type="button" data-mobile-key="arrowright" aria-label="Вправо">▶</button>
+            <button class="mobile-control-btn mobile-control-down" type="button" data-mobile-key="arrowdown" aria-label="Вниз">▼</button>
+        </div>
+
+        <!-- Мини-карта -->
+        <div class="minimap">
+            <canvas id="minimap-canvas" width="150" height="150"></canvas>
+            <div class="minimap-label" data-i18n="minimap">Мини-карта</div>
+        </div>
+    </div>
+
+    <!-- Модальное окно с заданием -->
+    <div id="task-modal" class="modal">
+        <div class="modal-content task-content">
+            <div class="task-header">
+                <h3 id="task-title" data-i18n="task">Задание</h3>
+                <div class="task-type-badge" id="task-type-badge"></div>
+            </div>
+            <div class="task-body" id="task-body"></div>
+            <div class="task-feedback" id="task-feedback"></div>
+            <div class="task-footer">
+                <div class="task-stats">
+                    <span class="task-stat" id="task-attempts">Попытки: 0 / 5</span>
+                    <span class="task-stat" id="task-hint-stat">Подсказки: 3</span>
+                    <span class="task-stat" id="task-question-stat"></span>
+                </div>
+                <div class="task-buttons">
+                    <button class="btn btn-hint" id="btn-hint">
+                        <span data-i18n="hint">💡 Подсказка</span>
+                    </button>
+                    <button class="btn btn-submit" id="btn-submit">
+                        <span data-i18n="submit">Проверить</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Панель учителя -->
+    <div id="teacher-screen" class="screen">
+        <div class="teacher-inner">
+        <h2 data-i18n="teacherModeTitle">Режим учителя</h2>
+        <p class="teacher-intro" data-i18n="teacherIntro">Добавьте свои задания для своих учеников</p>
+
+        <div class="teacher-tabs">
+            <button class="tab-btn active" data-tab="create" data-i18n="createTask">Создать задание</button>
+            <button class="tab-btn" data-tab="lessons" data-i18n="teacherLessonsTab">Мои уроки</button>
+            <button class="tab-btn" data-tab="assignments" data-i18n="assignmentsTab">Назначения</button>
+            <button class="tab-btn" data-tab="manage" data-i18n="manageTasks">Мои задания</button>
+            <button class="tab-btn" data-tab="stats" data-i18n="statistics">Статистика</button>
+        </div>
+
+        <div class="tab-content active" id="tab-create">
+            <form id="task-form" class="task-form">
+                <div class="form-group">
+                    <label data-i18n="taskType">Тип задания:</label>
+                    <select id="form-type" required>
+                        <option value="multiple-choice" data-i18n="multipleChoice">Тест (один ответ)</option>
+                        <option value="multi-select" data-i18n="multiSelect">Множественный выбор</option>
+                        <option value="matching" data-i18n="matching">Сопоставление</option>
+                        <option value="short-answer" data-i18n="shortAnswer">Краткий ответ (слово)</option>
+                        <option value="numeric" data-i18n="numericAnswer">Числовой ответ</option>
+                        <option value="true-false" data-i18n="trueFalse">Верно/Неверно</option>
+                        <option value="fill-blank" data-i18n="fillBlank">Заполнить пропуск</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label data-i18n="topic">Урок (тема задания):</label>
+                    <select id="form-topic" required>
+                        <!-- варианты заполняются динамически: все уроки игры -->
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label data-i18n="difficulty">Сложность:</label>
+                    <select id="form-difficulty">
+                        <option value="1" data-i18n="easy">Лёгкий</option>
+                        <option value="2" data-i18n="medium" selected>Средний</option>
+                        <option value="3" data-i18n="hard">Сложный</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label data-i18n="question">Вопрос (на русском):</label>
+                    <textarea id="form-question-ru" rows="2" required></textarea>
+                </div>
+                <div class="form-group">
+                    <label data-i18n="questionEn">Вопрос (на английском):</label>
+                    <textarea id="form-question-en" rows="2"></textarea>
+                </div>
+                <div class="form-group">
+                    <label data-i18n="questionKk">Вопрос (на казахском):</label>
+                    <textarea id="form-question-kk" rows="2"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label data-i18n="formula">Формула (необязательно):</label>
+                    <input type="text" id="form-formula" placeholder="E = mgh" />
+                </div>
+
+                <div class="form-group">
+                    <label data-i18n="hint">Подсказка (необязательно):</label>
+                    <input type="text" id="form-hint" />
+                </div>
+
+                <!-- Контейнер для динамических полей ответа -->
+                <div id="answer-fields"></div>
+
+                <div class="form-group">
+                    <label data-i18n="explanation">Пояснение (показывается после ответа):</label>
+                    <textarea id="form-explanation" rows="2"></textarea>
+                </div>
+
+                <div class="form-buttons">
+                    <button type="submit" class="btn btn-primary" data-i18n="save">Сохранить</button>
+                    <button type="reset" class="btn btn-secondary" data-i18n="clear">Очистить</button>
+                </div>
+            </form>
+        </div>
+
+        <div class="tab-content" id="tab-lessons">
+            <h3 data-i18n="addLessonTitle">Добавить свой урок</h3>
+            <div class="form-group">
+                <label data-i18n="lessonNameRu">Название урока (RU)</label>
+                <input type="text" id="lesson-name-ru" placeholder="Например: §40. Дополнительный урок" />
+            </div>
+            <div class="form-group">
+                <label data-i18n="lessonNameEn">Название урока (EN)</label>
+                <input type="text" id="lesson-name-en" placeholder="e.g. §40. Extra lesson" />
+            </div>
+            <div class="form-group">
+                <label data-i18n="lessonNameKk">Название урока (KK)</label>
+                <input type="text" id="lesson-name-kk" placeholder="Мысалы: §40. Қосымша сабақ" />
+            </div>
+            <small style="color: var(--text-dim); display:block; margin-bottom:10px" data-i18n="lessonNameNote">Если EN/KK не заполнены, будет использовано русское название. Урок появится в выборе уровня и в списке тем.</small>
+            <button type="button" class="btn btn-primary" id="btn-add-lesson">
+                <span data-i18n="addLesson">+ Добавить урок</span>
+            </button>
+            <h3 style="margin-top:24px" data-i18n="myLessons">Мои уроки</h3>
+            <div class="tasks-list" id="custom-lessons-list"></div>
+        </div>
+
+        <div class="tab-content" id="tab-assignments">
+            <h3 data-i18n="assignmentsTitle">Назначить уровень ученику</h3>
+            <p class="profile-sub" style="margin:0 0 16px" data-i18n="assignmentsNote">Назначение получит короткий код: передайте его ученику, а результат будет виден в списке ниже.</p>
+            <div class="class-assignment-panel">
+                <h3 data-i18n="classManagementTitle">Классы</h3>
+                <p class="profile-sub" style="margin:0 0 12px" data-i18n="classManagementNote">Создайте класс и укажите учеников: один ученик в строке. Для сопоставления используйте формат «Имя | короткий код ученика».</p>
+                <div class="assignment-form">
+                    <div class="form-group">
+                        <label for="class-name" data-i18n="classNameLabel">Название класса</label>
+                        <input type="text" id="class-name" maxlength="80" data-i18n-placeholder="classNamePlaceholder" placeholder="Например: 8А" />
+                    </div>
+                    <div class="form-group">
+                        <label for="class-students" data-i18n="classStudentsLabel">Ученики класса</label>
+                        <textarea id="class-students" rows="5" data-i18n-placeholder="classStudentsPlaceholder" placeholder="Айдана&#10;Данияр | P7K2Q&#10;Меруерт"></textarea>
+                    </div>
+                    <button type="button" class="btn btn-secondary" id="btn-save-class">
+                        <span data-i18n="saveClass">+ Сохранить класс</span>
+                    </button>
+                </div>
+                <div class="class-bulk-form">
+                    <div class="form-group">
+                        <label for="assignment-class" data-i18n="chooseClass">Класс</label>
+                        <select id="assignment-class"></select>
+                    </div>
+                    <div class="form-group">
+                        <label for="class-assignment-level" data-i18n="classAssignmentLevel">Урок для всего класса</label>
+                        <select id="class-assignment-level"></select>
+                    </div>
+                    <div class="form-group">
+                        <label for="class-assignment-note" data-i18n="classAssignmentNote">Комментарий для класса (необязательно)</label>
+                        <input type="text" id="class-assignment-note" maxlength="160" data-i18n-placeholder="assignmentNotePlaceholder" placeholder="Например: пройти до пятницы" />
+                    </div>
+                    <div class="form-group">
+                        <label for="class-assignment-hints" data-i18n="questHintsLabel">Подсказок на задание</label>
+                        <select id="class-assignment-hints">
+                        <option value="0">0</option>
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3" selected>3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                        <option value="6">6</option>
+                        <option value="7">7</option>
+                        <option value="8">8</option>
+                        <option value="9">9</option>
+                        <option value="10">10</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="class-assignment-attempts" data-i18n="questAttemptsLabel">Попыток на задание</label>
+                        <select id="class-assignment-attempts">
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5" selected>5</option>
+                        <option value="6">6</option>
+                        <option value="7">7</option>
+                        <option value="8">8</option>
+                        <option value="9">9</option>
+                        <option value="10">10</option>
+                        </select>
+                    </div>
+                    <button type="button" class="btn btn-primary" id="btn-assign-class">
+                        <span data-i18n="assignToClass">👥 Назначить всему классу</span>
+                    </button>
+                </div>
+                <div class="class-list" id="classes-list"></div>
+            </div>
+
+            <div class="assignment-form">
+                <div class="form-group">
+                    <label for="assignment-student-name" data-i18n="assignmentStudentName">Имя ученика</label>
+                    <input type="text" id="assignment-student-name" maxlength="80" data-i18n-placeholder="assignmentStudentPlaceholder" placeholder="Например: Айдана" />
+                </div>
+                <div class="form-group">
+                    <label for="assignment-player-id" data-i18n="assignmentPlayerId">Код ученика (необязательно)</label>
+                    <input type="text" id="assignment-player-id" maxlength="100" data-i18n-placeholder="assignmentPlayerIdPlaceholder" placeholder="Введите короткий код из профиля ученика" />
+                </div>
+                <div class="form-group">
+                    <label for="assignment-level" data-i18n="assignmentLevel">Уровень или пользовательский урок</label>
+                    <select id="assignment-level"></select>
+                </div>
+                <div class="form-group">
+                    <label for="assignment-note" data-i18n="assignmentNote">Комментарий (необязательно)</label>
+                    <input type="text" id="assignment-note" maxlength="160" data-i18n-placeholder="assignmentNotePlaceholder" placeholder="Например: пройти до пятницы" />
+                </div>
+                <div class="form-group">
+                    <label for="assignment-hints" data-i18n="questHintsLabel">Подсказок на задание</label>
+                    <select id="assignment-hints">
+                        <option value="0">0</option>
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3" selected>3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                        <option value="6">6</option>
+                        <option value="7">7</option>
+                        <option value="8">8</option>
+                        <option value="9">9</option>
+                        <option value="10">10</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="assignment-attempts" data-i18n="questAttemptsLabel">Попыток на задание</label>
+                    <select id="assignment-attempts">
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5" selected>5</option>
+                        <option value="6">6</option>
+                        <option value="7">7</option>
+                        <option value="8">8</option>
+                        <option value="9">9</option>
+                        <option value="10">10</option>
+                    </select>
+                </div>
+                <button type="button" class="btn btn-primary" id="btn-add-assignment">
+                    <span data-i18n="addAssignment">+ Назначить</span>
+                </button>
+            </div>
+            <h3 style="margin-top:24px" data-i18n="assignmentsListTitle">Текущие назначения</h3>
+            <div class="assignment-list" id="assignments-list"></div>
+            <div class="assignment-transfer">
+                <button type="button" class="btn btn-secondary" id="btn-export-assignments" data-i18n="exportAssignments">⬇ Экспорт назначений</button>
+                <label class="btn btn-secondary" for="assignment-import-file" data-i18n="importAssignments">⬆ Импорт назначений</label>
+                <input type="file" id="assignment-import-file" accept="application/json,.json" hidden>
+            </div>
+        </div>
+
+        <div class="tab-content" id="tab-manage">
+            <div class="tasks-list" id="custom-tasks-list">
+                <p class="empty-message" data-i18n="noCustomTasks">У вас пока нет собственных заданий</p>
+            </div>
+        </div>
+
+        <div class="tab-content" id="tab-stats">
+            <div class="stats-grid" id="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-value" id="stat-total">0</div>
+                    <div class="stat-label" data-i18n="totalAnswered">Всего решено</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="stat-correct">0</div>
+                    <div class="stat-label" data-i18n="correctAnswers">Верных</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="stat-accuracy">0%</div>
+                    <div class="stat-label" data-i18n="accuracy">Точность</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="stat-best">0</div>
+                    <div class="stat-label" data-i18n="bestScore">Лучший счёт</div>
+                </div>
+            </div>
+            <div class="topic-stats" id="topic-stats"></div>
+        </div>
+
+        <button class="btn btn-back" id="btn-teacher-back">
+            <span data-i18n="backToMenu">← В меню</span>
+        </button>
+        </div>
+    </div>
+    <!-- /teacher-screen -->
+
+    <!-- Модальное окно рекордов -->
+    <div id="records-modal" class="modal">
+        <div class="modal-content">
+            <h2 data-i18n="recordsTitle">Результаты игроков</h2>
+            <div class="records-tabs" id="records-tabs">
+                <button type="button" class="records-tab active" data-record-view="mine" data-i18n="myRecords">Мои рекорды</button>
+                <button type="button" class="records-tab" data-record-view="all" data-i18n="allRecords">Все рекорды</button>
+                <button type="button" class="records-tab" data-record-view="history" data-i18n="playthroughHistory">История прохождений</button>
+            </div>
+            <div class="records-table" id="records-table"></div>
+            <button class="btn btn-secondary" id="btn-clear-records" data-i18n="clearRecords">Очистить рекорды</button>
+            <button class="btn btn-secondary" id="btn-clear-history" data-i18n="clearHistory">Очистить историю</button>
+            <button class="btn btn-back" id="btn-records-close">
+                <span data-i18n="close">Закрыть</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- Модальное окно сюжетного журнала и брифинга миссии -->
+    <div id="story-modal" class="modal">
+        <div class="modal-content story-modal-content">
+            <div class="story-kicker" id="story-kicker"></div>
+            <h2 id="story-title"></h2>
+            <div class="story-content" id="story-content"></div>
+            <div class="story-actions">
+                <button class="btn btn-back" id="btn-story-close">
+                    <span data-i18n="close">Закрыть</span>
+                </button>
+                <button class="btn btn-primary" id="btn-story-continue">
+                    🚀 <span data-i18n="storyContinue">Продолжить миссию</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Модальное окно "Как играть" -->
+    <div id="howto-modal" class="modal">
+        <div class="modal-content">
+            <h2 data-i18n="howToPlayTitle">Как играть</h2>
+            <div class="howto-content" id="howto-content"></div>
+            <button class="btn btn-back" id="btn-howto-close">
+                <span data-i18n="close">Закрыть</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- Модальное окно "Теория" -->
+    <div id="theory-modal" class="modal">
+        <div class="modal-content">
+            <div class="theory-head">
+                <h2 class="theory-title" id="theory-title"></h2>
+                <span class="theory-badge" data-i18n="theoryBadge">Краткая теория</span>
+            </div>
+            <div class="theory-tabs" id="theory-tabs" style="display:none">
+                <button type="button" class="theory-tab active" data-tab="textbook" data-i18n="theoryTabTextbook">📖 Учебник</button>
+                <button type="button" class="theory-tab" data-tab="conspekt" data-i18n="theoryTabConspekt">📘 Конспект</button>
+                <button type="button" class="theory-tab" data-tab="solution" data-i18n="theoryTabSolution">🧮 Разбор задачи</button>
+                <button type="button" class="theory-tab" data-tab="formulas" data-i18n="theoryTabFormulas">📐 Формулы §</button>
+                <button type="button" class="theory-tab" data-tab="experiment" data-i18n="theoryTabExperiment">🧪 Эксперимент</button>
+            </div>
+            <div class="theory-content" id="theory-content"></div>
+            <div class="theory-actions">
+                <button class="btn btn-back" id="btn-theory-back">
+                    <span data-i18n="back">← Назад</span>
+                </button>
+                <button class="btn btn-primary" id="btn-theory-start">
+                    🚀 <span data-i18n="theoryStart">Начать уровень</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Модальное окно "Полный конспект" -->
+    <div id="conspekt-modal" class="modal">
+        <div class="modal-content conspekt-modal-content">
+            <h2 data-i18n="profileConspektTitle">📘 Полный конспект</h2>
+            <p class="conspekt-note" data-i18n="profileConspektNote">Полный конспект всех 43 параграфов — открой в окне</p>
+            <div class="conspekt-toc" id="conspekt-toc"></div>
+            <div class="conspekt-content" id="conspekt-content"></div>
+            <div class="theory-actions">
+                <button class="btn btn-back" id="btn-conspekt-close">
+                    <span data-i18n="back">← Назад</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Модальное окно "О проекте" -->
+    <div id="about-modal" class="modal">
+        <div class="modal-content">
+            <h2 data-i18n="aboutTitle">О проекте</h2>
+            <div class="about-content" id="about-content"></div>
+            <button class="btn btn-back" id="btn-about-close">
+                <span data-i18n="close">Закрыть</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- Экран Game Over -->
+    <div id="gameover-screen" class="screen">
+        <div class="gameover-content">
+            <h1 id="gameover-title" data-i18n="gameoverTitle">Город потерян!</h1>
+            <div class="story-result story-result-defeat" id="gameover-story"></div>
+            <div class="gameover-stats" id="gameover-stats"></div>
+            <div class="gameover-buttons">
+                <button class="btn btn-primary" id="btn-retry" data-i18n="retry">Повторить</button>
+                <button class="btn btn-secondary" id="btn-menu" data-i18n="toMenu">В меню</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Экран победы -->
+    <div id="victory-screen" class="screen">
+        <div class="victory-content">
+            <h1 data-i18n="victoryTitle">🌟 Город спасён! 🌟</h1>
+            <div class="story-result story-result-victory" id="victory-story"></div>
+            <div class="victory-stats" id="victory-stats"></div>
+            <div class="victory-buttons">
+                <button class="btn btn-primary" id="btn-next-level" data-i18n="nextLevel">Следующий уровень</button>
+                <button class="btn btn-secondary" id="btn-victory-menu" data-i18n="toMenu">В меню</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Уведомления -->
+    <div id="notification" class="notification"></div>
+
+    <!-- Скрипты -->
+    
+    
+    
+    
+    
+    
+    
+    
+
+    <!-- Скрипты -->
+
+    <!-- Интерактивная мини-игра лаборатории -->
+    <div id="lab-overlay" class="lab-overlay">
+        <div class="lab-panel">
+            <h3 id="lab-title">🔬 Лабораторный эксперимент</h3>
+            <p id="lab-desc" class="lab-desc">Проведи эксперимент — подбери параметры и получи результат!</p>
+            <div id="lab-content"></div>
+            <div id="lab-formula" class="lab-formula" style="display:none"></div>
+            <div id="lab-result" class="lab-result" style="display:none"></div>
+            <div id="lab-circuit" class="circuit-grid" style="display:none"></div>
+            <p id="lab-hint-text" class="lab-hint"></p>
+            <div class="lab-actions">
+                <button type="button" class="btn btn-primary" id="lab-check" data-i18n="labCheck">✅ Проверить</button>
+                <button type="button" class="btn btn-secondary" id="lab-close" data-i18n="labSkip">⏭ Пропустить (без бонуса)</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Вступление босса (9 класс) -->
+    <div id="boss-intro" class="boss-intro">
+        <div class="boss-subtitle" id="boss-intro-ep" data-i18n="bossIntroKicker">ЭПИЗОД</div>
+        <h2 id="boss-intro-title" data-i18n="bossIntroTitle">👾 БОСС ПРИБЛИЖАЕТСЯ</h2>
+        <div class="boss-quote" id="boss-intro-quote">КВАНТ: "Курсант, это не просто астероид..."</div>
+        <div class="boss-warn" data-i18n="bossIntroWarn">⚠️ Ответы сложнее • Ошибки бьют сильнее</div>
+        <button type="button" class="btn btn-primary" id="boss-intro-go" data-i18n="bossIntroGo">🚀 В БОЙ</button>
+        <div style="font-size:12px; color:#90a4ae" data-i18n="bossIntroHint">Нажми чтобы начать • Пробел</div>
+    </div>
+
+    <!-- Комикс-дневник экспедиции (9 класс) -->
+    <div id="diary-modal" class="modal">
+        <div class="modal-content diary-modal-content">
+            <h2 class="diary-title" id="diary-title">📖 Дневник экспедиции</h2>
+            <p class="diary-subtitle" id="diary-subtitle">Комикс-отчёт между эпизодами — открой все 10 записей!</p>
+            <div id="diary-comic" class="comic-strip"></div>
+            <div id="diary-story" class="comic-story"></div>
+            <div id="diary-bubble" class="diary-bubble" style="display:none"></div>
+            <p id="diary-meta" class="diary-entry-meta"></p>
+            <div class="diary-nav">
+                <button type="button" class="btn btn-secondary" id="diary-prev" data-i18n="diaryPrev">← Назад</button>
+                <span class="diary-page-indicator" id="diary-page">1 / 10</span>
+                <button type="button" class="btn btn-secondary" id="diary-next" data-i18n="diaryNext">Вперёд →</button>
+                <button type="button" class="btn btn-primary" id="diary-close" data-i18n="diaryContinue">✈️ Продолжить полёт</button>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Единый загрузчик модулей для выбранной параллели (7 / 8 / 9 класс) -->
+    <script src="./shared/account.js"></script>
+    <script src="./shared/theme.js"></script>
+    <script src="./shared/catalog-789.js"></script>
+    <script>
+    (function () {
+        function detectGrade() {
+            const params = new URLSearchParams(window.location.search);
+            const gParam = Number(params.get("grade"));
+            if ([7, 8, 9].includes(gParam)) return gParam;
+            const hash = String(window.location.hash || "");
+            const mLink = hash.match(/#a=[A-Z0-9]+\.g([789])l\d+/i);
+            if (mLink) return Number(mLink[1]);
+            const mCode = (params.get("assign") || hash).match(/Q([789])[A-Z0-9]{5}/i);
+            if (mCode) return Number(mCode[1]);
+            const acc = window.PQAccount ? window.PQAccount.get() : null;
+            if (acc && acc.student && [7, 8, 9].includes(Number(acc.student.grade))) {
+                return Number(acc.student.grade);
+            }
+            return 8;
+        }
+
+        const grade = detectGrade();
+        window.CURRENT_GRADE = grade;
+        document.body.setAttribute("data-grade", String(grade));
+        if (window.PQAccount) {
+            window.PQAccount.mountTopbar(grade);
+        }
+        // Комикс трилогии перенесён в раздел «Лор и сюжет» (кнопка внутри #story-modal)
+        const diaryBtn = document.getElementById("btn-diary");
+        if (diaryBtn) diaryBtn.style.display = "none";
+
+        const scripts = [
+            `./${grade}/tasks.js`,
+            // Дополнительные типы заданий (multi-select, short-answer, matching),
+            // сгенерированы tools/gen-task-types.js
+            `./${grade}/tasks-types.js`,
+            `./${grade}/content.js`,
+            "./shared/levels.js",
+            "./shared/locales-base.js",
+            "./shared/storage.js",
+            "./shared/marks.js",
+            "./shared/teacher.js",
+            "./shared/game.js",
+            "./shared/i18n.js",
+            "./shared/main.js",
+            "./shared/qrcode.js",
+            "./shared/rpg-data.js",
+            "./shared/rpg-core.js",
+            "./shared/rpg-ui.js",
+            "./shared/rpg-extra.js",
+            "./shared/rpg-teacher.js",
+            "./shared/rpg-assign.js",
+            "./shared/conspect-examples.js",
+            "./shared/level-themes.js",
+            "./shared/problem-solver.js",
+            "./shared/oformlenie.js",
+            "./shared/sound.js",
+            "./shared/team-battle.js",
+            "./shared/print-cards.js",
+            "./shared/certificate.js",
+            "./shared/offline-manifest.js",
+            "./shared/offline.js",
+            "./shared/rpg-boot.js"
+        ];
+        if (grade === 7) {
+            scripts.push("./shared/sim-light-7.js", "./7/simulators.js");
+        } else if (grade === 8) {
+            // Лабораторные мини-игры уровней 45–55 (конфиги — в 8/content.js)
+            scripts.push("./shared/lab-games.js");
+        } else if (grade === 9) {
+            scripts.push("./shared/lab-games.js", "./9/extras.js");
+        }
+        // Знакомство с героями и общий сюжет — показывается в «Лор и сюжет» перед комиксом
+        scripts.push("./shared/story-cast.js");
+        // Единый визуальный комикс-дневник трилогии (7 → 8 → 9) для всех параллелей
+        scripts.push("./shared/trilogy-comics-extra.js");
+        scripts.push("./shared/trilogy-diary.js");
+        // Визуальные canvas-симуляторы для 8 и 9 классов:
+        // сначала светлый фотореалистичный движок, затем сами лаборатории
+        if (grade === 8 || grade === 9) {
+            scripts.push("./shared/sim-light.js", "./shared/simulators-89.js");
+        }
+
+        const fill = document.getElementById("loading-fill");
+        let loaded = 0;
+
+        function loadSeq(index) {
+            if (index >= scripts.length) {
+                if (fill) fill.style.width = "100%";
+                if (typeof window.startPhysicsQuestBoot === "function") {
+                    window.startPhysicsQuestBoot();
+                }
+                if (typeof window.bootPhysicsQuestRPG === "function") {
+                    window.bootPhysicsQuestRPG();
+                }
+                if (typeof TrilogyDiary !== "undefined" && TrilogyDiary.init) {
+                    try { TrilogyDiary.init(); } catch (e) { console.error(e); }
+                }
+                if (grade === 9 && typeof LabGames !== "undefined" && LabGames.bindButtons) {
+                    try { LabGames.bindButtons(); } catch (e) {}
+                }
+                if ((grade === 8 || grade === 9) && typeof Simulators89 !== "undefined") {
+                    try { Simulators89.init(); } catch (e) { console.error(e); }
+                }
+                // Новые модули трилогии: миры уровней, разбор задач, звук, битва команд,
+                // карточки класса, сертификаты и офлайн-режим.
+                ["LevelThemes", "PQProblemSolver", "PQSound", "PQTeamBattle", "PQPrintCards", "PQCertificate", "PQOffline"].forEach((name) => {
+                    const mod = window[name];
+                    if (mod && typeof mod.init === "function") {
+                        try { mod.init(); } catch (e) { console.error(name, e); }
+                    }
+                });
+                return;
+            }
+            const s = document.createElement("script");
+            s.src = scripts[index];
+            s.onload = function () {
+                loaded++;
+                if (fill) fill.style.width = Math.round((loaded / scripts.length) * 95) + "%";
+                loadSeq(index + 1);
+            };
+            s.onerror = function (err) {
+                console.error("Failed to load script:", scripts[index], err);
+                loadSeq(index + 1);
+            };
+            document.body.appendChild(s);
+        }
+
+        loadSeq(0);
+    })();
+    </script>
+</body>
+</html>
