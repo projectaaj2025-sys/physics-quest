@@ -103,6 +103,12 @@
             this._inited = true;
             this.hook();
             this.addAllButton();
+            document.addEventListener("pq:lang-changed", () => {
+                const btn = document.getElementById("pq-print-all-btn");
+                if (btn) btn.remove();
+                this.addAllButton();
+                this.decorate();
+            });
         },
 
         hook() {

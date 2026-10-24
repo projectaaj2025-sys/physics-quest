@@ -1816,73 +1816,107 @@
         const st = document.createElement("style");
         st.id = "pq-simlight-css";
         st.textContent = `
-            #pq-sim89-modal .pq-s89-dialog {
+            /* Светлая лабораторная палитра — только в светлой теме */
+            html[data-theme="light"] #pq-sim89-modal .pq-s89-dialog {
                 background: linear-gradient(168deg, #ffffff 0%, #f4f8fd 52%, #eaf1f9 100%) !important;
                 border: 1px solid rgba(120, 152, 186, 0.45) !important;
                 box-shadow: 0 30px 80px rgba(28, 48, 76, 0.35) !important;
                 color: #152a40 !important;
             }
-            #pq-sim89-modal .pq-sim89-kicker { color: #2f7db8 !important; }
-            #pq-sim89-modal .pq-s89-dialog h2 { color: #10263c !important; }
-            #pq-sim89-modal .pq-s89-dialog p { color: #59748f !important; }
-            #pq-sim89-modal .pq-td-x {
+            html[data-theme="light"] #pq-sim89-modal .pq-sim89-kicker { color: #2f7db8 !important; }
+            html[data-theme="light"] #pq-sim89-modal .pq-s89-dialog h2 { color: #10263c !important; }
+            html[data-theme="light"] #pq-sim89-modal .pq-s89-dialog p { color: #59748f !important; }
+            html[data-theme="light"] #pq-sim89-modal .pq-td-x {
                 background: rgba(20, 40, 70, 0.06) !important;
                 border: 1px solid rgba(120, 152, 186, 0.5) !important;
                 color: #3d5a78 !important;
             }
-            #pq-sim89-modal .pq-s89-canvas {
+            html[data-theme="light"] #pq-sim89-modal .pq-s89-canvas {
                 background: #eef4fb !important;
                 border: 1px solid rgba(120, 152, 186, 0.45) !important;
                 box-shadow: inset 0 1px 0 rgba(255,255,255,0.9), 0 10px 26px rgba(40, 64, 96, 0.14);
                 border-radius: 18px !important;
             }
-            #pq-sim89-modal .pq-s89-telemetry {
+            html[data-theme="light"] #pq-sim89-modal .pq-s89-telemetry {
                 background: #ffffff !important;
                 border: 1px solid rgba(120, 152, 186, 0.42) !important;
                 color: #1f6f9c !important;
             }
-            #pq-sim89-modal .pq-s89-telemetry.pass {
+            html[data-theme="light"] #pq-sim89-modal .pq-s89-telemetry.pass {
                 background: #f0fbf5 !important;
                 border-color: rgba(46, 163, 106, 0.55) !important;
                 color: #1d7a4c !important;
             }
-            #pq-sim89-modal .pq-s89-ctrl {
+            html[data-theme="light"] #pq-sim89-modal .pq-s89-ctrl {
                 background: rgba(255, 255, 255, 0.9) !important;
                 border: 1px solid rgba(120, 152, 186, 0.32) !important;
             }
-            #pq-sim89-modal .pq-s89-ctrl label { color: #26415c !important; }
-            #pq-sim89-modal .pq-s89-ctrl select {
+            html[data-theme="light"] #pq-sim89-modal .pq-s89-ctrl label { color: #26415c !important; }
+            html[data-theme="light"] #pq-sim89-modal .pq-s89-ctrl select {
                 background: #ffffff !important;
                 color: #152a40 !important;
                 border: 1px solid rgba(120, 152, 186, 0.5) !important;
             }
-            #pq-sim89-modal .pq-s89-ctrl input[type=range] { accent-color: #2f7db8; }
-            #pq-sim89-modal .pq-s89-verify {
+            html[data-theme="light"] #pq-sim89-modal .pq-s89-ctrl input[type=range] { accent-color: #2f7db8; }
+            html[data-theme="light"] #pq-sim89-modal .pq-s89-verify {
                 background: rgba(226, 240, 252, 0.85) !important;
                 border: 1px solid rgba(120, 152, 186, 0.42) !important;
             }
-            #pq-sim89-modal .pq-s89-verify div { color: #26415c !important; }
-            #pq-sim89-modal .pq-s89-verify input {
+            html[data-theme="light"] #pq-sim89-modal .pq-s89-verify div { color: #26415c !important; }
+            html[data-theme="light"] #pq-sim89-modal .pq-s89-verify input {
                 background: #ffffff !important;
                 color: #152a40 !important;
                 border: 1px solid rgba(120, 152, 186, 0.55) !important;
             }
-            #pq-sim89-modal .pq-s89-verify span { color: #a9762a !important; }
-            #pq-sim89-modal .btn-primary {
+            html[data-theme="light"] #pq-sim89-modal .pq-s89-verify span { color: #a9762a !important; }
+            html[data-theme="light"] #pq-sim89-modal .btn-primary {
                 background: linear-gradient(135deg, #3a9ad9, #2f6fb0) !important;
                 border-color: transparent !important;
                 color: #fff !important;
             }
+
+            /* Секция «Визуальные лаборатории» на экране уровней */
+            html[data-theme="light"] #pq-sim89-section {
+                background: linear-gradient(155deg, #ffffff 0%, #f2f8ff 100%);
+                border: 1px solid rgba(120, 152, 186, 0.34);
+                box-shadow: 0 14px 36px rgba(28, 48, 76, 0.10);
+            }
+            html[data-theme="light"] #pq-sim89-section .pq-sim89-head h2 { color: #10263c; }
+            html[data-theme="light"] #pq-sim89-section .pq-sim89-head p { color: #4b6683; }
+            html[data-theme="light"] #pq-sim89-section .pq-sim89-kicker { color: #2f7db8; }
+            html[data-theme="light"] #pq-sim89-section .pq-sim89-prog {
+                background: rgba(47, 125, 184, 0.10);
+                border: 1px solid rgba(47, 125, 184, 0.28);
+                color: #1d6fb8;
+            }
+            html[data-theme="light"] #pq-sim89-section .pq-sim89-card,
+            html[data-theme="light"] #pq-sim89-modal .pq-sim89-card {
+                background: #ffffff;
+                border: 1px solid rgba(120, 152, 186, 0.38);
+                color: #152a40;
+                box-shadow: 0 10px 26px rgba(28, 48, 76, 0.08);
+            }
+            html[data-theme="light"] #pq-sim89-section .pq-sim89-card:hover { border-color: #2f7db8; }
+            html[data-theme="light"] #pq-sim89-section .pq-sim89-card b { color: #0f2740; }
+            html[data-theme="light"] #pq-sim89-section .pq-sim89-card small { color: #4b6683; }
+            html[data-theme="light"] #pq-sim89-section .pq-sim89-card-top { color: #2f7db8; }
+            html[data-theme="light"] #pq-sim89-section .pq-sim89-card em { color: #1d6fb8; }
+            html[data-theme="light"] #pq-sim89-section .pq-sim89-card.done {
+                background: #f2fbf5;
+                border-color: rgba(34, 197, 94, 0.5);
+            }
+            html[data-theme="light"] #pq-sim89-section .pq-sim89-card.done em { color: #178a4a; }
+
+            /* Подсказки-«чипы» под сценой — читаемы в обеих темах */
             .pq-sim89-hint {
                 display: flex; align-items: center; gap: 8px; flex-wrap: wrap;
-                margin: 8px 0 2px; font-size: 11.5px; color: #46688c;
+                margin: 8px 0 2px; font-size: 11.5px; color: var(--text-dim, #46688c);
             }
             .pq-sim89-hint span {
                 padding: 4px 10px; border-radius: 999px; background: rgba(47,125,184,0.1);
                 border: 1px solid rgba(47,125,184,0.24); font-weight: 700;
+                color: var(--text, #1a2942);
             }
-            #pq-sim89-modal .pq-sim89-card,
-            #pq-sim89-section .pq-sim89-card { background: #ffffff; }
         `;
         document.head.appendChild(st);
     }

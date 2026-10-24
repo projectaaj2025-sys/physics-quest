@@ -10,7 +10,7 @@
 
     const T = {
         ru: {
-            open: "🧮 Разбор задачи",
+            open: "Разбор задачи",
             openHint: "Дано → СИ → Формула → Решение",
             formulas: "📐 Формулы §",
             formulasHint: "Карточка формул параграфа",
@@ -51,7 +51,7 @@
             answerIntro: "Ответ записывай с единицей измерения и округляй до 2–3 значащих цифр."
         },
         kk: {
-            open: "🧮 Есепті талдау",
+            open: "Есепті талдау",
             openHint: "Берілгені → ХБ → Формула → Шешуі",
             formulas: "📐 § формулалары",
             formulasHint: "Параграф формулаларының карточкасы",
@@ -92,7 +92,7 @@
             answerIntro: "Жауапты өлшем бірлігімен жазып, 2–3 мәнді цифрға дейін дөңгелекте."
         },
         en: {
-            open: "🧮 Solve step by step",
+            open: "Solve step by step",
             openHint: "Given → SI → Formula → Solution",
             formulas: "📐 § formulas",
             formulasHint: "Formula card of the paragraph",

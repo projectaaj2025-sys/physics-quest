@@ -8,7 +8,7 @@
 
     const L = {
         ru: {
-            open: "🎖 Паспорт пилота",
+            open: "Паспорт пилота",
             title: "Сертификат пилота трилогии",
             subtitle: "Именной диплом с рангами по 7, 8 и 9 классам. Сохрани как PNG или распечатай в PDF для портфолио.",
             tabAll: "Вся трилогия",
@@ -44,7 +44,7 @@
             }
         },
         en: {
-            open: "🎖 Pilot passport",
+            open: "Pilot passport",
             title: "Trilogy pilot certificate",
             subtitle: "A personalised diploma with ranks for Grades 7, 8 and 9. Save it as PNG or print to PDF for your portfolio.",
             tabAll: "Whole trilogy",
@@ -80,7 +80,7 @@
             }
         },
         kk: {
-            open: "🎖 Пилот паспорты",
+            open: "Пилот паспорты",
             title: "Трилогия пилотының сертификаты",
             subtitle: "7, 8 және 9 сынып рангылары бар атаулы диплом. PNG форматында сақтап, PDF ретінде басып шығарыңыз.",
             tabAll: "Бүкіл трилогия",

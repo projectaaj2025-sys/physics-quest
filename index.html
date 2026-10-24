@@ -1,13 +1,23 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="ru" data-theme="light">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <meta name="theme-color" content="#081121">
+    <meta name="theme-color" content="#eef4fb">
     <title>Физика-Квест (7–9 классы) — Образовательная RPG-трилогия</title>
     <link rel="manifest" href="./manifest.json">
     <link rel="icon" type="image/png" sizes="192x192" href="./assets/icons/icon-192.png">
     <link rel="apple-touch-icon" sizes="180x180" href="./assets/icons/icon-180.png">
+    <script>
+        // Тема применяется до отрисовки: светлая по умолчанию, тёмная — по выбору ученика
+        (function () {
+            var t = "light";
+            try { t = localStorage.getItem("pq-theme") === "dark" ? "dark" : "light"; } catch (e) {}
+            document.documentElement.setAttribute("data-theme", t);
+            var m = document.querySelector('meta[name="theme-color"]');
+            if (m) m.setAttribute("content", t === "dark" ? "#081121" : "#eef4fb");
+        })();
+    </script>
     <link rel="stylesheet" href="./shared/platform.css">
     <style>
         :root {
@@ -679,6 +689,189 @@
         .hf-icon { font-size: 26px; margin-bottom: 6px; }
         .hf-title { font-weight: 800; font-size: 15px; color: #eaf3ff; margin-bottom: 4px; }
         .hf-desc { font-size: 12.8px; line-height: 1.5; color: #9fb3cf; }
+
+        /* ============================================================
+           СВЕТЛАЯ ТЕМА ГЛАВНОЙ СТРАНИЦЫ (по умолчанию)
+           Тёмная тема остаётся как есть — включается кнопкой на шапке
+           ============================================================ */
+        html[data-theme="light"] {
+            --bg-deep: #eef4fb;
+            --bg-card: rgba(255, 255, 255, 0.94);
+            --bg-card-hover: #ffffff;
+            --border-soft: rgba(2, 132, 199, 0.18);
+            --text-main: #16233b;
+            --text-muted: #56678a;
+            --cyan: #0284c7;
+            --amber: #b45309;
+            --emerald: #047857;
+            --violet: #6d28d9;
+        }
+        html[data-theme="light"] body {
+            color: #16233b;
+            background:
+                radial-gradient(900px 500px at 12% -6%, rgba(2, 132, 199, 0.10), transparent 60%),
+                radial-gradient(820px 460px at 88% 4%, rgba(109, 40, 217, 0.08), transparent 60%),
+                radial-gradient(700px 460px at 50% 100%, rgba(4, 120, 87, 0.07), transparent 65%),
+                linear-gradient(180deg, #f7fbff 0%, #eef4fb 55%, #e9f1fa 100%);
+        }
+        html[data-theme="light"] .hub-nav {
+            background: rgba(255, 255, 255, 0.9);
+            border-bottom: 1px solid rgba(2, 132, 199, 0.14);
+            box-shadow: 0 2px 18px rgba(15, 40, 80, 0.06);
+        }
+        html[data-theme="light"] .hub-brand-sub { color: #0369a1; }
+        html[data-theme="light"] .hub-langs {
+            background: #eaf2fb;
+            border-color: rgba(2, 132, 199, 0.16);
+        }
+        html[data-theme="light"] .hub-langs button { color: #46597a; }
+        html[data-theme="light"] .hub-langs button.active { background: #0284c7; color: #ffffff; }
+        html[data-theme="light"] .hub-acc-pill {
+            background: #eaf8ff;
+            border-color: rgba(2, 132, 199, 0.38);
+            color: #0c3b57;
+        }
+        html[data-theme="light"] .hub-acc-pill:hover { background: #d9f1fe; }
+        html[data-theme="light"] .hub-acc-pill.teacher {
+            background: #fff7e6;
+            border-color: rgba(180, 83, 9, 0.4);
+            color: #7c3d05;
+        }
+        html[data-theme="light"] .hub-code-badge {
+            background: #e0f2fe;
+            border-color: rgba(2, 132, 199, 0.32);
+            color: #0369a1;
+        }
+        html[data-theme="light"] .hero-main {
+            background: linear-gradient(145deg, #ffffff 0%, #f1f8ff 100%);
+            box-shadow: 0 18px 44px rgba(15, 40, 80, 0.10);
+        }
+        html[data-theme="light"] .hero-kicker {
+            background: #e6f6ff;
+            border-color: rgba(2, 132, 199, 0.28);
+            color: #0369a1;
+        }
+        html[data-theme="light"] .hero-title {
+            background: linear-gradient(95deg, #0b3d91 0%, #0284c7 52%, #b45309 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        html[data-theme="light"] .hero-lead { color: #3d5170; }
+        html[data-theme="light"] .hero-metric {
+            background: #ffffff;
+            border-color: rgba(2, 132, 199, 0.16);
+            color: #1d2f4b;
+            box-shadow: 0 4px 14px rgba(15, 40, 80, 0.05);
+        }
+        html[data-theme="light"] .hero-side {
+            background: linear-gradient(155deg, #ffffff 0%, #eef7ff 100%);
+            border-color: rgba(2, 132, 199, 0.2);
+            box-shadow: 0 18px 44px rgba(15, 40, 80, 0.10);
+        }
+        html[data-theme="light"] .id-box {
+            background: #eef9ff;
+            border-color: rgba(2, 132, 199, 0.42);
+        }
+        html[data-theme="light"] .id-box-label { color: #0369a1; }
+        html[data-theme="light"] .id-code-val { color: #0284c7; }
+        html[data-theme="light"] .btn-mini {
+            background: #e0f2fe;
+            border-color: rgba(2, 132, 199, 0.32);
+            color: #075985;
+        }
+        html[data-theme="light"] .btn-mini:hover { background: #c9e9fe; }
+        html[data-theme="light"] .series-progress-box {
+            background: #ffffff;
+            border-color: rgba(2, 132, 199, 0.16);
+        }
+        html[data-theme="light"] .sp-track {
+            background: #e6eef8;
+            border-color: rgba(2, 132, 199, 0.14);
+        }
+        html[data-theme="light"] .grade-card {
+            background: #ffffff;
+            border-color: rgba(2, 132, 199, 0.16);
+            box-shadow: 0 10px 30px rgba(15, 40, 80, 0.07);
+        }
+        html[data-theme="light"] .grade-card:hover { box-shadow: 0 18px 42px rgba(15, 40, 80, 0.14); }
+        html[data-theme="light"] .gc-badge {
+            background: #f1f8ff;
+            color: var(--card-accent-ink, var(--card-accent, #0284c7));
+            border-color: rgba(2, 132, 199, 0.16);
+        }
+        html[data-theme="light"] .gc-world { color: var(--card-accent-ink, var(--card-accent, #0284c7)); }
+        html[data-theme="light"] .gc-desc { color: #42566f; }
+        html[data-theme="light"] .gc-tag {
+            background: #f4f9ff;
+            border-color: rgba(2, 132, 199, 0.16);
+            color: #263a55;
+        }
+        html[data-theme="light"] .gc-prog {
+            background: #f5faff;
+            border-color: rgba(2, 132, 199, 0.14);
+        }
+        html[data-theme="light"] .gc-prog-row { color: #24384f; }
+        html[data-theme="light"] .btn-play {
+            color: #0b1a2b;
+            box-shadow: 0 8px 22px rgba(15, 40, 80, 0.16);
+        }
+        html[data-theme="light"] .btn-ghost {
+            color: #2b4463;
+            background: #f3f9ff;
+            border-color: rgba(2, 132, 199, 0.2);
+        }
+        html[data-theme="light"] .btn-ghost:hover { background: #e3f2fd; color: #0b2b4a; }
+        html[data-theme="light"] .hub-panel {
+            background: #ffffff;
+            border-color: rgba(2, 132, 199, 0.16);
+            box-shadow: 0 10px 30px rgba(15, 40, 80, 0.06);
+        }
+        html[data-theme="light"] .hub-panel.teacher-panel {
+            background: linear-gradient(155deg, #fffdf7 0%, #fff6e8 100%);
+            border-color: rgba(180, 83, 9, 0.24);
+        }
+        html[data-theme="light"] .hub-panel p { color: #42566f; }
+        html[data-theme="light"] .code-form input {
+            background: #ffffff;
+            border-color: rgba(2, 132, 199, 0.28);
+            color: #12233b;
+        }
+        html[data-theme="light"] .active-assign-item {
+            background: #f0f9ff;
+            border-color: rgba(2, 132, 199, 0.22);
+        }
+        html[data-theme="light"] .tkpi {
+            background: #fffdf6;
+            border-color: rgba(180, 83, 9, 0.2);
+        }
+        html[data-theme="light"] .tkpi b { color: #b45309; }
+        html[data-theme="light"] .tkpi span { color: #4d5f7d; }
+        html[data-theme="light"] .btn-teacher-sec {
+            background: #fff4e0;
+            border-color: rgba(180, 83, 9, 0.3);
+            color: #7c3d05;
+        }
+        html[data-theme="light"] .about-series {
+            background: #ffffff;
+            border-color: rgba(2, 132, 199, 0.16);
+            box-shadow: 0 10px 30px rgba(15, 40, 80, 0.06);
+        }
+        html[data-theme="light"] .about-series h3 { color: #102a45; }
+        html[data-theme="light"] .about-col {
+            background: #f6fbff;
+            border-color: rgba(2, 132, 199, 0.14);
+        }
+        html[data-theme="light"] .about-col p { color: #42566f; }
+        html[data-theme="light"] .hub-feature {
+            background: linear-gradient(160deg, #ffffff 0%, #f4faff 100%);
+            border-color: rgba(2, 132, 199, 0.18);
+            box-shadow: 0 10px 28px rgba(15, 40, 80, 0.07);
+        }
+        html[data-theme="light"] .hub-feature-link { border-color: rgba(2, 132, 199, 0.42); }
+        html[data-theme="light"] .hub-feature-link:hover { border-color: #0284c7; }
+        html[data-theme="light"] .hf-title { color: #102a45; }
+        html[data-theme="light"] .hf-desc { color: #4b6079; }
     </style>
 </head>
 <body>
@@ -703,6 +896,7 @@
     <main class="hub-wrap" id="hub-app"></main>
 
     <script src="./shared/account.js"></script>
+    <script src="./shared/theme.js"></script>
     <script src="./shared/catalog-789.js"></script>
     <script src="./shared/levels.js"></script>
     <script src="./shared/storage.js"></script>
@@ -749,21 +943,21 @@
                 g7Title: "Энергетический щит Астерии",
                 g7World: "🛡 Город-купол Астерия · Начало трилогии",
                 g7Desc: "Механическое движение, плотность, сила упругости и трения, давление в жидкостях и газах, закон Архимеда, работа, мощность и простые механизмы.",
-                g7Tags: ["50 уровней", "1 075 заданий + PISA", "15 canvas-симуляторов", "10 лаб. работ", "PDF-конспект (69 стр.)"],
+                g7Tags: ["50 уровней", "1 075 заданий + PISA", "15 canvas-симуляторов", "10 лаб. работ", "Полный конспект (69 стр.)"],
                 g8Title: "Хроники щита Эквилибриума",
                 g8World: "⚡ Мегаполис Эквилибриум · Сердце купола",
                 g8Desc: "Тепловые явления и термодинамика, агрегатные состояния, электростатика, законы постоянного тока, электромагнитные явления и геометрическая оптика.",
-                g8Tags: ["55 уровней", "1 210 заданий", "9 визуальных симуляторов", "Интерактивный конспект", "PDF-конспект (52–54 стр.)"],
+                g8Tags: ["55 уровней", "1 210 заданий", "9 визуальных симуляторов", "Интерактивный конспект", "Полный конспект (52–54 стр.)"],
                 g9Title: "Орбита-9: Щит Земли",
                 g9World: "🛰 Орбитальная станция «Орбита-9» · Финал",
                 g9Desc: "Векторная кинематика, основы астрономии, законы динамики и сохранения, механические и электромагнитные колебания, волны, квантовая и ядерная физика.",
-                g9Tags: ["48 уровней", "1 009 заданий", "9 canvas-симуляторов", "Комикс-трилогия (18 глав)", "PDF-конспект (57 стр.)"],
+                g9Tags: ["48 уровней", "1 009 заданий", "9 canvas-симуляторов", "Комикс-трилогия (18 глав)", "Полный конспект (57 стр.)"],
                 completedLabel: "Пройдено миссий",
-                playStart: "▶ Начать кампанию",
+                playStart: "▶ Начать игру",
                 playContinue: "▶ Продолжить (уровень #{0})",
                 levelsListBtn: "🗺 Все уровни",
-                pdfBtn: "📥 PDF-конспект",
-                conspektBtn: "📘 Полный конспект",
+                pdfBtn: "📥 Полный конспект",
+                conspektBtn: "📘 Конспект в игре",
                 studentPanelTitle: "🎯 Быстрый вход по коду задания",
                 studentPanelDesc: "Получил короткий код задания от учителя (например, Q704ABC или Q812XYZ)? Введи его здесь — игра сама откроет нужный класс и параграф!",
                 codePh: "Код задания (напр. Q805ABC)",
@@ -813,21 +1007,21 @@
                 g7Title: "Астерияның энергетикалық қалқаны",
                 g7World: "🛡 Астерия күмбез-қаласы · Трилогия бастауы",
                 g7Desc: "Механикалық қозғалыс, тығыздық, серпімділік пен үйкеліс күштері, сұйықтар мен газдардағы қысым, Архимед заңы, жұмыс, қуат және жай механизмдер.",
-                g7Tags: ["50 деңгей", "1 075 тапсырма + PISA", "15 canvas-симулятор", "10 зерт. жұмыс", "PDF-конспект (69 бет)"],
+                g7Tags: ["50 деңгей", "1 075 тапсырма + PISA", "15 canvas-симулятор", "10 зерт. жұмыс", "Толық конспект (69 бет)"],
                 g8Title: "Эквилибриум қалқанының шежіресі",
                 g8World: "⚡ Эквилибриум мегаполисі · Күмбез жүрегі",
                 g8Desc: "Жылу құбылыстары мен термодинамика, агрегаттық күйлер, электростатика, тұрақты ток заңдары, электромагниттік құбылыстар және геометриялық оптика.",
-                g8Tags: ["55 деңгей", "1 210 тапсырма", "9 визуалды симулятор", "Интерактивті конспект", "PDF-конспект (52–54 бет)"],
+                g8Tags: ["55 деңгей", "1 210 тапсырма", "9 визуалды симулятор", "Интерактивті конспект", "Толық конспект (52–54 бет)"],
                 g9Title: "Орбита-9: Жер қалқаны",
                 g9World: "🛰 «Орбита-9» станциясы · Финал",
                 g9Desc: "Векторлық кинематика, астрономия негіздері, динамика және сақталу заңдары, тербелістер мен толқындар, кванттық және ядролық физика.",
-                g9Tags: ["48 деңгей", "1 009 тапсырма", "9 canvas-симулятор", "Комикс-трилогия (18 тарау)", "PDF-конспект (58 бет)"],
+                g9Tags: ["48 деңгей", "1 009 тапсырма", "9 canvas-симулятор", "Комикс-трилогия (18 тарау)", "Толық конспект (58 бет)"],
                 completedLabel: "Өтілген миссиялар",
-                playStart: "▶ Кампанияны бастау",
+                playStart: "▶ Ойынды бастау",
                 playContinue: "▶ Жалғастыру (#{0}-деңгей)",
                 levelsListBtn: "🗺 Барлық деңгейлер",
-                pdfBtn: "📥 PDF-конспект",
-                conspektBtn: "📘 Толық конспект",
+                pdfBtn: "📥 Толық конспект",
+                conspektBtn: "📘 Ойындағы конспект",
                 studentPanelTitle: "🎯 Тапсырма коды бойынша жылдам кіру",
                 studentPanelDesc: "Мұғалімнен қысқа тапсырма кодын алдың ба (мысалы, Q704ABC немесе Q812XYZ)? Оны осында енгіз — ойын қажетті сынып пен параграфты бірден ашады!",
                 codePh: "Тапсырма коды (мыс. Q805ABC)",
@@ -877,21 +1071,21 @@
                 g7Title: "Energy Shield of Asteria",
                 g7World: "🛡 Dome City Asteria · Part I",
                 g7Desc: "Kinematics, density, elasticity & friction, hydrostatics and atmospheric pressure, Archimedes' principle, work, power, energy, and simple machines.",
-                g7Tags: ["50 missions", "1,075 tasks + PISA", "15 canvas simulators", "10 lab works", "PDF Study Guide (69 pp.)"],
+                g7Tags: ["50 missions", "1,075 tasks + PISA", "15 canvas simulators", "10 lab works", "Full study guide (69 pp.)"],
                 g8Title: "Chronicles of Equilibrium's Shield",
                 g8World: "⚡ Metropolis Equilibrium · Part II",
                 g8Desc: "Thermal physics & thermodynamics, phase transitions, electrostatics, DC circuits & Ohm's law, electromagnetism, and geometrical optics.",
-                g8Tags: ["55 missions", "1,210 tasks", "9 visual simulators", "Interactive Study Guide", "PDF Guide (52–54 pp.)"],
+                g8Tags: ["55 missions", "1,210 tasks", "9 visual simulators", "Interactive Study Guide", "Full study guide (52–54 pp.)"],
                 g9Title: "Orbita-9: Shield of Earth",
                 g9World: "🛰 Orbital Station Orbita-9 · Finale",
                 g9Desc: "Vector kinematics, astronomy, Newtonian dynamics, conservation laws, mechanical & EM oscillations, waves, quantum and nuclear physics.",
-                g9Tags: ["48 missions", "1,009 tasks", "9 canvas simulators", "Trilogy Comic (18 chapters)", "PDF Study Guide (56 pp.)"],
+                g9Tags: ["48 missions", "1,009 tasks", "9 canvas simulators", "Trilogy Comic (18 chapters)", "Full study guide (56 pp.)"],
                 completedLabel: "Missions completed",
-                playStart: "▶ Start Campaign",
+                playStart: "▶ Start game",
                 playContinue: "▶ Continue (Mission #{0})",
-                levelsListBtn: "🗺 All Missions",
-                pdfBtn: "📥 PDF Guide",
-                conspektBtn: "📘 Full Guide",
+                levelsListBtn: "🗺 All levels",
+                pdfBtn: "📥 Full guide",
+                conspektBtn: "📘 In-game guide",
                 studentPanelTitle: "🎯 Quick Launch by Assignment Code",
                 studentPanelDesc: "Got a short assignment code from your teacher (e.g., Q704ABC or Q812XYZ)? Enter it below to jump straight into the assigned grade and mission!",
                 codePh: "Assignment code (e.g. Q805ABC)",
@@ -992,20 +1186,21 @@
 
             const cards = [
                 {
-                    g: 7, accent: "#38bdf8", part: tr("part1"),
+                    g: 7, accent: "#38bdf8", accentInk: "#0369a1", part: tr("part1"),
                     title: tr("g7Title"), world: tr("g7World"), desc: tr("g7Desc"),
                     tags: tr("g7Tags"), prog: p7,
                     pdfUrl: `./assets/pdf/grade7-${L}.pdf`,
                     pdfName: `Физика-Квест_7-класс_Конспект_${L.toUpperCase()}.pdf`
                 },
                 {
-                    g: 8, accent: "#fbbf24", part: tr("part2"),
+                    g: 8, accent: "#fbbf24", accentInk: "#b45309", part: tr("part2"),
                     title: tr("g8Title"), world: tr("g8World"), desc: tr("g8Desc"),
                     tags: tr("g8Tags"), prog: p8,
-                    pdfUrl: null, pdfName: null
+                    pdfUrl: `./assets/pdf/grade8-${L}.pdf`,
+                    pdfName: `Физика-Квест_8-класс_Конспект_${L.toUpperCase()}.pdf`
                 },
                 {
-                    g: 9, accent: "#a78bfa", part: tr("part3"),
+                    g: 9, accent: "#a78bfa", accentInk: "#6d28d9", part: tr("part3"),
                     title: tr("g9Title"), world: tr("g9World"), desc: tr("g9Desc"),
                     tags: tr("g9Tags"), prog: p9,
                     pdfUrl: `./assets/pdf/grade9-${L}.pdf`,
@@ -1065,7 +1260,7 @@
                             ? tr("playContinue", c.prog.nextLvl)
                             : tr("playStart");
                         return `
-                        <article class="grade-card" style="--card-accent:${c.accent}">
+                        <article class="grade-card" style="--card-accent:${c.accent};--card-accent-ink:${c.accentInk || c.accent}">
                             <div>
                                 <div class="gc-top">
                                     <span class="gc-badge">⚛️ ${esc(c.part)}</span>
@@ -1112,7 +1307,7 @@
                         <div class="code-status" id="portal-code-status"></div>
                         ${myAssigns.length ? `
                             <div class="active-assign-list">
-                                <div style="font-size:12px;font-weight:800;color:#94a3b8;">${esc(tr("myAssignsTitle"))}</div>
+                                <div style="font-size:12px;font-weight:800;color:var(--text-muted);">${esc(tr("myAssignsTitle"))}</div>
                                 ${myAssigns.map(a => {
                                     const parsed = parseLevelRef(a.levelId, a.grade || 8);
                                     const label = catalogLevelLabel(parsed.canonical, parsed.grade, true);
@@ -1143,7 +1338,7 @@
 
                 <section class="about-series">
                     <h3>${esc(tr("aboutTitle"))}</h3>
-                    <p style="font-size:14px;color:#cbd5e1;">${esc(tr("aboutLead"))}</p>
+                    <p style="font-size:14px;color:var(--text-muted);">${esc(tr("aboutLead"))}</p>
                     <div class="about-cols">
                         <div class="about-col">
                             <h4>${esc(tr("ab1Title"))}</h4>
@@ -1162,16 +1357,16 @@
 
                 <section class="hub-features" id="pq-hub-features">
                     ${[
-                        { icon: "🧮", t: { ru: "Умный разбор задач", kk: "Есептерді ақылды талдау", en: "Smart problem solver" },
-                          d: { ru: "Дано → СИ → Формула → Решение и карточка формул параграфа прямо в окне задачи.", kk: "Берілгені → ХБ → Формула → Шешуі және параграф формулаларының карточкасы тапсырма терезесінде.", en: "Given → SI → Formula → Solution plus a chapter formula card right inside the task window." } },
-                        { icon: "🏟", t: { ru: "Битва экипажей", kk: "Экипаждар сайысы", en: "Crew battle" },
+                        { icon: "🎮", t: { ru: "Игра и полные конспекты", kk: "Ойын және толық конспектілер", en: "The game and its guides" },
+                          d: { ru: "153 миссии по параграфам 7–9 классов и полный конспект каждого класса (7 кл. — 69 стр., 8 кл. — 52–54 стр., 9 кл. — 57 стр.): краткая теория, карточки формул, образцы оформления. Методика: теория → разбор примера → задача с подсказкой → работа над ошибками.",
+                               kk: "7–9 сынып параграфтары бойынша 153 миссия және әр сыныптың толық конспектісі (7-сын. — 69 бет, 8-сын. — 52–54 бет, 9-сын. — 57 бет): қысқаша теория, формула карточкалары, безендіру үлгілері. Әдістеме: теория → мысалды талдау → кеңесі бар есеп → қателермен жұмыс.",
+                               en: "153 missions mapped to Grades 7–9 chapters plus a full study guide for every grade (G7 — 69 pp., G8 — 52–54 pp., G9 — 57 pp.): short theory, formula cards and worked-example templates. Method: theory → worked example → guided task → error review." } },
+                        { icon: "🏟", t: { ru: "Битва команд", kk: "Командалық сайыс", en: "Team battle" },
                           d: { ru: "Режим интерактивной доски: 2–3 команды защищают щит города у проектора.", kk: "Интерактивті тақта режимі: 2–3 команда проекторда қала қалқанын қорғайды.", en: "Interactive whiteboard mode: 2–3 teams defend the city shield on the projector." } },
                         { icon: "🎖", t: { ru: "Паспорт пилота", kk: "Пилот паспорты", en: "Pilot passport" },
                           d: { ru: "Именной сертификат с рангами по 7, 8 и 9 классам — PNG или PDF для портфолио.", kk: "7, 8 және 9 сынып рангылары бар атаулы сертификат — портфолио үшін PNG немесе PDF.", en: "A personalised certificate with ranks for Grades 7, 8 and 9 — PNG or PDF for your portfolio." } },
                         { icon: "📥", t: { ru: "Офлайн-режим", kk: "Офлайн режим", en: "Offline mode" },
-                          d: { ru: "PWA-кэш и скачивание ZIP: игра работает даже без интернета в кабинете.", kk: "PWA кэші және ZIP жүктеу: ойын кабинетте интернетсіз де жұмыс істейді.", en: "PWA caching and ZIP download: the game works even without internet in the classroom." } },
-                        { icon: "🖼", href: "./screenshots.html", t: { ru: "Скриншоты симуляторов", kk: "Симуляторлар скриншоттары", en: "Simulator screenshots" },
-                          d: { ru: "18 мини-игр и лабораторий: кадры реальных сцен, формулы и задания к каждому опыту.", kk: "18 мини-ойын мен зертхана: нақты сахналардың кадрлары, формулалар мен тапсырмалар.", en: "18 mini-games and labs: real scene frames, formulas and a task for every experiment." } }
+                          d: { ru: "PWA-кэш и скачивание ZIP: игра работает даже без интернета в кабинете.", kk: "PWA кэші және ZIP жүктеу: ойын кабинетте интернетсіз де жұмыс істейді.", en: "PWA caching and ZIP download: the game works even without internet in the classroom." } }
                     ].map(f => `
                         <${f.href ? "a" : "article"} class="hub-feature${f.href ? " hub-feature-link" : ""}" ${f.href ? `href="${f.href}"` : ""}>
                             <div class="hf-icon">${f.icon}</div>

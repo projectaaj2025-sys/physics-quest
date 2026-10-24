@@ -311,7 +311,11 @@
                 try { I18n.setLanguage(lang); } catch (_) {}
             }
             this.refreshTopbar();
-            window.dispatchEvent(new CustomEvent("pq:lang-changed", { detail: lang }));
+            // оповещаем и document, и window: разные модули подписаны на разные объекты
+            const detail = { detail: { lang } };
+            try { document.dispatchEvent(new CustomEvent("pq:lang-changed", detail)); } catch (_) {}
+            try { window.dispatchEvent(new CustomEvent("pq:lang-changed", detail)); } catch (_) {}
+            try { document.dispatchEvent(new CustomEvent("pq-lang-change", detail)); } catch (_) {}
         },
         updateStudentNameAndSync(name) {
             const acc = this.get();
@@ -649,6 +653,15 @@
             bar.querySelector("#pq-open-account-btn")?.addEventListener("click", () => {
                 this.openModal({ onboarding: false });
             });
+
+            // переключатель темы живёт в шапке: после каждой перерисовки возвращаем его на место
+            if (window.PQTheme && typeof window.PQTheme.mountButton === "function") {
+                const right = bar.querySelector(".pq-topbar-right");
+                if (right && !right.querySelector("[data-pq-theme-toggle]")) {
+                    window.PQTheme.mountButton(right, right.firstChild);
+                    try { window.PQTheme.apply(window.PQTheme.get(), { silent: true }); } catch (_) {}
+                }
+            }
         }
     };
 

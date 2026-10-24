@@ -37,6 +37,17 @@ const I18n = {
         document.documentElement.lang = lang;
         document.documentElement.setAttribute("data-lang", lang);
         this.apply();
+        this.emitLangChange(lang);
+    },
+
+    // Единое событие смены языка: слушатели исторически подписаны и на document, и на window,
+    // поэтому оповещаем оба объекта — иначе часть кнопок оставалась на прежнем языке.
+    emitLangChange(lang) {
+        const detail = { detail: { lang } };
+        ["pq:lang-changed", "pq-lang-change"].forEach((name) => {
+            try { document.dispatchEvent(new CustomEvent(name, detail)); } catch (e) {}
+            try { window.dispatchEvent(new CustomEvent(name, detail)); } catch (e) {}
+        });
     },
 
     t(key, ...args) {

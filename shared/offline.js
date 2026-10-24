@@ -9,7 +9,7 @@
 
     const L = {
         ru: {
-            open: "📥 Офлайн-версия",
+            open: "Офлайн-версия",
             title: "Играть без интернета",
             lead: "Загрузите игру один раз — дальше она открывается без сети. Это удобно в кабинете физики, где Wi-Fi нестабилен.",
             swReady: "✅ Офлайн-кэш активен: страницы и задания сохранены в браузере.",
@@ -29,7 +29,7 @@
             cacheInfo: "Сохранено файлов"
         },
         en: {
-            open: "📥 Offline version",
+            open: "Offline version",
             title: "Play without the internet",
             lead: "Load the game once and it will open without a network. Perfect for a physics classroom with unstable Wi-Fi.",
             swReady: "✅ Offline cache is active: pages and tasks are stored in your browser.",
@@ -49,7 +49,7 @@
             cacheInfo: "Files cached"
         },
         kk: {
-            open: "📥 Офлайн нұсқа",
+            open: "Офлайн нұсқа",
             title: "Интернетсіз ойнау",
             lead: "Ойынды бір рет жүктеңіз — кейін ол желісіз ашылады. Wi-Fi тұрақсыз физика кабинеті үшін ыңғайлы.",
             swReady: "✅ Офлайн кэш қосулы: беттер мен тапсырмалар браузерде сақталған.",

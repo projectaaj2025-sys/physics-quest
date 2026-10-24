@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="ru" data-theme="light">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <meta name="theme-color" content="#0b1528">
+    <meta name="theme-color" content="#eef4fb">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="Физика-Квест">
@@ -12,6 +12,16 @@
     <link rel="icon" type="image/png" sizes="192x192" href="./assets/icons/icon-192.png">
     <link rel="apple-touch-icon" sizes="180x180" href="./assets/icons/icon-180.png">
     <link rel="stylesheet" href="./shared/styles.css">
+    <script>
+        // Тема применяется до отрисовки: светлая по умолчанию, тёмная — по выбору ученика
+        (function () {
+            var t = "light";
+            try { t = localStorage.getItem("pq-theme") === "dark" ? "dark" : "light"; } catch (e) {}
+            document.documentElement.setAttribute("data-theme", t);
+            var m = document.querySelector('meta[name="theme-color"]');
+            if (m) m.setAttribute("content", t === "dark" ? "#081121" : "#eef4fb");
+        })();
+    </script>
     <link rel="stylesheet" href="./shared/platform.css">
 </head>
 <body>
@@ -155,23 +165,23 @@
                 </div>
             </div>
             <div class="profile-field">
-                <label data-i18n="profileNotesTitle">📥 Конспект всех тем (PDF)</label>
-                <p class="profile-sub" style="margin:0 0 10px" data-i18n="profileNotesNote">Скачай конспект по §1–§43 на текущем языке приложения</p>
+                <label data-i18n="profileNotesTitle">📥 Полный конспект всех тем</label>
+                <p class="profile-sub" style="margin:0 0 10px" data-i18n="profileNotesNote">Скачай полный конспект по §1–§43 на текущем языке приложения</p>
                 <div class="profile-conspekt-actions">
                     <a class="btn btn-primary profile-notes-download" id="btn-download-notes-pdf"
                        href="uploads/Fizika_8_klass_konspekt_russkiy.pdf" download>
-                        ⬇ <span data-i18n="profileNotesDownload">Скачать конспект PDF</span>
+                        ⬇ <span data-i18n="profileNotesDownload">Скачать полный конспект</span>
                     </a>
                     <span class="profile-notes-language" id="profile-notes-language"></span>
                 </div>
             </div>
             <div class="profile-field">
-                <label data-i18n="profileAdditionalNotesTitle">📚 Версия 2 конспектов</label>
+                <label data-i18n="profileAdditionalNotesTitle">📚 Полный конспект — версия 2</label>
                 <p class="profile-sub" style="margin:0 0 10px" data-i18n="profileAdditionalNotesNote">Версия 2 будет скачана на текущем языке интерфейса.</p>
                 <div class="profile-conspekt-actions">
                     <a class="btn btn-secondary profile-notes-download" id="btn-download-notes-v2-pdf"
                        href="uploads/Физика_8_класс_Конспект_РУС.pdf" download>
-                        ⬇ <span data-i18n="profileAdditionalNotesDownload">Скачать конспект версии 2</span>
+                        ⬇ <span data-i18n="profileAdditionalNotesDownload">Скачать полный конспект (версия 2)</span>
                     </a>
                     <span class="profile-notes-language" id="profile-notes-v2-language"></span>
                 </div>
@@ -681,6 +691,7 @@
 
     <!-- Единый загрузчик модулей для выбранной параллели (7 / 8 / 9 класс) -->
     <script src="./shared/account.js"></script>
+    <script src="./shared/theme.js"></script>
     <script src="./shared/catalog-789.js"></script>
     <script>
     (function () {

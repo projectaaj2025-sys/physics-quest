@@ -1362,15 +1362,14 @@ Object.assign(RPG, {
 });
 
 function rpgMaybeWelcome() {
+    // Попап «РПГ-режим активирован» убран: игрок сразу попадает в меню без модальных окон.
+    // Флаг welcomed всё равно ставим, чтобы старые сохранения не пытались его показать снова.
     try {
         const R = window.RPG;
         const st = R && R.state;
         if (!st || st.welcomed) return;
         st.welcomed = true;
         if (typeof R.saveSoon === "function") R.saveSoon();
-        setTimeout(() => {
-            if (window.RPG) window.RPG.toast("🧬", rpgT("welcomeTitle"), rpgT("welcomeText"), "levelup");
-        }, 1600);
     } catch (e) {}
 }
 

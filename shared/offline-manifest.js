@@ -122,6 +122,7 @@ window.PQ_OFFLINE_FILES = [
     "shared/styles.css",
     "shared/teacher.js",
     "shared/team-battle.js",
+    "shared/theme.js",
     "shared/trilogy-diary.js",
     "sw.js"
 ];

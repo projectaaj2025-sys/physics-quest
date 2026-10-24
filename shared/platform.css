@@ -507,20 +507,24 @@ body.pq-has-topbar #menu-screen .menu-content {
 /* ---------- звук ---------- */
 .pq-sound-toggle {
     width: 38px; height: 38px; border-radius: 12px;
-    border: 1px solid rgba(120, 190, 255, 0.35);
-    background: rgba(10, 22, 44, 0.75);
-    color: #dff1ff; font-size: 17px; cursor: pointer;
+    border: 1px solid rgba(0, 184, 212, 0.35);
+    background: #f0f7fb;
+    color: #0d2b45; font-size: 17px; cursor: pointer;
     display: inline-flex; align-items: center; justify-content: center;
     transition: transform .15s ease, background .15s ease;
 }
-.pq-sound-toggle:hover { transform: translateY(-1px); background: rgba(20, 40, 74, 0.9); }
+.pq-sound-toggle:hover { transform: translateY(-1px); background: #e0f4fa; }
 .pq-sound-toggle.is-muted { opacity: .65; }
 .pq-sound-fab {
     position: fixed; right: 16px; bottom: 16px; z-index: 9500;
     width: 44px; height: 44px; border-radius: 50%;
-    border: 1px solid rgba(120, 190, 255, 0.4);
-    background: rgba(8, 18, 36, 0.88); color: #eaf6ff; font-size: 19px;
-    cursor: pointer; box-shadow: 0 10px 26px rgba(0, 0, 0, .45);
+    border: 1px solid rgba(0, 184, 212, 0.4);
+    background: #ffffff; color: #0d2b45; font-size: 19px;
+    cursor: pointer; box-shadow: 0 10px 26px rgba(15, 35, 70, .18);
+}
+html[data-theme="dark"] .pq-sound-fab {
+    background: rgba(8, 18, 36, 0.92); color: #eaf6ff;
+    border-color: rgba(120, 190, 255, 0.4);
 }
 body.pq-in-gameplay .pq-sound-fab { display: none; }
 
@@ -937,4 +941,225 @@ body.pq-print-open { overflow: hidden; }
     .pq-solver-btn-text small { display: none; }
     .pq-solver-collapse { margin-left: 0; }
     .pq-given-table .pq-g-name { display: none; }
+}
+
+/* ============================================================
+   ТЕМЫ ОФОРМЛЕНИЯ: светлая (по умолчанию) и тёмная
+   Переключатель — кнопка .pq-theme-toggle (shared/theme.js)
+   ============================================================ */
+.pq-theme-toggle {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 5px 11px;
+    border-radius: 999px;
+    border: 1px solid rgba(0, 184, 212, 0.35);
+    background: #f0f7fb;
+    color: #0d2b45;
+    font: inherit;
+    font-size: 12.5px;
+    font-weight: 800;
+    cursor: pointer;
+    transition: all 0.16s ease;
+    white-space: nowrap;
+}
+.pq-theme-toggle:hover {
+    background: #e0f4fa;
+    border-color: #00b8d4;
+    transform: translateY(-1px);
+}
+.pq-theme-toggle .pq-theme-icon { font-size: 14px; line-height: 1; }
+.pq-theme-fab {
+    position: fixed;
+    right: 14px;
+    bottom: 14px;
+    z-index: 9500;
+    box-shadow: 0 8px 22px rgba(15, 35, 70, 0.18);
+}
+
+/* ---------- тёмная тема: шапка и аккаунт ---------- */
+html[data-theme="dark"] .pq-topbar {
+    background: rgba(11, 21, 38, 0.94);
+    border-bottom-color: rgba(125, 211, 252, 0.22);
+    box-shadow: 0 2px 14px rgba(0, 0, 0, 0.45);
+    color: #e6f0ff;
+}
+html[data-theme="dark"] .pq-portal-link {
+    background: rgba(23, 43, 70, 0.9);
+    border-color: rgba(125, 211, 252, 0.34);
+    color: #cbe7ff;
+}
+html[data-theme="dark"] .pq-portal-link:hover {
+    background: rgba(32, 58, 92, 0.95);
+    border-color: #38bdf8;
+    color: #ffffff;
+}
+html[data-theme="dark"] .pq-grade-switcher {
+    background: rgba(255, 255, 255, 0.06);
+    border-color: rgba(255, 255, 255, 0.12);
+}
+html[data-theme="dark"] .pq-grade-pill { color: #b7c9e2; }
+html[data-theme="dark"] .pq-grade-pill:hover {
+    color: #ffffff;
+    background: rgba(255, 255, 255, 0.1);
+}
+html[data-theme="dark"] .pq-account-btn {
+    background: #13243c;
+    border-color: rgba(125, 211, 252, 0.34);
+    color: #e6f0ff;
+}
+html[data-theme="dark"] .pq-account-btn:hover {
+    background: #1a2f4a;
+    border-color: #38bdf8;
+}
+html[data-theme="dark"] .pq-account-btn.is-teacher {
+    background: #2a1420;
+    border-color: rgba(216, 27, 96, 0.5);
+    color: #ffc2d8;
+}
+html[data-theme="dark"] .pq-code-tag {
+    background: rgba(0, 184, 212, 0.18);
+    border-color: rgba(0, 184, 212, 0.4);
+    color: #9beaf5;
+}
+html[data-theme="dark"] .pq-sound-toggle {
+    background: #13243c;
+    border-color: rgba(125, 211, 252, 0.34);
+    color: #e6f0ff;
+}
+html[data-theme="dark"] .pq-theme-toggle {
+    background: rgba(23, 43, 70, 0.9);
+    border-color: rgba(125, 211, 252, 0.34);
+    color: #cbe7ff;
+}
+html[data-theme="dark"] .pq-theme-toggle:hover {
+    background: rgba(32, 58, 92, 0.95);
+    border-color: #38bdf8;
+}
+
+/* ---------- тёмная тема: окно аккаунта ---------- */
+html[data-theme="dark"] .pq-acc-card {
+    background: #0f1d33;
+    color: #dfe9f8;
+    border-color: rgba(0, 184, 212, 0.36);
+    box-shadow: 0 28px 80px rgba(0, 0, 0, 0.6);
+}
+html[data-theme="dark"] .pq-acc-kicker { color: #5fd8ee; }
+html[data-theme="dark"] .pq-acc-title { color: #f2f8ff; }
+html[data-theme="dark"] .pq-acc-sub { color: #a7bad6; }
+html[data-theme="dark"] .pq-acc-langs { background: rgba(255, 255, 255, 0.07); }
+html[data-theme="dark"] .pq-acc-langs button { color: #b7c9e2; }
+html[data-theme="dark"] .pq-acc-close {
+    background: rgba(255, 255, 255, 0.06);
+    border-color: rgba(255, 255, 255, 0.16);
+    color: #cfe0f5;
+}
+html[data-theme="dark"] .pq-role-tab {
+    background: rgba(255, 255, 255, 0.04);
+    border-color: rgba(255, 255, 255, 0.14);
+    color: #d5e3f5;
+}
+html[data-theme="dark"] .pq-role-tab.active[data-role="student"] {
+    background: linear-gradient(135deg, rgba(0, 184, 212, 0.22), rgba(0, 184, 212, 0.06));
+    color: #a9f0fb;
+}
+html[data-theme="dark"] .pq-role-tab.active[data-role="teacher"] {
+    background: linear-gradient(135deg, rgba(216, 27, 96, 0.24), rgba(216, 27, 96, 0.06));
+    color: #ffc2d8;
+}
+html[data-theme="dark"] .pq-acc-input {
+    background: #0b1728;
+    border-color: #27405f;
+    color: #eaf4ff;
+}
+html[data-theme="dark"] .pq-acc-input:focus { background: #101f35; }
+html[data-theme="dark"] .pq-code-big {
+    background: #10233c;
+    border-color: rgba(0, 184, 212, 0.55);
+    color: #9beaf5;
+}
+html[data-theme="dark"] .pq-code-copy {
+    background: #13243c;
+    border-color: rgba(125, 211, 252, 0.3);
+    color: #d8ecff;
+}
+html[data-theme="dark"] .pq-code-copy:hover { background: rgba(0, 184, 212, 0.22); }
+html[data-theme="dark"] .pq-acc-error {
+    background: rgba(229, 57, 53, 0.16);
+    color: #ffb3b3;
+}
+html[data-theme="dark"] .pq-acc-hint,
+html[data-theme="dark"] .pq-acc-field label { color: #b9cbe4; }
+
+/* ---------- кнопка «Битва команд»: аккуратно в обеих темах ---------- */
+.btn-battle {
+    border: 2px solid rgba(255, 138, 0, 0.6) !important;
+    background: linear-gradient(135deg, #ffb300, #ff8a00) !important;
+    color: #2a1500 !important;
+    box-shadow: 0 10px 24px rgba(255, 138, 0, 0.28);
+}
+.btn-battle:hover {
+    background: linear-gradient(135deg, #ffc233, #ff9d1f) !important;
+    border-color: rgba(255, 138, 0, 0.9) !important;
+    color: #1c0e00 !important;
+}
+html[data-theme="dark"] .btn-battle {
+    border-color: rgba(255, 183, 77, 0.55) !important;
+    background: linear-gradient(135deg, #ffb300, #f47b00) !important;
+    color: #2a1500 !important;
+}
+.btn-battle .btn-icon { font-size: 17px; }
+
+/* ============================================================
+   Светлая тема для «трилогийных» панелей (сертификат, офлайн)
+   Базовая палитра этих блоков была рассчитана на тёмный фон —
+   на белой карточке текст становился нечитаемым.
+   ============================================================ */
+html[data-theme="light"] .pq-cert-sub { color: #51688a; }
+html[data-theme="light"] .pq-cert-tab {
+    background: #f3f8ff;
+    color: #26507a;
+    border-color: rgba(47, 125, 184, 0.25);
+}
+html[data-theme="light"] .pq-cert-tab.active {
+    background: linear-gradient(135deg, #2f8fd6, #1d6bb0);
+    border-color: #5fb4ee;
+    color: #ffffff;
+}
+html[data-theme="light"] .pq-cert-label { color: #33557a; }
+html[data-theme="light"] .pq-cert-label input {
+    background: #ffffff;
+    color: #152a40;
+    border-color: rgba(47, 125, 184, 0.35);
+}
+html[data-theme="light"] .pq-cert-note { color: #5c7392; }
+html[data-theme="light"] .pq-cert-preview {
+    background: #f4f8fd;
+    border-color: rgba(47, 125, 184, 0.25);
+}
+
+html[data-theme="light"] .pq-offline-head p { color: #51688a; }
+html[data-theme="light"] .pq-offline-status {
+    background: rgba(34, 160, 96, 0.10);
+    border-color: rgba(34, 160, 96, 0.35);
+    color: #146b3d;
+}
+html[data-theme="light"] .pq-offline-status.wait {
+    background: rgba(200, 130, 20, 0.12);
+    border-color: rgba(200, 130, 20, 0.35);
+    color: #8a5a08;
+}
+html[data-theme="light"] .pq-offline-hint,
+html[data-theme="light"] .pq-offline-note { color: #5c7392; }
+html[data-theme="light"] .pq-offline-bar { background: rgba(20, 50, 90, 0.10); }
+html[data-theme="light"] #pq-offline-progress-text { color: #5c7392; }
+html[data-theme="light"] .pq-net-badge {
+    background: rgba(34, 160, 96, 0.12);
+    border-color: rgba(34, 160, 96, 0.35);
+    color: #14713f;
+}
+html[data-theme="light"] .pq-net-badge.is-offline {
+    background: rgba(220, 60, 60, 0.10);
+    border-color: rgba(220, 60, 60, 0.35);
+    color: #a32424;
 }

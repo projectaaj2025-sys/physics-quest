@@ -8,7 +8,7 @@
 
     const L = {
         ru: {
-            menuBtn: "🏟 Битва команд",
+            menuBtn: "Битва команд",
             kicker: "ИНТЕРАКТИВНАЯ ДОСКА · 7–9 КЛАСС",
             title: "БИТВА ЭКИПАЖЕЙ",
             lead: "Класс делится на 2–3 экипажа. Каждый экипаж по очереди защищает щит города: верный ответ укрепляет щит и приносит очки, ошибка пробивает защиту. Играйте с проектора — интерфейс рассчитан на весь класс.",
@@ -42,7 +42,7 @@
             time: "сек"
         },
         en: {
-            menuBtn: "🏟 Team battle",
+            menuBtn: "Team battle",
             kicker: "INTERACTIVE BOARD · GRADES 7–9",
             title: "CREW BATTLE",
             lead: "The class splits into 2–3 crews. Each crew takes turns defending the city shield: a correct answer strengthens the shield and earns points, a mistake breaks through. Project it on the big screen — the interface is designed for the whole class.",
@@ -76,7 +76,7 @@
             time: "sec"
         },
         kk: {
-            menuBtn: "🏟 Командалық сайыс",
+            menuBtn: "Командалық сайыс",
             kicker: "ИНТЕРАКТИВТІ ТАҚТА · 7–9 СЫНЫП",
             title: "ЭКИПАЖДАР САЙЫСЫ",
             lead: "Сынып 2–3 экипажға бөлінеді. Әр экипаж кезекпен қала қалқанын қорғайды: дұрыс жауап қалқанды нығайтып ұпай әкеледі, қате жауап қорғанысты бұзады. Проекторға шығарып ойнаңыз — интерфейс бүкіл сыныпқа арналған.",
@@ -141,6 +141,17 @@
             this._inited = true;
             this.injectButtons();
             this.bindKeys();
+            document.addEventListener("pq:lang-changed", () => this.refreshLabels());
+        },
+
+        refreshLabels() {
+            ["pq-battle-menu-btn", "pq-battle-teacher-btn"].forEach((id) => {
+                const el = document.getElementById(id);
+                if (el) el.remove();
+            });
+            this.injectButtons();
+            const root = document.getElementById("pq-battle");
+            if (root && !this.state) this.renderSetup();
         },
 
         injectButtons() {

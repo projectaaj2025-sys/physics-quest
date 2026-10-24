@@ -1548,7 +1548,7 @@ const TASKS_DATABASE_EXT = [
     },
     "explanation": {
       "ru": "Основная единица температуры в СИ — кельвин (К).",
-      "en": "The basic SI unit of temperature is the kelvin (К).",
+      "en": "The basic SI unit of temperature is the kelvin (K).",
       "kk": "Температураның негізгі SI бірлігі - кельвин (К)."
     },
     "hint": {
@@ -1564,7 +1564,7 @@ const TASKS_DATABASE_EXT = [
     "difficulty": 2,
     "question": {
       "ru": "Температура 300 К. Чему она равна по шкале Цельсия?",
-      "en": "Temperature 300 К. What is it equal to on the Celsius scale?",
+      "en": "Temperature 300 K. What is it equal to on the Celsius scale?",
       "kk": "Температура 300 К. Ол Цельсий шкаласы бойынша неге тең?"
     },
     "correctAnswer": 27,
@@ -2358,7 +2358,7 @@ const TASKS_DATABASE_EXT = [
     "difficulty": 2,
     "question": {
       "ru": "Над телом совершили работу 50 Дж. Как изменилась его внутренняя энергия?",
-      "en": "Work was done on the body 50 Дж. How has his internal energy changed?",
+      "en": "Work was done on the body 50 J. How has his internal energy changed?",
       "kk": "Денеде жұмыс жасалды 50 Дж. Оның ішкі энергиясы қалай өзгерді?"
     },
     "correctAnswer": 50,
@@ -2370,7 +2370,7 @@ const TASKS_DATABASE_EXT = [
     },
     "hint": {
       "ru": "Внутренняя энергия увеличится на 50 Дж.",
-      "en": "Internal energy will increase by 50 Дж.",
+      "en": "Internal energy will increase by 50 J.",
       "kk": "Ішкі энергия 50 Дж артады."
     },
     "formula": {
@@ -2524,7 +2524,7 @@ const TASKS_DATABASE_EXT = [
     "difficulty": 2,
     "question": {
       "ru": "Газ совершил работу 30 Дж, не получая теплоты. На сколько уменьшилась его внутренняя энергия?",
-      "en": "The gas did 30 Дж work without receiving heat. How much has its internal energy decreased?",
+      "en": "The gas did 30 J work without receiving heat. How much has its internal energy decreased?",
       "kk": "Газ жылуды алмай 30 Дж жұмыс істеді. Оның ішкі энергиясы қаншаға кеміді?"
     },
     "correctAnswer": 30,
@@ -2732,7 +2732,7 @@ const TASKS_DATABASE_EXT = [
     "difficulty": 2,
     "question": {
       "ru": "Внутренняя энергия 1 кг льда при 0 °C равна внутренней энергии 1 кг воды при 0 °C.",
-      "en": "The internal energy 1 кг of ice at 0 °C is equal to the internal energy 1 кг of water at 0 °C.",
+      "en": "The internal energy 1 kg of ice at 0 °C is equal to the internal energy 1 kg of water at 0 °C.",
       "kk": "0 °C нүктесіндегі мұздың 1 кг ішкі энергиясы 0 °C нүктесіндегі судың 1 кг ішкі энергиясына тең."
     },
     "correctAnswer": false,
@@ -4865,14 +4865,14 @@ const TASKS_DATABASE_EXT = [
     "difficulty": 2,
     "question": {
       "ru": "Сколько теплоты получит 0,2 кг воды при нагревании на 10 °C? c = 4200 Дж/(кг·°C). Ответ в Дж.",
-      "en": "How much heat will 0,2 кг of water receive when heated by 10 °C? c = 4200 Дж/(кг·°C). The answer is in Дж.",
+      "en": "How much heat will 0.2 kg of water receive when heated by 10 °C? c = 4200 J/(kg·°C). The answer is in J.",
       "kk": "0,2 кг суды 10 °C қыздырғанда қанша жылу алады? c = 4200 Дж/(кг·°C). Жауап Дж ішінде."
     },
     "correctAnswer": 8400,
     "tolerance": 1,
     "explanation": {
       "ru": "Q = cmΔt = 4200 * 0.2 * 10 = 8400 Дж",
-      "en": "Q = cmΔt = 4200 * 0.2 * 10 = 8400 Дж",
+      "en": "Q = cmΔt = 4200 * 0.2 * 10 = 8400 J",
       "kk": "Q = cmΔt = 4200 * 0.2 * 10 = 8400 Дж"
     },
     "hint": {
@@ -4904,8 +4904,8 @@ const TASKS_DATABASE_EXT = [
         "Скорость движения тела"
       ],
       "en": [
-        "Mass 1 м³ of substance",
-        "Heat for heating 1 кг substance to 1 °C",
+        "Mass 1 m³ of substance",
+        "Heat for heating 1 kg substance to 1 °C",
         "Boiling point",
         "Body speed"
       ],
@@ -4919,7 +4919,7 @@ const TASKS_DATABASE_EXT = [
     "correctAnswer": 1,
     "explanation": {
       "ru": "Удельная теплоемкость — это количество теплоты, необходимое для нагревания 1 кг вещества на 1 °C.",
-      "en": "Specific heat capacity is the amount of heat required to heat 1 кг a substance by 1 °C.",
+      "en": "Specific heat capacity is the amount of heat required to heat 1 kg a substance by 1 °C.",
       "kk": "Меншікті жылу сыйымдылығы – затты 1 кг 1 °C қыздыру үшін қажетті жылу мөлшері."
     },
     "hint": {
@@ -4968,10 +4968,10 @@ const TASKS_DATABASE_EXT = [
         "Дж/°C"
       ],
       "en": [
-        "Дж",
-        "Дж/кг",
-        "Дж/(кг·°C)",
-        "Дж/°C"
+        "J",
+        "J/kg",
+        "J/(kg·°C)",
+        "J/°C"
       ],
       "kk": [
         "Дж",
@@ -4983,7 +4983,7 @@ const TASKS_DATABASE_EXT = [
     "correctAnswer": 2,
     "explanation": {
       "ru": "Единица измерения удельной теплоемкости — Дж/(кг·°C).",
-      "en": "The unit of specific heat capacity is Дж/(кг·°C).",
+      "en": "The unit of specific heat capacity is J/(kg·°C).",
       "kk": "Меншікті жылу сыйымдылығының бірлігі Дж/(кг·°C)."
     },
     "hint": {
@@ -5031,14 +5031,14 @@ const TASKS_DATABASE_EXT = [
     "difficulty": 2,
     "question": {
       "ru": "Какое количество теплоты выделится при охлаждении 5 кг воды на 20 °C? c = 4200 Дж/(кг·°C).",
-      "en": "How much heat will be released when 5 кг water is cooled by 20 °C? c = 4200 Дж/(кг·°C).",
+      "en": "How much heat will be released when 5 kg water is cooled by 20 °C? c = 4200 J/(kg·°C).",
       "kk": "5 кг суды 20 °C суытқанда қанша жылу бөлінеді? c = 4200 Дж/(кг·°C)."
     },
     "correctAnswer": 420000,
     "tolerance": 100,
     "explanation": {
       "ru": "Q = cmΔt = 4200 * 5 * 20 = 420000 Дж.",
-      "en": "Q = cmΔt = 4200 * 5 * 20 = 420000 Дж.",
+      "en": "Q = cmΔt = 4200 * 5 * 20 = 420000 J.",
       "kk": "Q = cmΔt = 4200 * 5 * 20 = 420000 Дж."
     },
     "hint": {
@@ -5085,7 +5085,7 @@ const TASKS_DATABASE_EXT = [
     "correctAnswer": 1,
     "explanation": {
       "ru": "Вода обладает одной из самых высоких удельных теплоемкостей (4200 Дж/(кг·°C)).",
-      "en": "Water has one of the highest specific heat capacities (4200 Дж/(кг·°C)).",
+      "en": "Water has one of the highest specific heat capacities (4200 J/(kg·°C)).",
       "kk": "Су ең жоғары меншікті жылу сыйымдылықтарының біріне ие (4200 Дж/(кг·°C))."
     },
     "hint": {
@@ -5165,14 +5165,14 @@ const TASKS_DATABASE_EXT = [
     "difficulty": 2,
     "question": {
       "ru": "Какую массу воды можно нагреть на 10 °C, сообщив ей 84 кДж теплоты? c = 4200 Дж/(кг·°C).",
-      "en": "What mass of water can be heated by 10 °C, giving it 84 кДж heat? c = 4200 Дж/(кг·°C).",
+      "en": "What mass of water can be heated by 10 °C, giving it 84 kJ heat? c = 4200 J/(kg·°C).",
       "kk": "Қандай масса суды 10 °C қыздырып, оған 84 кДж жылу береді? c = 4200 Дж/(кг·°C)."
     },
     "correctAnswer": 2,
     "tolerance": 0.1,
     "explanation": {
       "ru": "m = Q / (cΔt) = 84000 / (4200 * 10) = 2 кг.",
-      "en": "m = Q / (cΔt) = 84000 / (4200 * 10) = 2 кг.",
+      "en": "m = Q / (cΔt) = 84000 / (4200 * 10) = 2 kg.",
       "kk": "m = Q / (cΔt) = 84000 / (4200 * 10) = 2 кг."
     },
     "hint": {
@@ -5235,7 +5235,7 @@ const TASKS_DATABASE_EXT = [
     "difficulty": 2,
     "question": {
       "ru": "Физическая величина, показывающая, какое количество теплоты необходимо для изменения температуры вещества массой 1 кг на 1 °C, называется удельной ___.",
-      "en": "A physical quantity showing how much heat is needed to change the temperature of a substance with mass 1 кг to 1 °C is called specific ___.",
+      "en": "A physical quantity showing how much heat is needed to change the temperature of a substance with mass 1 kg to 1 °C is called specific ___.",
       "kk": "Массасы 1 кг заттың температурасын 1 °C-ге өзгерту үшін қанша жылу қажет екенін көрсететін физикалық шама меншікті ___ деп аталады."
     },
     "correctAnswer": {
@@ -5315,7 +5315,7 @@ const TASKS_DATABASE_EXT = [
     "correctAnswer": 1,
     "explanation": {
       "ru": "Основная единица измерения количества теплоты в СИ — джоуль (Дж).",
-      "en": "The basic SI unit of heat is the joule (Дж).",
+      "en": "The basic SI unit of heat is the joule (J).",
       "kk": "Жылудың негізгі SI бірлігі - джоуль (Дж)."
     },
     "hint": {
@@ -5331,7 +5331,7 @@ const TASKS_DATABASE_EXT = [
     "difficulty": 2,
     "question": {
       "ru": "На сколько градусов нагреется 2 кг воды, если ей сообщить 16800 Дж теплоты? c = 4200 Дж/(кг·°C).",
-      "en": "How many degrees will 2 кг of water heat up if 16800 Дж of heat is given to it? c = 4200 Дж/(кг·°C).",
+      "en": "How many degrees will 2 kg of water heat up if 16800 J of heat is given to it? c = 4200 J/(kg·°C).",
       "kk": "Егер оған 16800 Дж жылу берілсе, 2 кг су қанша градусқа дейін қызады? c = 4200 Дж/(кг·°C)."
     },
     "correctAnswer": 2,
@@ -5401,7 +5401,7 @@ const TASKS_DATABASE_EXT = [
     "difficulty": 1,
     "question": {
       "ru": "Что означает удельная теплоемкость меди 400 Дж/(кг·°C)?",
-      "en": "What does the specific heat capacity of copper 400 Дж/(кг·°C) mean?",
+      "en": "What does the specific heat capacity of copper 400 J/(kg·°C) mean?",
       "kk": "Мыстың 400 Дж/(кг·°C) меншікті жылу сыйымдылығы нені білдіреді?"
     },
     "options": {
@@ -5412,10 +5412,10 @@ const TASKS_DATABASE_EXT = [
         "Медь отдает 400 Дж"
       ],
       "en": [
-        "To heat 1 кг copper on 1 °C you need 400 Дж",
-        "Copper weighs 400 г",
+        "To heat 1 kg copper on 1 °C you need 400 J",
+        "Copper weighs 400 g",
         "Copper heats up to 400 °C",
-        "Copper gives 400 Дж"
+        "Copper gives 400 J"
       ],
       "kk": [
         "1 кг мысты 1 °C құрылғысында қыздыру үшін сізге 400 Дж қажет",
@@ -5427,7 +5427,7 @@ const TASKS_DATABASE_EXT = [
     "correctAnswer": 0,
     "explanation": {
       "ru": "Это определение удельной теплоемкости: для 1 кг меди на 1 °C нужно 400 Дж теплоты.",
-      "en": "This is the definition of specific heat capacity: for 1 кг copper on 1 °C you need 400 Дж heat.",
+      "en": "This is the definition of specific heat capacity: for 1 kg copper on 1 °C you need 400 J heat.",
       "kk": "Бұл меншікті жылу сыйымдылығының анықтамасы: 1 кг мыс үшін 1 °C үшін сізге 400 Дж жылу қажет."
     },
     "hint": {
@@ -5465,14 +5465,14 @@ const TASKS_DATABASE_EXT = [
     "difficulty": 2,
     "question": {
       "ru": "Какую массу воды можно нагреть на 20 °C, сообщив ей 168 кДж теплоты? c = 4200 Дж/(кг·°C).",
-      "en": "What mass of water can be heated by 20 °C, giving it 168 кДж heat? c = 4200 Дж/(кг·°C).",
+      "en": "What mass of water can be heated by 20 °C, giving it 168 kJ heat? c = 4200 J/(kg·°C).",
       "kk": "Қандай масса суды 20 °C қыздырып, оған 168 кДж жылу береді? c = 4200 Дж/(кг·°C)."
     },
     "correctAnswer": 2,
     "tolerance": 0.1,
     "explanation": {
       "ru": "m = Q / (cΔt) = 168000 / (4200 * 20) = 2 кг.",
-      "en": "m = Q / (cΔt) = 168000 / (4200 * 20) = 2 кг.",
+      "en": "m = Q / (cΔt) = 168000 / (4200 * 20) = 2 kg.",
       "kk": "m = Q / (cΔt) = 168000 / (4200 * 20) = 2 кг."
     },
     "hint": {
@@ -5535,14 +5535,14 @@ const TASKS_DATABASE_EXT = [
     "difficulty": 2,
     "question": {
       "ru": "Сколько теплоты выделится при сгорании 0,001 кг топлива с q = 4,6·10⁷ Дж/кг?",
-      "en": "How much heat will be released when 0,001 кг fuel burns with q = 4,6·10⁷ Дж/кг?",
+      "en": "How much heat will be released when 0.001 kg fuel burns with q = 4.6·10⁷ J/kg?",
       "kk": "0,001 кг отын q = 4,6·10⁷ Дж/кг жанғанда қанша жылу бөлінеді?"
     },
     "correctAnswer": 46000,
     "tolerance": 10,
     "explanation": {
       "ru": "Q = qm = 4.6e7 * 0.001 = 46000 Дж.",
-      "en": "Q = qm = 4.6e7 * 0.001 = 46000 Дж.",
+      "en": "Q = qm = 4.6e7 * 0.001 = 46000 J.",
       "kk": "Q = qm = 4.6e7 * 0.001 = 46000 Дж."
     },
     "hint": {
@@ -5574,10 +5574,10 @@ const TASKS_DATABASE_EXT = [
         "Вт"
       ],
       "en": [
-        "Дж",
-        "Дж/кг",
-        "кг/Дж",
-        "Вт"
+        "J",
+        "J/kg",
+        "kg/J",
+        "W"
       ],
       "kk": [
         "Дж",
@@ -5589,7 +5589,7 @@ const TASKS_DATABASE_EXT = [
     "correctAnswer": 1,
     "explanation": {
       "ru": "Удельная теплота сгорания измеряется в Дж/кг.",
-      "en": "The specific heat of combustion is measured in Дж/кг.",
+      "en": "The specific heat of combustion is measured in J/kg.",
       "kk": "Меншікті жану жылуы Дж/кг-де өлшенеді."
     },
     "hint": {
@@ -5653,7 +5653,7 @@ const TASKS_DATABASE_EXT = [
     "correctAnswer": 3,
     "explanation": {
       "ru": "Водород имеет самую высокую удельную теплоту сгорания — 120 МДж/кг.",
-      "en": "Hydrogen has the highest specific heat of combustion - 120 МДж/кг.",
+      "en": "Hydrogen has the highest specific heat of combustion - 120 MJ/kg.",
       "kk": "Сутегі ең жоғары меншікті жану жылуына ие - 120 МДж/кг."
     },
     "hint": {
@@ -5669,7 +5669,7 @@ const TASKS_DATABASE_EXT = [
     "difficulty": 1,
     "question": {
       "ru": "Количество теплоты, выделяемое при полном сгорании 1 кг топлива, называется удельной теплотой ___.",
-      "en": "The amount of heat released during complete combustion of 1 кг fuel is called specific heat ___.",
+      "en": "The amount of heat released during complete combustion of 1 kg fuel is called specific heat ___.",
       "kk": "1 кг отынның толық жануы кезінде бөлінетін жылу мөлшері меншікті жылу ___ деп аталады."
     },
     "correctAnswer": {
@@ -5701,14 +5701,14 @@ const TASKS_DATABASE_EXT = [
     "difficulty": 2,
     "question": {
       "ru": "Сколько теплоты выделится при сгорании 2 кг каменного угля? q = 3·10⁷ Дж/кг.",
-      "en": "How much heat will be released during the combustion of 2 кг coal? q = 3·10⁷ Дж/кг.",
+      "en": "How much heat will be released during the combustion of 2 kg coal? q = 3·10⁷ J/kg.",
       "kk": "2 кг көмірді жағу кезінде қанша жылу бөлінеді? q = 3·10⁷ Дж/кг."
     },
     "correctAnswer": 60000000,
     "tolerance": 1000,
     "explanation": {
       "ru": "Q = qm = 3e7 * 2 = 6e7 Дж.",
-      "en": "Q = qm = 3e7 * 2 = 6e7 Дж.",
+      "en": "Q = qm = 3e7 * 2 = 6e7 J.",
       "kk": "Q = qm = 3e7 * 2 = 6e7 Дж."
     },
     "hint": {
@@ -5835,19 +5835,19 @@ const TASKS_DATABASE_EXT = [
     "difficulty": 2,
     "question": {
       "ru": "Какое количество теплоты выделится при сгорании 500 г бензина? q = 4,6·10⁷ Дж/кг.",
-      "en": "How much heat will be released during the combustion of 500 г gasoline? q = 4,6·10⁷ Дж/кг.",
+      "en": "How much heat will be released during the combustion of 500 g gasoline? q = 4.6·10⁷ J/kg.",
       "kk": "500 г бензині жанғанда қанша жылу бөлінеді? q = 4,6·10⁷ Дж/кг."
     },
     "correctAnswer": 23000000,
     "tolerance": 10000,
     "explanation": {
       "ru": "Q = qm = 4.6e7 * 0.5 = 2.3e7 Дж.",
-      "en": "Q = qm = 4.6e7 * 0.5 = 2.3e7 Дж.",
+      "en": "Q = qm = 4.6e7 * 0.5 = 2.3e7 J.",
       "kk": "Q = qm = 4.6e7 * 0.5 = 2.3e7 Дж."
     },
     "hint": {
       "ru": "Переведи массу в кг.",
-      "en": "Convert the mass to кг.",
+      "en": "Convert the mass to kg.",
       "kk": "Массаны кг түріне айналдырыңыз."
     },
     "formula": {
@@ -5863,7 +5863,7 @@ const TASKS_DATABASE_EXT = [
     "difficulty": 2,
     "question": {
       "ru": "Что означает q = 1,4·10⁷ Дж/кг для торфа?",
-      "en": "What does q = 1,4·10⁷ Дж/кг mean for peat?",
+      "en": "What does q = 1.4·10⁷ J/kg mean for peat?",
       "kk": "q = 1,4·10⁷ Дж/кг шымтезек үшін нені білдіреді?"
     },
     "options": {
@@ -5874,10 +5874,10 @@ const TASKS_DATABASE_EXT = [
         "Торф отдает 1,4·10⁷ Дж"
       ],
       "en": [
-        "Peat weighs 1,4 кг",
-        "When 1 кг burns peat, 1,4·10⁷ Дж is released",
+        "Peat weighs 1.4 kg",
+        "When 1 kg burns peat, 1.4·10⁷ J is released",
         "Peat heats up to 1,4·10⁷ °C",
-        "Peat gives 1,4·10⁷ Дж"
+        "Peat gives 1.4·10⁷ J"
       ],
       "kk": [
         "Шымтезек салмағы 1,4 кг",
@@ -5889,7 +5889,7 @@ const TASKS_DATABASE_EXT = [
     "correctAnswer": 1,
     "explanation": {
       "ru": "Это физический смысл удельной теплоты сгорания: 1 кг торфа дает 1,4·10⁷ Дж теплоты.",
-      "en": "This is the physical meaning of the specific heat of combustion: 1 кг peat gives 1,4·10⁷ Дж heat.",
+      "en": "This is the physical meaning of the specific heat of combustion: 1 kg peat gives 1.4·10⁷ J heat.",
       "kk": "Бұл меншікті жану жылуының физикалық мағынасы: 1 кг шымтезек 1,4·10⁷ Дж жылу береді."
     },
     "hint": {
@@ -5959,7 +5959,7 @@ const TASKS_DATABASE_EXT = [
     "difficulty": 1,
     "question": {
       "ru": "Какое топливо при сгорании выделяет больше теплоты: 1 кг дров или 1 кг каменного угля?",
-      "en": "Which fuel releases more heat when burned: 1 кг wood or 1 кг coal?",
+      "en": "Which fuel releases more heat when burned: 1 kg wood or 1 kg coal?",
       "kk": "Қай отын жанған кезде көбірек жылу бөледі: 1 кг ағаш немесе 1 кг көмір?"
     },
     "options": {
@@ -6001,14 +6001,14 @@ const TASKS_DATABASE_EXT = [
     "difficulty": 2,
     "question": {
       "ru": "Сколько нужно сжечь природного газа, чтобы получить 4,4·10⁷ Дж теплоты? q = 4,4·10⁷ Дж/кг.",
-      "en": "How much natural gas must be burned to produce 4,4·10⁷ Дж heat? q = 4,4·10⁷ Дж/кг.",
+      "en": "How much natural gas must be burned to produce 4.4·10⁷ J heat? q = 4.4·10⁷ J/kg.",
       "kk": "4,4·10⁷ Дж жылу алу үшін қанша табиғи газды жағу керек? q = 4,4·10⁷ Дж/кг."
     },
     "correctAnswer": 1,
     "tolerance": 0.01,
     "explanation": {
       "ru": "m = Q / q = 4.4e7 / 4.4e7 = 1 кг.",
-      "en": "m = Q / q = 4.4e7 / 4.4e7 = 1 кг.",
+      "en": "m = Q / q = 4.4e7 / 4.4e7 = 1 kg.",
       "kk": "m = Q / q = 4.4e7 / 4.4e7 = 1 кг."
     },
     "hint": {
@@ -6119,7 +6119,7 @@ const TASKS_DATABASE_EXT = [
     "correctAnswer": 1,
     "explanation": {
       "ru": "Разные виды топлива выделяют разное количество теплоты при сгорании 1 кг, что характеризуется удельной теплотой сгорания.",
-      "en": "Different types of fuel emit different amounts of heat during combustion 1 кг, which is characterized by the specific heat of combustion.",
+      "en": "Different types of fuel emit different amounts of heat during combustion 1 kg, which is characterized by the specific heat of combustion.",
       "kk": "Әртүрлі отын түрлері жану кезінде әртүрлі мөлшерде жылу бөледі 1 кг, ол жанудың меншікті жылуымен сипатталады."
     },
     "hint": {
@@ -6231,14 +6231,14 @@ const TASKS_DATABASE_EXT = [
     "difficulty": 2,
     "question": {
       "ru": "Какое количество теплоты получит 0,1 кг воды при нагревании на 10 °C? c = 4200 Дж/(кг·°C).",
-      "en": "How much heat will 0,1 кг water receive when heated by 10 °C? c = 4200 Дж/(кг·°C).",
+      "en": "How much heat will 0.1 kg water receive when heated by 10 °C? c = 4200 J/(kg·°C).",
       "kk": "0,1 кг су 10 °C қыздырғанда қанша жылу алады? c = 4200 Дж/(кг·°C)."
     },
     "correctAnswer": 4200,
     "tolerance": 1,
     "explanation": {
       "ru": "Q = cmΔt = 4200 * 0.1 * 10 = 4200 Дж.",
-      "en": "Q = cmΔt = 4200 * 0.1 * 10 = 4200 Дж.",
+      "en": "Q = cmΔt = 4200 * 0.1 * 10 = 4200 J.",
       "kk": "Q = cmΔt = 4200 * 0.1 * 10 = 4200 Дж."
     },
     "hint": {
@@ -6375,14 +6375,14 @@ const TASKS_DATABASE_EXT = [
     "difficulty": 2,
     "question": {
       "ru": "Сколько теплоты отдаст 2 кг воды при охлаждении на 20 °C? c = 4200 Дж/(кг·°C).",
-      "en": "How much heat will 2 кг give up to water when cooled by 20 °C? c = 4200 Дж/(кг·°C).",
+      "en": "How much heat will 2 kg give up to water when cooled by 20 °C? c = 4200 J/(kg·°C).",
       "kk": "2 кг 20 °C суытқанда суға қанша жылу береді? c = 4200 Дж/(кг·°C)."
     },
     "correctAnswer": 168000,
     "tolerance": 100,
     "explanation": {
       "ru": "Q = cmΔt = 4200 * 2 * 20 = 168000 Дж.",
-      "en": "Q = cmΔt = 4200 * 2 * 20 = 168000 Дж.",
+      "en": "Q = cmΔt = 4200 * 2 * 20 = 168000 J.",
       "kk": "Q = cmΔt = 4200 * 2 * 20 = 168000 Дж."
     },
     "hint": {
@@ -6509,14 +6509,14 @@ const TASKS_DATABASE_EXT = [
     "difficulty": 2,
     "question": {
       "ru": "Тело массой 1 кг падает с высоты 10 м. Какова его кинетическая энергия в момент удара о землю? g = 10 м/с².",
-      "en": "A body of mass 1 кг falls from a height 10 м. What is its kinetic energy when it hits the ground? g = 10 м/с².",
+      "en": "A body of mass 1 kg falls from a height 10 m. What is its kinetic energy when it hits the ground? g = 10 m/s².",
       "kk": "Массасы 1 кг дене 10 м биіктіктен құлады. Жерге тиген кезде оның кинетикалық энергиясы қандай? g = 10 м/с²."
     },
     "correctAnswer": 100,
     "tolerance": 1,
     "explanation": {
       "ru": "E_k = E_p = mgh = 1 * 10 * 10 = 100 Дж.",
-      "en": "E_k = E_p = mgh = 1 * 10 * 10 = 100 Дж.",
+      "en": "E_k = E_p = mgh = 1 * 10 * 10 = 100 J.",
       "kk": "E_k = E_p = mgh = 1 * 10 * 10 = 100 Дж."
     },
     "hint": {
@@ -6633,7 +6633,7 @@ const TASKS_DATABASE_EXT = [
     "difficulty": 2,
     "question": {
       "ru": "Какое количество теплоты выделится при полном превращении 100 Дж механической энергии во внутреннюю?",
-      "en": "What amount of heat will be released during the complete conversion of 100 Дж mechanical energy into internal energy?",
+      "en": "What amount of heat will be released during the complete conversion of 100 J mechanical energy into internal energy?",
       "kk": "100 Дж механикалық энергияны ішкі энергияға толық түрлендіру кезінде қандай жылу мөлшері бөлінеді?"
     },
     "correctAnswer": 100,
@@ -6942,14 +6942,14 @@ const TASKS_DATABASE_EXT = [
     "difficulty": 2,
     "question": {
       "ru": "Сколько теплоты нужно для плавления 0,2 кг льда? λ = 3,3·10⁵ Дж/кг.",
-      "en": "How much heat is needed to melt 0,2 кг ice? λ = 3,3·10⁵ Дж/кг.",
+      "en": "How much heat is needed to melt 0.2 kg ice? λ = 3.3·10⁵ J/kg.",
       "kk": "0,2 кг мұзды еріту үшін қанша жылу қажет? λ = 3,3·10⁵ Дж/кг."
     },
     "correctAnswer": 66000,
     "tolerance": 10,
     "explanation": {
       "ru": "Q = λm = 3.3e5 * 0.2 = 66000 Дж.",
-      "en": "Q = λm = 3.3e5 * 0.2 = 66000 Дж.",
+      "en": "Q = λm = 3.3e5 * 0.2 = 66000 J.",
       "kk": "Q = λm = 3.3e5 * 0.2 = 66000 Дж."
     },
     "hint": {
@@ -6981,10 +6981,10 @@ const TASKS_DATABASE_EXT = [
         "Теплота для парообразования 1 кг вещества"
       ],
       "en": [
-        "Heat for heating 1 кг substance on 1 °C",
-        "Heat to melt 1 кг substance at melting point",
-        "Heat for combustion of 1 кг substance",
-        "Heat for vaporization of 1 кг substance"
+        "Heat for heating 1 kg substance on 1 °C",
+        "Heat to melt 1 kg substance at melting point",
+        "Heat for combustion of 1 kg substance",
+        "Heat for vaporization of 1 kg substance"
       ],
       "kk": [
         "1 кг затты 1 °C қыздыруға арналған жылу",
@@ -6996,7 +6996,7 @@ const TASKS_DATABASE_EXT = [
     "correctAnswer": 1,
     "explanation": {
       "ru": "Удельная теплота плавления — это количество теплоты, необходимое для плавления 1 кг кристаллического вещества при температуре плавления.",
-      "en": "The specific heat of fusion is the amount of heat required to melt a 1 кг crystalline substance at its melting point.",
+      "en": "The specific heat of fusion is the amount of heat required to melt a 1 kg crystalline substance at its melting point.",
       "kk": "Балқудың меншікті жылуы – 1 кг кристалды затты балқу температурасында балқытуға қажетті жылу мөлшері."
     },
     "hint": {
@@ -7076,14 +7076,14 @@ const TASKS_DATABASE_EXT = [
     "difficulty": 2,
     "question": {
       "ru": "Какое количество теплоты выделится при кристаллизации 1 кг воды? λ = 3,3·10⁵ Дж/кг.",
-      "en": "How much heat will be released during the crystallization of 1 кг water? λ = 3,3·10⁵ Дж/кг.",
+      "en": "How much heat will be released during the crystallization of 1 kg water? λ = 3.3·10⁵ J/kg.",
       "kk": "1 кг судың кристалдануы кезінде қанша жылу бөлінеді? λ = 3,3·10⁵ Дж/кг."
     },
     "correctAnswer": 330000,
     "tolerance": 100,
     "explanation": {
       "ru": "Q = λm = 3.3e5 * 1 = 330000 Дж.",
-      "en": "Q = λm = 3.3e5 * 1 = 330000 Дж.",
+      "en": "Q = λm = 3.3e5 * 1 = 330000 J.",
       "kk": "Q = λm = 3.3e5 * 1 = 330000 Дж."
     },
     "hint": {
@@ -7242,19 +7242,19 @@ const TASKS_DATABASE_EXT = [
     "difficulty": 2,
     "question": {
       "ru": "Сколько теплоты нужно для плавления 500 г меди? λ = 2,1·10⁵ Дж/кг.",
-      "en": "How much heat is needed to melt 500 г copper? λ = 2,1·10⁵ Дж/кг.",
+      "en": "How much heat is needed to melt 500 g copper? λ = 2.1·10⁵ J/kg.",
       "kk": "500 г мысты балқыту үшін қанша жылу қажет? λ = 2,1·10⁵ Дж/кг."
     },
     "correctAnswer": 105000,
     "tolerance": 100,
     "explanation": {
       "ru": "Q = λm = 2.1e5 * 0.5 = 105000 Дж.",
-      "en": "Q = λm = 2.1e5 * 0.5 = 105000 Дж.",
+      "en": "Q = λm = 2.1e5 * 0.5 = 105000 J.",
       "kk": "Q = λm = 2.1e5 * 0.5 = 105000 Дж."
     },
     "hint": {
       "ru": "Переведи массу в кг.",
-      "en": "Convert the mass to кг.",
+      "en": "Convert the mass to kg.",
       "kk": "Массаны кг түріне айналдырыңыз."
     },
     "formula": {
@@ -7450,14 +7450,14 @@ const TASKS_DATABASE_EXT = [
     "difficulty": 2,
     "question": {
       "ru": "Сколько теплоты нужно для плавления 2 кг льда? λ = 3,3·10⁵ Дж/кг.",
-      "en": "How much heat is needed to melt 2 кг ice? λ = 3,3·10⁵ Дж/кг.",
+      "en": "How much heat is needed to melt 2 kg ice? λ = 3.3·10⁵ J/kg.",
       "kk": "2 кг мұзды еріту үшін қанша жылу қажет? λ = 3,3·10⁵ Дж/кг."
     },
     "correctAnswer": 660000,
     "tolerance": 100,
     "explanation": {
       "ru": "Q = λm = 3.3e5 * 2 = 660000 Дж.",
-      "en": "Q = λm = 3.3e5 * 2 = 660000 Дж.",
+      "en": "Q = λm = 3.3e5 * 2 = 660000 J.",
       "kk": "Q = λm = 3.3e5 * 2 = 660000 Дж."
     },
     "hint": {
@@ -7828,14 +7828,14 @@ const TASKS_DATABASE_EXT = [
     "difficulty": 2,
     "question": {
       "ru": "Сколько теплоты нужно для превращения в пар 0,5 кг воды? L = 2,3·10⁶ Дж/кг.",
-      "en": "How much heat is needed to turn 0,5 кг water into steam? L = 2,3·10⁶ Дж/кг.",
+      "en": "How much heat is needed to turn 0.5 kg water into steam? L = 2.3·10⁶ J/kg.",
       "kk": "0,5 кг суды буға айналдыру үшін қанша жылу қажет? L = 2,3·10⁶ Дж/кг."
     },
     "correctAnswer": 1150000,
     "tolerance": 1000,
     "explanation": {
       "ru": "Q = Lm = 2.3e6 * 0.5 = 1.15e6 Дж.",
-      "en": "Q = Lm = 2.3e6 * 0.5 = 1.15e6 Дж.",
+      "en": "Q = Lm = 2.3e6 * 0.5 = 1.15e6 J.",
       "kk": "Q = Lm = 2.3e6 * 0.5 = 1.15e6 Дж."
     },
     "hint": {
@@ -8036,14 +8036,14 @@ const TASKS_DATABASE_EXT = [
     "difficulty": 2,
     "question": {
       "ru": "Сколько теплоты выделится при конденсации 0,1 кг пара? L = 2,3·10⁶ Дж/кг.",
-      "en": "How much heat will be released during condensation of 0,1 кг steam? L = 2,3·10⁶ Дж/кг.",
+      "en": "How much heat will be released during condensation of 0.1 kg steam? L = 2.3·10⁶ J/kg.",
       "kk": "0,1 кг буды конденсациялау кезінде қанша жылу бөлінеді? L = 2,3·10⁶ Дж/кг."
     },
     "correctAnswer": 230000,
     "tolerance": 1000,
     "explanation": {
       "ru": "Q = Lm = 2.3e6 * 0.1 = 230000 Дж.",
-      "en": "Q = Lm = 2.3e6 * 0.1 = 230000 Дж.",
+      "en": "Q = Lm = 2.3e6 * 0.1 = 230000 J.",
       "kk": "Q = Lm = 2.3e6 * 0.1 = 230000 Дж."
     },
     "hint": {
@@ -8298,14 +8298,14 @@ const TASKS_DATABASE_EXT = [
     "difficulty": 2,
     "question": {
       "ru": "Сколько теплоты нужно для превращения в пар 0,1 кг воды? L = 2,3·10⁶ Дж/кг.",
-      "en": "How much heat is needed to turn 0,1 кг water into steam? L = 2,3·10⁶ Дж/кг.",
+      "en": "How much heat is needed to turn 0.1 kg water into steam? L = 2.3·10⁶ J/kg.",
       "kk": "0,1 кг суды буға айналдыру үшін қанша жылу қажет? L = 2,3·10⁶ Дж/кг."
     },
     "correctAnswer": 230000,
     "tolerance": 1000,
     "explanation": {
       "ru": "Q = Lm = 2.3e6 * 0.1 = 230000 Дж.",
-      "en": "Q = Lm = 2.3e6 * 0.1 = 230000 Дж.",
+      "en": "Q = Lm = 2.3e6 * 0.1 = 230000 J.",
       "kk": "Q = Lm = 2.3e6 * 0.1 = 230000 Дж."
     },
     "hint": {
@@ -8442,7 +8442,7 @@ const TASKS_DATABASE_EXT = [
     "difficulty": 1,
     "question": {
       "ru": "Удельная теплота парообразования — это количество теплоты для превращения 1 кг жидкости в пар при температуре кипения.",
-      "en": "The specific heat of vaporization is the amount of heat required to convert 1 кг a liquid into vapor at the boiling point.",
+      "en": "The specific heat of vaporization is the amount of heat required to convert 1 kg a liquid into vapor at the boiling point.",
       "kk": "Меншікті булану жылуы – қайнау температурасында 1 кг сұйықты буға айналдыру үшін қажет жылу мөлшері."
     },
     "correctAnswer": true,
@@ -8475,10 +8475,10 @@ const TASKS_DATABASE_EXT = [
         "Дж/°C"
       ],
       "en": [
-        "Дж",
-        "Дж/кг",
-        "Дж/(кг·°C)",
-        "Дж/°C"
+        "J",
+        "J/kg",
+        "J/(kg·°C)",
+        "J/°C"
       ],
       "kk": [
         "Дж",
@@ -8490,7 +8490,7 @@ const TASKS_DATABASE_EXT = [
     "correctAnswer": 1,
     "explanation": {
       "ru": "Удельная теплота парообразования измеряется в Дж/кг.",
-      "en": "The specific heat of vaporization is measured in Дж/кг.",
+      "en": "The specific heat of vaporization is measured in J/kg.",
       "kk": "Меншікті булану жылуы Дж/кг-де өлшенеді."
     },
     "hint": {
@@ -8506,14 +8506,14 @@ const TASKS_DATABASE_EXT = [
     "difficulty": 2,
     "question": {
       "ru": "Сколько теплоты нужно для превращения в пар 2 кг воды, взятой при 100 °C? L = 2,3·10⁶ Дж/кг.",
-      "en": "How much heat is needed to convert water taken at 100 °C into steam 2 кг? L = 2,3·10⁶ Дж/кг.",
+      "en": "How much heat is needed to convert water taken at 100 °C into steam 2 kg? L = 2.3·10⁶ J/kg.",
       "kk": "100 °C кезінде алынған суды 2 кг буға айналдыру үшін қанша жылу қажет? L = 2,3·10⁶ Дж/кг."
     },
     "correctAnswer": 4600000,
     "tolerance": 10000,
     "explanation": {
       "ru": "Q = Lm = 2.3e6 * 2 = 4.6e6 Дж.",
-      "en": "Q = Lm = 2.3e6 * 2 = 4.6e6 Дж.",
+      "en": "Q = Lm = 2.3e6 * 2 = 4.6e6 J.",
       "kk": "Q = Lm = 2.3e6 * 2 = 4.6e6 Дж."
     },
     "hint": {
@@ -8714,14 +8714,14 @@ const TASKS_DATABASE_EXT = [
     "difficulty": 2,
     "question": {
       "ru": "Сколько теплоты выделится при конденсации 0,5 кг пара? L = 2,3·10⁶ Дж/кг.",
-      "en": "How much heat will be released during condensation of 0,5 кг steam? L = 2,3·10⁶ Дж/кг.",
+      "en": "How much heat will be released during condensation of 0.5 kg steam? L = 2.3·10⁶ J/kg.",
       "kk": "0,5 кг буды конденсациялау кезінде қанша жылу бөлінеді? L = 2,3·10⁶ Дж/кг."
     },
     "correctAnswer": 1150000,
     "tolerance": 1000,
     "explanation": {
       "ru": "Q = Lm = 2.3e6 * 0.5 = 1.15e6 Дж.",
-      "en": "Q = Lm = 2.3e6 * 0.5 = 1.15e6 Дж.",
+      "en": "Q = Lm = 2.3e6 * 0.5 = 1.15e6 J.",
       "kk": "Q = Lm = 2.3e6 * 0.5 = 1.15e6 Дж."
     },
     "hint": {
@@ -8775,10 +8775,10 @@ const TASKS_DATABASE_EXT = [
         "Теплота для сгорания 1 кг"
       ],
       "en": [
-        "Heat for heating 1 кг to 1 °C",
-        "Heat to convert 1 кг liquid into vapor",
-        "Heat for melting 1 кг",
-        "Heat for combustion 1 кг"
+        "Heat for heating 1 kg to 1 °C",
+        "Heat to convert 1 kg liquid into vapor",
+        "Heat for melting 1 kg",
+        "Heat for combustion 1 kg"
       ],
       "kk": [
         "Жылыту үшін 1 кг - 1 °C",
@@ -8790,7 +8790,7 @@ const TASKS_DATABASE_EXT = [
     "correctAnswer": 1,
     "explanation": {
       "ru": "Удельная теплота парообразования — это количество теплоты, необходимое для превращения 1 кг жидкости в пар при температуре кипения.",
-      "en": "The specific heat of vaporization is the amount of heat required to convert 1 кг a liquid into vapor at the boiling point.",
+      "en": "The specific heat of vaporization is the amount of heat required to convert 1 kg a liquid into vapor at the boiling point.",
       "kk": "Меншікті булану жылуы – қайнау температурасында 1 кг сұйықты буға айналдыру үшін қажет жылу мөлшері."
     },
     "hint": {
@@ -9061,14 +9061,14 @@ const TASKS_DATABASE_EXT = [
     "difficulty": 2,
     "question": {
       "ru": "Газу передали 100 Дж теплоты, и он совершил работу 40 Дж. На сколько изменилась его внутренняя энергия?",
-      "en": "100 Дж of heat was transferred to the gas, and it did 40 Дж work. How much has its internal energy changed?",
+      "en": "100 J of heat was transferred to the gas, and it did 40 J work. How much has its internal energy changed?",
       "kk": "100 Дж жылу газға берілді және ол 40 Дж жұмыс жасады. Оның ішкі энергиясы қаншаға өзгерді?"
     },
     "correctAnswer": 60,
     "tolerance": 1,
     "explanation": {
       "ru": "ΔU = Q - A = 100 - 40 = 60 Дж.",
-      "en": "ΔU = Q - A = 100 - 40 = 60 Дж.",
+      "en": "ΔU = Q - A = 100 - 40 = 60 J.",
       "kk": "ΔU = Q - A = 100 - 40 = 60 Дж."
     },
     "hint": {
@@ -9227,14 +9227,14 @@ const TASKS_DATABASE_EXT = [
     "difficulty": 2,
     "question": {
       "ru": "Газ получил 200 Дж теплоты, и его внутренняя энергия увеличилась на 150 Дж. Какую работу совершил газ?",
-      "en": "The gas received 200 Дж of heat, and its internal energy increased by 150 Дж. How much work has been done by the gas?",
+      "en": "The gas received 200 J of heat, and its internal energy increased by 150 J. How much work has been done by the gas?",
       "kk": "Газ 200 Дж жылуды алды, ал оның ішкі энергиясы 150 Дж-ға өсті. Газ қанша жұмыс атқарды?"
     },
     "correctAnswer": 50,
     "tolerance": 1,
     "explanation": {
       "ru": "A = Q - ΔU = 200 - 150 = 50 Дж.",
-      "en": "A = Q - ΔU = 200 - 150 = 50 Дж.",
+      "en": "A = Q - ΔU = 200 - 150 = 50 J.",
       "kk": "A = Q - ΔU = 200 - 150 = 50 Дж."
     },
     "hint": {
@@ -9361,14 +9361,14 @@ const TASKS_DATABASE_EXT = [
     "difficulty": 2,
     "question": {
       "ru": "Газ расширяется при постоянном давлении 2·10⁵ Па, объем увеличивается на 0,01 м³. Какую работу совершает газ?",
-      "en": "The gas expands at constant pressure 2·10⁵ Па, the volume increases by 0,01 м³. How much work does the gas do?",
+      "en": "The gas expands at constant pressure 2·10⁵ Pa, the volume increases by 0.01 m³. How much work does the gas do?",
       "kk": "Газ тұрақты қысымда 2·10⁵ Па кеңейеді, көлемі 0,01 м³ артады. Газ қанша жұмыс істейді?"
     },
     "correctAnswer": 2000,
     "tolerance": 10,
     "explanation": {
       "ru": "A = pΔV = 2e5 * 0.01 = 2000 Дж.",
-      "en": "A = pΔV = 2e5 * 0.01 = 2000 Дж.",
+      "en": "A = pΔV = 2e5 * 0.01 = 2000 J.",
       "kk": "A = pΔV = 2e5 * 0.01 = 2000 Дж."
     },
     "hint": {
@@ -9464,10 +9464,10 @@ const TASKS_DATABASE_EXT = [
         "Вт"
       ],
       "en": [
-        "Дж",
-        "Па",
-        "м³",
-        "Вт"
+        "J",
+        "Pa",
+        "m³",
+        "W"
       ],
       "kk": [
         "Дж",
@@ -9479,7 +9479,7 @@ const TASKS_DATABASE_EXT = [
     "correctAnswer": 0,
     "explanation": {
       "ru": "Работа измеряется в джоулях (Дж).",
-      "en": "Work is measured in joules (Дж).",
+      "en": "Work is measured in joules (J).",
       "kk": "Жұмыс джоульмен өлшенеді (Дж)."
     },
     "hint": {
@@ -10685,7 +10685,7 @@ const TASKS_DATABASE_EXT = [
     "difficulty": 2,
     "question": {
       "ru": "Двигатель совершил работу 200 Дж, получив от нагревателя 500 Дж. Каков его КПД в процентах?",
-      "en": "The engine performed work 200 Дж, receiving 500 Дж from the heater. What is its efficiency in percentage?",
+      "en": "The engine performed work 200 J, receiving 500 J from the heater. What is its efficiency in percentage?",
       "kk": "Қозғалтқыш қыздырғыштан 500 Дж алып, 200 Дж жұмысын орындады. Оның тиімділігі қанша пайызбен көрсетілген?"
     },
     "correctAnswer": 40,
@@ -10957,14 +10957,14 @@ const TASKS_DATABASE_EXT = [
     "difficulty": 2,
     "question": {
       "ru": "КПД двигателя 25%. Какую полезную работу он совершит, получив от нагревателя 1000 Дж?",
-      "en": "Motor efficiency 25%. What useful work will it do after receiving from the heater 1000 Дж?",
+      "en": "Motor efficiency 25%. What useful work will it do after receiving from the heater 1000 J?",
       "kk": "Қозғалтқыштың тиімділігі 25%. Қыздырғыштан 1000 Дж алғаннан кейін ол қандай пайдалы жұмыс істейді?"
     },
     "correctAnswer": 250,
     "tolerance": 1,
     "explanation": {
       "ru": "A = η * Q1 = 0.25 * 1000 = 250 Дж.",
-      "en": "A = η * Q1 = 0.25 * 1000 = 250 Дж.",
+      "en": "A = η * Q1 = 0.25 * 1000 = 250 J.",
       "kk": "A = η * Q1 = 0.25 * 1000 = 250 Дж."
     },
     "hint": {
@@ -10985,7 +10985,7 @@ const TASKS_DATABASE_EXT = [
     "difficulty": 2,
     "question": {
       "ru": "Двигатель получил от нагревателя 5000 Дж и совершил работу 2000 Дж. Найдите КПД в долях единицы.",
-      "en": "The engine received 5000 Дж from the heater and performed work 2000 Дж. Find the efficiency in fractions of unity.",
+      "en": "The engine received 5000 J from the heater and performed work 2000 J. Find the efficiency in fractions of unity.",
       "kk": "Қозғалтқыш қыздырғыштан 5000 Дж алды және 2000 Дж жұмысын орындады. Бірліктің бөлшектеріндегі тиімділікті табыңыз."
     },
     "correctAnswer": 0.4,
@@ -11151,7 +11151,7 @@ const TASKS_DATABASE_EXT = [
     "difficulty": 2,
     "question": {
       "ru": "Температура нагревателя 600 К, холодильника 300 К. Каков максимальный КПД идеальной машины?",
-      "en": "Temperature of heater 600 К, refrigerator 300 К. What is the maximum efficiency of an ideal machine?",
+      "en": "Temperature of heater 600 K, refrigerator 300 K. What is the maximum efficiency of an ideal machine?",
       "kk": "Қыздырғыш 600 К, тоңазытқыш 300 К температурасы. Идеал машинаның максималды өнімділігі қандай?"
     },
     "correctAnswer": 0.5,
@@ -11243,14 +11243,14 @@ const TASKS_DATABASE_EXT = [
     "difficulty": 2,
     "question": {
       "ru": "КПД двигателя 30%. Какую работу совершит двигатель, получив 1000 Дж от нагревателя?",
-      "en": "Motor efficiency 30%. How much work will the engine do when it receives 1000 Дж from the heater?",
+      "en": "Motor efficiency 30%. How much work will the engine do when it receives 1000 J from the heater?",
       "kk": "Қозғалтқыштың тиімділігі 30%. Қозғалтқыш қыздырғыштан 1000 Дж алған кезде қанша жұмыс істейді?"
     },
     "correctAnswer": 300,
     "tolerance": 1,
     "explanation": {
       "ru": "A = η * Q1 = 0.3 * 1000 = 300 Дж.",
-      "en": "A = η * Q1 = 0.3 * 1000 = 300 Дж.",
+      "en": "A = η * Q1 = 0.3 * 1000 = 300 J.",
       "kk": "A = η * Q1 = 0.3 * 1000 = 300 Дж."
     },
     "hint": {
@@ -11409,7 +11409,7 @@ const TASKS_DATABASE_EXT = [
     "difficulty": 2,
     "question": {
       "ru": "Двигатель получил 4000 Дж, отдал холодильнику 3000 Дж. Каков КПД в процентах?",
-      "en": "The engine received 4000 Дж, gave it to the refrigerator 3000 Дж. What is the efficiency percentage?",
+      "en": "The engine received 4000 J, gave it to the refrigerator 3000 J. What is the efficiency percentage?",
       "kk": "Қозғалтқыш 4000 Дж алды, оны тоңазытқышқа 3000 Дж берді. Тиімділік пайызы қандай?"
     },
     "correctAnswer": 25,
@@ -11543,7 +11543,7 @@ const TASKS_DATABASE_EXT = [
     "difficulty": 2,
     "question": {
       "ru": "Идеальная машина работает с нагревателем при 500 К и холодильником при 200 К. Каков её КПД?",
-      "en": "An ideal machine operates with a heater at 500 К and a refrigerator at 200 К. What is its efficiency?",
+      "en": "An ideal machine operates with a heater at 500 K and a refrigerator at 200 K. What is its efficiency?",
       "kk": "Идеал машина 500 К жылытқышымен және 200 К тоңазытқышымен жұмыс істейді. Оның тиімділігі қандай?"
     },
     "correctAnswer": 0.6,
@@ -12070,7 +12070,7 @@ const TASKS_DATABASE_EXT = [
     "difficulty": 2,
     "question": {
       "ru": "Сколько деревьев нужно, чтобы поглотить CO₂, выделяемый одним автомобилем за год, если одно дерево поглощает 20 кг CO₂ в год? (Выбросы CO₂ ≈ 135 кг/год)",
-      "en": "How many trees are needed to absorb CO₂ emitted by one car per year if one tree absorbs 20 кг CO₂ per year? (Emissions CO₂ ≈ 135 кг/год)",
+      "en": "How many trees are needed to absorb CO₂ emitted by one car per year if one tree absorbs 20 kg CO₂ per year? (Emissions CO₂ ≈ 135 kg/year)",
       "kk": "Бір ағаш жылына 20 кг CO₂ сіңірсе, жылына бір көлік шығаратын CO₂ сіңіру үшін қанша ағаш қажет? (Шығарындылар CO₂ ≈ 135 кг/год)"
     },
     "correctAnswer": 7,
@@ -12655,7 +12655,7 @@ const TASKS_DATABASE_EXT = [
     "difficulty": 2,
     "question": {
       "ru": "Заряд тела равен -3,2·10⁻¹⁹ Кл. Сколько избыточных электронов на теле? (e = 1,6·10⁻¹⁹ Кл)",
-      "en": "The charge of the body is -3,2·10⁻¹⁹ Кл. How many excess electrons are there on the body? (e = 1,6·10⁻¹⁹ Кл)",
+      "en": "The charge of the body is -3.2·10⁻¹⁹ C. How many excess electrons are there on the body? (e = 1.6·10⁻¹⁹ C)",
       "kk": "Дененің заряды -3,2·10⁻¹⁹ Кл. Денеде қанша артық электрон бар? (e = 1,6·10⁻¹⁹ Кл)"
     },
     "correctAnswer": 2,
@@ -12839,7 +12839,7 @@ const TASKS_DATABASE_EXT = [
         "Кл"
       ],
       "en": [
-        "Кл"
+        "C"
       ],
       "kk": [
         "Кл"
@@ -12847,7 +12847,7 @@ const TASKS_DATABASE_EXT = [
     },
     "explanation": {
       "ru": "Единица измерения заряда — кулон (Кл).",
-      "en": "The unit of charge is the coulomb (Кл).",
+      "en": "The unit of charge is the coulomb (C).",
       "kk": "Заряд бірлігі - кулон (Кл)."
     },
     "hint": {
@@ -13033,14 +13033,14 @@ const TASKS_DATABASE_EXT = [
     "difficulty": 2,
     "question": {
       "ru": "Чему примерно равен модуль элементарного заряда e? Ответ в Кл.",
-      "en": "What is approximately the modulus of the elementary charge e? The answer is in Кл.",
+      "en": "What is approximately the modulus of the elementary charge e? The answer is in C.",
       "kk": "e элементар зарядтың шамамен модулі неге тең? Жауап Кл ішінде."
     },
     "correctAnswer": 1.6e-19,
     "tolerance": 1e-21,
     "explanation": {
       "ru": "e = 1,6·10⁻¹⁹ Кл",
-      "en": "e = 1,6·10⁻¹⁹ Кл",
+      "en": "e = 1.6·10⁻¹⁹ C",
       "kk": "e = 1,6·10⁻¹⁹ Кл"
     },
     "hint": {
@@ -13050,7 +13050,7 @@ const TASKS_DATABASE_EXT = [
     },
     "formula": {
       "ru": "e = 1,6·10⁻¹⁹ Кл",
-      "en": "e = 1,6·10⁻¹⁹ Кл",
+      "en": "e = 1.6·10⁻¹⁹ C",
       "kk": "e = 1,6·10⁻¹⁹ Кл"
     }
   },
@@ -13199,14 +13199,14 @@ const TASKS_DATABASE_EXT = [
     "difficulty": 2,
     "question": {
       "ru": "Два заряда по 1 мкКл находятся на расстоянии 0,1 м друг от друга. Какова сила взаимодействия? k = 9·10⁹ Н·м²/Кл².",
-      "en": "Two charges 1 мкКл are at a distance 0,1 м from each other. What is the strength of the interaction? k = 9·10⁹ Н·м²/Кл².",
+      "en": "Two charges 1 µC are at a distance 0.1 m from each other. What is the strength of the interaction? k = 9·10⁹ N·m²/C².",
       "kk": "Екі заряд 1 мкКл бір-бірінен 0,1 м қашықтықта орналасқан. Өзара әрекеттестіктің күші қандай? k = 9·10⁹ Н·м²/Кл²."
     },
     "correctAnswer": 0.9,
     "tolerance": 0.01,
     "explanation": {
       "ru": "F = k * q1 * q2 / r² = 9e9 * 1e-6 * 1e-6 / 0.01 = 0.9 Н.",
-      "en": "F = k * q1 * q2 / r² = 9e9 * 1e-6 * 1e-6 / 0.01 = 0.9 Н.",
+      "en": "F = k * q1 * q2 / r² = 9e9 * 1e-6 * 1e-6 / 0.01 = 0.9 N.",
       "kk": "F = k * q1 * q2 / r² = 9e9 * 1e-6 * 1e-6 / 0.01 = 0.9 Н."
     },
     "hint": {
@@ -13317,7 +13317,7 @@ const TASKS_DATABASE_EXT = [
     "correctAnswer": 1,
     "explanation": {
       "ru": "Единица измерения заряда — кулон (Кл).",
-      "en": "The unit of charge is the coulomb (Кл).",
+      "en": "The unit of charge is the coulomb (C).",
       "kk": "Заряд бірлігі - кулон (Кл)."
     },
     "hint": {
@@ -13403,7 +13403,7 @@ const TASKS_DATABASE_EXT = [
     "difficulty": 2,
     "question": {
       "ru": "Коэффициент k в законе Кулона равен ___·10⁹ Н·м²/Кл².",
-      "en": "The coefficient k in Coulomb’s law is equal to ___·10⁹ Н·м²/Кл².",
+      "en": "The coefficient k in Coulomb’s law is equal to ___·10⁹ N·m²/C².",
       "kk": "Кулон заңындағы k коэффициенті ___·10⁹ Н·м²/Кл²-ке тең."
     },
     "correctAnswer": {
@@ -13419,7 +13419,7 @@ const TASKS_DATABASE_EXT = [
     },
     "explanation": {
       "ru": "k = 9·10⁹ Н·м²/Кл².",
-      "en": "k = 9·10⁹ Н·м²/Кл².",
+      "en": "k = 9·10⁹ N·m²/C².",
       "kk": "k = 9·10⁹ Н·м²/Кл²."
     },
     "hint": {
@@ -13541,14 +13541,14 @@ const TASKS_DATABASE_EXT = [
     "difficulty": 2,
     "question": {
       "ru": "Два заряда по 2 нКл взаимодействуют с силой 0,9 мН. Найдите расстояние между ними. k = 9·10⁹ Н·м²/Кл².",
-      "en": "Two charges 2 нКл interact with the force 0,9 мН. Find the distance between them. k = 9·10⁹ Н·м²/Кл².",
+      "en": "Two charges 2 nC interact with the force 0.9 mN. Find the distance between them. k = 9·10⁹ N·m²/C².",
       "kk": "Екі заряд 2 нКл 0,9 мН күшімен әрекеттеседі. Олардың арасындағы қашықтықты табыңыз. k = 9·10⁹ Н·м²/Кл²."
     },
     "correctAnswer": 0.2,
     "tolerance": 0.01,
     "explanation": {
       "ru": "r = sqrt(k * q1 * q2 / F) = sqrt(9e9 * 2e-9 * 2e-9 / 0.9e-3) = 0.2 м.",
-      "en": "r = sqrt(k * q1 * q2 / F) = sqrt(9e9 * 2e-9 * 2e-9 / 0.9e-3) = 0.2 м.",
+      "en": "r = sqrt(k * q1 * q2 / F) = sqrt(9e9 * 2e-9 * 2e-9 / 0.9e-3) = 0.2 m.",
       "kk": "r = sqrt(k * q1 * q2 / F) = sqrt(9e9 * 2e-9 * 2e-9 / 0.9e-3) = 0.2 м."
     },
     "hint": {
@@ -13749,14 +13749,14 @@ const TASKS_DATABASE_EXT = [
     "difficulty": 2,
     "question": {
       "ru": "На заряд 2 Кл действует сила 6 Н. Найдите напряжённость поля.",
-      "en": "The charge 2 Кл is acted upon by a force 6 Н. Find the field strength.",
+      "en": "The charge 2 C is acted upon by a force 6 N. Find the field strength.",
       "kk": "2 Кл зарядына 6 Н күш әсер етеді. Өріс күшін табыңыз."
     },
     "correctAnswer": 3,
     "tolerance": 0.1,
     "explanation": {
       "ru": "E = F/q = 6/2 = 3 Н/Кл.",
-      "en": "E = F/q = 6/2 = 3 Н/Кл.",
+      "en": "E = F/q = 6/2 = 3 N/C.",
       "kk": "E = F/q = 6/2 = 3 Н/Кл."
     },
     "hint": {
@@ -13926,7 +13926,7 @@ const TASKS_DATABASE_EXT = [
         "Произвольно"
       ],
       "en": [
-        "К charge",
+        "K charge",
         "From charge",
         "Circumferentially",
         "Arbitrarily"
@@ -13979,14 +13979,14 @@ const TASKS_DATABASE_EXT = [
     "difficulty": 2,
     "question": {
       "ru": "Напряженность поля 5 Н/Кл. Какая сила действует на заряд 0,5 Кл?",
-      "en": "Field strength 5 Н/Кл. What force acts on the charge 0,5 Кл?",
+      "en": "Field strength 5 N/C. What force acts on the charge 0.5 C?",
       "kk": "Өріс күші 5 Н/Кл. 0,5 Кл зарядына қандай күш әсер етеді?"
     },
     "correctAnswer": 2.5,
     "tolerance": 0.1,
     "explanation": {
       "ru": "F = E * q = 5 * 0.5 = 2.5 Н.",
-      "en": "F = E * q = 5 * 0.5 = 2.5 Н.",
+      "en": "F = E * q = 5 * 0.5 = 2.5 N.",
       "kk": "F = E * q = 5 * 0.5 = 2.5 Н."
     },
     "hint": {
@@ -14060,10 +14060,10 @@ const TASKS_DATABASE_EXT = [
         "Дж"
       ],
       "en": [
-        "Н",
-        "Н/Кл",
-        "Кл",
-        "Дж"
+        "N",
+        "N/C",
+        "C",
+        "J"
       ],
       "kk": [
         "Н",
@@ -14075,7 +14075,7 @@ const TASKS_DATABASE_EXT = [
     "correctAnswer": 1,
     "explanation": {
       "ru": "Напряженность измеряется в Н/Кл (ньютон на кулон).",
-      "en": "Tension is measured in Н/Кл (newton per coulomb).",
+      "en": "Tension is measured in N/C (newton per coulomb).",
       "kk": "Кернеу Н/Кл (кулонға Ньютон) арқылы өлшенеді."
     },
     "hint": {
@@ -14229,14 +14229,14 @@ const TASKS_DATABASE_EXT = [
     "difficulty": 2,
     "question": {
       "ru": "На заряд 4 Кл действует сила 12 Н. Найдите напряженность поля.",
-      "en": "The charge 4 Кл is acted upon by a force 12 Н. Find the field strength.",
+      "en": "The charge 4 C is acted upon by a force 12 N. Find the field strength.",
       "kk": "4 Кл зарядына 12 Н күш әсер етеді. Өріс күшін табыңыз."
     },
     "correctAnswer": 3,
     "tolerance": 0.1,
     "explanation": {
       "ru": "E = F/q = 12/4 = 3 Н/Кл.",
-      "en": "E = F/q = 12/4 = 3 Н/Кл.",
+      "en": "E = F/q = 12/4 = 3 N/C.",
       "kk": "E = F/q = 12/4 = 3 Н/Кл."
     },
     "hint": {
@@ -14269,7 +14269,7 @@ const TASKS_DATABASE_EXT = [
       ],
       "en": [
         "From charge",
-        "К charge",
+        "K charge",
         "Circumferentially",
         "Arbitrarily"
       ],
@@ -14438,14 +14438,14 @@ const TASKS_DATABASE_EXT = [
     "difficulty": 2,
     "question": {
       "ru": "Поле совершило работу 12 Дж при перемещении заряда 3 Кл. Найдите напряжение.",
-      "en": "The field did work 12 Дж when moving the charge 3 Кл. Find the voltage.",
+      "en": "The field did work 12 J when moving the charge 3 C. Find the voltage.",
       "kk": "Зарядты 3 Кл жылжытқанда өріс 12 Дж жұмыс істеді. Кернеуді табыңыз."
     },
     "correctAnswer": 4,
     "tolerance": 0.1,
     "explanation": {
       "ru": "U = A/q = 12/3 = 4 В.",
-      "en": "U = A/q = 12/3 = 4 В.",
+      "en": "U = A/q = 12/3 = 4 V.",
       "kk": "U = A/q = 12/3 = 4 В."
     },
     "hint": {
@@ -14598,7 +14598,7 @@ const TASKS_DATABASE_EXT = [
     "correctAnswer": 1,
     "explanation": {
       "ru": "Электроемкость измеряется в фарадах (Ф).",
-      "en": "Electrical capacity is measured in farads (Ф).",
+      "en": "Electrical capacity is measured in farads (F).",
       "kk": "Электр сыйымдылығы фарадпен өлшенеді (Ф)."
     },
     "hint": {
@@ -14614,14 +14614,14 @@ const TASKS_DATABASE_EXT = [
     "difficulty": 2,
     "question": {
       "ru": "Конденсатор имеет заряд 0,01 Кл и напряжение 100 В. Найдите его емкость.",
-      "en": "The capacitor has a charge 0,01 Кл and a voltage 100 В. Find its capacity.",
+      "en": "The capacitor has a charge 0.01 C and a voltage 100 V. Find its capacity.",
       "kk": "Конденсатордың заряды 0,01 Кл және кернеуі 100 В болады. Оның сыйымдылығын табыңыз."
     },
     "correctAnswer": 0.0001,
     "tolerance": 0.00001,
     "explanation": {
       "ru": "C = q/U = 0.01/100 = 0.0001 Ф = 100 мкФ.",
-      "en": "C = q/U = 0.01/100 = 0.0001 Ф = 100 мкФ.",
+      "en": "C = q/U = 0.01/100 = 0.0001 F = 100 µF.",
       "kk": "C = q/U = 0.01/100 = 0.0001 Ф = 100 мкФ."
     },
     "hint": {
@@ -14822,14 +14822,14 @@ const TASKS_DATABASE_EXT = [
     "difficulty": 2,
     "question": {
       "ru": "Какую работу совершит поле при перемещении заряда 5 Кл между точками с напряжением 20 В?",
-      "en": "What work will be done by the field when the charge 5 Кл moves between points with voltage 20 В?",
+      "en": "What work will be done by the field when the charge 5 C moves between points with voltage 20 V?",
       "kk": "5 Кл заряды 20 В кернеуі бар нүктелер арасында қозғалғанда өріс қандай жұмыс жасайды?"
     },
     "correctAnswer": 100,
     "tolerance": 1,
     "explanation": {
       "ru": "A = qU = 5 * 20 = 100 Дж.",
-      "en": "A = qU = 5 * 20 = 100 Дж.",
+      "en": "A = qU = 5 * 20 = 100 J.",
       "kk": "A = qU = 5 * 20 = 100 Дж."
     },
     "hint": {
@@ -15052,14 +15052,14 @@ const TASKS_DATABASE_EXT = [
     "difficulty": 2,
     "question": {
       "ru": "Напряжение между точками 50 В. Какую работу совершит поле при перемещении заряда 2 Кл?",
-      "en": "Voltage between points 50 В. How much work will the field do when the charge 2 Кл moves?",
+      "en": "Voltage between points 50 V. How much work will the field do when the charge 2 C moves?",
       "kk": "50 В нүктелері арасындағы кернеу. 2 Кл заряды қозғалғанда өріс қанша жұмыс істейді?"
     },
     "correctAnswer": 100,
     "tolerance": 1,
     "explanation": {
       "ru": "A = qU = 2 * 50 = 100 Дж.",
-      "en": "A = qU = 2 * 50 = 100 Дж.",
+      "en": "A = qU = 2 * 50 = 100 J.",
       "kk": "A = qU = 2 * 50 = 100 Дж."
     },
     "hint": {
@@ -15398,14 +15398,14 @@ const TASKS_DATABASE_EXT = [
     "difficulty": 2,
     "question": {
       "ru": "Через поперечное сечение проводника за 5 с прошел заряд 10 Кл. Найдите силу тока.",
-      "en": "A charge 10 Кл passed through the cross section of the conductor behind 5 с. Find the current.",
+      "en": "A charge 10 C passed through the cross section of the conductor behind 5 s. Find the current.",
       "kk": "5 с артындағы өткізгіштің көлденең қимасы арқылы 10 Кл заряды өтті. Ағын табыңыз."
     },
     "correctAnswer": 2,
     "tolerance": 0.1,
     "explanation": {
       "ru": "I = q/t = 10/5 = 2 А.",
-      "en": "I = q/t = 10/5 = 2 А.",
+      "en": "I = q/t = 10/5 = 2 A.",
       "kk": "I = q/t = 10/5 = 2 А."
     },
     "hint": {
@@ -15670,14 +15670,14 @@ const TASKS_DATABASE_EXT = [
     "difficulty": 2,
     "question": {
       "ru": "Какой заряд пройдет через проводник за 10 с при силе тока 2 А?",
-      "en": "What charge will pass through the conductor in 10 с at a current strength of 2 А?",
+      "en": "What charge will pass through the conductor in 10 s at a current strength of 2 A?",
       "kk": "2 А ток күші кезінде 10 с өткізгіш арқылы қандай заряд өтеді?"
     },
     "correctAnswer": 20,
     "tolerance": 1,
     "explanation": {
       "ru": "q = I * t = 2 * 10 = 20 Кл.",
-      "en": "q = I * t = 2 * 10 = 20 Кл.",
+      "en": "q = I * t = 2 * 10 = 20 C.",
       "kk": "q = I * t = 2 * 10 = 20 Кл."
     },
     "hint": {
@@ -15826,14 +15826,14 @@ const TASKS_DATABASE_EXT = [
     "difficulty": 2,
     "question": {
       "ru": "Через поперечное сечение за 2 с прошёл заряд 10 Кл. Найдите силу тока.",
-      "en": "A charge 10 Кл passed through the cross section behind 2 с. Find the current.",
+      "en": "A charge 10 C passed through the cross section behind 2 s. Find the current.",
       "kk": "10 Кл заряды 2 с артындағы көлденең қимадан өтті. Ағын табыңыз."
     },
     "correctAnswer": 5,
     "tolerance": 0.1,
     "explanation": {
       "ru": "I = q/t = 10/2 = 5 А.",
-      "en": "I = q/t = 10/2 = 5 А.",
+      "en": "I = q/t = 10/2 = 5 A.",
       "kk": "I = q/t = 10/2 = 5 А."
     },
     "hint": {
@@ -16108,14 +16108,14 @@ const TASKS_DATABASE_EXT = [
     "difficulty": 2,
     "question": {
       "ru": "Какой заряд пройдет через проводник за 1 минуту при силе тока 0,5 А?",
-      "en": "What charge will pass through the conductor in 1 minute at a current strength of 0,5 А?",
+      "en": "What charge will pass through the conductor in 1 minute at a current strength of 0.5 A?",
       "kk": "Ток күші 0,5 А болғанда 1 минутта өткізгіш арқылы қандай заряд өтеді?"
     },
     "correctAnswer": 30,
     "tolerance": 1,
     "explanation": {
       "ru": "q = I * t = 0.5 * 60 = 30 Кл.",
-      "en": "q = I * t = 0.5 * 60 = 30 Кл.",
+      "en": "q = I * t = 0.5 * 60 = 30 C.",
       "kk": "q = I * t = 0.5 * 60 = 30 Кл."
     },
     "hint": {
@@ -16211,10 +16211,10 @@ const TASKS_DATABASE_EXT = [
         "1 А"
       ],
       "en": [
-        "0,1 А",
-        "0,2 А",
-        "0,5 А",
-        "1 А"
+        "0.1 A",
+        "0.2 A",
+        "0.5 A",
+        "1 A"
       ],
       "kk": [
         "0,1 А",
@@ -16226,7 +16226,7 @@ const TASKS_DATABASE_EXT = [
     "correctAnswer": 1,
     "explanation": {
       "ru": "1 А / 5 делений = 0,2 А.",
-      "en": "1 А / 5 divisions = 0,2 А.",
+      "en": "1 A / 5 divisions = 0.2 A.",
       "kk": "1 А / 5 бөлімдері = 0,2 А."
     },
     "hint": {
@@ -16306,14 +16306,14 @@ const TASKS_DATABASE_EXT = [
     "difficulty": 2,
     "question": {
       "ru": "Напряжение на участке 12 В. Какую работу совершит ток при перемещении заряда 4 Кл?",
-      "en": "Voltage at section 12 В. How much work will the current do when moving the charge 4 Кл?",
+      "en": "Voltage at section 12 V. How much work will the current do when moving the charge 4 C?",
       "kk": "12 В бөліміндегі кернеу. 4 Кл зарядты жылжытқанда ток қанша жұмыс істейді?"
     },
     "correctAnswer": 48,
     "tolerance": 1,
     "explanation": {
       "ru": "A = qU = 4 * 12 = 48 Дж.",
-      "en": "A = qU = 4 * 12 = 48 Дж.",
+      "en": "A = qU = 4 * 12 = 48 J.",
       "kk": "A = qU = 4 * 12 = 48 Дж."
     },
     "hint": {
@@ -16450,14 +16450,14 @@ const TASKS_DATABASE_EXT = [
     "difficulty": 2,
     "question": {
       "ru": "На участке цепи U = 12 В, R = 4 Ом. Найдите силу тока.",
-      "en": "On the chain section U = 12 В, R = 4 Ом. Find the current.",
+      "en": "On the chain section U = 12 V, R = 4 Ω. Find the current.",
       "kk": "Тізбек бөлігінде U = 12 В, R = 4 Ом. Ағын табыңыз."
     },
     "correctAnswer": 3,
     "tolerance": 0.1,
     "explanation": {
       "ru": "I = U/R = 12/4 = 3 А.",
-      "en": "I = U/R = 12/4 = 3 А.",
+      "en": "I = U/R = 12/4 = 3 A.",
       "kk": "I = U/R = 12/4 = 3 А."
     },
     "hint": {
@@ -16529,7 +16529,7 @@ const TASKS_DATABASE_EXT = [
         "Ом"
       ],
       "en": [
-        "Ом"
+        "Ω"
       ],
       "kk": [
         "Ом"
@@ -16627,14 +16627,14 @@ const TASKS_DATABASE_EXT = [
     "difficulty": 2,
     "question": {
       "ru": "Напряжение на проводнике 24 В, сила тока 2 А. Найдите сопротивление.",
-      "en": "The voltage on the conductor is 24 В, the current is 2 А. Find resistance.",
+      "en": "The voltage on the conductor is 24 V, the current is 2 A. Find resistance.",
       "kk": "Өткізгіштегі кернеу 24 В, ток 2 А. Қарсылықты табыңыз."
     },
     "correctAnswer": 12,
     "tolerance": 0.1,
     "explanation": {
       "ru": "R = U/I = 24/2 = 12 Ом.",
-      "en": "R = U/I = 24/2 = 12 Ом.",
+      "en": "R = U/I = 24/2 = 12 Ω.",
       "kk": "R = U/I = 24/2 = 12 Ом."
     },
     "hint": {
@@ -16668,7 +16668,7 @@ const TASKS_DATABASE_EXT = [
       "en": [
         "Volt",
         "Ampere",
-        "Ом",
+        "Ω",
         "Watt"
       ],
       "kk": [
@@ -16681,7 +16681,7 @@ const TASKS_DATABASE_EXT = [
     "correctAnswer": 2,
     "explanation": {
       "ru": "Сопротивление измеряется в омах (Ом).",
-      "en": "Resistance is measured in ohms (Ом).",
+      "en": "Resistance is measured in ohms (Ω).",
       "kk": "Қарсылық оммен өлшенеді (Ом)."
     },
     "hint": {
@@ -16761,14 +16761,14 @@ const TASKS_DATABASE_EXT = [
     "difficulty": 2,
     "question": {
       "ru": "Какое напряжение нужно приложить к проводнику сопротивлением 5 Ом, чтобы сила тока была 3 А?",
-      "en": "What voltage must be applied to a conductor with resistance 5 Ом so that the current strength is 3 А?",
+      "en": "What voltage must be applied to a conductor with resistance 5 Ω so that the current strength is 3 A?",
       "kk": "Ток күші 3 А болуы үшін кедергісі 5 Ом өткізгішке қандай кернеу беру керек?"
     },
     "correctAnswer": 15,
     "tolerance": 0.1,
     "explanation": {
       "ru": "U = I * R = 3 * 5 = 15 В.",
-      "en": "U = I * R = 3 * 5 = 15 В.",
+      "en": "U = I * R = 3 * 5 = 15 V.",
       "kk": "U = I * R = 3 * 5 = 15 В."
     },
     "hint": {
@@ -16885,14 +16885,14 @@ const TASKS_DATABASE_EXT = [
     "difficulty": 2,
     "question": {
       "ru": "Сопротивление проводника 10 Ом, напряжение 20 В. Найдите силу тока.",
-      "en": "Conductor resistance 10 Ом, voltage 20 В. Find the current.",
+      "en": "Conductor resistance 10 Ω, voltage 20 V. Find the current.",
       "kk": "Өткізгіш кедергісі 10 Ом, кернеу 20 В. Ағын табыңыз."
     },
     "correctAnswer": 2,
     "tolerance": 0.1,
     "explanation": {
       "ru": "I = U/R = 20/10 = 2 А.",
-      "en": "I = U/R = 20/10 = 2 А.",
+      "en": "I = U/R = 20/10 = 2 A.",
       "kk": "I = U/R = 20/10 = 2 А."
     },
     "hint": {
@@ -16955,7 +16955,7 @@ const TASKS_DATABASE_EXT = [
     "difficulty": 2,
     "question": {
       "ru": "По графику зависимости I от U определите сопротивление. При U=10 В, I=2 А.",
-      "en": "Using the graph of I versus U, determine the resistance. At U=10 В, I=2 А.",
+      "en": "Using the graph of I versus U, determine the resistance. At U=10 V, I=2 A.",
       "kk": "I және U графигін пайдаланып, кедергіні анықтаңыз. U=10 В, I=2 А мекенжайларында."
     },
     "options": {
@@ -16966,10 +16966,10 @@ const TASKS_DATABASE_EXT = [
         "0,2 Ом"
       ],
       "en": [
-        "5 Ом",
-        "10 Ом",
-        "20 Ом",
-        "0,2 Ом"
+        "5 Ω",
+        "10 Ω",
+        "20 Ω",
+        "0.2 Ω"
       ],
       "kk": [
         "5 Ом",
@@ -16981,7 +16981,7 @@ const TASKS_DATABASE_EXT = [
     "correctAnswer": 0,
     "explanation": {
       "ru": "R = U/I = 10/2 = 5 Ом.",
-      "en": "R = U/I = 10/2 = 5 Ом.",
+      "en": "R = U/I = 10/2 = 5 Ω.",
       "kk": "R = U/I = 10/2 = 5 Ом."
     },
     "hint": {
@@ -17019,14 +17019,14 @@ const TASKS_DATABASE_EXT = [
     "difficulty": 2,
     "question": {
       "ru": "Напряжение 36 В, сопротивление 6 Ом. Найдите силу тока.",
-      "en": "Voltage 36 В, resistance 6 Ом. Find the current.",
+      "en": "Voltage 36 V, resistance 6 Ω. Find the current.",
       "kk": "Кернеу 36 В, кедергі 6 Ом. Ағын табыңыз."
     },
     "correctAnswer": 6,
     "tolerance": 0.1,
     "explanation": {
       "ru": "I = U/R = 36/6 = 6 А.",
-      "en": "I = U/R = 36/6 = 6 А.",
+      "en": "I = U/R = 36/6 = 6 A.",
       "kk": "I = U/R = 36/6 = 6 А."
     },
     "hint": {
@@ -17281,8 +17281,8 @@ const TASKS_DATABASE_EXT = [
         "Сопротивление при 100 °C"
       ],
       "en": [
-        "Conductor resistance with length 1 м and cross-section 1 м²",
-        "Resistance of conductor with mass 1 кг",
+        "Conductor resistance with length 1 m and cross-section 1 m²",
+        "Resistance of conductor with mass 1 kg",
         "Resistance at 0 °C",
         "Resistance at 100 °C"
       ],
@@ -17296,7 +17296,7 @@ const TASKS_DATABASE_EXT = [
     "correctAnswer": 0,
     "explanation": {
       "ru": "Удельное сопротивление — это сопротивление проводника длиной 1 м и площадью поперечного сечения 1 м².",
-      "en": "Resistivity is the resistance of a conductor of length 1 м and cross-sectional area 1 м².",
+      "en": "Resistivity is the resistance of a conductor of length 1 m and cross-sectional area 1 m².",
       "kk": "Меншікті кедергі – ұзындығы 1 м және көлденең қимасының ауданы 1 м² өткізгіштің кедергісі."
     },
     "hint": {
@@ -17312,14 +17312,14 @@ const TASKS_DATABASE_EXT = [
     "difficulty": 2,
     "question": {
       "ru": "Найдите сопротивление медного провода длиной 100 м и сечением 1 мм². ρ = 0,017 Ом·мм²/м.",
-      "en": "Find the resistance of a copper wire with length 100 м and cross-section 1 mm². ρ = 0,017 Ом·мм²/м.",
+      "en": "Find the resistance of a copper wire with length 100 m and cross-section 1 mm². ρ = 0.017 Ω·mm²/m.",
       "kk": "Ұзындығы 100 м және көлденең қимасы 1 мм² болатын мыс сымның кедергісін табыңыз. ρ = 0,017 Ом·мм²/м."
     },
     "correctAnswer": 1.7,
     "tolerance": 0.1,
     "explanation": {
       "ru": "R = ρl/S = 0.017 * 100 / 1 = 1.7 Ом.",
-      "en": "R = ρl/S = 0.017 * 100 / 1 = 1.7 Ом.",
+      "en": "R = ρl/S = 0.017 * 100 / 1 = 1.7 Ω.",
       "kk": "R = ρl/S = 0.017 * 100 / 1 = 1.7 Ом."
     },
     "hint": {
@@ -17373,10 +17373,10 @@ const TASKS_DATABASE_EXT = [
         "Ом·м²/м"
       ],
       "en": [
-        "Ом",
-        "Ом·м",
-        "Ом/м",
-        "Ом·м²/м"
+        "Ω",
+        "Ω·m",
+        "Ω/m",
+        "Ω·m²/m"
       ],
       "kk": [
         "Ом",
@@ -17388,7 +17388,7 @@ const TASKS_DATABASE_EXT = [
     "correctAnswer": 1,
     "explanation": {
       "ru": "В СИ удельное сопротивление измеряется в Ом·м.",
-      "en": "In SI, resistivity is measured in Ом·м.",
+      "en": "In SI, resistivity is measured in Ω·m.",
       "kk": "SI жүйесінде меншікті кедергі Ом·м арқылы өлшенеді."
     },
     "hint": {
@@ -17478,14 +17478,14 @@ const TASKS_DATABASE_EXT = [
     "difficulty": 2,
     "question": {
       "ru": "Сопротивление провода 10 Ом, длина 50 м, сечение 0,5 мм². Найдите удельное сопротивление. Ответ в Ом·мм²/м.",
-      "en": "Wire resistance 10 Ом, length 50 м, cross-section 0,5 mm². Find the resistivity. The answer is in Ом·мм²/м.",
+      "en": "Wire resistance 10 Ω, length 50 m, cross-section 0.5 mm². Find the resistivity. The answer is in Ω·mm²/m.",
       "kk": "Сымның кедергісі 10 Ом, ұзындығы 50 м, көлденең қимасы 0,5 мм². Меншікті кедергіні табыңыз. Жауап Ом·мм²/м ішінде."
     },
     "correctAnswer": 0.1,
     "tolerance": 0.01,
     "explanation": {
       "ru": "ρ = R * S / l = 10 * 0.5 / 50 = 0.1 Ом·мм²/м.",
-      "en": "ρ = R * S / l = 10 * 0.5 / 50 = 0.1 Ом·мм²/м.",
+      "en": "ρ = R * S / l = 10 * 0.5 / 50 = 0.1 Ω·mm²/m.",
       "kk": "ρ = R * S / l = 10 * 0.5 / 50 = 0.1 Ом·мм²/м."
     },
     "hint": {
@@ -17612,14 +17612,14 @@ const TASKS_DATABASE_EXT = [
     "difficulty": 2,
     "question": {
       "ru": "Найдите сопротивление алюминиевого провода длиной 200 м и сечением 2 мм². ρ = 0,028 Ом·мм²/м.",
-      "en": "Find the resistance of an aluminum wire with length 200 м and cross section 2 mm². ρ = 0,028 Ом·мм²/м.",
+      "en": "Find the resistance of an aluminum wire with length 200 m and cross section 2 mm². ρ = 0.028 Ω·mm²/m.",
       "kk": "Ұзындығы 200 м және көлденең қимасы 2 мм² болатын алюминий сымның кедергісін табыңыз. ρ = 0,028 Ом·мм²/м."
     },
     "correctAnswer": 2.8,
     "tolerance": 0.1,
     "explanation": {
       "ru": "R = ρl/S = 0.028 * 200 / 2 = 2.8 Ом.",
-      "en": "R = ρl/S = 0.028 * 200 / 2 = 2.8 Ом.",
+      "en": "R = ρl/S = 0.028 * 200 / 2 = 2.8 Ω.",
       "kk": "R = ρl/S = 0.028 * 200 / 2 = 2.8 Ом."
     },
     "hint": {
@@ -17736,7 +17736,7 @@ const TASKS_DATABASE_EXT = [
     "difficulty": 2,
     "question": {
       "ru": "Что означает запись ρ = 0,017 Ом·мм²/м для меди?",
-      "en": "What does the notation ρ = 0,017 Ом·мм²/м mean for copper?",
+      "en": "What does the notation ρ = 0.017 Ω·mm²/m mean for copper?",
       "kk": "ρ = 0,017 Ом·мм²/м белгісі мыс үшін нені білдіреді?"
     },
     "options": {
@@ -17747,10 +17747,10 @@ const TASKS_DATABASE_EXT = [
         "Сопротивление меди равно 0,017 Ом"
       ],
       "en": [
-        "The resistance of a copper wire with a length of 1 м and a cross-section of 1 mm² is equal to 0,017 Ом",
-        "Copper weighs 0,017 кг",
+        "The resistance of a copper wire with a length of 1 m and a cross-section of 1 mm² is equal to 0.017 Ω",
+        "Copper weighs 0.017 kg",
         "Copper melts at 0,017 °C",
-        "The resistance of copper is 0,017 Ом"
+        "The resistance of copper is 0.017 Ω"
       ],
       "kk": [
         "Ұзындығы 1 м және көлденең қимасы 1 мм² болатын мыс сымның кедергісі 0,017 Ом тең.",
@@ -17778,14 +17778,14 @@ const TASKS_DATABASE_EXT = [
     "difficulty": 2,
     "question": {
       "ru": "Сопротивление нихромовой проволоки 20 Ом, длина 2 м. Найдите сечение. ρ = 1,1 Ом·мм²/м.",
-      "en": "Resistance of nichrome wire 20 Ом, length 2 м. Find the section. ρ = 1,1 Ом·мм²/м.",
+      "en": "Resistance of nichrome wire 20 Ω, length 2 m. Find the section. ρ = 1.1 Ω·mm²/m.",
       "kk": "Нихромды сымның кедергісі 20 Ом, ұзындығы 2 м. Бөлімді табыңыз. ρ = 1,1 Ом·мм²/м."
     },
     "correctAnswer": 0.11,
     "tolerance": 0.01,
     "explanation": {
       "ru": "S = ρl / R = 1.1 * 2 / 20 = 0.11 мм².",
-      "en": "S = ρl / R = 1.1 * 2 / 20 = 0.11 мм².",
+      "en": "S = ρl / R = 1.1 * 2 / 20 = 0.11 mm².",
       "kk": "S = ρl / R = 1.1 * 2 / 20 = 0.11 мм²."
     },
     "hint": {
@@ -17848,14 +17848,14 @@ const TASKS_DATABASE_EXT = [
     "difficulty": 2,
     "question": {
       "ru": "Два резистора 2 Ом и 3 Ом соединены последовательно. Найдите общее сопротивление.",
-      "en": "Two resistors 2 Ом and 3 Ом are connected in series. Find the total resistance.",
+      "en": "Two resistors 2 Ω and 3 Ω are connected in series. Find the total resistance.",
       "kk": "Екі резистор 2 Ом және 3 Ом тізбектей қосылған. Толық кедергіні табыңыз."
     },
     "correctAnswer": 5,
     "tolerance": 0.1,
     "explanation": {
       "ru": "R = R₁ + R₂ = 2 + 3 = 5 Ом.",
-      "en": "R = R₁ + R₂ = 2 + 3 = 5 Ом.",
+      "en": "R = R₁ + R₂ = 2 + 3 = 5 Ω.",
       "kk": "R = R₁ + R₂ = 2 + 3 = 5 Ом."
     },
     "hint": {
@@ -17982,14 +17982,14 @@ const TASKS_DATABASE_EXT = [
     "difficulty": 2,
     "question": {
       "ru": "Два резистора 4 Ом и 6 Ом соединены параллельно. Найдите общее сопротивление.",
-      "en": "Two resistors 4 Ом and 6 Ом are connected in parallel. Find the total resistance.",
+      "en": "Two resistors 4 Ω and 6 Ω are connected in parallel. Find the total resistance.",
       "kk": "Екі резистор 4 Ом және 6 Ом параллель қосылған. Толық кедергіні табыңыз."
     },
     "correctAnswer": 2.4,
     "tolerance": 0.1,
     "explanation": {
       "ru": "R = (4*6)/(4+6) = 24/10 = 2.4 Ом.",
-      "en": "R = (4*6)/(4+6) = 24/10 = 2.4 Ом.",
+      "en": "R = (4*6)/(4+6) = 24/10 = 2.4 Ω.",
       "kk": "R = (4*6)/(4+6) = 24/10 = 2.4 Ом."
     },
     "hint": {
@@ -18106,14 +18106,14 @@ const TASKS_DATABASE_EXT = [
     "difficulty": 2,
     "question": {
       "ru": "Три резистора по 6 Ом соединены параллельно. Найдите общее сопротивление.",
-      "en": "Three resistors 6 Ом are connected in parallel. Find the total resistance.",
+      "en": "Three resistors 6 Ω are connected in parallel. Find the total resistance.",
       "kk": "Үш резистор 6 Ом параллель қосылған. Толық кедергіні табыңыз."
     },
     "correctAnswer": 2,
     "tolerance": 0.1,
     "explanation": {
       "ru": "R = R₁/n = 6/3 = 2 Ом.",
-      "en": "R = R₁/n = 6/3 = 2 Ом.",
+      "en": "R = R₁/n = 6/3 = 2 Ω.",
       "kk": "R = R₁/n = 6/3 = 2 Ом."
     },
     "hint": {
@@ -18240,14 +18240,14 @@ const TASKS_DATABASE_EXT = [
     "difficulty": 2,
     "question": {
       "ru": "В цепи последовательно соединены резисторы 5 Ом и 10 Ом. Напряжение на первом 10 В. Найдите напряжение на втором.",
-      "en": "Resistors 5 Ом and 10 Ом are connected in series in the circuit. The voltage at the first 10 В. Find the voltage on the second one.",
+      "en": "Resistors 5 Ω and 10 Ω are connected in series in the circuit. The voltage at the first 10 V. Find the voltage on the second one.",
       "kk": "Резисторлар 5 Ом және 10 Ом тізбекте тізбектей қосылған. Бірінші 10 В кернеуі. Екінші кернеуді табыңыз."
     },
     "correctAnswer": 20,
     "tolerance": 0.1,
     "explanation": {
       "ru": "U₁/U₂ = R₁/R₂, значит U₂ = U₁ * R₂ / R₁ = 10 * 10 / 5 = 20 В.",
-      "en": "U₁/U₂ = R₁/R₂, means U₂ = U₁ * R₂ / R₁ = 10 * 10 / 5 = 20 В.",
+      "en": "U₁/U₂ = R₁/R₂, means U₂ = U₁ * R₂ / R₁ = 10 * 10 / 5 = 20 V.",
       "kk": "U₁/U₂ = R₁/R₂,  U₂ = U₁ * R₂ / R₁ = 10 * 10 / 5 = 20 В дегенді білдіреді."
     },
     "hint": {
@@ -18364,7 +18364,7 @@ const TASKS_DATABASE_EXT = [
     "difficulty": 2,
     "question": {
       "ru": "В цепи с параллельным соединением двух резисторов R₁ = 2 Ом, R₂ = 4 Ом. Во сколько раз ток в первом резисторе больше, чем во втором?",
-      "en": "In a circuit with a parallel connection of two resistors R₁ = 2 Ом, R₂ = 4 Ом. How many times is the current in the first resistor greater than in the second?",
+      "en": "In a circuit with a parallel connection of two resistors R₁ = 2 Ω, R₂ = 4 Ω. How many times is the current in the first resistor greater than in the second?",
       "kk": "Екі резистордың R₁ = 2 Ом, R₂ = 4 Ом параллель қосылымы бар тізбекте. Бірінші резистордағы ток күші екіншісінен неше есе артық?"
     },
     "options": {
@@ -18411,14 +18411,14 @@ const TASKS_DATABASE_EXT = [
     "difficulty": 2,
     "question": {
       "ru": "Последовательно соединены резисторы 2 Ом, 3 Ом и 5 Ом. Найдите общее сопротивление.",
-      "en": "Resistors 2 Ом, 3 Ом and 5 Ом are connected in series. Find the total resistance.",
+      "en": "Resistors 2 Ω, 3 Ω and 5 Ω are connected in series. Find the total resistance.",
       "kk": "2 Ом, 3 Ом және 5 Ом резисторлары тізбектей қосылған. Толық кедергіні табыңыз."
     },
     "correctAnswer": 10,
     "tolerance": 0.1,
     "explanation": {
       "ru": "R = 2 + 3 + 5 = 10 Ом.",
-      "en": "R = 2 + 3 + 5 = 10 Ом.",
+      "en": "R = 2 + 3 + 5 = 10 Ω.",
       "kk": "R = 2 + 3 + 5 = 10 Ом."
     },
     "hint": {
@@ -18481,14 +18481,14 @@ const TASKS_DATABASE_EXT = [
     "difficulty": 2,
     "question": {
       "ru": "Сила тока 2 А, напряжение 220 В. Найдите мощность прибора.",
-      "en": "Current strength 2 А, voltage 220 В. Find the power of the device.",
+      "en": "Current strength 2 A, voltage 220 V. Find the power of the device.",
       "kk": "Ток күші 2 А, кернеу 220 В. Құрылғының қуатын табыңыз."
     },
     "correctAnswer": 440,
     "tolerance": 1,
     "explanation": {
       "ru": "P = UI = 220 * 2 = 440 Вт.",
-      "en": "P = UI = 220 * 2 = 440 Вт.",
+      "en": "P = UI = 220 * 2 = 440 W.",
       "kk": "P = UI = 220 * 2 = 440 Вт."
     },
     "hint": {
@@ -18509,14 +18509,14 @@ const TASKS_DATABASE_EXT = [
     "difficulty": 2,
     "question": {
       "ru": "Какую работу совершит ток мощностью 6 Вт за 60 с?",
-      "en": "What work will be done by a current of power 6 Вт for 60 с?",
+      "en": "What work will be done by a current of power 6 W for 60 s?",
       "kk": "60 с үшін 6 Вт қуат тогы қандай жұмыс жасайды?"
     },
     "correctAnswer": 360,
     "tolerance": 1,
     "explanation": {
       "ru": "A = Pt = 6 * 60 = 360 Дж.",
-      "en": "A = Pt = 6 * 60 = 360 Дж.",
+      "en": "A = Pt = 6 * 60 = 360 J.",
       "kk": "A = Pt = 6 * 60 = 360 Дж."
     },
     "hint": {
@@ -18605,7 +18605,7 @@ const TASKS_DATABASE_EXT = [
     "correctAnswer": 1,
     "explanation": {
       "ru": "Работа тока измеряется в джоулях (Дж).",
-      "en": "Current work is measured in joules (Дж).",
+      "en": "Current work is measured in joules (J).",
       "kk": "Ағымдағы жұмыс джоульмен өлшенеді (Дж)."
     },
     "hint": {
@@ -18675,19 +18675,19 @@ const TASKS_DATABASE_EXT = [
     "difficulty": 2,
     "question": {
       "ru": "Прибор мощностью 100 Вт работал 5 часов. Какую работу он совершил? Ответ в кВт·ч.",
-      "en": "The device with a power of 100 Вт worked for 5 hours. What work did he do? The answer is in кВт·ч.",
+      "en": "The device with a power of 100 W worked for 5 hours. What work did he do? The answer is in kW·h.",
       "kk": "100 Вт қуаты бар құрылғы 5 сағат жұмыс істеді. Ол қандай жұмыс істеді? Жауап кВт·ч ішінде."
     },
     "correctAnswer": 0.5,
     "tolerance": 0.01,
     "explanation": {
       "ru": "A = P*t = 0.1 кВт * 5 ч = 0.5 кВт·ч.",
-      "en": "A = P*t = 0.1 кВт * 5 ч = 0.5 кВт·ч.",
+      "en": "A = P*t = 0.1 kW * 5 h = 0.5 kW·h.",
       "kk": "A = P*t = 0.1 кВт * 5 ч = 0.5 кВт·ч."
     },
     "hint": {
       "ru": "Переведи мощность в кВт.",
-      "en": "Convert the power to кВт.",
+      "en": "Convert the power to kW.",
       "kk": "Қуатты кВт түріне түрлендіріңіз."
     },
     "formula": {
@@ -18771,12 +18771,12 @@ const TASKS_DATABASE_EXT = [
     "correctAnswer": 1,
     "explanation": {
       "ru": "Мощность измеряется в ваттах (Вт).",
-      "en": "Power is measured in watts (Вт).",
+      "en": "Power is measured in watts (W).",
       "kk": "Қуат ваттпен өлшенеді (Вт)."
     },
     "hint": {
       "ru": "1 Вт = 1 Дж/с.",
-      "en": "1 Вт = 1 Дж/с.",
+      "en": "1 W = 1 J/s.",
       "kk": "1 Вт = 1 Дж/с."
     }
   },
@@ -18787,14 +18787,14 @@ const TASKS_DATABASE_EXT = [
     "difficulty": 2,
     "question": {
       "ru": "Напряжение 10 В, сопротивление 5 Ом. Найдите мощность.",
-      "en": "Voltage 10 В, resistance 5 Ом. Find the power.",
+      "en": "Voltage 10 V, resistance 5 Ω. Find the power.",
       "kk": "Кернеу 10 В, кедергі 5 Ом. Қуатты табыңыз."
     },
     "correctAnswer": 20,
     "tolerance": 0.1,
     "explanation": {
       "ru": "I = U/R = 2 А, P = UI = 10 * 2 = 20 Вт.",
-      "en": "I = U/R = 2 А, P = UI = 10 * 2 = 20 Вт.",
+      "en": "I = U/R = 2 A, P = UI = 10 * 2 = 20 W.",
       "kk": "I = U/R = 2 А, P = UI = 10 * 2 = 20 Вт."
     },
     "hint": {
@@ -18815,18 +18815,18 @@ const TASKS_DATABASE_EXT = [
     "difficulty": 2,
     "question": {
       "ru": "1 кВт·ч = 3,6·10⁶ Дж.",
-      "en": "1 кВт·ч = 3,6·10⁶ Дж.",
+      "en": "1 kW·h = 3.6·10⁶ J.",
       "kk": "1 кВт·ч = 3,6·10⁶ Дж."
     },
     "correctAnswer": true,
     "explanation": {
       "ru": "1 кВт·ч = 1000 Вт * 3600 с = 3 600 000 Дж.",
-      "en": "1 кВт·ч = 1000 Вт * 3600 с = 3 600 000 Дж.",
+      "en": "1 kW·h = 1000 W * 3600 s = 3 600 000 J.",
       "kk": "1 кВт·ч = 1000 Вт * 3600 с = 3 600 000 Дж."
     },
     "hint": {
       "ru": "Переведи кВт в Вт, часы в секунды.",
-      "en": "Convert кВт to Вт, hours to seconds.",
+      "en": "Convert kW to W, hours to seconds.",
       "kk": "кВт Вт, сағаттарды секундқа түрлендіру."
     }
   },
@@ -18911,14 +18911,14 @@ const TASKS_DATABASE_EXT = [
     "difficulty": 2,
     "question": {
       "ru": "Сила тока 0,5 А, напряжение 12 В. Какую работу совершит ток за 10 с?",
-      "en": "Current strength 0,5 А, voltage 12 В. How much work will the current do in 10 с?",
+      "en": "Current strength 0.5 A, voltage 12 V. How much work will the current do in 10 s?",
       "kk": "Ток күші 0,5 А, кернеу 12 В. 10 с ішінде ток қанша жұмыс істейді?"
     },
     "correctAnswer": 60,
     "tolerance": 1,
     "explanation": {
       "ru": "A = UIt = 12 * 0.5 * 10 = 60 Дж.",
-      "en": "A = UIt = 12 * 0.5 * 10 = 60 Дж.",
+      "en": "A = UIt = 12 * 0.5 * 10 = 60 J.",
       "kk": "A = UIt = 12 * 0.5 * 10 = 60 Дж."
     },
     "hint": {
@@ -19014,10 +19014,10 @@ const TASKS_DATABASE_EXT = [
         "Напряжение 1 В"
       ],
       "en": [
-        "Power at which work 1 Дж is performed in 1 с",
-        "Work 1 Дж",
-        "Current 1 А",
-        "Voltage 1 В"
+        "Power at which work 1 J is performed in 1 s",
+        "Work 1 J",
+        "Current 1 A",
+        "Voltage 1 V"
       ],
       "kk": [
         "1 Дж жұмыс 1 с ішінде орындалатын қуат",
@@ -19029,7 +19029,7 @@ const TASKS_DATABASE_EXT = [
     "correctAnswer": 0,
     "explanation": {
       "ru": "1 Вт = 1 Дж/с.",
-      "en": "1 Вт = 1 Дж/с.",
+      "en": "1 W = 1 J/s.",
       "kk": "1 Вт = 1 Дж/с."
     },
     "hint": {
@@ -19045,14 +19045,14 @@ const TASKS_DATABASE_EXT = [
     "difficulty": 2,
     "question": {
       "ru": "Какую работу совершит ток мощностью 2 кВт за 3 часа? Ответ в кВт·ч.",
-      "en": "How much work will a current of power 2 кВт do in 3 hours? The answer is in кВт·ч.",
+      "en": "How much work will a current of power 2 kW do in 3 hours? The answer is in kW·h.",
       "kk": "2 кВт қуат тогы 3 сағатта қанша жұмыс істейді? Жауап кВт·ч ішінде."
     },
     "correctAnswer": 6,
     "tolerance": 0.1,
     "explanation": {
       "ru": "A = P*t = 2 кВт * 3 ч = 6 кВт·ч.",
-      "en": "A = P*t = 2 кВт * 3 ч = 6 кВт·ч.",
+      "en": "A = P*t = 2 kW * 3 h = 6 kW·h.",
       "kk": "A = P*t = 2 кВт * 3 ч = 6 кВт·ч."
     },
     "hint": {
@@ -19147,14 +19147,14 @@ const TASKS_DATABASE_EXT = [
     "difficulty": 2,
     "question": {
       "ru": "Через резистор R = 5 Ом течёт ток 2 А в течение 10 с. Сколько теплоты выделится?",
-      "en": "Current 2 А flows through resistor R = 5 Ом for 10 с. How much heat will be released?",
+      "en": "Current 2 A flows through resistor R = 5 Ω for 10 s. How much heat will be released?",
       "kk": "2 А ток 10 с үшін R = 5 Ом резисторы арқылы өтеді. Қанша жылу бөлінеді?"
     },
     "correctAnswer": 200,
     "tolerance": 1,
     "explanation": {
       "ru": "Q = I²Rt = 4 * 5 * 10 = 200 Дж.",
-      "en": "Q = I²Rt = 4 * 5 * 10 = 200 Дж.",
+      "en": "Q = I²Rt = 4 * 5 * 10 = 200 J.",
       "kk": "Q = I²Rt = 4 * 5 * 10 = 200 Дж."
     },
     "hint": {
@@ -19313,14 +19313,14 @@ const TASKS_DATABASE_EXT = [
     "difficulty": 2,
     "question": {
       "ru": "Какое количество теплоты выделится в проводнике сопротивлением 10 Ом за 1 минуту при силе тока 2 А?",
-      "en": "What amount of heat will be released in a conductor with resistance 10 Ом in 1 minute at a current strength 2 А?",
+      "en": "What amount of heat will be released in a conductor with resistance 10 Ω in 1 minute at a current strength 2 A?",
       "kk": "Кедергісі 10 Ом өткізгіште ток күші 2 А кезінде 1 минутта қандай жылу мөлшері бөлінеді?"
     },
     "correctAnswer": 2400,
     "tolerance": 10,
     "explanation": {
       "ru": "Q = I²Rt = 4 * 10 * 60 = 2400 Дж.",
-      "en": "Q = I²Rt = 4 * 10 * 60 = 2400 Дж.",
+      "en": "Q = I²Rt = 4 * 10 * 60 = 2400 J.",
       "kk": "Q = I²Rt = 4 * 10 * 60 = 2400 Дж."
     },
     "hint": {
@@ -19405,14 +19405,14 @@ const TASKS_DATABASE_EXT = [
     "difficulty": 2,
     "question": {
       "ru": "Напряжение на проводнике 12 В, сопротивление 4 Ом, время 5 с. Найдите количество теплоты.",
-      "en": "Voltage on the conductor 12 В, resistance 4 Ом, time 5 с. Find the amount of heat.",
+      "en": "Voltage on the conductor 12 V, resistance 4 Ω, time 5 s. Find the amount of heat.",
       "kk": "Өткізгіштегі кернеу 12 В, кедергі 4 Ом, уақыт 5 с. Жылу мөлшерін табыңыз."
     },
     "correctAnswer": 180,
     "tolerance": 1,
     "explanation": {
       "ru": "I = U/R = 3 А, Q = I²Rt = 9 * 4 * 5 = 180 Дж.",
-      "en": "I = U/R = 3 А, Q = I²Rt = 9 * 4 * 5 = 180 Дж.",
+      "en": "I = U/R = 3 A, Q = I²Rt = 9 * 4 * 5 = 180 J.",
       "kk": "I = U/R = 3 А, Q = I²Rt = 9 * 4 * 5 = 180 Дж."
     },
     "hint": {
@@ -19571,14 +19571,14 @@ const TASKS_DATABASE_EXT = [
     "difficulty": 2,
     "question": {
       "ru": "Какое количество теплоты выделится в проводнике сопротивлением 20 Ом за 30 с при силе тока 0,5 А?",
-      "en": "What amount of heat will be released in a conductor with resistance 20 Ом per 30 с at a current strength 0,5 А?",
+      "en": "What amount of heat will be released in a conductor with resistance 20 Ω per 30 s at a current strength 0.5 A?",
       "kk": "Кедергісі 20 Ом өткізгіште 30 с ток күші 0,5 А кезінде қандай жылу мөлшері бөлінеді?"
     },
     "correctAnswer": 150,
     "tolerance": 1,
     "explanation": {
       "ru": "Q = I²Rt = 0.25 * 20 * 30 = 150 Дж.",
-      "en": "Q = I²Rt = 0.25 * 20 * 30 = 150 Дж.",
+      "en": "Q = I²Rt = 0.25 * 20 * 30 = 150 J.",
       "kk": "Q = I²Rt = 0.25 * 20 * 30 = 150 Дж."
     },
     "hint": {
@@ -19647,7 +19647,7 @@ const TASKS_DATABASE_EXT = [
     "correctAnswer": 1,
     "explanation": {
       "ru": "Количество теплоты измеряется в джоулях (Дж).",
-      "en": "The amount of heat is measured in joules (Дж).",
+      "en": "The amount of heat is measured in joules (J).",
       "kk": "Жылу мөлшері джоульмен өлшенеді (Дж)."
     },
     "hint": {
@@ -19737,14 +19737,14 @@ const TASKS_DATABASE_EXT = [
     "difficulty": 2,
     "question": {
       "ru": "При силе тока 3 А и сопротивлении 2 Ом за 10 с выделится...",
-      "en": "With current 3 А and resistance 2 Ом for 10 с will be released ...",
+      "en": "With current 3 A and resistance 2 Ω for 10 s will be released ...",
       "kk": "Ағымдағы 3 А және 10 с үшін 2 Ом кедергісі ... шығарылады."
     },
     "correctAnswer": 180,
     "tolerance": 1,
     "explanation": {
       "ru": "Q = 9 * 2 * 10 = 180 Дж.",
-      "en": "Q = 9 * 2 * 10 = 180 Дж.",
+      "en": "Q = 9 * 2 * 10 = 180 J.",
       "kk": "Q = 9 * 2 * 10 = 180 Дж."
     },
     "hint": {
@@ -19956,14 +19956,14 @@ const TASKS_DATABASE_EXT = [
     "difficulty": 2,
     "question": {
       "ru": "Сопротивление проводника при 0 °C равно 20 Ом. Температурный коэффициент α = 0,004 К⁻¹. Каково сопротивление при 50 °C?",
-      "en": "The conductor resistance at 0 °C is 20 Ом. Temperature coefficient α = 0,004 К⁻¹. What is the resistance at 50 °C?",
+      "en": "The conductor resistance at 0 °C is 20 Ω. Temperature coefficient α = 0.004 K⁻¹. What is the resistance at 50 °C?",
       "kk": "0 °C кезінде өткізгіш кедергісі 20 Ом. Температура коэффициенті α = 0,004 К⁻¹. 50 °C кедергісі қандай?"
     },
     "correctAnswer": 24,
     "tolerance": 0.1,
     "explanation": {
       "ru": "R = R₀(1 + αt) = 20 * (1 + 0.004 * 50) = 20 * 1.2 = 24 Ом.",
-      "en": "R = R₀(1 + αt) = 20 * (1 + 0.004 * 50) = 20 * 1.2 = 24 Ом.",
+      "en": "R = R₀(1 + αt) = 20 * (1 + 0.004 * 50) = 20 * 1.2 = 24 Ω.",
       "kk": "R = R₀(1 + αt) = 20 * (1 + 0.004 * 50) = 20 * 1.2 = 24 Ом."
     },
     "hint": {
@@ -19995,7 +19995,7 @@ const TASKS_DATABASE_EXT = [
         "Коэффициент теплопроводности"
       ],
       "en": [
-        "Relative change in resistance when heated by 1 К",
+        "Relative change in resistance when heated by 1 K",
         "Temperature change",
         "Change resistance",
         "Thermal conductivity coefficient"
@@ -20010,7 +20010,7 @@ const TASKS_DATABASE_EXT = [
     "correctAnswer": 0,
     "explanation": {
       "ru": "α показывает относительное изменение сопротивления при изменении температуры на 1 К.",
-      "en": "α shows the relative change in resistance as the temperature changes by 1 К.",
+      "en": "α shows the relative change in resistance as the temperature changes by 1 K.",
       "kk": "α температура 1 К өзгерген кезде қарсылықтың салыстырмалы өзгеруін көрсетеді."
     },
     "hint": {
@@ -20090,14 +20090,14 @@ const TASKS_DATABASE_EXT = [
     "difficulty": 2,
     "question": {
       "ru": "При 0 °C сопротивление 10 Ом. При 100 °C стало 14 Ом. Найдите α.",
-      "en": "At 0 °C the resistance is 10 Ом. With 100 °C it became 14 Ом. Find α.",
+      "en": "At 0 °C the resistance is 10 Ω. With 100 °C it became 14 Ω. Find α.",
       "kk": "0 °C кезінде кедергі 10 Ом болады. 100 °C көмегімен ол 14 Ом болды. α табыңыз."
     },
     "correctAnswer": 0.004,
     "tolerance": 0.0001,
     "explanation": {
       "ru": "α = (R - R₀)/(R₀ * t) = (14 - 10)/(10 * 100) = 0.004 К⁻¹.",
-      "en": "α = (R - R₀)/(R₀ * t) = (14 - 10)/(10 * 100) = 0.004 К⁻¹.",
+      "en": "α = (R - R₀)/(R₀ * t) = (14 - 10)/(10 * 100) = 0.004 K⁻¹.",
       "kk": "α = (R - R₀)/(R₀ * t) = (14 - 10)/(10 * 100) = 0.004 К⁻¹."
     },
     "hint": {
@@ -20298,14 +20298,14 @@ const TASKS_DATABASE_EXT = [
     "difficulty": 2,
     "question": {
       "ru": "Сопротивление при 0 °C равно 50 Ом, α = 0,005 К⁻¹. Каково сопротивление при 20 °C?",
-      "en": "The resistance at 0 °C is 50 Ом, α = 0,005 К⁻¹. What is the resistance at 20 °C?",
+      "en": "The resistance at 0 °C is 50 Ω, α = 0.005 K⁻¹. What is the resistance at 20 °C?",
       "kk": "0 °C кедергісі 50 Ом, α = 0,005 К⁻¹ болып табылады. 20 °C кедергісі қандай?"
     },
     "correctAnswer": 55,
     "tolerance": 0.1,
     "explanation": {
       "ru": "R = 50 * (1 + 0.005 * 20) = 50 * 1.1 = 55 Ом.",
-      "en": "R = 50 * (1 + 0.005 * 20) = 50 * 1.1 = 55 Ом.",
+      "en": "R = 50 * (1 + 0.005 * 20) = 50 * 1.1 = 55 Ω.",
       "kk": "R = 50 * (1 + 0.005 * 20) = 50 * 1.1 = 55 Ом."
     },
     "hint": {
@@ -20448,7 +20448,7 @@ const TASKS_DATABASE_EXT = [
     "correctAnswer": 1,
     "explanation": {
       "ru": "У свинца критическая температура 7,3 К, у ртути 4,12 К.",
-      "en": "Lead has a critical temperature 7,3 К, mercury has a critical temperature 4,12 К.",
+      "en": "Lead has a critical temperature 7.3 K, mercury has a critical temperature 4.12 K.",
       "kk": "Қорғасынның 7,3 К критикалық температурасы, сынаптың 4,12 К критикалық температурасы бар."
     },
     "hint": {
@@ -20470,7 +20470,7 @@ const TASKS_DATABASE_EXT = [
     "correctAnswer": false,
     "explanation": {
       "ru": "Сверхпроводимость была открыта при очень низких температурах (около 4 К).",
-      "en": "Superconductivity was discovered at very low temperatures (around 4 К).",
+      "en": "Superconductivity was discovered at very low temperatures (around 4 K).",
       "kk": "Асқын өткізгіштік өте төмен температурада (4 К шамасында) ашылды."
     },
     "hint": {
@@ -20772,14 +20772,14 @@ const TASKS_DATABASE_EXT = [
     "difficulty": 2,
     "question": {
       "ru": "Мощность лампы 100 Вт, напряжение 220 В. Найдите силу тока. (Ответ округли до сотых)",
-      "en": "Lamp power 100 Вт, voltage 220 В. Find the current. (Answer rounded to hundredths)",
+      "en": "Lamp power 100 W, voltage 220 V. Find the current. (Answer rounded to hundredths)",
       "kk": "Шамның қуаты 100 Вт, кернеу 220 В. Ағын табыңыз. (Жауап жүздікке дейін дөңгелектенеді)"
     },
     "correctAnswer": 0.45,
     "tolerance": 0.01,
     "explanation": {
       "ru": "I = P/U = 100/220 ≈ 0.45 А.",
-      "en": "I = P/U = 100/220 ≈ 0.45 А.",
+      "en": "I = P/U = 100/220 ≈ 0.45 A.",
       "kk": "I = P/U = 100/220 ≈ 0.45 А."
     },
     "hint": {
@@ -21002,14 +21002,14 @@ const TASKS_DATABASE_EXT = [
     "difficulty": 2,
     "question": {
       "ru": "Сопротивление нагревателя 50 Ом, напряжение 220 В. Найдите мощность. (Ответ округли до целого)",
-      "en": "Heater resistance 50 Ом, voltage 220 В. Find the power. (Answer rounded to the nearest whole number)",
+      "en": "Heater resistance 50 Ω, voltage 220 V. Find the power. (Answer rounded to the nearest whole number)",
       "kk": "Қыздырғыш кедергісі 50 Ом, кернеу 220 В. Қуатты табыңыз. (Жауап ең жақын бүтін санға дейін дөңгелектенеді)"
     },
     "correctAnswer": 968,
     "tolerance": 1,
     "explanation": {
       "ru": "P = U²/R = 220² / 50 = 48400 / 50 = 968 Вт.",
-      "en": "P = U²/R = 220² / 50 = 48400 / 50 = 968 Вт.",
+      "en": "P = U²/R = 220² / 50 = 48400 / 50 = 968 W.",
       "kk": "P = U²/R = 220² / 50 = 48400 / 50 = 968 Вт."
     },
     "hint": {
@@ -21210,14 +21210,14 @@ const TASKS_DATABASE_EXT = [
     "difficulty": 2,
     "question": {
       "ru": "При k = 0,00001 кг/Кл, I = 2 А и t = 100 с какая масса выделится?",
-      "en": "At k = 0,00001 кг/Кл, I = 2 А and t = 100 с what mass will be released?",
+      "en": "At k = 0.00001 kg/C, I = 2 A and t = 100 s what mass will be released?",
       "kk": "k = 0,00001 кг/Кл, I = 2 А және t = 100 с кезінде қандай масса бөлінеді?"
     },
     "correctAnswer": 0.002,
     "tolerance": 0.0001,
     "explanation": {
       "ru": "m = kIt = 0.00001 * 2 * 100 = 0.002 кг.",
-      "en": "m = kIt = 0.00001 * 2 * 100 = 0.002 кг.",
+      "en": "m = kIt = 0.00001 * 2 * 100 = 0.002 kg.",
       "kk": "m = kIt = 0.00001 * 2 * 100 = 0.002 кг."
     },
     "hint": {
@@ -21345,7 +21345,7 @@ const TASKS_DATABASE_EXT = [
         "Число Авогадро"
       ],
       "en": [
-        "Mass of substance released during the passage of 1 Кл",
+        "Mass of substance released during the passage of 1 C",
         "Electron charge",
         "Mass of one atom",
         "Avogadro's number"
@@ -21360,7 +21360,7 @@ const TASKS_DATABASE_EXT = [
     "correctAnswer": 0,
     "explanation": {
       "ru": "k — масса вещества, выделяющегося при прохождении заряда 1 Кл.",
-      "en": "k is the mass of the substance released during the passage of the charge 1 Кл.",
+      "en": "k is the mass of the substance released during the passage of the charge 1 C.",
       "kk": "k – зарядтың 1 Кл өтуі кезінде бөлінетін заттың массасы."
     },
     "hint": {
@@ -21376,19 +21376,19 @@ const TASKS_DATABASE_EXT = [
     "difficulty": 2,
     "question": {
       "ru": "Сколько меди выделится при электролизе за 1 час при силе тока 2 А? k = 0,329 мг/Кл. Ответ в граммах.",
-      "en": "How much copper will be released during electrolysis in 1 hour at a current strength of 2 А? k = 0,329 мг/Кл. The answer is in grams.",
+      "en": "How much copper will be released during electrolysis in 1 hour at a current strength of 2 A? k = 0.329 mg/C. The answer is in grams.",
       "kk": "Электролиз кезінде 1 сағатта 2 А ток күші кезінде қанша мыс бөлінеді? k = 0,329 мг/Кл. Жауап граммен берілген."
     },
     "correctAnswer": 2.37,
     "tolerance": 0.1,
     "explanation": {
       "ru": "m = kIt = 0.329e-3 г/Кл * 2 А * 3600 с = 2.3688 г ≈ 2.37 г.",
-      "en": "m = kIt = 0.329e-3 г/Кл * 2 А * 3600 с = 2.3688 г ≈ 2.37 г.",
+      "en": "m = kIt = 0.329e-3 g/C * 2 A * 3600 s = 2.3688 g ≈ 2.37 g.",
       "kk": "m = kIt = 0.329e-3 г/Кл * 2 А * 3600 с = 2.3688 г ≈ 2.37 г."
     },
     "hint": {
       "ru": "Переведи время в секунды и k в г/Кл.",
-      "en": "Convert time to seconds and k to г/Кл.",
+      "en": "Convert time to seconds and k to g/C.",
       "kk": "Уақытты секундтарға және k мәнін г/Кл түріне түрлендіру."
     },
     "formula": {
@@ -21606,14 +21606,14 @@ const TASKS_DATABASE_EXT = [
     "difficulty": 2,
     "question": {
       "ru": "Какой заряд пройдет через электролит, если выделится 1 г меди? k = 0,329 мг/Кл. Ответ в Кл.",
-      "en": "What charge will pass through the electrolyte if 1 г copper is released? k = 0,329 мг/Кл. The answer is in Кл.",
+      "en": "What charge will pass through the electrolyte if 1 g copper is released? k = 0.329 mg/C. The answer is in C.",
       "kk": "1 г мыс бөлінсе, электролит арқылы қандай заряд өтеді? k = 0,329 мг/Кл. Жауап Кл ішінде."
     },
     "correctAnswer": 3040,
     "tolerance": 10,
     "explanation": {
       "ru": "q = m / k = 1 г / 0.000329 г/Кл ≈ 3040 Кл.",
-      "en": "q = m / k = 1 g / 0.000329 г/Кл ≈ 3040 Кл.",
+      "en": "q = m / k = 1 g / 0.000329 g/C ≈ 3040 C.",
       "kk": "q = m / k = 1 g / 0.000329 г/Кл ≈ 3040 Кл."
     },
     "hint": {
@@ -21645,10 +21645,10 @@ const TASKS_DATABASE_EXT = [
         "Кл"
       ],
       "en": [
-        "кг/Кл",
-        "Кл/кг",
-        "кг",
-        "Кл"
+        "kg/C",
+        "C/kg",
+        "kg",
+        "C"
       ],
       "kk": [
         "кг/Кл",
@@ -21660,7 +21660,7 @@ const TASKS_DATABASE_EXT = [
     "correctAnswer": 0,
     "explanation": {
       "ru": "k измеряется в кг/Кл.",
-      "en": "k is measured in кг/Кл.",
+      "en": "k is measured in kg/C.",
       "kk": "k кг/Кл арқылы өлшенеді."
     },
     "hint": {
@@ -21724,7 +21724,7 @@ const TASKS_DATABASE_EXT = [
     "correctAnswer": 0,
     "explanation": {
       "ru": "К аноду (положительному электроду) движутся отрицательные ионы.",
-      "en": "К negative ions move to the anode (positive electrode).",
+      "en": "K negative ions move to the anode (positive electrode).",
       "kk": "К теріс иондар анодқа (оң электрод) ауысады."
     },
     "hint": {
@@ -22886,7 +22886,7 @@ const TASKS_DATABASE_EXT = [
         "Ørsted",
         "Ampere",
         "Volta",
-        "Ом"
+        "Ω"
       ],
       "kk": [
         "Ørsted",
@@ -23628,7 +23628,7 @@ const TASKS_DATABASE_EXT = [
     "difficulty": 2,
     "question": {
       "ru": "Сколько витков в катушке, если при токе 2 А магнитное поле усилилось в 100 раз? (Ответ: N = ?)",
-      "en": "How many turns are in the coil if at a current 2 А the magnetic field is increased 100 times? (Answer: N = ?)",
+      "en": "How many turns are in the coil if at a current 2 A the magnetic field is increased 100 times? (Answer: N = ?)",
       "kk": "2 А ток кезінде магнит өрісі 100 есе артса, катушкада қанша айналым болады? (Жауап: N = ?)"
     },
     "correctAnswer": 50,
@@ -24904,7 +24904,7 @@ const TASKS_DATABASE_EXT = [
         "Faraday",
         "Ampere",
         "Ørsted",
-        "Ом"
+        "Ω"
       ],
       "kk": [
         "Фарадей",
@@ -25529,7 +25529,7 @@ const TASKS_DATABASE_EXT = [
     "difficulty": 2,
     "question": {
       "ru": "Во сколько раз скорость света больше скорости звука? (Скорость света 3·10⁸ м/с, скорость звука 340 м/с)",
-      "en": "How many times is the speed of light greater than the speed of sound? (Speed of light 3·10⁸ м/с, speed of sound 340 м/с)",
+      "en": "How many times is the speed of light greater than the speed of sound? (Speed of light 3·10⁸ m/s, speed of sound 340 m/s)",
       "kk": "Жарық жылдамдығы дыбыс жылдамдығынан неше есе артық? (Жарық жылдамдығы 3·10⁸ м/с, дыбыс жылдамдығы 340 м/с)"
     },
     "correctAnswer": 882352,
@@ -25732,14 +25732,14 @@ const TASKS_DATABASE_EXT = [
     "difficulty": 2,
     "question": {
       "ru": "Сколько времени идет свет от Солнца до Земли? (Расстояние 150 млн км, скорость света 3·10⁸ м/с). Ответ в минутах.",
-      "en": "How long does it take light to travel from the Sun to the Earth? (Distance 150 million км, speed of light 3·10⁸ м/с). The answer is in minutes.",
+      "en": "How long does it take light to travel from the Sun to the Earth? (Distance 150 million km, speed of light 3·10⁸ m/s). The answer is in minutes.",
       "kk": "Жарық Күннен Жерге қанша уақытта жетеді? (Қашықтық 150 миллион км, жарық жылдамдығы 3·10⁸ м/с). Жауап минуттарда беріледі."
     },
     "correctAnswer": 8.3,
     "tolerance": 0.1,
     "explanation": {
       "ru": "t = s/v = 1.5e11 / 3e8 = 500 с ≈ 8.3 мин.",
-      "en": "t = s/v = 1.5e11 / 3e8 = 500 с ≈ 8.3 мин.",
+      "en": "t = s/v = 1.5e11 / 3e8 = 500 s ≈ 8.3 min.",
       "kk": "t = s/v = 1.5e11 / 3e8 = 500 с ≈ 8.3 мин."
     },
     "hint": {
@@ -25920,7 +25920,7 @@ const TASKS_DATABASE_EXT = [
     "difficulty": 2,
     "question": {
       "ru": "Предмет находится в 2 м перед плоским зеркалом. На каком расстоянии за зеркалом находится его изображение?",
-      "en": "An object is placed 2 м in front of a plane mirror. How far behind the mirror is its image?",
+      "en": "An object is placed 2 m in front of a plane mirror. How far behind the mirror is its image?",
       "kk": "Нысанды 2 м жазық айна алдына қояды. Оның бейнесі айнадан қаншалықты алыс?"
     },
     "correctAnswer": 2,
@@ -26428,7 +26428,7 @@ const TASKS_DATABASE_EXT = [
     "difficulty": 2,
     "question": {
       "ru": "Что произойдет с изображением, если предмет приблизить к зеркалу на 1 м?",
-      "en": "What happens to the image if the object is brought closer to the mirror by 1 м?",
+      "en": "What happens to the image if the object is brought closer to the mirror by 1 m?",
       "kk": "Егер нысанды 1 м арқылы айнаға жақындатса, кескінмен не болады?"
     },
     "options": {
@@ -26439,9 +26439,9 @@ const TASKS_DATABASE_EXT = [
         "Не изменится"
       ],
       "en": [
-        "Gets closer to 1 м",
-        "Gets closer to 2 м",
-        "Will be deleted at 1 м",
+        "Gets closer to 1 m",
+        "Gets closer to 2 m",
+        "Will be deleted at 1 m",
         "Won't change"
       ],
       "kk": [
@@ -26737,14 +26737,14 @@ const TASKS_DATABASE_EXT = [
     "difficulty": 2,
     "question": {
       "ru": "Радиус кривизны зеркала 20 см. Найдите фокусное расстояние.",
-      "en": "The radius of curvature of the mirror is 20 см. Find the focal length.",
+      "en": "The radius of curvature of the mirror is 20 cm. Find the focal length.",
       "kk": "Айнаның қисықтық радиусы 20 см. Фокус аралығын табыңыз."
     },
     "correctAnswer": 10,
     "tolerance": 0.1,
     "explanation": {
       "ru": "F = R/2 = 20/2 = 10 см.",
-      "en": "F = R/2 = 20/2 = 10 см.",
+      "en": "F = R/2 = 20/2 = 10 cm.",
       "kk": "F = R/2 = 20/2 = 10 см."
     },
     "hint": {
@@ -26945,14 +26945,14 @@ const TASKS_DATABASE_EXT = [
     "difficulty": 2,
     "question": {
       "ru": "Фокусное расстояние зеркала 5 см. Чему равен радиус кривизны?",
-      "en": "Mirror focal length 5 см. What is the radius of curvature?",
+      "en": "Mirror focal length 5 cm. What is the radius of curvature?",
       "kk": "Айна фокустық ұзындығы 5 см. Қисықтық радиусы неге тең?"
     },
     "correctAnswer": 10,
     "tolerance": 0.1,
     "explanation": {
       "ru": "R = 2F = 10 см.",
-      "en": "R = 2F = 10 см.",
+      "en": "R = 2F = 10 cm.",
       "kk": "R = 2F = 10 см."
     },
     "hint": {
@@ -27428,7 +27428,7 @@ const TASKS_DATABASE_EXT = [
     "difficulty": 2,
     "question": {
       "ru": "Скорость света в среде 2·10⁸ м/с. Найдите показатель преломления. (c = 3·10⁸ м/с)",
-      "en": "The speed of light in the medium is 2·10⁸ м/с. Find the refractive index. (c = 3·10⁸ м/с)",
+      "en": "The speed of light in the medium is 2·10⁸ m/s. Find the refractive index. (c = 3·10⁸ m/s)",
       "kk": "Ортадағы жарық жылдамдығы 2·10⁸ м/с. Сыну көрсеткішін табыңыз. (c = 3·10⁸ м/с)"
     },
     "correctAnswer": 1.5,
@@ -27464,19 +27464,19 @@ const TASKS_DATABASE_EXT = [
         "Безразмерная величина",
         "м/с",
         "м",
-        "Гц"
+        "Hz"
       ],
       "en": [
         "Dimensionless quantity",
-        "м/с",
-        "м",
-        "Гц"
+        "m/s",
+        "m",
+        "Hz"
       ],
       "kk": [
         "Өлшемсіз мөлшер",
         "м/с",
         "м",
-        "Гц"
+        "Hz"
       ]
     },
     "correctAnswer": 0,
@@ -27894,14 +27894,14 @@ const TASKS_DATABASE_EXT = [
     "difficulty": 2,
     "question": {
       "ru": "Фокусное расстояние линзы 0,5 м. Чему равна её оптическая сила?",
-      "en": "Lens focal length 0,5 м. What is its optical power?",
+      "en": "Lens focal length 0.5 m. What is its optical power?",
       "kk": "Объективтің фокустық қашықтығы 0,5 м. Оның оптикалық күші қандай?"
     },
     "correctAnswer": 2,
     "tolerance": 0.1,
     "explanation": {
       "ru": "D = 1/F = 1/0.5 = 2 дптр.",
-      "en": "D = 1/F = 1/0.5 = 2 дптр.",
+      "en": "D = 1/F = 1/0.5 = 2 dpt.",
       "kk": "D = 1/F = 1/0.5 = 2 дптр."
     },
     "hint": {
@@ -28002,7 +28002,7 @@ const TASKS_DATABASE_EXT = [
     },
     "explanation": {
       "ru": "Оптическая сила измеряется в диоптриях (дптр).",
-      "en": "Optical power is measured in diopters (дптр).",
+      "en": "Optical power is measured in diopters (dpt).",
       "kk": "Оптикалық қуат диоптрлермен өлшенеді (дптр)."
     },
     "hint": {
@@ -28082,14 +28082,14 @@ const TASKS_DATABASE_EXT = [
     "difficulty": 2,
     "question": {
       "ru": "Оптическая сила линзы 4 дптр. Найдите фокусное расстояние.",
-      "en": "The optical power of the lens is 4 дптр. Find the focal length.",
+      "en": "The optical power of the lens is 4 dpt. Find the focal length.",
       "kk": "Линзаның оптикалық қуаты 4 дптр. Фокус аралығын табыңыз."
     },
     "correctAnswer": 0.25,
     "tolerance": 0.01,
     "explanation": {
       "ru": "F = 1/D = 1/4 = 0.25 м.",
-      "en": "F = 1/D = 1/4 = 0.25 м.",
+      "en": "F = 1/D = 1/4 = 0.25 m.",
       "kk": "F = 1/D = 1/4 = 0.25 м."
     },
     "hint": {
@@ -28178,12 +28178,12 @@ const TASKS_DATABASE_EXT = [
     "correctAnswer": 0,
     "explanation": {
       "ru": "Г = H/h — линейное увеличение.",
-      "en": "Г = H/h - linear increase.",
+      "en": "Γ = H/h - linear increase.",
       "kk": "Г = H/h - сызықтық өсу."
     },
     "hint": {
       "ru": "Г = H/h.",
-      "en": "Г = H/h.",
+      "en": "Γ = H/h.",
       "kk": "Г = H/h."
     }
   },
@@ -28297,7 +28297,7 @@ const TASKS_DATABASE_EXT = [
     "tolerance": 0,
     "explanation": {
       "ru": "Если d = 2F, то f = 2F, изображение равное, Г = 1.",
-      "en": "If d = 2F, then f = 2F, image is equal to Г = 1.",
+      "en": "If d = 2F, then f = 2F, image is equal to Γ = 1.",
       "kk": "Егер d = 2F, , f = 2F, сурет Г = 1. тең болады"
     },
     "hint": {
@@ -28451,14 +28451,14 @@ const TASKS_DATABASE_EXT = [
     "difficulty": 2,
     "question": {
       "ru": "Оптическая сила линзы -2 дптр. Найдите фокусное расстояние.",
-      "en": "The optical power of the lens is -2 дптр. Find the focal length.",
+      "en": "The optical power of the lens is -2 dpt. Find the focal length.",
       "kk": "Линзаның оптикалық қуаты -2 дптр. Фокус аралығын табыңыз."
     },
     "correctAnswer": -0.5,
     "tolerance": 0.01,
     "explanation": {
       "ru": "F = 1/D = 1/(-2) = -0.5 м.",
-      "en": "F = 1/D = 1/(-2) = -0.5 м.",
+      "en": "F = 1/D = 1/(-2) = -0.5 m.",
       "kk": "F = 1/D = 1/(-2) = -0.5 м."
     },
     "hint": {
@@ -28745,14 +28745,14 @@ const TASKS_DATABASE_EXT = [
     "difficulty": 2,
     "question": {
       "ru": "Расстояние наилучшего зрения для нормального глаза 25 см. Какое расстояние для дальнозоркого, если его оптическая сила очков +2 дптр?",
-      "en": "The best vision distance for a normal eye is 25 см. What is the distance for a farsighted person if his glasses have optical power +2 дптр?",
+      "en": "The best vision distance for a normal eye is 25 cm. What is the distance for a farsighted person if his glasses have optical power +2 dpt?",
       "kk": "Қалыпты көз үшін ең жақсы көру қашықтығы 25 см болып табылады. Алыстан көретін адамның көзілдірігінің оптикалық күші +2 дптр болса, оның қашықтығы қандай?"
     },
     "correctAnswer": 50,
     "tolerance": 1,
     "explanation": {
       "ru": "D = 1/d0 - 1/d, где d0=0.25. 2 = 4 - 1/d, 1/d = 2, d = 0.5 м = 50 см.",
-      "en": "D = 1/d0 - 1/d, where d0=0.25. 2 = 4 - 1/d, 1/d = 2, d = 0.5 m = 50 см.",
+      "en": "D = 1/d0 - 1/d, where d0=0.25. 2 = 4 - 1/d, 1/d = 2, d = 0.5 m = 50 cm.",
       "kk": "D = 1/d0 - 1/d, мұндағы d0=0.25. 2 = 4 - 1/d, 1/d = 2, d = 0.5 m = 50 см."
     },
     "hint": {
@@ -28953,14 +28953,14 @@ const TASKS_DATABASE_EXT = [
     "difficulty": 2,
     "question": {
       "ru": "Оптическая сила очков -1 дптр. Определите фокусное расстояние линз.",
-      "en": "The optical power of the glasses is -1 дптр. Determine the focal length of the lenses.",
+      "en": "The optical power of the glasses is -1 dpt. Determine the focal length of the lenses.",
       "kk": "Көзілдіріктің оптикалық қуаты -1 дптр. Линзаның фокус аралығын анықтаңыз."
     },
     "correctAnswer": -1,
     "tolerance": 0.1,
     "explanation": {
       "ru": "F = 1/D = 1/(-1) = -1 м.",
-      "en": "F = 1/D = 1/(-1) = -1 м.",
+      "en": "F = 1/D = 1/(-1) = -1 m.",
       "kk": "F = 1/D = 1/(-1) = -1 м."
     },
     "hint": {
@@ -29630,24 +29630,24 @@ const TASKS_DATABASE_EXT = [
     "difficulty": 2,
     "question": {
       "ru": "Фокусное расстояние объектива 5 см, окуляра 2 см. Каково увеличение телескопа? (Г = Fоб / Fок)",
-      "en": "Focal length of the lens 5 см, eyepiece 2 см. What is the magnification of the telescope? (Г = Fоб / Fок)",
+      "en": "Focal length of the lens 5 cm, eyepiece 2 cm. What is the magnification of the telescope? (Γ = F_obj / F_eye)",
       "kk": "Линзаның фокус аралығы 5 см, окуляр 2 см. Телескоптың үлкейтуі қандай? (Г = Fоб / Fок)"
     },
     "correctAnswer": 2.5,
     "tolerance": 0.1,
     "explanation": {
       "ru": "Г = 5 / 2 = 2.5.",
-      "en": "Г = 5 / 2 = 2.5.",
+      "en": "Γ = 5 / 2 = 2.5.",
       "kk": "Г = 5 / 2 = 2.5."
     },
     "hint": {
       "ru": "Г = Fоб / Fок",
-      "en": "Г = Fоб / Fок",
+      "en": "Γ = F_obj / F_eye",
       "kk": "Г = Fоб / Fок"
     },
     "formula": {
       "ru": "Г = Fоб / Fок",
-      "en": "Г = Fоб / Fок",
+      "en": "Γ = F_obj / F_eye",
       "kk": "Г = Fоб / Fок"
     }
   },
@@ -29874,7 +29874,7 @@ const TASKS_DATABASE_EXT = [
         "Q₁ = Q₂ modulo",
         "Q₁ = 0 always",
         "Q₂ = 2Q₁ always",
-        "Q₁ + Q₂ = 1 Дж"
+        "Q₁ + Q₂ = 1 J"
       ],
       "kk": [
         "Q₁ = Q₂ модуль",
@@ -29902,14 +29902,14 @@ const TASKS_DATABASE_EXT = [
     "difficulty": 2,
     "question": {
       "ru": "0,1 кг воды нагрели на 20 °C. c = 4200 Дж/(кг·°C). Найдите Q.",
-      "en": "0,1 кг water was heated to 20 °C. c = 4200 Дж/(кг·°C). Find Q.",
+      "en": "0.1 kg water was heated to 20 °C. c = 4200 J/(kg·°C). Find Q.",
       "kk": "0,1 кг су 20 °C. c = 4200 Дж/(кг·°C) дейін қыздырылды. Q табыңыз."
     },
     "correctAnswer": 8400,
     "tolerance": 1,
     "explanation": {
       "ru": "Q = cmΔt = 4200 * 0.1 * 20 = 8400 Дж.",
-      "en": "Q = cmΔt = 4200 * 0.1 * 20 = 8400 Дж.",
+      "en": "Q = cmΔt = 4200 * 0.1 * 20 = 8400 J.",
       "kk": "Q = cmΔt = 4200 * 0.1 * 20 = 8400 Дж."
     },
     "hint": {
@@ -30026,14 +30026,14 @@ const TASKS_DATABASE_EXT = [
     "difficulty": 2,
     "question": {
       "ru": "0,2 кг воды охладили на 10 °C. c = 4200 Дж/(кг·°C). Сколько теплоты выделилось?",
-      "en": "0,2 кг the water was cooled by 10 °C. c = 4200 Дж/(кг·°C). How much heat was released?",
+      "en": "0.2 kg the water was cooled by 10 °C. c = 4200 J/(kg·°C). How much heat was released?",
       "kk": "0,2 кг су 10 °C. c = 4200 Дж/(кг·°C) арқылы салқындатылды. Қанша жылу бөлінді?"
     },
     "correctAnswer": 8400,
     "tolerance": 1,
     "explanation": {
       "ru": "Q = cmΔt = 4200 * 0.2 * 10 = 8400 Дж.",
-      "en": "Q = cmΔt = 4200 * 0.2 * 10 = 8400 Дж.",
+      "en": "Q = cmΔt = 4200 * 0.2 * 10 = 8400 J.",
       "kk": "Q = cmΔt = 4200 * 0.2 * 10 = 8400 Дж."
     },
     "hint": {
@@ -30118,7 +30118,7 @@ const TASKS_DATABASE_EXT = [
     "difficulty": 2,
     "question": {
       "ru": "Смешали 1 кг воды при 20 °C и 1 кг воды при 60 °C. Какая установится температура?",
-      "en": "Mixed 1 кг water at 20 °C and 1 кг water at 60 °C. What temperature will it be?",
+      "en": "Mixed 1 kg water at 20 °C and 1 kg water at 60 °C. What temperature will it be?",
       "kk": "Аралас 1 кг су 20 °C және 1 кг су 60 °C. Қандай температура болады?"
     },
     "correctAnswer": 40,
@@ -30279,14 +30279,14 @@ const TASKS_DATABASE_EXT = [
     "difficulty": 2,
     "question": {
       "ru": "Сколько теплоты нужно для нагревания 500 г воды на 30 °C? c = 4200 Дж/(кг·°C).",
-      "en": "How much heat is needed to heat 500 г water on 30 °C? c = 4200 Дж/(кг·°C).",
+      "en": "How much heat is needed to heat 500 g water on 30 °C? c = 4200 J/(kg·°C).",
       "kk": "500 г суды 30 °C қыздыру үшін қанша жылу қажет? c = 4200 Дж/(кг·°C)."
     },
     "correctAnswer": 63000,
     "tolerance": 100,
     "explanation": {
       "ru": "Q = 4200 * 0.5 * 30 = 63000 Дж.",
-      "en": "Q = 4200 * 0.5 * 30 = 63000 Дж.",
+      "en": "Q = 4200 * 0.5 * 30 = 63000 J.",
       "kk": "Q = 4200 * 0.5 * 30 = 63000 Дж."
     },
     "hint": {
@@ -30445,7 +30445,7 @@ const TASKS_DATABASE_EXT = [
     "difficulty": 2,
     "question": {
       "ru": "Смешали 2 кг воды при 30 °C и 3 кг при 80 °C. Найдите конечную температуру.",
-      "en": "Mixed 2 кг water at 30 °C and 3 кг at 80 °C. Find the final temperature.",
+      "en": "Mixed 2 kg water at 30 °C and 3 kg at 80 °C. Find the final temperature.",
       "kk": "Аралас 2 кг су 30 °C және 3 кг, 80 °C. Соңғы температураны табыңыз."
     },
     "correctAnswer": 60,
@@ -30532,14 +30532,14 @@ const TASKS_DATABASE_EXT = [
     "difficulty": 2,
     "question": {
       "ru": "Изменение объёма растаявшего льда 30 см³. ρ воды = 1000 кг/м³. Найдите массу льда.",
-      "en": "Change in volume of melted ice 30 см³. ρ water = 1000 кг/м³. Find the mass of ice.",
+      "en": "Change in volume of melted ice 30 cm³. ρ water = 1000 kg/m³. Find the mass of ice.",
       "kk": "Еріген мұз көлемінің өзгеруі 30 см³. ρ су = 1000 кг/м³. Мұздың массасын табыңыз."
     },
     "correctAnswer": 0.03,
     "tolerance": 0.001,
     "explanation": {
       "ru": "m = ρΔV = 1000 * 30e-6 = 0.03 кг.",
-      "en": "m = ρΔV = 1000 * 30e-6 = 0.03 кг.",
+      "en": "m = ρΔV = 1000 * 30e-6 = 0.03 kg.",
       "kk": "m = ρΔV = 1000 * 30e-6 = 0.03 кг."
     },
     "hint": {
@@ -30656,14 +30656,14 @@ const TASKS_DATABASE_EXT = [
     "difficulty": 2,
     "question": {
       "ru": "Сколько теплоты нужно для плавления 0,1 кг льда при 0 °C? λ = 3,3·10⁵ Дж/кг.",
-      "en": "How much heat is needed to melt 0,1 кг ice at 0 °C? λ = 3,3·10⁵ Дж/кг.",
+      "en": "How much heat is needed to melt 0.1 kg ice at 0 °C? λ = 3.3·10⁵ J/kg.",
       "kk": "0,1 кг мұзды 0 °C температурасында еріту үшін қанша жылу қажет? λ = 3,3·10⁵ Дж/кг."
     },
     "correctAnswer": 33000,
     "tolerance": 100,
     "explanation": {
       "ru": "Q = λm = 3.3e5 * 0.1 = 33000 Дж.",
-      "en": "Q = λm = 3.3e5 * 0.1 = 33000 Дж.",
+      "en": "Q = λm = 3.3e5 * 0.1 = 33000 J.",
       "kk": "Q = λm = 3.3e5 * 0.1 = 33000 Дж."
     },
     "hint": {
@@ -30748,14 +30748,14 @@ const TASKS_DATABASE_EXT = [
     "difficulty": 2,
     "question": {
       "ru": "Масса льда 0,02 кг, Q = 6600 Дж. Найдите удельную теплоту плавления.",
-      "en": "Ice mass 0,02 кг, Q = 6600 Дж. Find the specific heat of fusion.",
+      "en": "Ice mass 0.02 kg, Q = 6600 J. Find the specific heat of fusion.",
       "kk": "Мұз массасы 0,02 кг, Q = 6600 Дж. Меншікті балқу жылуын табыңыз."
     },
     "correctAnswer": 330000,
     "tolerance": 1000,
     "explanation": {
       "ru": "λ = Q/m = 6600 / 0.02 = 330000 Дж/кг.",
-      "en": "λ = Q/m = 6600 / 0.02 = 330000 Дж/кг.",
+      "en": "λ = Q/m = 6600 / 0.02 = 330000 J/kg.",
       "kk": "λ = Q/m = 6600 / 0.02 = 330000 Дж/кг."
     },
     "hint": {
@@ -30914,14 +30914,14 @@ const TASKS_DATABASE_EXT = [
     "difficulty": 2,
     "question": {
       "ru": "Изменение объема 50 см³. Найдите массу растаявшего льда. ρ = 1000 кг/м³.",
-      "en": "Volume change 50 см³. Find the mass of melted ice. ρ = 1000 кг/м³.",
+      "en": "Volume change 50 cm³. Find the mass of melted ice. ρ = 1000 kg/m³.",
       "kk": "Дыбыс деңгейін өзгерту 50 см³. Еріген мұздың массасын табыңыз. ρ = 1000 кг/м³."
     },
     "correctAnswer": 0.05,
     "tolerance": 0.001,
     "explanation": {
       "ru": "m = 1000 * 50e-6 = 0.05 кг.",
-      "en": "m = 1000 * 50e-6 = 0.05 кг.",
+      "en": "m = 1000 * 50e-6 = 0.05 kg.",
       "kk": "m = 1000 * 50e-6 = 0.05 кг."
     },
     "hint": {
@@ -31080,14 +31080,14 @@ const TASKS_DATABASE_EXT = [
     "difficulty": 2,
     "question": {
       "ru": "Для плавления 0,5 кг льда потребовалось 165000 Дж. Найдите λ.",
-      "en": "It took 165000 Дж to melt 0,5 кг ice. Find λ.",
+      "en": "It took 165000 J to melt 0.5 kg ice. Find λ.",
       "kk": "0,5 кг мұзды еріту үшін 165000 Дж қажет болды. λ табыңыз."
     },
     "correctAnswer": 330000,
     "tolerance": 1000,
     "explanation": {
       "ru": "λ = 165000 / 0.5 = 330000 Дж/кг.",
-      "en": "λ = 165000 / 0.5 = 330000 Дж/кг.",
+      "en": "λ = 165000 / 0.5 = 330000 J/kg.",
       "kk": "λ = 165000 / 0.5 = 330000 Дж/кг."
     },
     "hint": {
@@ -31144,7 +31144,7 @@ const TASKS_DATABASE_EXT = [
         "Consistently",
         "Parallel to the source",
         "Instead of a key",
-        "К to any object outside the chain"
+        "K to any object outside the chain"
       ],
       "kk": [
         "Тұрақты",
@@ -31194,7 +31194,7 @@ const TASKS_DATABASE_EXT = [
     "difficulty": 2,
     "question": {
       "ru": "Цена деления амперметра 0,2 А. Какова погрешность отсчёта?",
-      "en": "Ammeter division value 0,2 А. What is the counting error?",
+      "en": "Ammeter division value 0.2 A. What is the counting error?",
       "kk": "Амперметрді бөлу мәні 0,2 А. Санау қатесі қандай?"
     },
     "correctAnswer": 0.1,
@@ -31296,14 +31296,14 @@ const TASKS_DATABASE_EXT = [
     "difficulty": 2,
     "question": {
       "ru": "Амперметр показывает 0,5 А. Цена деления 0,1 А. Какова абсолютная погрешность?",
-      "en": "The ammeter shows 0,5 А. Division price 0,1 А. What is the absolute error?",
+      "en": "The ammeter shows 0.5 A. Division price 0.1 A. What is the absolute error?",
       "kk": "Амперметр 0,5 А көрсетеді. Бөлім бағасы 0,1 А. Абсолютті қате дегеніміз не?"
     },
     "correctAnswer": 0.05,
     "tolerance": 0.01,
     "explanation": {
       "ru": "Погрешность = ц.д./2 = 0,05 А.",
-      "en": "Error = scale division value / 2 = 0,05 А.",
+      "en": "Error = scale division value / 2 = 0.05 A.",
       "kk": "Қателік = шкала бөлігі құны / 2 = 0,05 А."
     },
     "hint": {
@@ -31388,14 +31388,14 @@ const TASKS_DATABASE_EXT = [
     "difficulty": 2,
     "question": {
       "ru": "Вольтметр показывает 2 В, цена деления 0,2 В. Какова погрешность?",
-      "en": "The voltmeter shows 2 В, division value 0,2 В. What is the margin of error?",
+      "en": "The voltmeter shows 2 V, division value 0.2 V. What is the margin of error?",
       "kk": "Вольтметр 2 В, бөлу мәні 0,2 В көрсетеді. Қателік шегі қандай?"
     },
     "correctAnswer": 0.1,
     "tolerance": 0.01,
     "explanation": {
       "ru": "Погрешность = 0,2/2 = 0,1 В.",
-      "en": "Error = 0,2/2 = 0,1 В.",
+      "en": "Error = 0.2/2 = 0.1 V.",
       "kk": "Қате = 0,2/2 = 0,1 В."
     },
     "hint": {
@@ -31554,14 +31554,14 @@ const TASKS_DATABASE_EXT = [
     "difficulty": 2,
     "question": {
       "ru": "R = 10 Ом, I = 0,5 А. Найдите напряжение.",
-      "en": "R = 10 Ом, I = 0,5 А. Find the voltage.",
+      "en": "R = 10 Ω, I = 0.5 A. Find the voltage.",
       "kk": "R = 10 Ом, I = 0,5 А. Кернеуді табыңыз."
     },
     "correctAnswer": 5,
     "tolerance": 0.1,
     "explanation": {
       "ru": "U = IR = 0.5 * 10 = 5 В.",
-      "en": "U = IR = 0.5 * 10 = 5 В.",
+      "en": "U = IR = 0.5 * 10 = 5 V.",
       "kk": "U = IR = 0.5 * 10 = 5 В."
     },
     "hint": {
@@ -31720,14 +31720,14 @@ const TASKS_DATABASE_EXT = [
     "difficulty": 2,
     "question": {
       "ru": "Напряжение 4 В, сопротивление 8 Ом. Найдите силу тока.",
-      "en": "Voltage 4 В, resistance 8 Ом. Find the current.",
+      "en": "Voltage 4 V, resistance 8 Ω. Find the current.",
       "kk": "Кернеу 4 В, кедергі 8 Ом. Ағын табыңыз."
     },
     "correctAnswer": 0.5,
     "tolerance": 0.01,
     "explanation": {
       "ru": "I = U/R = 4/8 = 0.5 А.",
-      "en": "I = U/R = 4/8 = 0.5 А.",
+      "en": "I = U/R = 4/8 = 0.5 A.",
       "kk": "I = U/R = 4/8 = 0.5 А."
     },
     "hint": {
@@ -31770,14 +31770,14 @@ const TASKS_DATABASE_EXT = [
     "difficulty": 2,
     "question": {
       "ru": "На резисторе U = 6 В, R = 12 Ом. Найдите силу тока.",
-      "en": "On resistor U = 6 В, R = 12 Ом. Find the current.",
+      "en": "On resistor U = 6 V, R = 12 Ω. Find the current.",
       "kk": "U = 6 В, R = 12 Ом резисторында. Ағын табыңыз."
     },
     "correctAnswer": 0.5,
     "tolerance": 0.01,
     "explanation": {
       "ru": "I = U/R = 6/12 = 0.5 А.",
-      "en": "I = U/R = 6/12 = 0.5 А.",
+      "en": "I = U/R = 6/12 = 0.5 A.",
       "kk": "I = U/R = 6/12 = 0.5 А."
     },
     "hint": {
@@ -31936,14 +31936,14 @@ const TASKS_DATABASE_EXT = [
     "difficulty": 2,
     "question": {
       "ru": "При U = 10 В сила тока 2 А. Найдите сопротивление.",
-      "en": "At U = 10 В the current is 2 А. Find resistance.",
+      "en": "At U = 10 V the current is 2 A. Find resistance.",
       "kk": "U = 10 В кезінде ток 2 А болады. Қарсылықты табыңыз."
     },
     "correctAnswer": 5,
     "tolerance": 0.1,
     "explanation": {
       "ru": "R = U/I = 10/2 = 5 Ом.",
-      "en": "R = U/I = 10/2 = 5 Ом.",
+      "en": "R = U/I = 10/2 = 5 Ω.",
       "kk": "R = U/I = 10/2 = 5 Ом."
     },
     "hint": {
@@ -32028,14 +32028,14 @@ const TASKS_DATABASE_EXT = [
     "difficulty": 2,
     "question": {
       "ru": "При U = 4 В I = 0,8 А. При U = 6 В чему равен ток (при том же R)?",
-      "en": "At U = 4 В I = 0,8 А. At U = 6 В what is the current (with the same R)?",
+      "en": "At U = 4 V I = 0.8 A. At U = 6 V what is the current (with the same R)?",
       "kk": "U = 4 В I = 0,8 А мекенжайында. U = 6 В кезінде ток қандай болады (бірдей R)?"
     },
     "correctAnswer": 1.2,
     "tolerance": 0.1,
     "explanation": {
       "ru": "R = 4/0.8 = 5 Ом, I = 6/5 = 1.2 А.",
-      "en": "R = 4/0.8 = 5 Ом, I = 6/5 = 1.2 А.",
+      "en": "R = 4/0.8 = 5 Ω, I = 6/5 = 1.2 A.",
       "kk": "R = 4/0.8 = 5 Ом, I = 6/5 = 1.2 А."
     },
     "hint": {
@@ -32194,14 +32194,14 @@ const TASKS_DATABASE_EXT = [
     "difficulty": 2,
     "question": {
       "ru": "R = 20 Ом. Какое напряжение нужно для тока 0,3 А?",
-      "en": "R = 20 Ом. What voltage is required for current 0,3 А?",
+      "en": "R = 20 Ω. What voltage is required for current 0.3 A?",
       "kk": "R = 20 Ом. Ток 0,3 А үшін қандай кернеу қажет?"
     },
     "correctAnswer": 6,
     "tolerance": 0.1,
     "explanation": {
       "ru": "U = IR = 0.3 * 20 = 6 В.",
-      "en": "U = IR = 0.3 * 20 = 6 В.",
+      "en": "U = IR = 0.3 * 20 = 6 V.",
       "kk": "U = IR = 0.3 * 20 = 6 В."
     },
     "hint": {
@@ -32360,14 +32360,14 @@ const TASKS_DATABASE_EXT = [
     "difficulty": 2,
     "question": {
       "ru": "При U = 12 В I = 0,4 А. Найдите R.",
-      "en": "At U = 12 В I = 0,4 А. Find R.",
+      "en": "At U = 12 V I = 0.4 A. Find R.",
       "kk": "U = 12 В I = 0,4 А мекенжайында. R табыңыз."
     },
     "correctAnswer": 30,
     "tolerance": 0.1,
     "explanation": {
       "ru": "R = 12/0.4 = 30 Ом.",
-      "en": "R = 12/0.4 = 30 Ом.",
+      "en": "R = 12/0.4 = 30 Ω.",
       "kk": "R = 12/0.4 = 30 Ом."
     },
     "hint": {
@@ -32432,14 +32432,14 @@ const TASKS_DATABASE_EXT = [
     "difficulty": 2,
     "question": {
       "ru": "R₁ = 4 Ом и R₂ = 6 Ом соединены последовательно. Найдите R.",
-      "en": "R₁ = 4 Ом and R₂ = 6 Ом are connected in series. Find R.",
+      "en": "R₁ = 4 Ω and R₂ = 6 Ω are connected in series. Find R.",
       "kk": "R₁ = 4 Ом және R₂ = 6 Ом тізбектей қосылған. R табыңыз."
     },
     "correctAnswer": 10,
     "tolerance": 0.1,
     "explanation": {
       "ru": "R = 4 + 6 = 10 Ом.",
-      "en": "R = 4 + 6 = 10 Ом.",
+      "en": "R = 4 + 6 = 10 Ω.",
       "kk": "R = 4 + 6 = 10 Ом."
     },
     "hint": {
@@ -32576,14 +32576,14 @@ const TASKS_DATABASE_EXT = [
     "difficulty": 2,
     "question": {
       "ru": "R₁ = 2 Ом, R₂ = 3 Ом, R₃ = 5 Ом последовательно. Найдите R.",
-      "en": "R₁ = 2 Ом, R₂ = 3 Ом, R₃ = 5 Ом in sequence. Find R.",
+      "en": "R₁ = 2 Ω, R₂ = 3 Ω, R₃ = 5 Ω in sequence. Find R.",
       "kk": "R₁ = 2 Ом, R₂ = 3 Ом, R₃ = 5 Ом ретімен. R табыңыз."
     },
     "correctAnswer": 10,
     "tolerance": 0.1,
     "explanation": {
       "ru": "2 + 3 + 5 = 10 Ом.",
-      "en": "2 + 3 + 5 = 10 Ом.",
+      "en": "2 + 3 + 5 = 10 Ω.",
       "kk": "2 + 3 + 5 = 10 Ом."
     },
     "hint": {
@@ -32668,14 +32668,14 @@ const TASKS_DATABASE_EXT = [
     "difficulty": 2,
     "question": {
       "ru": "I = 2 А, R₁ = 3 Ом. Найдите U₁.",
-      "en": "I = 2 А, R₁ = 3 Ом. Find U₁.",
+      "en": "I = 2 A, R₁ = 3 Ω. Find U₁.",
       "kk": "I = 2 А, R₁ = 3 Ом. U₁ табыңыз."
     },
     "correctAnswer": 6,
     "tolerance": 0.1,
     "explanation": {
       "ru": "U₁ = I * R₁ = 2 * 3 = 6 В.",
-      "en": "U₁ = I * R₁ = 2 * 3 = 6 В.",
+      "en": "U₁ = I * R₁ = 2 * 3 = 6 V.",
       "kk": "U₁ = I * R₁ = 2 * 3 = 6 В."
     },
     "hint": {
@@ -32792,7 +32792,7 @@ const TASKS_DATABASE_EXT = [
     "difficulty": 2,
     "question": {
       "ru": "Если R₁ = 2 Ом, R₂ = 4 Ом, I = 1 А, чему равно общее напряжение?",
-      "en": "If R₁ = 2 Ом, R₂ = 4 Ом, I = 1 А, what is the total voltage?",
+      "en": "If R₁ = 2 Ω, R₂ = 4 Ω, I = 1 A, what is the total voltage?",
       "kk": "R₁ = 2 Ом, R₂ = 4 Ом, I = 1 А болса, жалпы кернеу неге тең?"
     },
     "options": {
@@ -32803,10 +32803,10 @@ const TASKS_DATABASE_EXT = [
         "8 В"
       ],
       "en": [
-        "6 В",
-        "2 В",
-        "4 В",
-        "8 В"
+        "6 V",
+        "2 V",
+        "4 V",
+        "8 V"
       ],
       "kk": [
         "6 В",
@@ -32818,7 +32818,7 @@ const TASKS_DATABASE_EXT = [
     "correctAnswer": 0,
     "explanation": {
       "ru": "U = I(R₁ + R₂) = 1 * 6 = 6 В.",
-      "en": "U = I(R₁ + R₂) = 1 * 6 = 6 В.",
+      "en": "U = I(R₁ + R₂) = 1 * 6 = 6 V.",
       "kk": "U = I(R₁ + R₂) = 1 * 6 = 6 В."
     },
     "hint": {
@@ -32839,14 +32839,14 @@ const TASKS_DATABASE_EXT = [
     "difficulty": 2,
     "question": {
       "ru": "R₁ = 5 Ом, R₂ = 5 Ом, I = 0,5 А. Найдите общее напряжение.",
-      "en": "R₁ = 5 Ом, R₂ = 5 Ом, I = 0,5 А. Find the total voltage.",
+      "en": "R₁ = 5 Ω, R₂ = 5 Ω, I = 0.5 A. Find the total voltage.",
       "kk": "R₁ = 5 Ом, R₂ = 5 Ом, I = 0,5 А. Толық кернеуді табыңыз."
     },
     "correctAnswer": 5,
     "tolerance": 0.1,
     "explanation": {
       "ru": "U = 0.5 * (5+5) = 5 В.",
-      "en": "U = 0.5 * (5+5) = 5 В.",
+      "en": "U = 0.5 * (5+5) = 5 V.",
       "kk": "U = 0.5 * (5+5) = 5 В."
     },
     "hint": {
@@ -32931,7 +32931,7 @@ const TASKS_DATABASE_EXT = [
     "difficulty": 2,
     "question": {
       "ru": "Как распределяется напряжение между резисторами 2 Ом и 4 Ом?",
-      "en": "How is the voltage distributed between resistors 2 Ом and 4 Ом?",
+      "en": "How is the voltage distributed between resistors 2 Ω and 4 Ω?",
       "kk": "2 Ом және 4 Ом резисторлары арасында кернеу қалай бөлінеді?"
     },
     "options": {
@@ -33010,14 +33010,14 @@ const TASKS_DATABASE_EXT = [
     "difficulty": 2,
     "question": {
       "ru": "R₁ = 6 Ом, R₂ = 3 Ом, U = 18 В. Найдите силу тока.",
-      "en": "R₁ = 6 Ом, R₂ = 3 Ом, U = 18 В. Find the current.",
+      "en": "R₁ = 6 Ω, R₂ = 3 Ω, U = 18 V. Find the current.",
       "kk": "R₁ = 6 Ом, R₂ = 3 Ом, U = 18 В. Ағымдағы күшті табыңыз."
     },
     "correctAnswer": 2,
     "tolerance": 0.1,
     "explanation": {
       "ru": "R = 9 Ом, I = 18/9 = 2 А.",
-      "en": "R = 9 Ом, I = 18/9 = 2 А.",
+      "en": "R = 9 Ω, I = 18/9 = 2 A.",
       "kk": "R = 9 Ом, I = 18/9 = 2 А."
     },
     "hint": {
@@ -33082,14 +33082,14 @@ const TASKS_DATABASE_EXT = [
     "difficulty": 2,
     "question": {
       "ru": "В двух ветвях токи 1,5 А и 0,5 А. Найдите общий ток.",
-      "en": "In two branches the currents are 1,5 А and 0,5 А. Find the total current.",
+      "en": "In two branches the currents are 1.5 A and 0.5 A. Find the total current.",
       "kk": "Екі тармақта токтар 1,5 А және 0,5 А болып табылады. Толық токты табыңыз."
     },
     "correctAnswer": 2,
     "tolerance": 0.1,
     "explanation": {
       "ru": "I = I₁ + I₂ = 1.5 + 0.5 = 2 А.",
-      "en": "I = I₁ + I₂ = 1.5 + 0.5 = 2 А.",
+      "en": "I = I₁ + I₂ = 1.5 + 0.5 = 2 A.",
       "kk": "I = I₁ + I₂ = 1.5 + 0.5 = 2 А."
     },
     "hint": {
@@ -33226,14 +33226,14 @@ const TASKS_DATABASE_EXT = [
     "difficulty": 2,
     "question": {
       "ru": "R₁ = 2 Ом, R₂ = 2 Ом параллельно. Найдите R.",
-      "en": "R₁ = 2 Ом, R₂ = 2 Ом in parallel. Find R.",
+      "en": "R₁ = 2 Ω, R₂ = 2 Ω in parallel. Find R.",
       "kk": "R₁ = 2 Ом, R₂ = 2 Ом параллель. R табыңыз."
     },
     "correctAnswer": 1,
     "tolerance": 0.1,
     "explanation": {
       "ru": "R = 2/2 = 1 Ом (для одинаковых R = R₁/n).",
-      "en": "R = 2/2 = 1 Ом (for identical R = R₁/n).",
+      "en": "R = 2/2 = 1 Ω (for identical R = R₁/n).",
       "kk": "R = 2/2 = 1 Ом (бірдей R = R₁/n). үшін)"
     },
     "hint": {
@@ -33318,14 +33318,14 @@ const TASKS_DATABASE_EXT = [
     "difficulty": 2,
     "question": {
       "ru": "R₁ = 3 Ом, R₂ = 6 Ом параллельно. Найдите R.",
-      "en": "R₁ = 3 Ом, R₂ = 6 Ом in parallel. Find R.",
+      "en": "R₁ = 3 Ω, R₂ = 6 Ω in parallel. Find R.",
       "kk": "R₁ = 3 Ом, R₂ = 6 Ом параллель. R табыңыз."
     },
     "correctAnswer": 2,
     "tolerance": 0.1,
     "explanation": {
       "ru": "R = (3*6)/(3+6) = 18/9 = 2 Ом.",
-      "en": "R = (3*6)/(3+6) = 18/9 = 2 Ом.",
+      "en": "R = (3*6)/(3+6) = 18/9 = 2 Ω.",
       "kk": "R = (3*6)/(3+6) = 18/9 = 2 Ом."
     },
     "hint": {
@@ -33442,7 +33442,7 @@ const TASKS_DATABASE_EXT = [
     "difficulty": 2,
     "question": {
       "ru": "Если R₁ = 4 Ом, R₂ = 4 Ом, U = 8 В. Чему равен общий ток?",
-      "en": "If R₁ = 4 Ом, R₂ = 4 Ом, U = 8 В. What is the total current?",
+      "en": "If R₁ = 4 Ω, R₂ = 4 Ω, U = 8 V. What is the total current?",
       "kk": "Егер R₁ = 4 Ом, R₂ = 4 Ом, U = 8 В болса. Толық ток нешеге тең?"
     },
     "options": {
@@ -33453,10 +33453,10 @@ const TASKS_DATABASE_EXT = [
         "1 А"
       ],
       "en": [
-        "4 А",
-        "2 А",
-        "8 А",
-        "1 А"
+        "4 A",
+        "2 A",
+        "8 A",
+        "1 A"
       ],
       "kk": [
         "4 А",
@@ -33468,7 +33468,7 @@ const TASKS_DATABASE_EXT = [
     "correctAnswer": 0,
     "explanation": {
       "ru": "R = 2 Ом, I = 8/2 = 4 А.",
-      "en": "R = 2 Ом, I = 8/2 = 4 А.",
+      "en": "R = 2 Ω, I = 8/2 = 4 A.",
       "kk": "R = 2 Ом, I = 8/2 = 4 А."
     },
     "hint": {
@@ -33489,14 +33489,14 @@ const TASKS_DATABASE_EXT = [
     "difficulty": 2,
     "question": {
       "ru": "Две лампы по 6 Ом параллельно. Найдите общее сопротивление.",
-      "en": "Two lamps 6 Ом in parallel. Find the total resistance.",
+      "en": "Two lamps 6 Ω in parallel. Find the total resistance.",
       "kk": "Екі шам 6 Ом параллель. Толық кедергіні табыңыз."
     },
     "correctAnswer": 3,
     "tolerance": 0.1,
     "explanation": {
       "ru": "R = 6/2 = 3 Ом.",
-      "en": "R = 6/2 = 3 Ом.",
+      "en": "R = 6/2 = 3 Ω.",
       "kk": "R = 6/2 = 3 Ом."
     },
     "hint": {
@@ -33581,7 +33581,7 @@ const TASKS_DATABASE_EXT = [
     "difficulty": 2,
     "question": {
       "ru": "Как распределяется ток между резисторами 2 Ом и 4 Ом?",
-      "en": "How is the current distributed between resistors 2 Ом and 4 Ом?",
+      "en": "How is the current distributed between resistors 2 Ω and 4 Ω?",
       "kk": "2 Ом және 4 Ом резисторлары арасында ток қалай бөлінеді?"
     },
     "options": {
@@ -33660,14 +33660,14 @@ const TASKS_DATABASE_EXT = [
     "difficulty": 2,
     "question": {
       "ru": "R₁ = 10 Ом, R₂ = 15 Ом параллельно. U = 30 В. Найдите общий ток.",
-      "en": "R₁ = 10 Ом, R₂ = 15 Ом in parallel. U = 30 В. Find the total current.",
+      "en": "R₁ = 10 Ω, R₂ = 15 Ω in parallel. U = 30 V. Find the total current.",
       "kk": "R₁ = 10 Ом, R₂ = 15 Ом параллель. U = 30 В. Толық токты табыңыз."
     },
     "correctAnswer": 5,
     "tolerance": 0.1,
     "explanation": {
       "ru": "I₁ = 3 А, I₂ = 2 А, I = 5 А.",
-      "en": "I₁ = 3 А, I₂ = 2 А, I = 5 А.",
+      "en": "I₁ = 3 A, I₂ = 2 A, I = 5 A.",
       "kk": "I₁ = 3 А, I₂ = 2 А, I = 5 А."
     },
     "hint": {
@@ -33710,14 +33710,14 @@ const TASKS_DATABASE_EXT = [
     "difficulty": 2,
     "question": {
       "ru": "Лампа работает при U = 3 В и I = 2 А. Найдите мощность.",
-      "en": "The lamp operates at U = 3 В and I = 2 А. Find the power.",
+      "en": "The lamp operates at U = 3 V and I = 2 A. Find the power.",
       "kk": "Шам U = 3 В және I = 2 А параметрлерінде жұмыс істейді. Қуатты табыңыз."
     },
     "correctAnswer": 6,
     "tolerance": 0.1,
     "explanation": {
       "ru": "P = UI = 3 * 2 = 6 Вт.",
-      "en": "P = UI = 3 * 2 = 6 Вт.",
+      "en": "P = UI = 3 * 2 = 6 W.",
       "kk": "P = UI = 3 * 2 = 6 Вт."
     },
     "hint": {
@@ -33738,14 +33738,14 @@ const TASKS_DATABASE_EXT = [
     "difficulty": 2,
     "question": {
       "ru": "При мощности 6 Вт за 60 с ток совершает работу:",
-      "en": "At power 6 Вт for 60 с the current does:",
+      "en": "At power 6 W for 60 s the current does:",
       "kk": "6 Вт қуатында 60 с үшін ток мынаны орындайды:"
     },
     "correctAnswer": 360,
     "tolerance": 1,
     "explanation": {
       "ru": "A = Pt = 6 * 60 = 360 Дж.",
-      "en": "A = Pt = 6 * 60 = 360 Дж.",
+      "en": "A = Pt = 6 * 60 = 360 J.",
       "kk": "A = Pt = 6 * 60 = 360 Дж."
     },
     "hint": {
@@ -33766,7 +33766,7 @@ const TASKS_DATABASE_EXT = [
     "difficulty": 1,
     "question": {
       "ru": "Чтобы найти стоимость энергии, работу в кВт·ч умножают на:",
-      "en": "To find the cost of energy, the work in кВт·ч is multiplied by:",
+      "en": "To find the cost of energy, the work in kW·h is multiplied by:",
       "kk": "Энергияның өзіндік құнын табу үшін кВт·ч ішіндегі жұмыс мынаға көбейтіледі:"
     },
     "options": {
@@ -33882,14 +33882,14 @@ const TASKS_DATABASE_EXT = [
     "difficulty": 2,
     "question": {
       "ru": "Напряжение 220 В, сила тока 0,5 А. Найдите мощность.",
-      "en": "Voltage 220 В, current 0,5 А. Find the power.",
+      "en": "Voltage 220 V, current 0.5 A. Find the power.",
       "kk": "Кернеу 220 В, ток 0,5 А. Қуатты табыңыз."
     },
     "correctAnswer": 110,
     "tolerance": 1,
     "explanation": {
       "ru": "P = 220 * 0.5 = 110 Вт.",
-      "en": "P = 220 * 0.5 = 110 Вт.",
+      "en": "P = 220 * 0.5 = 110 W.",
       "kk": "P = 220 * 0.5 = 110 Вт."
     },
     "hint": {
@@ -33910,13 +33910,13 @@ const TASKS_DATABASE_EXT = [
     "difficulty": 2,
     "question": {
       "ru": "1 кВт·ч = 3,6·10⁶ Дж.",
-      "en": "1 кВт·ч = 3,6·10⁶ Дж.",
+      "en": "1 kW·h = 3.6·10⁶ J.",
       "kk": "1 кВт·ч = 3,6·10⁶ Дж."
     },
     "correctAnswer": true,
     "explanation": {
       "ru": "1 кВт·ч = 1000 Вт * 3600 с = 3.6e6 Дж.",
-      "en": "1 кВт·ч = 1000 Вт * 3600 с = 3.6e6 Дж.",
+      "en": "1 kW·h = 1000 W * 3600 s = 3.6e6 J.",
       "kk": "1 кВт·ч = 1000 Вт * 3600 с = 3.6e6 Дж."
     },
     "hint": {
@@ -33974,19 +33974,19 @@ const TASKS_DATABASE_EXT = [
     "difficulty": 2,
     "question": {
       "ru": "Лампа мощностью 100 Вт работала 10 часов. Какую работу совершил ток? Ответ в кВт·ч.",
-      "en": "The lamp with a power of 100 Вт worked for 10 hours. How much work has been done by the current? The answer is in кВт·ч.",
+      "en": "The lamp with a power of 100 W worked for 10 hours. How much work has been done by the current? The answer is in kW·h.",
       "kk": "100 Вт қуаты бар шам 10 сағат жұмыс істеді. Ағымдағылар қанша жұмыс атқарды? Жауап кВт·ч ішінде."
     },
     "correctAnswer": 1,
     "tolerance": 0.1,
     "explanation": {
       "ru": "A = 0.1 кВт * 10 ч = 1 кВт·ч.",
-      "en": "A = 0.1 кВт * 10 ч = 1 кВт·ч.",
+      "en": "A = 0.1 kW * 10 h = 1 kW·h.",
       "kk": "A = 0.1 кВт * 10 ч = 1 кВт·ч."
     },
     "hint": {
       "ru": "Переведи в кВт.",
-      "en": "Convert to кВт.",
+      "en": "Convert to kW.",
       "kk": "кВт түрлендіру."
     },
     "formula": {
@@ -34033,7 +34033,7 @@ const TASKS_DATABASE_EXT = [
     },
     "hint": {
       "ru": "1 Вт = 1 Дж/с.",
-      "en": "1 Вт = 1 Дж/с.",
+      "en": "1 W = 1 J/s.",
       "kk": "1 Вт = 1 Дж/с."
     }
   },
@@ -34066,7 +34066,7 @@ const TASKS_DATABASE_EXT = [
     "difficulty": 2,
     "question": {
       "ru": "Единица измерения работы тока в быту — ___·ч.",
-      "en": "The unit of measurement of current work in everyday life is ___·ч.",
+      "en": "The unit of measurement of current work in everyday life is ___·h.",
       "kk": "Күнделікті өмірдегі ағымдағы жұмыстың өлшем бірлігі ___·ч болып табылады."
     },
     "correctAnswer": {
@@ -34074,7 +34074,7 @@ const TASKS_DATABASE_EXT = [
         "кВт"
       ],
       "en": [
-        "кВт"
+        "kW"
       ],
       "kk": [
         "кВт"
@@ -34082,7 +34082,7 @@ const TASKS_DATABASE_EXT = [
     },
     "explanation": {
       "ru": "кВт·ч.",
-      "en": "кВт·ч.",
+      "en": "kW·h.",
       "kk": "кВт·ч."
     },
     "hint": {
@@ -34140,14 +34140,14 @@ const TASKS_DATABASE_EXT = [
     "difficulty": 2,
     "question": {
       "ru": "Какую работу совершит ток мощностью 2 кВт за 2 часа? Ответ в кВт·ч.",
-      "en": "How much work will a current of power 2 кВт do in 2 hours? The answer is in кВт·ч.",
+      "en": "How much work will a current of power 2 kW do in 2 hours? The answer is in kW·h.",
       "kk": "2 кВт қуат тогы 2 сағатта қанша жұмыс істейді? Жауап кВт·ч ішінде."
     },
     "correctAnswer": 4,
     "tolerance": 0.1,
     "explanation": {
       "ru": "A = 2 * 2 = 4 кВт·ч.",
-      "en": "A = 2 * 2 = 4 кВт·ч.",
+      "en": "A = 2 * 2 = 4 kW·h.",
       "kk": "A = 2 * 2 = 4 кВт·ч."
     },
     "hint": {
@@ -34243,7 +34243,7 @@ const TASKS_DATABASE_EXT = [
         "Напряжение"
       ],
       "en": [
-        "Cost 1 кВт·ч",
+        "Cost 1 kW·h",
         "Power",
         "Work",
         "Voltage"
@@ -34258,7 +34258,7 @@ const TASKS_DATABASE_EXT = [
     "correctAnswer": 0,
     "explanation": {
       "ru": "Тариф — стоимость 1 кВт·ч.",
-      "en": "Tariff - cost 1 кВт·ч.",
+      "en": "Tariff - cost 1 kW·h.",
       "kk": "Тариф - құны 1 кВт·ч."
     },
     "hint": {
@@ -34306,19 +34306,19 @@ const TASKS_DATABASE_EXT = [
     "difficulty": 2,
     "question": {
       "ru": "Прибор мощностью 500 Вт работал 4 часа. Какую работу совершил ток? Ответ в кВт·ч.",
-      "en": "The device with a power of 500 Вт worked for 4 hours. How much work has been done by the current? The answer is in кВт·ч.",
+      "en": "The device with a power of 500 W worked for 4 hours. How much work has been done by the current? The answer is in kW·h.",
       "kk": "500 Вт қуаты бар құрылғы 4 сағат жұмыс істеді. Ағымдағылар қанша жұмыс атқарды? Жауап кВт·ч ішінде."
     },
     "correctAnswer": 2,
     "tolerance": 0.1,
     "explanation": {
       "ru": "A = 0.5 кВт * 4 ч = 2 кВт·ч.",
-      "en": "A = 0.5 кВт * 4 ч = 2 кВт·ч.",
+      "en": "A = 0.5 kW * 4 h = 2 kW·h.",
       "kk": "A = 0.5 кВт * 4 ч = 2 кВт·ч."
     },
     "hint": {
       "ru": "Переведи Вт в кВт.",
-      "en": "Convert Вт to кВт.",
+      "en": "Convert W to kW.",
       "kk": "Вт мәнін кВт түріне түрлендіру."
     },
     "formula": {
@@ -36301,14 +36301,14 @@ const TASKS_DATABASE_EXT = [
     "difficulty": 2,
     "question": {
       "ru": "Фокусное расстояние линзы 0,25 м. Найдите оптическую силу.",
-      "en": "Lens focal length 0,25 м. Find the optical power.",
+      "en": "Lens focal length 0.25 m. Find the optical power.",
       "kk": "Объективтің фокустық қашықтығы 0,25 м. Оптикалық қуатты табыңыз."
     },
     "correctAnswer": 4,
     "tolerance": 0.1,
     "explanation": {
       "ru": "D = 1/F = 1/0.25 = 4 дптр.",
-      "en": "D = 1/F = 1/0.25 = 4 дптр.",
+      "en": "D = 1/F = 1/0.25 = 4 dpt.",
       "kk": "D = 1/F = 1/0.25 = 4 дптр."
     },
     "hint": {
@@ -36451,7 +36451,7 @@ const TASKS_DATABASE_EXT = [
     },
     "explanation": {
       "ru": "Диоптрия (дптр).",
-      "en": "Diopter (дптр).",
+      "en": "Diopter (dpt).",
       "kk": "Диоптр (дптр)."
     },
     "hint": {
@@ -36467,14 +36467,14 @@ const TASKS_DATABASE_EXT = [
     "difficulty": 2,
     "question": {
       "ru": "D = 5 дптр. Найдите фокусное расстояние.",
-      "en": "D = 5 дптр. Find the focal length.",
+      "en": "D = 5 dpt. Find the focal length.",
       "kk": "D = 5 дптр. Фокус аралығын табыңыз."
     },
     "correctAnswer": 0.2,
     "tolerance": 0.01,
     "explanation": {
       "ru": "F = 1/D = 1/5 = 0.2 м.",
-      "en": "F = 1/D = 1/5 = 0.2 м.",
+      "en": "F = 1/D = 1/5 = 0.2 m.",
       "kk": "F = 1/D = 1/5 = 0.2 м."
     },
     "hint": {
@@ -36559,14 +36559,14 @@ const TASKS_DATABASE_EXT = [
     "difficulty": 2,
     "question": {
       "ru": "d = 30 см, f = 60 см. Найдите F.",
-      "en": "d = 30 см, f = 60 см. Find F.",
+      "en": "d = 30 cm, f = 60 cm. Find F.",
       "kk": "d = 30 см, f = 60 см. F табыңыз."
     },
     "correctAnswer": 20,
     "tolerance": 1,
     "explanation": {
       "ru": "1/F = 1/30 + 1/60 = 3/60 = 1/20, F = 20 см.",
-      "en": "1/F = 1/30 + 1/60 = 3/60 = 1/20, F = 20 см.",
+      "en": "1/F = 1/30 + 1/60 = 3/60 = 1/20, F = 20 cm.",
       "kk": "1/F = 1/30 + 1/60 = 3/60 = 1/20, F = 20 см."
     },
     "hint": {
@@ -36725,14 +36725,14 @@ const TASKS_DATABASE_EXT = [
     "difficulty": 2,
     "question": {
       "ru": "F = 10 см. d = 20 см. Найдите f.",
-      "en": "F = 10 см. d = 20 см. Find f.",
+      "en": "F = 10 cm. d = 20 cm. Find f.",
       "kk": "F = 10 см. d = 20 см. f табыңыз."
     },
     "correctAnswer": 20,
     "tolerance": 1,
     "explanation": {
       "ru": "1/f = 1/F - 1/d = 1/10 - 1/20 = 1/20, f = 20 см.",
-      "en": "1/f = 1/F - 1/d = 1/10 - 1/20 = 1/20, f = 20 см.",
+      "en": "1/f = 1/F - 1/d = 1/10 - 1/20 = 1/20, f = 20 cm.",
       "kk": "1/f = 1/F - 1/d = 1/10 - 1/20 = 1/20, f = 20 см."
     },
     "hint": {
@@ -36891,19 +36891,19 @@ const TASKS_DATABASE_EXT = [
     "difficulty": 2,
     "question": {
       "ru": "F = 5 см. Найдите D в диоптриях.",
-      "en": "F = 5 см. Find D in dioptres.",
+      "en": "F = 5 cm. Find D in dioptres.",
       "kk": "F = 5 см. Диоптрлерде D табыңыз."
     },
     "correctAnswer": 20,
     "tolerance": 0.1,
     "explanation": {
       "ru": "D = 1/F = 1/0.05 = 20 дптр.",
-      "en": "D = 1/F = 1/0.05 = 20 дптр.",
+      "en": "D = 1/F = 1/0.05 = 20 dpt.",
       "kk": "D = 1/F = 1/0.05 = 20 дптр."
     },
     "hint": {
       "ru": "Переведи см в м.",
-      "en": "Convert см to m.",
+      "en": "Convert cm to m.",
       "kk": "см мәнін м-ге түрлендіру."
     },
     "formula": {
