@@ -432,12 +432,22 @@ function generate(grade) {
             const foreignPool = units.filter(u => u.section !== section && !pool.includes(u));
             const wrong = shuffle(foreignPool, rnd).slice(0, 2);
             const optionsList = shuffle(correct.concat(wrong), rnd);
+            // У лабораторных работ в теме нет собственных величин, а варианты
+            // берутся из раздела: спрашиваем про раздел, а не про название лабы,
+            // иначе «Лаб. №6: Параллельное соединение» предлагает фокусное
+            // расстояние линзы и внутреннюю энергию.
+            const sectionOnly = isLab;
+            const secTitle = SECTION_TITLES[section] || { ru: section, en: section, kk: section };
             msTask = {
                 id: `t${grade}_l${level.id}_${topic}_ms`,
                 type: "multi-select",
                 topic,
                 difficulty: 2,
-                question: {
+                question: sectionOnly ? {
+                    ru: fillTemplate(T.msQSec.ru, { section: secTitle.ru }),
+                    en: fillTemplate(T.msQSec.en, { section: secTitle.en }),
+                    kk: fillTemplate(T.msQSec.kk, { section: secTitle.kk })
+                } : {
                     ru: fillTemplate(T.msQ.ru, { title: levelTitle.ru }),
                     en: fillTemplate(T.msQ.en, { title: levelTitle.en }),
                     kk: fillTemplate(T.msQ.kk, { title: levelTitle.kk })

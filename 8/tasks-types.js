@@ -7015,9 +7015,9 @@ const TASKS_DATABASE_TYPES = [
   "topic": "lab1",
   "difficulty": 2,
   "question": {
-   "ru": "Отметь все величины, которые изучаются в теме «🔬 Лаб. №1: Смешивание воды и количество теплоты».",
-   "en": "Select all quantities studied in the topic «🔬 Lab No. 1: Mixing water and quantity of heat».",
-   "kk": "«🔬 Зертхана №1: Суды араластыру және жылу мөлшері» тақырыбында оқылатын барлық шамаларды белгіле."
+   "ru": "Отметь все величины, которые относятся к разделу «тепловые явления».",
+   "en": "Select all quantities that belong to the section «thermal phenomena».",
+   "kk": "«жылулық құбылыстар» бөліміне жататын барлық шамаларды белгіле."
   },
   "options": {
    "ru": [
@@ -7165,9 +7165,9 @@ const TASKS_DATABASE_TYPES = [
   "topic": "lab2",
   "difficulty": 2,
   "question": {
-   "ru": "Отметь все величины, которые изучаются в теме «🔬 Лаб. №2: Удельная теплота плавления льда».",
-   "en": "Select all quantities studied in the topic «🔬 Lab No. 2: Specific latent heat of fusion of ice».",
-   "kk": "«🔬 Зертхана №2: Мұздың меншікті балқу жылуы» тақырыбында оқылатын барлық шамаларды белгіле."
+   "ru": "Отметь все величины, которые относятся к разделу «тепловые явления».",
+   "en": "Select all quantities that belong to the section «thermal phenomena».",
+   "kk": "«жылулық құбылыстар» бөліміне жататын барлық шамаларды белгіле."
   },
   "options": {
    "ru": [
@@ -7316,9 +7316,9 @@ const TASKS_DATABASE_TYPES = [
   "topic": "lab3",
   "difficulty": 2,
   "question": {
-   "ru": "Отметь все величины, которые изучаются в теме «🔬 Лаб. №3: Цепь: ток и напряжение».",
-   "en": "Select all quantities studied in the topic «🔬 Lab No. 3: Circuit: current and voltage».",
-   "kk": "«🔬 Зертхана №3: Тізбек: ток және кернеу» тақырыбында оқылатын барлық шамаларды белгіле."
+   "ru": "Отметь все величины, которые относятся к разделу «тепловые явления».",
+   "en": "Select all quantities that belong to the section «thermal phenomena».",
+   "kk": "«жылулық құбылыстар» бөліміне жататын барлық шамаларды белгіле."
   },
   "options": {
    "ru": [
@@ -7472,9 +7472,9 @@ const TASKS_DATABASE_TYPES = [
   "topic": "lab4",
   "difficulty": 2,
   "question": {
-   "ru": "Отметь все величины, которые изучаются в теме «🔬 Лаб. №4: Зависимость I от U».",
-   "en": "Select all quantities studied in the topic «🔬 Lab No. 4: Dependence of I on U».",
-   "kk": "«🔬 Зертхана №4: I-дің U-ге тәуелділігі» тақырыбында оқылатын барлық шамаларды белгіле."
+   "ru": "Отметь все величины, которые относятся к разделу «электрические явления».",
+   "en": "Select all quantities that belong to the section «electrical phenomena».",
+   "kk": "«электр құбылыстары» бөліміне жататын барлық шамаларды белгіле."
   },
   "options": {
    "ru": [
@@ -7630,9 +7630,9 @@ const TASKS_DATABASE_TYPES = [
   "topic": "lab5",
   "difficulty": 2,
   "question": {
-   "ru": "Отметь все величины, которые изучаются в теме «🔬 Лаб. №5: Последовательное соединение».",
-   "en": "Select all quantities studied in the topic «🔬 Lab No. 5: Series connection».",
-   "kk": "«🔬 Зертхана №5: Тізбектей жалғау» тақырыбында оқылатын барлық шамаларды белгіле."
+   "ru": "Отметь все величины, которые относятся к разделу «электрические явления».",
+   "en": "Select all quantities that belong to the section «electrical phenomena».",
+   "kk": "«электр құбылыстары» бөліміне жататын барлық шамаларды белгіле."
   },
   "options": {
    "ru": [
@@ -7780,9 +7780,9 @@ const TASKS_DATABASE_TYPES = [
   "topic": "lab6",
   "difficulty": 2,
   "question": {
-   "ru": "Отметь все величины, которые изучаются в теме «🔬 Лаб. №6: Параллельное соединение».",
-   "en": "Select all quantities studied in the topic «🔬 Lab No. 6: Parallel connection».",
-   "kk": "«🔬 Зертхана №6: Параллель жалғау» тақырыбында оқылатын барлық шамаларды белгіле."
+   "ru": "Отметь все величины, которые относятся к разделу «электрические явления».",
+   "en": "Select all quantities that belong to the section «electrical phenomena».",
+   "kk": "«электр құбылыстары» бөліміне жататын барлық шамаларды белгіле."
   },
   "options": {
    "ru": [
@@ -7938,9 +7938,9 @@ const TASKS_DATABASE_TYPES = [
   "topic": "lab7",
   "difficulty": 2,
   "question": {
-   "ru": "Отметь все величины, которые изучаются в теме «🔬 Лаб. №7: Работа и мощность тока».",
-   "en": "Select all quantities studied in the topic «🔬 Lab No. 7: Work and power of electric current».",
-   "kk": "«🔬 Зертхана №7: Токтың жұмысы мен қуаты» тақырыбында оқылатын барлық шамаларды белгіле."
+   "ru": "Отметь все величины, которые относятся к разделу «электрические явления».",
+   "en": "Select all quantities that belong to the section «electrical phenomena».",
+   "kk": "«электр құбылыстары» бөліміне жататын барлық шамаларды белгіле."
   },
   "options": {
    "ru": [
@@ -8096,9 +8096,9 @@ const TASKS_DATABASE_TYPES = [
   "topic": "lab8",
   "difficulty": 2,
   "question": {
-   "ru": "Отметь все величины, которые изучаются в теме «🔬 Лаб. №8: Постоянный магнит и поле».",
-   "en": "Select all quantities studied in the topic «🔬 Lab No. 8: Permanent magnet and magnetic field».",
-   "kk": "«🔬 Зертхана №8: Тұрақты магнит және магнит өрісі» тақырыбында оқылатын барлық шамаларды белгіле."
+   "ru": "Отметь все величины, которые относятся к разделу «магнитные явления».",
+   "en": "Select all quantities that belong to the section «magnetic phenomena».",
+   "kk": "«магниттік құбылыстар» бөліміне жататын барлық шамаларды белгіле."
   },
   "options": {
    "ru": [
@@ -8252,9 +8252,9 @@ const TASKS_DATABASE_TYPES = [
   "topic": "lab9",
   "difficulty": 2,
   "question": {
-   "ru": "Отметь все величины, которые изучаются в теме «🔬 Лаб. №9: Электромагнит».",
-   "en": "Select all quantities studied in the topic «🔬 Lab No. 9: Electromagnet».",
-   "kk": "«🔬 Зертхана №9: Электромагнит» тақырыбында оқылатын барлық шамаларды белгіле."
+   "ru": "Отметь все величины, которые относятся к разделу «магнитные явления».",
+   "en": "Select all quantities that belong to the section «magnetic phenomena».",
+   "kk": "«магниттік құбылыстар» бөліміне жататын барлық шамаларды белгіле."
   },
   "options": {
    "ru": [
@@ -8410,9 +8410,9 @@ const TASKS_DATABASE_TYPES = [
   "topic": "lab10",
   "difficulty": 2,
   "question": {
-   "ru": "Отметь все величины, которые изучаются в теме «🔬 Лаб. №10: Показатель преломления стекла».",
-   "en": "Select all quantities studied in the topic «🔬 Lab No. 10: Refractive index of glass».",
-   "kk": "«🔬 Зертхана №10: Әйнектің сыну көрсеткіші» тақырыбында оқылатын барлық шамаларды белгіле."
+   "ru": "Отметь все величины, которые относятся к разделу «оптика».",
+   "en": "Select all quantities that belong to the section «optics».",
+   "kk": "«оптика» бөліміне жататын барлық шамаларды белгіле."
   },
   "options": {
    "ru": [
@@ -8564,9 +8564,9 @@ const TASKS_DATABASE_TYPES = [
   "topic": "lab11",
   "difficulty": 2,
   "question": {
-   "ru": "Отметь все величины, которые изучаются в теме «🔬 Лаб. №11: Фокусное расстояние линзы».",
-   "en": "Select all quantities studied in the topic «🔬 Lab No. 11: Focal length of a lens».",
-   "kk": "«🔬 Зертхана №11: Линзаның фокус аралығы» тақырыбында оқылатын барлық шамаларды белгіле."
+   "ru": "Отметь все величины, которые относятся к разделу «оптика».",
+   "en": "Select all quantities that belong to the section «optics».",
+   "kk": "«оптика» бөліміне жататын барлық шамаларды белгіле."
   },
   "options": {
    "ru": [

@@ -8184,9 +8184,9 @@ const TASKS_DATABASE_TYPES = [
   "topic": "lab1",
   "difficulty": 2,
   "question": {
-   "ru": "Отметь все величины, которые изучаются в теме «🔬 Лаб. №1: Ускорение при равноускоренном движении».",
-   "en": "Select all quantities studied in the topic «🔬 Lab #1: Acceleration in uniformly accelerated motion».",
-   "kk": "«🔬 Зерт. №1: Бірқалыпты үдемелі қозғалыстың үдеуі» тақырыбында оқылатын барлық шамаларды белгіле."
+   "ru": "Отметь все величины, которые относятся к разделу «механическое движение».",
+   "en": "Select all quantities that belong to the section «mechanics of motion».",
+   "kk": "«механикалық қозғалыс» бөліміне жататын барлық шамаларды белгіле."
   },
   "options": {
    "ru": [
@@ -8368,9 +8368,9 @@ const TASKS_DATABASE_TYPES = [
   "topic": "lab2",
   "difficulty": 2,
   "question": {
-   "ru": "Отметь все величины, которые изучаются в теме «🔬 Лаб. №2: Движение тела, брошенного горизонтально».",
-   "en": "Select all quantities studied in the topic «🔬 Lab #2: Motion of a body thrown horizontally».",
-   "kk": "«🔬 Зерт. №2: Көлденең лақтырылған дененің қозғалысы» тақырыбында оқылатын барлық шамаларды белгіле."
+   "ru": "Отметь все величины, которые относятся к разделу «механическое движение».",
+   "en": "Select all quantities that belong to the section «mechanics of motion».",
+   "kk": "«механикалық қозғалыс» бөліміне жататын барлық шамаларды белгіле."
   },
   "options": {
    "ru": [
@@ -8551,9 +8551,9 @@ const TASKS_DATABASE_TYPES = [
   "topic": "lab3",
   "difficulty": 2,
   "question": {
-   "ru": "Отметь все величины, которые изучаются в теме «🔬 Лаб. №3: Ускорение свободного падения (маятник)».",
-   "en": "Select all quantities studied in the topic «🔬 Lab #3: Acceleration due to gravity (pendulum)».",
-   "kk": "«🔬 Зерт. №3: Еркін түсу үдеуі (маятник)» тақырыбында оқылатын барлық шамаларды белгіле."
+   "ru": "Отметь все величины, которые относятся к разделу «динамика».",
+   "en": "Select all quantities that belong to the section «dynamics».",
+   "kk": "«динамика» бөліміне жататын барлық шамаларды белгіле."
   },
   "options": {
    "ru": [
@@ -8738,9 +8738,9 @@ const TASKS_DATABASE_TYPES = [
   "topic": "lab4",
   "difficulty": 2,
   "question": {
-   "ru": "Отметь все величины, которые изучаются в теме «🔬 Лаб. №4: Скорость поверхностной волны».",
-   "en": "Select all quantities studied in the topic «🔬 Lab #4: Speed of a surface wave».",
-   "kk": "«🔬 Зерт. №4: Беттік толқынның жылдамдығы» тақырыбында оқылатын барлық шамаларды белгіле."
+   "ru": "Отметь все величины, которые относятся к разделу «квантовая и ядерная физика».",
+   "en": "Select all quantities that belong to the section «quantum and nuclear physics».",
+   "kk": "«кванттық және ядролық физика» бөліміне жататын барлық шамаларды белгіле."
   },
   "options": {
    "ru": [
