@@ -116,7 +116,7 @@ const LabGames = {
                 { i: "💡", name: L === "kk" ? "Шам" : L === "en" ? "Lamp" : "Лампа" }
             ];
             circuitEl.style.display = "grid";
-            circuitEl.innerHTML = items.map((it, idx) => `<div class="circuit-cell" data-idx="${idx}" title="${it.name}">${it.i}<br><small>${it.name}</small></div>`).join("");
+            circuitEl.innerHTML = items.map((it, idx) => `<div class="circuit-cell" data-idx="${idx}" title="${it.name}">${it.i}<small>${it.name}</small></div>`).join("");
             resultEl.style.display = "";
             resultEl.textContent = L === "kk" ? "Барлық элементтерді қос (0/4)" : L === "en" ? "Enable all elements (0/4)" : "Включи все элементы цепи (0/4)";
             resultEl.className = "lab-result bad";

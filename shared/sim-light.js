@@ -6,7 +6,7 @@
 (function () {
     "use strict";
 
-    const VERSION = "1.0";
+    const VERSION = "1.1";
     const LW = 760, LH = 270;          // логический размер сцены
 
     /* ---------------- палитра ---------------- */
@@ -1685,6 +1685,876 @@
         pillText(ctx, `ε = ${fmt2(calc.emf)} В`, 60, 34, { size: 12, color: calc.pass ? "#227a4d" : "#b4632a" });
     };
 
+    /* ============================ НОВЫЕ ОПЫТЫ (по темам) ============================ */
+
+    SCENES.g8_heat_cond = (ctx, w, h, p, calc, t) => {
+        labRoom(ctx, w, h, t, { horizon: 0.84 });
+        const base = h * 0.84;
+        const cx = w * 0.5, wallW = map(p.d, 5, 50, 26, 96), wallH = 132;
+        const x0 = cx - wallW / 2, y0 = base - wallH;
+        // «горячая» зона слева, «холодная» справа
+        ctx.fillStyle = rad(ctx, x0 - 40, base - wallH / 2, 6, 120, [[0, "rgba(255,140,70,0.35)"], [1, "rgba(255,140,70,0)"]]);
+        ctx.fillRect(0, 0, w, h);
+        ctx.fillStyle = rad(ctx, x0 + wallW + 46, base - wallH / 2, 6, 120, [[0, "rgba(90,170,235,0.32)"], [1, "rgba(90,170,235,0)"]]);
+        ctx.fillRect(0, 0, w, h);
+        // нагреватель
+        contactShadow(ctx, x0 - 34, base - 4, 26, 6, 0.2);
+        fillRR(ctx, x0 - 62, base - 26, 58, 22, 5, lin(ctx, 0, base - 26, 0, base - 4, [[0, "#f3f7fb"], [1, "#b9c6d4"]]));
+        flameShape(ctx, x0 - 33, base - 26, 26, 16, t);
+        lampGlow(ctx, x0 - 33, base - 20, 20, 0.7);
+        // стенка с текстурой материала
+        const tex = { cu: ["#f2b98a", "#b6703a"], steel: ["#dfe7ef", "#8b9bab"], glass: ["#d7f0fb", "#8fc6dd"], foam: ["#fff8e2", "#dcc38c"] }[p.mat] || ["#dfe7ef", "#8b9bab"];
+        shadowed(ctx, 12, "rgba(40,60,90,0.25)", 5, () => {
+            fillRR(ctx, x0, y0, wallW, wallH, 4, lin(ctx, x0, 0, x0 + wallW, 0, [[0, tex[0]], [1, tex[1]]]));
+        });
+        ctx.save(); ctx.beginPath(); fillRR(ctx, x0, y0, wallW, wallH, 4, "rgba(0,0,0,0)");
+        ctx.clip();
+        if (p.mat === "foam") {
+            const r2 = rnd(5);
+            for (let i = 0; i < 40; i++) { ctx.beginPath(); ctx.arc(x0 + r2() * wallW, y0 + r2() * wallH, 1.6, 0, Math.PI * 2); ctx.fillStyle = "rgba(180,150,90,0.45)"; ctx.fill(); }
+        } else if (p.mat === "glass") {
+            ctx.fillStyle = "rgba(255,255,255,0.45)";
+            ctx.beginPath(); ctx.moveTo(x0 + 8, y0); ctx.lineTo(x0 + wallW * 0.5, y0); ctx.lineTo(x0 + 4, y0 + wallH); ctx.lineTo(x0, y0 + wallH); ctx.closePath(); ctx.fill();
+        } else {
+            for (let i = 1; i < 5; i++) { ctx.fillStyle = "rgba(255,255,255,0.18)"; ctx.fillRect(x0, y0 + wallH * i / 5, wallW, 1); }
+        }
+        ctx.restore();
+        strokeRR(ctx, x0, y0, wallW, wallH, 4, "rgba(70,92,116,0.4)", 1.2);
+        // стрелки теплового потока
+        const fluxK = clamp(calc.q / 5000, 0, 1);
+        const n = 3;
+        for (let i = 0; i < n; i++) {
+            const yy = y0 + wallH * (i + 1) / (n + 1);
+            arrow(ctx, x0 - 16, yy, x0 + wallW + 16, yy, `rgba(226,110,40,${0.35 + fluxK * 0.55})`, 2 + fluxK * 2.4);
+        }
+        text(ctx, tr3("нагреватель", "қыздырғыш", "heater"), x0 - 74, base + 22, { size: 10, color: "#b4632a", weight: 700 });
+        text(ctx, tr3("холодный контур", "суық контур", "cold loop"), x0 + wallW + 12, y0 - 10, { size: 10, color: "#2f6fb0", weight: 700 });
+        // ручки
+        handle(ctx, x0 + wallW + 6, y0 + 8, "d", { key: "d", axis: "x", x: x0 + wallW + 6, y: y0 + 8, from: x0 + 24, to: x0 + 120, min: 5, max: 50 });
+        handle(ctx, x0 - 96, y0 + 12, "ΔT", { key: "dT", axis: "y", x: x0 - 96, y: y0 + 12, from: y0 + 40, to: 18, min: 5, max: 80 });
+        // выбор материала
+        const mats = [["cu", "Медь", "Мыс", "Copper"], ["steel", "Сталь", "Болат", "Steel"], ["glass", "Стекло", "Шыны", "Glass"], ["foam", "Пенопласт", "Пенопласт", "Foam"]];
+        mats.forEach((md, i) => {
+            const x = 24 + i * 92, y = 20, on = p.mat === md[0];
+            fillRR(ctx, x, y, 84, 22, 11, on ? "rgba(226,110,40,0.18)" : "rgba(255,255,255,0.88)");
+            strokeRR(ctx, x, y, 84, 22, 11, on ? "#d2732c" : "rgba(120,146,172,0.45)", on ? 1.6 : 1);
+            text(ctx, tr3(md[1], md[2], md[3]), x + 42, y + 15, { size: 10, align: "center", color: on ? "#a9551d" : C.ink2, weight: 700 });
+            hit({ kind: "tap", key: "mat", value: md[0], x: x + 42, y: y + 11, r: 22 });
+        });
+        pillText(ctx, `q = ${fmt2(calc.q)} Вт/м²`, 24, 66, { size: 11.5, color: calc.pass ? "#227a4d" : "#b4632a" });
+        pillText(ctx, `λ = ${calc.lam} Вт/(м·К)`, 24, 90, { size: 10.5, color: "#1f6f9c" });
+    };
+
+    SCENES.g8_engine = (ctx, w, h, p, calc, t) => {
+        labRoom(ctx, w, h, t, { horizon: 0.86 });
+        const base = h * 0.86;
+        const cylX = 360, cylW = 100, cylTop = base - 128, cylH = 122;
+        // радиатор-холодильник слева
+        const radX = 96;
+        for (let i = 0; i < 7; i++) steelBar(ctx, radX - 30, base - 120 + i * 15, 60, 6, 3);
+        text(ctx, tr3("холодильник", "тоңазытқыш", "cooler"), radX, base - 132, { size: 10, align: "center", color: "#2f6fb0", weight: 700 });
+        // цилиндр
+        shadowed(ctx, 14, "rgba(40,60,90,0.24)", 6, () => {
+            fillRR(ctx, cylX, cylTop, cylW, cylH, 10, lin(ctx, cylX, 0, cylX + cylW, 0, [[0, "#ffffff"], [0.45, "#dfe7ef"], [1, "#a9b8c8"]]));
+        });
+        strokeRR(ctx, cylX, cylTop, cylW, cylH, 10, "rgba(70,92,116,0.42)", 1.4);
+        // рёбра охлаждения
+        for (let i = 0; i < 4; i++) {
+            fillRR(ctx, cylX - 10, cylTop + 20 + i * 26, cylW + 20, 6, 3, "rgba(160,180,200,0.85)");
+        }
+        // поршень
+        const phase = (Math.sin(t * 0.028) + 1) / 2;
+        const pistonY = cylTop + 16 + phase * 38;
+        fillRR(ctx, cylX + 5, pistonY, cylW - 10, 12, 4, lin(ctx, 0, pistonY, 0, pistonY + 12, [[0, "#ffffff"], [1, "#9fb0c1"]]));
+        ctx.strokeStyle = "rgba(70,92,116,0.45)"; ctx.lineWidth = 1.2;
+        ctx.beginPath(); ctx.moveTo(cylX + 5, pistonY); ctx.lineTo(cylX + cylW - 5, pistonY); ctx.stroke();
+        // шток и крейцкопф
+        steelBar(ctx, cylX + cylW / 2 - 4, pistonY - 42, 8, 44, 3);
+        fillRR(ctx, cylX + cylW / 2 - 18, pistonY - 52, 36, 12, 5, lin(ctx, 0, pistonY - 52, 0, pistonY - 40, [[0, "#ffffff"], [1, "#a9b8c8"]]));
+        // маховик
+        const flyX = 604, flyY = base - 74, flyR = 36;
+        ctx.beginPath(); ctx.arc(flyX, flyY, flyR, 0, Math.PI * 2);
+        ctx.fillStyle = lin(ctx, flyX - flyR, flyY - flyR, flyX + flyR, flyY + flyR, [[0, "#f2f6fa"], [1, "#9aa9ba"]]); ctx.fill();
+        ctx.strokeStyle = "rgba(70,92,116,0.45)"; ctx.lineWidth = 3; ctx.stroke();
+        ctx.save(); ctx.translate(flyX, flyY); ctx.rotate(t * 0.028);
+        for (let i = 0; i < 6; i++) { ctx.rotate(Math.PI / 3); ctx.fillStyle = "rgba(120,146,172,0.32)"; ctx.fillRect(flyR - 13, -2, 11, 4); }
+        ctx.restore();
+        brassKnob(ctx, flyX, flyY, 8, 0);
+        // шатун от крейцкопфа к маховику
+        wire(ctx, [[cylX + cylW / 2, pistonY - 46], [flyX - 8, flyY - 14]], "#8c9cae", 5);
+        // нагреватель с пламенем
+        fillRR(ctx, cylX + 12, base - 24, cylW - 24, 20, 6, lin(ctx, 0, base - 24, 0, base - 4, [[0, "#f3f7fb"], [1, "#b0bfcd"]]));
+        flameShape(ctx, cylX + cylW / 2, base - 24, 30, 22, t);
+        lampGlow(ctx, cylX + cylW / 2, base - 20, 22, 0.7);
+        // тепловые потоки
+        arrow(ctx, cylX + cylW / 2 + 54, base - 60, cylX + cylW + 6, base - 60, "rgba(226,110,40,0.8)", 2.6);
+        arrow(ctx, cylX - 12, cylTop + 44, radX + 34, cylTop + 44, "rgba(70,140,205,0.75)", 2.6);
+        text(ctx, `Q₁ = ${p.q1} кДж`, cylX + cylW + 12, base - 66, { size: 10, color: "#b4392f", weight: 700 });
+        text(ctx, `Q₂ = ${p.q2} кДж`, radX - 30, base - 142, { size: 10, color: "#2f6fb0", weight: 700 });
+        // индикатор КПД
+        gauge(ctx, 706, 74, 32, clamp(calc.eta / 60, 0, 1), "η", "%");
+        text(ctx, `${fmt2(calc.eta)} %`, 706, 124, { size: 11.5, align: "center", color: calc.pass ? "#227a4d" : "#b4632a", weight: 800 });
+        // ручки
+        handle(ctx, radX, base - 96, "Q₂", { key: "q2", axis: "y", x: radX, y: base - 96, from: base - 60, to: base - 150, min: 10, max: 900 });
+        handle(ctx, cylX + cylW + 60, base - 96, "Q₁", { key: "q1", axis: "y", x: cylX + cylW + 60, y: base - 96, from: base - 60, to: base - 150, min: 100, max: 1000 });
+        pillText(ctx, `A = ${fmt2(calc.work)} кДж`, 24, 30, { size: 11, color: "#1f6f9c" });
+    };
+
+    SCENES.g8_coulomb = (ctx, w, h, p, calc, t) => {
+        spaceBackdrop(ctx, w, h, t);
+        const cy = h * 0.6;
+        const gapPx = map(p.r, 2, 12, 60, 470);
+        const ax = w * 0.5 - gapPx / 2, bx = w * 0.5 + gapPx / 2;
+        const radP = map(p.q1, 1, 10, 12, 26), radQ = map(p.q2, 1, 10, 12, 26);
+        // силовые линии
+        for (let i = 0; i < 5; i++) {
+            const off = (i - 2) * 26;
+            ctx.strokeStyle = "rgba(70,130,190,0.22)"; ctx.lineWidth = 1.1;
+            ctx.beginPath(); ctx.moveTo(ax + 26, cy + off * 0.6);
+            ctx.quadraticCurveTo(w * 0.5, cy + off * 1.7, bx - 26, cy + off * 0.6); ctx.stroke();
+        }
+        // зонды
+        [[ax, radP, "q₁", "#e2626a", "#a5293a"], [bx, radQ, "q₂", "#6a9fe0", "#22497f"]].forEach(([x, r, lbl, c1, c2]) => {
+            contactShadow(ctx, x, cy + r + 10, r * 1.1, 7, 0.22);
+            shadowed(ctx, 16, "rgba(30,60,100,0.3)", 8, () => {
+                ctx.beginPath(); ctx.arc(x, cy, r, 0, Math.PI * 2);
+                ctx.fillStyle = rad(ctx, x - r * 0.35, cy - r * 0.4, 2, r * 1.25, [[0, "#ffffff"], [0.35, c1], [1, c2]]);
+                ctx.fill();
+            });
+            ctx.strokeStyle = "rgba(255,255,255,0.85)"; ctx.lineWidth = 2;
+            ctx.beginPath(); ctx.arc(x, cy, r, 0, Math.PI * 2); ctx.stroke();
+            text(ctx, lbl, x, cy + 5, { size: 13, align: "center", color: "#fff", weight: 900 });
+            // панель-держатель
+            steelBar(ctx, x - 3, cy + r, 6, 52, 3);
+            fillRR(ctx, x - 24, cy + r + 50, 48, 8, 4, "rgba(150,175,200,0.8)");
+        });
+        // векторы силы
+        const fk = clamp(calc.micro / 320, 0.1, 1);
+        arrow(ctx, ax - radP - 6, cy - 26, ax - radP - 6 - 30 - fk * 40, cy - 26, "#c2483c", 2.6, "F");
+        arrow(ctx, bx + radQ + 6, cy - 26, bx + radQ + 6 + 30 + fk * 40, cy - 26, "#c2483c", 2.6, "F");
+        // линейка расстояния
+        ctx.strokeStyle = "rgba(60,110,160,0.55)"; ctx.lineWidth = 1.4; ctx.setLineDash([6, 5]);
+        ctx.beginPath(); ctx.moveTo(ax, cy + 74); ctx.lineTo(bx, cy + 74); ctx.stroke(); ctx.setLineDash([]);
+        pillText(ctx, `r = ${p.r} см`, w * 0.5 - 34, cy + 96, { size: 10.5, color: "#134a70" });
+        handle(ctx, w * 0.5, cy + 74, "r", { key: "r", axis: "x", x: w * 0.5, y: cy + 74, from: w * 0.5 - 240, to: w * 0.5 + 240, min: 2, max: 12, r: 26 });
+        dragChip(ctx, 24, 96, tr3("тяни зонды — меняется r", "зондтарды тарт", "drag probes — change r"));
+        handle(ctx, ax, cy - radP - 16, "q₁", { key: "q1", axis: "y", x: ax, y: cy - radP - 16, from: cy - 10, to: 20, min: 1, max: 10 });
+        handle(ctx, bx, cy - radQ - 16, "q₂", { key: "q2", axis: "y", x: bx, y: cy - radQ - 16, from: cy - 10, to: 20, min: 1, max: 10 });
+        pillText(ctx, `F = ${fmt2(calc.micro)} мкН`, 24, 32, { size: 12, color: calc.pass ? "#227a4d" : "#b4632a" });
+    };
+
+    SCENES.g8_capacitor = (ctx, w, h, p, calc, t) => {
+        labRoom(ctx, w, h, t, { horizon: 0.84 });
+        const base = h * 0.84, cx = w * 0.46;
+        const plateH = map(p.s, 10, 100, 54, 122);
+        const gap = map(p.d, 0.5, 5, 10, 54);
+        // стойки
+        steelBar(ctx, cx - 110, base - 8, 220, 8, 4);
+        // нижняя пластина
+        contactShadow(ctx, cx, base - 8, 96, 7, 0.2);
+        shadowed(ctx, 10, "rgba(40,60,90,0.28)", 5, () => {
+            fillRR(ctx, cx - 92, base - 22, 184, 16, 5, lin(ctx, 0, base - 22, 0, base - 6, [[0, "#f7fafd"], [0.5, "#ccd8e4"], [1, "#93a5b7"]]));
+        });
+        // верхняя пластина
+        const topY = base - 30 - gap - 16;
+        shadowed(ctx, 10, "rgba(40,60,90,0.24)", 4, () => {
+            fillRR(ctx, cx - 92, topY, 184, 14, 5, lin(ctx, 0, topY, 0, topY + 14, [[0, "#ffffff"], [0.6, "#d9e3ed"], [1, "#a2b2c2"]]));
+        });
+        steelBar(ctx, cx - 3, topY - 54, 6, 56, 3);
+        brassKnob(ctx, cx, topY - 58, 9, 0);
+        // диэлектрик
+        const epsK = { air: 0, glass: 1, mica: 1 }[p.mat];
+        fillRR(ctx, cx - 82, base - 24 - gap, 164, gap, 3, epsK ? (p.mat === "glass" ? "rgba(150,215,240,0.62)" : "rgba(230,205,150,0.7)") : "rgba(200,225,245,0.18)");
+        strokeRR(ctx, cx - 82, base - 24 - gap, 164, gap, 3, "rgba(90,130,170,0.35)", 1);
+        text(ctx, epsK ? tr3("диэлектрик", "диэлектрик", "dielectric") : tr3("воздух", "ауа", "air"), cx, base - 30 - gap / 2, { size: 10, align: "center", color: C.ink2, weight: 700 });
+        // пластины-выводы и мультиметр
+        wire(ctx, [[cx - 92, base - 14], [210, base - 14], [210, base - 64]], "#b1442f", 3);
+        wire(ctx, [[cx + 92, base - 14], [640, base - 14], [640, base - 64]], "#2f6fb0", 3);
+        fillRR(ctx, 168, 26, 128, 76, 10, "#fdfefe");
+        strokeRR(ctx, 168, 26, 128, 76, 10, "rgba(90,116,145,0.45)", 1.4);
+        ctx.fillStyle = "rgba(190,225,205,0.85)"; ctx.fillRect(178, 38, 108, 30);
+        text(ctx, `${fmt2(calc.c)} pF`, 232, 60, { size: 16, align: "center", color: "#1c5a41", weight: 800, family: "'Courier New', monospace" });
+        text(ctx, tr3("измеритель ёмкости", "сыйымдылық өлшегіш", "capacitance meter"), 232, 88, { size: 9.5, align: "center", color: C.soft, weight: 700 });
+        // ручки
+        handle(ctx, cx + 104, topY + 4, "d", { key: "d", axis: "y", x: cx + 104, y: topY + 4, from: base - 34, to: base - 96, min: 0.5, max: 5 });
+        handle(ctx, cx + 116, base - 40, "S", { key: "s", axis: "x", x: cx + 116, y: base - 40, from: cx + 70, to: cx + 170, min: 10, max: 100 });
+        const mats = [["air", "Воздух", "Ауа", "Air"], ["glass", "Стекло", "Шыны", "Glass"], ["mica", "Слюда", "Слюда", "Mica"]];
+        mats.forEach((md, i) => {
+            const x = 560 + (i % 2) * 96, y = 26 + Math.floor(i / 2) * 30, on = p.mat === md[0];
+            fillRR(ctx, x, y, 88, 24, 12, on ? "rgba(47,125,184,0.18)" : "rgba(255,255,255,0.9)");
+            strokeRR(ctx, x, y, 88, 24, 12, on ? "#2f7db8" : "rgba(120,146,172,0.45)", on ? 1.6 : 1);
+            text(ctx, tr3(md[1], md[2], md[3]), x + 44, y + 16, { size: 10, align: "center", color: on ? "#1f6f9c" : C.ink2, weight: 700 });
+            hit({ kind: "tap", key: "mat", value: md[0], x: x + 44, y: y + 12, r: 24 });
+        });
+    };
+
+    SCENES.g8_resistivity = (ctx, w, h, p, calc, t) => {
+        labRoom(ctx, w, h, t, { horizon: 0.84 });
+        const base = h * 0.84;
+        // каркас с намотанным проводом
+        const cwx = 250, cwy = base - 62;
+        contactShadow(ctx, cwx, base - 6, 54, 7, 0.22);
+        ctx.beginPath(); ctx.arc(cwx, cwy, 46, 0, Math.PI * 2);
+        ctx.fillStyle = lin(ctx, cwx - 46, cwy - 46, cwx + 46, cwy + 46, [[0, "#f4f8fc"], [1, "#c0cdda"]]); ctx.fill();
+        ctx.strokeStyle = "rgba(80,104,130,0.4)"; ctx.lineWidth = 2; ctx.stroke();
+        ctx.beginPath(); ctx.arc(cwx, cwy, 12, 0, Math.PI * 2); ctx.fillStyle = "#9fb0c1"; ctx.fill();
+        const wireCol = { cu: "#c9773c", fe: "#8e9aa8", ni: "#9aa9a4", chr: "#7f8b99" }[p.mat] || "#c9773c";
+        const turns = Math.round(map(p.len, 1, 20, 6, 22));
+        for (let i = 0; i < turns; i++) {
+            ctx.strokeStyle = wireCol; ctx.lineWidth = 3.4;
+            ctx.beginPath(); ctx.ellipse(cwx, cwy - 30 + i * 2.7, 47, 12, 0, 0, Math.PI * 2); ctx.stroke();
+        }
+        // участок провода с линейкой
+        wire(ctx, [[cwx + 46, cwy], [360, cwy], [360, base - 16], [470, base - 16], [470, base - 74]], wireCol, 3.4);
+        ctx.strokeStyle = "rgba(60,110,160,0.5)"; ctx.lineWidth = 1.4; ctx.setLineDash([6, 5]);
+        ctx.beginPath(); ctx.moveTo(360, base - 30); ctx.lineTo(470, base - 30); ctx.stroke(); ctx.setLineDash([]);
+        for (let i = 0; i <= 5; i++) { const x = 360 + i * 22; ctx.strokeStyle = "rgba(60,110,160,0.6)"; ctx.beginPath(); ctx.moveTo(x, base - 34); ctx.lineTo(x, base - 26); ctx.stroke(); }
+        text(ctx, `L = ${p.len} м`, 415, base - 40, { size: 10, align: "center", color: "#134a70", weight: 700 });
+        // микрометр / сечение
+        const gx = 560, gy = base - 56;
+        fillRR(ctx, gx - 46, gy - 16, 92, 40, 8, lin(ctx, 0, gy - 16, 0, gy + 24, [[0, "#f7fafd"], [1, "#b9c6d4"]]));
+        strokeRR(ctx, gx - 46, gy - 16, 92, 40, 8, "rgba(70,92,116,0.4)", 1.2);
+        const dotR = clamp(map(p.s, 0.1, 2, 2, 13), 2, 13);
+        ctx.beginPath(); ctx.arc(gx, gy + 4, dotR, 0, Math.PI * 2); ctx.fillStyle = wireCol; ctx.fill();
+        ctx.strokeStyle = "rgba(255,255,255,0.6)"; ctx.lineWidth = 1; ctx.stroke();
+        text(ctx, `S = ${p.s} мм²`, gx, gy - 24, { size: 10, align: "center", color: C.ink2, weight: 700 });
+        // омметр
+        wire(ctx, [[gx - 46, gy + 4], [700, gy + 4], [700, base - 74]], "#b1442f", 2.6);
+        gauge(ctx, 668, 66, 34, clamp(calc.r / 12, 0, 1), "R", "Ом");
+        handle(ctx, cwx + 62, cwy - 6, "L", { key: "len", axis: "x", x: cwx + 62, y: cwy - 6, from: cwx + 40, to: cwx + 180, min: 1, max: 20 });
+        handle(ctx, gx, gy + 40, "S", { key: "s", axis: "y", x: gx, y: gy + 40, from: gy + 34, to: gy - 40, min: 0.1, max: 2 });
+        const mats = [["cu", "Медь", "Мыс", "Copper"], ["fe", "Железо", "Темір", "Iron"], ["ni", "Никель", "Никель", "Nickel"], ["chr", "Нихром", "Нихром", "Nichrome"]];
+        mats.forEach((md, i) => {
+            const x = 24 + i * 92, y = 20, on = p.mat === md[0];
+            fillRR(ctx, x, y, 84, 22, 11, on ? "rgba(47,125,184,0.18)" : "rgba(255,255,255,0.88)");
+            strokeRR(ctx, x, y, 84, 22, 11, on ? "#2f7db8" : "rgba(120,146,172,0.45)", on ? 1.6 : 1);
+            text(ctx, tr3(md[1], md[2], md[3]), x + 42, y + 15, { size: 10, align: "center", color: on ? "#1f6f9c" : C.ink2, weight: 700 });
+            hit({ kind: "tap", key: "mat", value: md[0], x: x + 42, y: y + 11, r: 22 });
+        });
+        pillText(ctx, `R = ${fmt2(calc.r)} Ом`, 24, 66, { size: 12, color: calc.pass ? "#227a4d" : "#b4632a" });
+    };
+
+    SCENES.g8_electromagnet = (ctx, w, h, p, calc, t) => {
+        labRoom(ctx, w, h, t, { horizon: 0.9 });
+        const base = h * 0.9, hx = w * 0.52;
+        // балка крана
+        fillRR(ctx, 0, 16, w, 16, 4, lin(ctx, 0, 16, 0, 32, [[0, "#ffe9a8"], [1, "#d9a94a"]]));
+        for (let x = 0; x < w; x += 40) { ctx.fillStyle = "rgba(120,90,30,0.22)"; ctx.fillRect(x, 16, 8, 16); }
+        // трос
+        wire(ctx, [[hx, 32], [hx, 78]], "#7d8fa2", 3);
+        // катушка на сердечнике
+        const coilY = 96;
+        fillRR(ctx, hx - 14, coilY, 28, 74, 4, lin(ctx, hx - 14, 0, hx + 14, 0, [[0, "#e8eef5"], [0.5, "#c3cfdb"], [1, "#93a3b4"]]));
+        const turns = Math.round(map(p.n, 100, 1000, 5, 14));
+        for (let i = 0; i < turns; i++) {
+            ctx.strokeStyle = i % 2 ? "#c07a3a" : "#d9974f"; ctx.lineWidth = 5;
+            ctx.beginPath(); ctx.ellipse(hx, coilY + 8 + i * 4.4, 26, 7, 0, 0, Math.PI * 2); ctx.stroke();
+        }
+        // якорь + контейнер
+        const lift = clamp(calc.b / 15, 0, 1);
+        fillRR(ctx, hx - 60, coilY + 74, 120, 12, 4, lin(ctx, 0, coilY + 74, 0, coilY + 86, [[0, "#f2f6fa"], [1, "#a8b6c5"]]));
+        const cyy = coilY + 96 + (1 - lift) * 8;
+        shadowed(ctx, 12, "rgba(40,60,90,0.28)", 6, () => {
+            fillRR(ctx, hx - 40, cyy, 80, 52, 6, lin(ctx, 0, cyy, 0, cyy + 52, [[0, "#7fb6e0"], [1, "#2f6f9c"]]));
+        });
+        ctx.strokeStyle = "rgba(255,255,255,0.45)"; ctx.lineWidth = 1.4;
+        for (let i = 1; i < 3; i++) { ctx.beginPath(); ctx.moveTo(hx - 40, cyy + 52 * i / 3); ctx.lineTo(hx + 40, cyy + 52 * i / 3); ctx.stroke(); }
+        text(ctx, tr3("контейнер", "контейнер", "container"), hx, cyy + 32, { size: 10, align: "center", color: "#eaf5ff", weight: 700 });
+        // силовые линии
+        const fieldK = clamp(calc.b / 15, 0.05, 1);
+        for (let i = 0; i < 4; i++) {
+            const off = (i - 1.5) * 30;
+            ctx.strokeStyle = `rgba(47,125,184,${0.2 + fieldK * 0.45})`; ctx.lineWidth = 1.3;
+            ctx.beginPath();
+            ctx.moveTo(hx + 18, coilY + 16 + i * 14);
+            ctx.bezierCurveTo(hx + 90 + off * 0.2, coilY + 30 + i * 12, hx + 60, coilY + 100, hx + 16, coilY + 70);
+            ctx.stroke();
+        }
+        // пульт
+        fillRR(ctx, 596, base - 132, 140, 118, 10, "#fdfefe");
+        strokeRR(ctx, 596, base - 132, 140, 118, 10, "rgba(90,116,145,0.45)", 1.4);
+        ctx.fillStyle = "rgba(190,225,205,0.9)"; ctx.fillRect(608, base - 122, 116, 30);
+        text(ctx, `${fmt2(calc.b)} мТл`, 666, base - 101, { size: 15, align: "center", color: "#1c5a41", weight: 800, family: "'Courier New', monospace" });
+        text(ctx, `N = ${p.n} · I = ${p.i} А`, 666, base - 76, { size: 10, align: "center", color: C.ink2, weight: 700 });
+        text(ctx, `L = ${p.len} см`, 666, base - 58, { size: 10, align: "center", color: C.ink2, weight: 700 });
+        // ручки
+        handle(ctx, hx + 60, coilY + 20, "N", { key: "n", axis: "y", x: hx + 60, y: coilY + 20, from: coilY + 60, to: 46, min: 100, max: 1000 });
+        handle(ctx, hx - 70, coilY + 40, "I", { key: "i", axis: "y", x: hx - 70, y: coilY + 40, from: coilY + 70, to: 60, min: 0.5, max: 5 });
+        handle(ctx, 560, base - 40, "L", { key: "len", axis: "x", x: 560, y: base - 40, from: 500, to: 640, min: 5, max: 20 });
+        const cores = [["air", "Без сердечника", "Өзексіз", "No core"], ["steel", "Сталь", "Болат", "Steel"], ["iron", "Железо", "Темір", "Iron"]];
+        cores.forEach((cd, i) => {
+            const x = 24 + i * 108, y = 56, on = p.core === cd[0];
+            fillRR(ctx, x, y, 100, 24, 12, on ? "rgba(47,125,184,0.18)" : "rgba(255,255,255,0.9)");
+            strokeRR(ctx, x, y, 100, 24, 12, on ? "#2f7db8" : "rgba(120,146,172,0.45)", on ? 1.6 : 1);
+            text(ctx, tr3(cd[1], cd[2], cd[3]), x + 50, y + 16, { size: 9.5, align: "center", color: on ? "#1f6f9c" : C.ink2, weight: 700 });
+            hit({ kind: "tap", key: "core", value: cd[0], x: x + 50, y: y + 12, r: 24 });
+        });
+        pillText(ctx, `F ~ ${fmt2(calc.b * 12)} Н`, 24, 30, { size: 11, color: calc.pass ? "#227a4d" : "#b4632a" });
+    };
+
+    SCENES.g8_reflection = (ctx, w, h, p, calc, t) => {
+        labRoom(ctx, w, h, t, { horizon: 0.88 });
+        const base = h * 0.88;
+        const mirX = w * 0.68;
+        const personH = map(p.hs, 160, 200, 120, 168);
+        // человек (силуэт)
+        const px = 220, headR = personH * 0.075;
+        const topY = base - personH;
+        ctx.strokeStyle = "#3d5a78"; ctx.fillStyle = "#3d5a78"; ctx.lineWidth = 7; ctx.lineCap = "round";
+        ctx.beginPath(); ctx.arc(px, topY + headR, headR, 0, Math.PI * 2); ctx.fill();
+        ctx.beginPath(); ctx.moveTo(px, topY + headR * 2); ctx.lineTo(px, base - personH * 0.42); ctx.stroke();
+        ctx.beginPath(); ctx.moveTo(px - personH * 0.13, topY + headR * 2.6); ctx.lineTo(px + personH * 0.13, topY + headR * 2.6); ctx.stroke();
+        ctx.lineWidth = 6;
+        ctx.beginPath(); ctx.moveTo(px, base - personH * 0.42); ctx.lineTo(px - personH * 0.1, base); ctx.stroke();
+        ctx.beginPath(); ctx.moveTo(px, base - personH * 0.42); ctx.lineTo(px + personH * 0.1, base); ctx.stroke();
+        text(ctx, `H = ${p.hs} см`, px - 46, base - personH - 12, { size: 10.5, color: C.ink2, weight: 700 });
+        // зеркало
+        const mirH = map(p.mir, 60, 120, 62, 176);
+        const mirTop = base - 10 - mirH;
+        shadowed(ctx, 14, "rgba(40,60,90,0.25)", 6, () => {
+            fillRR(ctx, mirX - 8, mirTop, 16, mirH + 10, 4, lin(ctx, mirX - 8, 0, mirX + 8, 0, [[0, "#d9b98a"], [0.5, "#c39a63"], [1, "#9c7443"]]));
+        });
+        fillRR(ctx, mirX - 30, mirTop, 60, mirH, 3, lin(ctx, mirX - 30, mirTop, mirX + 30, mirTop + mirH, [[0, "rgba(226,244,255,0.95)"], [0.5, "rgba(200,230,250,0.8)"], [1, "rgba(235,248,255,0.95)"]]));
+        strokeRR(ctx, mirX - 30, mirTop, 60, mirH, 3, "rgba(120,160,195,0.7)", 1.4);
+        // блик
+        ctx.save(); ctx.beginPath(); ctx.rect(mirX - 30, mirTop, 60, mirH); ctx.clip();
+        ctx.fillStyle = "rgba(255,255,255,0.75)";
+        ctx.beginPath(); ctx.moveTo(mirX - 26, mirTop + 8); ctx.lineTo(mirX + 6, mirTop); ctx.lineTo(mirX - 8, mirTop + mirH); ctx.lineTo(mirX - 26, mirTop + mirH); ctx.closePath(); ctx.fill();
+        ctx.restore();
+        // отражение инженера внутри полотна: если зеркало ниже H/2 — фигура обрезается
+        ctx.save();
+        ctx.beginPath(); ctx.rect(mirX - 30, mirTop, 60, mirH); ctx.clip();
+        ctx.globalAlpha = 0.32; ctx.strokeStyle = "#5c7896"; ctx.fillStyle = "#5c7896";
+        const rH = Math.min(personH, mirH);
+        const rFeet = mirTop + mirH, rTop = rFeet - rH, rrHead = rH * 0.075;
+        ctx.beginPath(); ctx.arc(mirX, rTop + rrHead, rrHead, 0, Math.PI * 2); ctx.fill();
+        ctx.lineWidth = Math.max(3, rH * 0.045);
+        ctx.beginPath(); ctx.moveTo(mirX, rTop + rrHead * 2); ctx.lineTo(mirX, rFeet - rH * 0.42); ctx.stroke();
+        ctx.lineWidth = Math.max(2.5, rH * 0.04);
+        ctx.beginPath(); ctx.moveTo(mirX, rFeet - rH * 0.42); ctx.lineTo(mirX - rH * 0.09, rFeet); ctx.stroke();
+        ctx.beginPath(); ctx.moveTo(mirX, rFeet - rH * 0.42); ctx.lineTo(mirX + rH * 0.09, rFeet); ctx.stroke();
+        ctx.restore();
+        // лучи от глаз к зеркалу и к ногам
+        ctx.strokeStyle = "rgba(240,170,70,0.75)"; ctx.lineWidth = 1.5;
+        const eyeY = topY + headR * 2.4;
+        ctx.beginPath(); ctx.moveTo(px + headR, eyeY); ctx.lineTo(mirX - 30, eyeY); ctx.lineTo(px + headR, mirTop + 4); ctx.stroke();
+        ctx.beginPath(); ctx.moveTo(px + headR, base - 6); ctx.lineTo(mirX - 30, base - 6); ctx.lineTo(px + headR, mirTop + mirH); ctx.stroke();
+        // требуемая высота — пунктир
+        const needH = map(p.hs / 2, 60, 120, 62, 176);
+        const bx2 = mirX + 48, by2 = base - 10;
+        fillRR(ctx, bx2 - 5, by2 - needH, 10, needH, 4, "rgba(46,163,106,0.16)");
+        ctx.strokeStyle = "rgba(46,163,106,0.85)"; ctx.lineWidth = 1.6;
+        ctx.beginPath(); ctx.moveTo(bx2, by2); ctx.lineTo(bx2, by2 - needH); ctx.stroke();
+        [[by2, 1], [by2 - needH, -1]].forEach(([y]) => { ctx.beginPath(); ctx.moveTo(bx2 - 7, y); ctx.lineTo(bx2 + 7, y); ctx.stroke(); });
+        text(ctx, tr3("нужно H/2", "керек H/2", "need H/2"), bx2 + 12, by2 - needH + 4, { size: 10, color: "#227a4d", weight: 700 });
+        handle(ctx, mirX - 44, mirTop, "h", { key: "mir", axis: "y", x: mirX - 44, y: mirTop, from: base - 20, to: 40, min: 60, max: 120 });
+        handle(ctx, px + 60, topY + 30, "H", { key: "hs", axis: "y", x: px + 60, y: topY + 30, from: topY + 60, to: 30, min: 160, max: 200 });
+        pillText(ctx, `h = ${p.mir} см · H/2 = ${fmt2(calc.need)} см`, 24, 30, { size: 11, color: calc.pass ? "#227a4d" : "#b4632a" });
+    };
+
+    SCENES.g8_refraction = (ctx, w, h, p, calc, t) => {
+        labRoom(ctx, w, h, t, { horizon: 0.86 });
+        const base = h * 0.86;
+        // стеклянный блок
+        const bx = 250, by = base - 96, bw = 260, bh = 92;
+        shadowed(ctx, 14, "rgba(40,60,90,0.2)", 6, () => {
+            fillRR(ctx, bx, by, bw, bh, 6, "rgba(200,232,248,0.55)");
+        });
+        strokeRR(ctx, bx, by, bw, bh, 6, "rgba(110,160,195,0.8)", 1.6);
+        ctx.fillStyle = "rgba(255,255,255,0.5)";
+        ctx.beginPath(); ctx.moveTo(bx + 12, by + bh - 10); ctx.lineTo(bx + 74, by + 6); ctx.lineTo(bx + 96, by + 6); ctx.lineTo(bx + 34, by + bh - 10); ctx.closePath(); ctx.fill();
+        text(ctx, { water: "вода n = 1,33", glass: "стекло n = 1,5", diamond: "алмаз n = 2,42" }[p.mat], bx + 12, by + 18, { size: 10, color: "#2f6f9c", weight: 700 });
+        // нормаль
+        const hitX = bx + bw * 0.5, hitY = by;
+        ctx.strokeStyle = "rgba(90,116,145,0.6)"; ctx.lineWidth = 1.2; ctx.setLineDash([7, 5]);
+        ctx.beginPath(); ctx.moveTo(hitX, by - 92); ctx.lineTo(hitX, by + bh - 6); ctx.stroke(); ctx.setLineDash([]);
+        // падающий луч
+        const a = p.alpha * Math.PI / 180;
+        const inLen = 130;
+        const ix = hitX - Math.sin(a) * inLen, iy = hitY - Math.cos(a) * inLen;
+        ctx.strokeStyle = "#e0632f"; ctx.lineWidth = 2.6; ctx.lineCap = "round";
+        ctx.beginPath(); ctx.moveTo(ix, iy); ctx.lineTo(hitX, hitY); ctx.stroke();
+        arrow(ctx, hitX - Math.sin(a) * 24, hitY - Math.cos(a) * 24, hitX - Math.sin(a) * 4, hitY - Math.cos(a) * 4, "#e0632f", 2.4);
+        // преломлённый луч
+        const b = calc.beta * Math.PI / 180;
+        const outLen = 170;
+        ctx.strokeStyle = "#d9a94a"; ctx.lineWidth = 2.6;
+        ctx.beginPath(); ctx.moveTo(hitX, hitY); ctx.lineTo(hitX + Math.sin(b) * outLen, hitY + Math.cos(b) * outLen); ctx.stroke();
+        // отражённый луч
+        ctx.strokeStyle = "rgba(224,99,47,0.3)"; ctx.lineWidth = 1.6; ctx.setLineDash([4, 4]);
+        ctx.beginPath(); ctx.moveTo(hitX, hitY); ctx.lineTo(hitX + Math.sin(a) * 120, hitY - Math.cos(a) * 120); ctx.stroke(); ctx.setLineDash([]);
+        // углы
+        ctx.strokeStyle = "rgba(224,99,47,0.85)"; ctx.lineWidth = 2;
+        ctx.beginPath(); ctx.arc(hitX, hitY, 44, -Math.PI / 2 - a, -Math.PI / 2); ctx.stroke();
+        text(ctx, `α = ${p.alpha}°`, hitX - 66, hitY - 48, { size: 10.5, color: "#b4392f", weight: 700 });
+        ctx.strokeStyle = "rgba(217,169,74,0.95)";
+        ctx.beginPath(); ctx.arc(hitX, hitY, 58, Math.PI / 2 - b, Math.PI / 2); ctx.stroke();
+        text(ctx, `β = ${fmt2(calc.beta)}°`, hitX + 34, hitY + bh + 20, { size: 10.5, color: "#8a6318", weight: 700 });
+        // лазер
+        fillRR(ctx, ix - 18, iy - 12, 40, 24, 6, lin(ctx, 0, iy - 12, 0, iy + 12, [[0, "#f4f7fa"], [1, "#9aa9ba"]]));
+        lampGlow(ctx, ix + 4, iy, 10, 0.8);
+        // транспортир-шкала
+        for (let dg = 0; dg <= 90; dg += 10) {
+            const rr2 = 92, aa = -Math.PI / 2 - dg * Math.PI / 180;
+            ctx.strokeStyle = "rgba(90,116,145,0.45)"; ctx.lineWidth = 1;
+            ctx.beginPath(); ctx.moveTo(hitX + Math.cos(aa) * (rr2 - 6), hitY + Math.sin(aa) * (rr2 - 6));
+            ctx.lineTo(hitX + Math.cos(aa) * rr2, hitY + Math.sin(aa) * rr2); ctx.stroke();
+        }
+        handle(ctx, ix, iy, "α", { kind: "drag", key: "alpha", axis: "y", x: ix, y: iy, from: 100, to: 10, min: 20, max: 70 });
+        const mats = [["water", "Вода", "Су", "Water"], ["glass", "Стекло", "Шыны", "Glass"], ["diamond", "Алмаз", "Алмаз", "Diamond"]];
+        mats.forEach((md, i) => {
+            const x = 560 + (i % 2) * 96, y = 22 + Math.floor(i / 2) * 30, on = p.mat === md[0];
+            fillRR(ctx, x, y, 88, 24, 12, on ? "rgba(47,125,184,0.18)" : "rgba(255,255,255,0.9)");
+            strokeRR(ctx, x, y, 88, 24, 12, on ? "#2f7db8" : "rgba(120,146,172,0.45)", on ? 1.6 : 1);
+            text(ctx, tr3(md[1], md[2], md[3]), x + 44, y + 16, { size: 10, align: "center", color: on ? "#1f6f9c" : C.ink2, weight: 700 });
+            hit({ kind: "tap", key: "mat", value: md[0], x: x + 44, y: y + 12, r: 24 });
+        });
+        pillText(ctx, `sin α / sin β = ${fmt2(calc.n)}`, 24, 30, { size: 11, color: calc.pass ? "#227a4d" : "#b4632a" });
+    };
+
+    SCENES.g8_eye = (ctx, w, h, p, calc, t) => {
+        labRoom(ctx, w, h, t, { horizon: 0.88 });
+        const base = h * 0.88, ex = 430, ey = h * 0.46;
+        // глазное яблоко
+        shadowed(ctx, 16, "rgba(40,60,90,0.26)", 6, () => {
+            ctx.beginPath(); ctx.arc(ex, ey, 74, 0, Math.PI * 2);
+            ctx.fillStyle = rad(ctx, ex - 24, ey - 28, 6, 104, [[0, "#ffffff"], [0.75, "#eef4fa"], [1, "#c9d8e6"]]);
+            ctx.fill();
+        });
+        ctx.strokeStyle = "rgba(90,116,145,0.5)"; ctx.lineWidth = 2;
+        ctx.beginPath(); ctx.arc(ex, ey, 74, 0, Math.PI * 2); ctx.stroke();
+        // сетчатка
+        ctx.strokeStyle = "#d9736b"; ctx.lineWidth = 7;
+        ctx.beginPath(); ctx.arc(ex, ey, 66, Math.PI * 0.62, Math.PI * 1.38); ctx.stroke();
+        text(ctx, tr3("сетчатка", "тор", "retina"), ex - 96, ey + 92, { size: 9.5, color: "#b4392f", weight: 700 });
+        // роговица + хрусталик настройки
+        const dptK = clamp((p.dpt - 40) / 20, 0, 1);
+        ctx.beginPath(); ctx.ellipse(ex - 74, ey, 12 + dptK * 10, 30, 0, 0, Math.PI * 2);
+        ctx.fillStyle = "rgba(170,215,240,0.75)"; ctx.fill();
+        ctx.strokeStyle = "rgba(110,160,195,0.9)"; ctx.lineWidth = 2; ctx.stroke();
+        // глазная ось и фокус
+        const axLen = map(p.d, 25, 200, 60, 250);
+        const objX = Math.max(36, ex - 78 - axLen);
+        ctx.strokeStyle = "rgba(90,116,145,0.45)"; ctx.lineWidth = 1; ctx.setLineDash([6, 5]);
+        ctx.beginPath(); ctx.moveTo(objX, ey); ctx.lineTo(ex + 66, ey); ctx.stroke(); ctx.setLineDash([]);
+        // предмет (стрелка)
+        arrow(ctx, objX, ey + 30, objX, ey - 20, "#3d5a78", 3);
+        text(ctx, tr3("предмет", "зат", "object"), objX - 18, ey + 48, { size: 9.5, color: C.ink2, weight: 700 });
+        // лучи
+        const focusX = ex + map(Math.abs(calc.need - p.dpt), 0, 6, 62, 20);
+        ctx.strokeStyle = "rgba(240,170,70,0.6)"; ctx.lineWidth = 1.3;
+        [[-20, -1], [0, 0], [20, 1]].forEach(([oy, k]) => {
+            ctx.beginPath(); ctx.moveTo(objX, ey + oy);
+            ctx.lineTo(ex - 78, ey + oy * 0.35);
+            ctx.lineTo(focusX, ey + k * 14); ctx.stroke();
+        });
+        // точка фокуса
+        const sharp = Math.abs(calc.need - p.dpt) <= 0.4;
+        ctx.beginPath(); ctx.arc(focusX, ey, 5, 0, Math.PI * 2);
+        ctx.fillStyle = sharp ? "rgba(46,163,106,0.95)" : "rgba(217,130,43,0.9)"; ctx.fill();
+        pillText(ctx, sharp ? tr3("резко", "анық", "sharp") : tr3("размыто", "бұлыңғыр", "blurred"), focusX + 16, ey - 26, { size: 10, color: sharp ? "#227a4d" : "#b4632a" });
+        // мерная линейка до предмета
+        ctx.strokeStyle = "rgba(60,110,160,0.5)"; ctx.lineWidth = 1.4;
+        ctx.beginPath(); ctx.moveTo(objX, base - 26); ctx.lineTo(ex - 78, base - 26); ctx.stroke();
+        for (let i = 0; i <= 5; i++) { const x = lerp(objX, ex - 78, i / 5); ctx.beginPath(); ctx.moveTo(x, base - 31); ctx.lineTo(x, base - 21); ctx.stroke(); }
+        text(ctx, `d = ${p.d} см`, (objX + ex - 78) / 2, base - 36, { size: 10, align: "center", color: "#134a70", weight: 700 });
+        handle(ctx, objX, ey - 30, "d", { kind: "drag", key: "d", axis: "x", x: objX, y: ey - 30, from: ex - 138, to: 60, min: 25, max: 200 });
+        // ручка оптической силы
+        handle(ctx, 700, 70, "D", { kind: "drag", key: "dpt", axis: "y", x: 700, y: 70, from: 130, to: 30, min: 40, max: 60 });
+        gauge(ctx, 702, 186, 30, clamp((p.dpt - 40) / 20, 0, 1), "D", "дптр");
+        pillText(ctx, `нужно D = ${fmt2(calc.need)} дптр`, 24, 30, { size: 11, color: calc.pass ? "#227a4d" : "#b4632a" });
+    };
+
+    /* ---------------------------- 9 класс ---------------------------- */
+
+    SCENES.g9_speed = (ctx, w, h, p, calc, t) => {
+        skyBackdrop(ctx, w, h, t);
+        const base = h * 0.86;
+        // беговая дорожка
+        fillRR(ctx, 0, base - 26, w, 60, 0, lin(ctx, 0, base - 26, 0, base + 34, [[0, "#e0795f"], [1, "#b9523c"]]));
+        for (let x = 0; x < w; x += 52) { ctx.fillStyle = "rgba(255,255,255,0.85)"; ctx.fillRect(x, base - 26, 26, 2); }
+        for (let x = 8; x < w; x += 52) { ctx.fillStyle = "rgba(255,255,255,0.55)"; ctx.fillRect(x, base + 6, 24, 2); }
+        // разметка дистанции
+        const sPx = map(p.s, 20, 200, 120, w - 70);
+        const tx = 70;
+        ctx.strokeStyle = "rgba(60,110,160,0.55)"; ctx.lineWidth = 1.6; ctx.setLineDash([7, 5]);
+        ctx.beginPath(); ctx.moveTo(tx, base - 42); ctx.lineTo(sPx, base - 42); ctx.stroke(); ctx.setLineDash([]);
+        [tx, sPx].forEach((x) => { ctx.fillStyle = "#fff"; ctx.fillRect(x - 2, base - 60, 4, 26); });
+        pillText(ctx, `s = ${p.s} м`, (tx + sPx) / 2 - 24, base - 72, { size: 10.5, color: "#134a70" });
+        // финишная арка
+        steelBar(ctx, sPx, base - 118, 6, 96, 3);
+        steelBar(ctx, sPx - 42, base - 122, 48, 8, 3);
+        // бегун: бежит по дистанции в цикле
+        const ph = (t * 0.012 * (10 / p.t)) % 1;
+        const runX = lerp(tx, sPx, ph);
+        contactShadow(ctx, runX, base - 6, 14, 4, 0.22);
+        ctx.strokeStyle = "#26435f"; ctx.fillStyle = "#26435f"; ctx.lineWidth = 4; ctx.lineCap = "round";
+        ctx.beginPath(); ctx.arc(runX, base - 62, 8, 0, Math.PI * 2); ctx.fill();
+        ctx.beginPath(); ctx.moveTo(runX, base - 54); ctx.lineTo(runX, base - 26); ctx.stroke();
+        ctx.beginPath(); ctx.moveTo(runX, base - 48); ctx.lineTo(runX + 14, base - 40); ctx.stroke();
+        ctx.beginPath(); ctx.moveTo(runX, base - 26); ctx.lineTo(runX + 12, base - 4); ctx.stroke();
+        ctx.beginPath(); ctx.moveTo(runX, base - 26); ctx.lineTo(runX - 12, base - 4); ctx.stroke();
+        // секундомер
+        fillRR(ctx, 566, 26, 140, 78, 12, "#fdfefe");
+        strokeRR(ctx, 566, 26, 140, 78, 12, "rgba(90,116,145,0.45)", 1.4);
+        ctx.fillStyle = "rgba(190,225,205,0.85)"; ctx.fillRect(578, 38, 116, 30);
+        text(ctx, `${fmt2(p.t)} с`, 636, 60, { size: 16, align: "center", color: "#1c5a41", weight: 800, family: "'Courier New', monospace" });
+        text(ctx, tr3("секундомер", "секундомер", "stopwatch"), 636, 90, { size: 9.5, align: "center", color: C.soft, weight: 700 });
+        handle(ctx, (tx + sPx) / 2, base - 42, "s", { kind: "drag", key: "s", axis: "x", x: (tx + sPx) / 2, y: base - 42, from: tx + 40, to: w - 90, min: 20, max: 200 });
+        handle(ctx, 636, 112, "t", { kind: "drag", key: "t", axis: "y", x: 636, y: 112, from: 132, to: 26, min: 2, max: 20 });
+        pillText(ctx, `v = ${fmt2(calc.v)} м/с`, 24, 32, { size: 12.5, color: calc.pass ? "#227a4d" : "#b4632a" });
+    };
+
+    SCENES.g9_accel = (ctx, w, h, p, calc, t) => {
+        skyBackdrop(ctx, w, h, t);
+        const base = h * 0.86;
+        // рельс
+        fillRR(ctx, 0, base - 30, w, 14, 4, lin(ctx, 0, base - 30, 0, base - 16, [[0, "#eef3f9"], [1, "#a7b6c6"]]));
+        for (let x = 12; x < w; x += 34) { fillRR(ctx, x, base - 16, 22, 8, 2, "#8c9cae"); }
+        // платформа
+        const aPx = clamp(map(p.v - p.v0, -10, 25, -60, 200), -60, 200);
+        const carX = 280 + Math.sin(t * 0.02) * 30;
+        contactShadow(ctx, carX, base - 34, 62, 8, 0.24);
+        shadowed(ctx, 14, "rgba(40,60,90,0.26)", 6, () => {
+            fillRR(ctx, carX - 62, base - 74, 124, 42, 8, lin(ctx, 0, base - 74, 0, base - 32, [[0, "#f7fafd"], [0.5, "#d6e0ea"], [1, "#9fb0c1"]]));
+        });
+        fillRR(ctx, carX - 40, base - 92, 80, 22, 6, "rgba(120,190,225,0.75)");
+        strokeRR(ctx, carX - 40, base - 92, 80, 22, 6, "rgba(90,140,180,0.6)", 1);
+        [[-40, 0], [40, 0]].forEach(([dx]) => {
+            ctx.beginPath(); ctx.arc(carX + dx, base - 30, 9, 0, Math.PI * 2); ctx.fillStyle = "#5d6f80"; ctx.fill();
+            ctx.beginPath(); ctx.arc(carX + dx, base - 30, 3.4, 0, Math.PI * 2); ctx.fillStyle = "#c9d6e2"; ctx.fill();
+        });
+        // стрелки ускорения и скорости
+        arrow(ctx, carX - 62, base - 106, carX - 62 - 30 - aPx * 0.35, base - 106, "#c2483c", 3, "a");
+        arrow(ctx, carX + 62, base - 106, carX + 62 + 24 + p.v * 3, base - 106, "#2f7db8", 3, "v");
+        // шкала скорости
+        ctx.strokeStyle = "rgba(60,110,160,0.5)"; ctx.lineWidth = 1.4;
+        ctx.beginPath(); ctx.moveTo(60, base + 14); ctx.lineTo(w - 60, base + 14); ctx.stroke();
+        for (let i = 0; i <= 5; i++) { const x = 60 + i * (w - 120) / 5; ctx.beginPath(); ctx.moveTo(x, base + 8); ctx.lineTo(x, base + 20); ctx.stroke(); }
+        const vmax = 25;
+        const mk = 60 + clamp(p.v / vmax, 0, 1) * (w - 120);
+        ctx.beginPath(); ctx.arc(mk, base + 14, 6, 0, Math.PI * 2); ctx.fillStyle = "#2f7db8"; ctx.fill();
+        text(ctx, `v = ${p.v} м/с`, mk, base + 34, { size: 10, align: "center", color: "#134a70", weight: 700 });
+        // график v(t)
+        const gx = 566, gy = 40;
+        fillRR(ctx, gx - 10, gy - 10, 168, 96, 10, "rgba(255,255,255,0.92)");
+        strokeRR(ctx, gx - 10, gy - 10, 168, 96, 10, "rgba(90,116,145,0.4)", 1.2);
+        ctx.strokeStyle = "rgba(90,116,145,0.5)"; ctx.lineWidth = 1.2;
+        ctx.beginPath(); ctx.moveTo(gx + 4, gy + 72); ctx.lineTo(gx + 148, gy + 72); ctx.stroke();
+        ctx.beginPath(); ctx.moveTo(gx + 4, gy + 72); ctx.lineTo(gx + 4, gy + 4); ctx.stroke();
+        const slope = clamp((p.v - p.v0) / p.t, -6, 12);
+        ctx.strokeStyle = "#c2483c"; ctx.lineWidth = 2.6;
+        ctx.beginPath(); ctx.moveTo(gx + 4, gy + 72 - clamp(p.v0 / 25, 0, 1) * 60);
+        ctx.lineTo(gx + 140, gy + 72 - clamp(p.v / 25, 0, 1) * 60); ctx.stroke();
+        text(ctx, "v(t)", gx + 112, gy + 16, { size: 9.5, color: C.soft, weight: 700 });
+        text(ctx, `a = ${fmt2(calc.a)} м/с²`, gx + 74, gy + 100, { size: 10.5, align: "center", color: calc.pass ? "#227a4d" : "#b4632a", weight: 800 });
+        handle(ctx, carX - 62, base - 106, "v₀", { kind: "drag", key: "v0", axis: "y", x: carX - 62, y: base - 106, from: base - 80, to: base - 150, min: 0, max: 10 });
+        handle(ctx, carX + 62, base - 106, "v", { kind: "drag", key: "v", axis: "y", x: carX + 62, y: base - 106, from: base - 80, to: base - 150, min: 5, max: 25 });
+        handle(ctx, carX + 110, base - 60, "t", { kind: "drag", key: "t", axis: "x", x: carX + 110, y: base - 60, from: carX + 80, to: carX + 240, min: 2, max: 10 });
+        pillText(ctx, `a = Δv/Δt`, 24, 32, { size: 11, color: "#1f6f9c" });
+    };
+
+    SCENES.g9_newton2 = (ctx, w, h, p, calc, t) => {
+        spaceBackdrop(ctx, w, h, t);
+        const cy = h * 0.52, cx = w * 0.44;
+        // капсула
+        const bodyW = map(p.m, 0.5, 5, 90, 150);
+        shadowed(ctx, 16, "rgba(30,60,100,0.3)", 8, () => {
+            fillRR(ctx, cx - bodyW / 2, cy - 42, bodyW, 84, 26, lin(ctx, 0, cy - 42, 0, cy + 42, [[0, "#ffffff"], [0.45, "#d5e0ea"], [1, "#8fa2b5"]]));
+        });
+        strokeRR(ctx, cx - bodyW / 2, cy - 42, bodyW, 84, 26, "rgba(70,92,116,0.45)", 1.4);
+        ctx.beginPath(); ctx.ellipse(cx, cy - 6, bodyW * 0.22, 12, 0, 0, Math.PI * 2);
+        ctx.fillStyle = "rgba(110,178,220,0.8)"; ctx.fill();
+        ctx.strokeStyle = "rgba(255,255,255,0.85)"; ctx.lineWidth = 2; ctx.stroke();
+        // маршевый двигатель + пламя
+        steelBar(ctx, cx + bodyW / 2 - 6, cy - 18, 26, 36, 6);
+        flameShape(ctx, cx + bodyW / 2 + 34, cy + 4, 46 + p.f * 2.4, 26, t);
+        lampGlow(ctx, cx + bodyW / 2 + 30, cy, 22, 0.6);
+        // стрелка силы
+        const fk = clamp(p.f / 20, 0.1, 1);
+        arrow(ctx, cx - bodyW / 2 - 6, cy - 70, cx - bodyW / 2 - 16 - 50 - fk * 90, cy - 70, "#c2483c", 3.2, `F = ${p.f} Н`);
+        // «блоки массы»
+        text(ctx, `m = ${p.m} кг`, cx, cy + 68, { size: 11, align: "center", color: "#134a70", weight: 800 });
+        // шкала ускорения
+        const bx = 520, by = 60;
+        fillRR(ctx, bx, by, 200, 88, 12, "rgba(255,255,255,0.9)");
+        strokeRR(ctx, bx, by, 200, 88, 12, "rgba(90,116,145,0.4)", 1.2);
+        text(ctx, "a = F / m", bx + 100, by + 22, { size: 10.5, align: "center", color: C.soft, weight: 700 });
+        const frac = clamp(calc.a / 8, 0, 1);
+        fillRR(ctx, bx + 16, by + 36, 168, 14, 7, "rgba(120,146,172,0.22)");
+        fillRR(ctx, bx + 16, by + 36, 168 * frac, 14, 7, lin(ctx, bx + 16, 0, bx + 184, 0, [[0, "#8fd0a8"], [1, "#2ea36a"]]));
+        text(ctx, `${fmt2(calc.a)} м/с²`, bx + 100, by + 74, { size: 14, align: "center", color: calc.pass ? "#227a4d" : "#b4632a", weight: 800 });
+        // разгонные штрихи
+        for (let i = 0; i < 4; i++) {
+            const ph = ((t * 0.02 + i * 0.25) % 1);
+            ctx.strokeStyle = `rgba(255,255,255,${0.5 * (1 - ph)})`; ctx.lineWidth = 2;
+            ctx.beginPath(); ctx.moveTo(cx - bodyW / 2 - 90 - ph * 60, cy + (i - 1.5) * 18); ctx.lineTo(cx - bodyW / 2 - 60 - ph * 60, cy + (i - 1.5) * 18); ctx.stroke();
+        }
+        handle(ctx, cx - bodyW / 2 - 16, cy - 70, "F", { kind: "drag", key: "f", axis: "y", x: cx - bodyW / 2 - 16, y: cy - 70, from: cy - 20, to: 30, min: 2, max: 20 });
+        handle(ctx, cx + bodyW / 2 + 34, cy + 66, "m", { kind: "drag", key: "m", axis: "y", x: cx + bodyW / 2 + 34, y: cy + 66, from: cy + 90, to: cy + 10, min: 0.5, max: 5 });
+        pillText(ctx, `F = ${p.f} Н · m = ${p.m} кг`, 24, 32, { size: 11, color: "#1f6f9c" });
+    };
+
+    SCENES.g9_fall = (ctx, w, h, p, calc, t) => {
+        skyBackdrop(ctx, w, h, t);
+        const base = h * 0.88;
+        // капсула сверху
+        const capX = 300;
+        fillRR(ctx, capX - 90, 16, 190, 34, 12, lin(ctx, 0, 16, 0, 50, [[0, "#ffffff"], [0.5, "#d9e3ed"], [1, "#a2b2c2"]]));
+        strokeRR(ctx, capX - 90, 16, 190, 34, 12, "rgba(70,92,116,0.4)", 1.2);
+        fillRR(ctx, capX - 56, 24, 60, 16, 8, "rgba(120,190,225,0.8)");
+        text(ctx, tr3("капсула", "капсула", "capsule"), capX + 16, 40, { size: 10, color: C.ink2, weight: 700 });
+        // шкала высоты
+        const hPx = map(p.h, 5, 45, 100, 176);
+        const topY = base - hPx;
+        ctx.strokeStyle = "rgba(60,110,160,0.5)"; ctx.lineWidth = 1.4; ctx.setLineDash([7, 5]);
+        ctx.beginPath(); ctx.moveTo(120, topY); ctx.lineTo(120, base); ctx.stroke(); ctx.setLineDash([]);
+        for (let i = 0; i <= 4; i++) {
+            const y = lerp(topY, base, i / 4);
+            ctx.strokeStyle = "rgba(60,110,160,0.6)"; ctx.lineWidth = 1.2;
+            ctx.beginPath(); ctx.moveTo(112, y); ctx.lineTo(128, y); ctx.stroke();
+        }
+        text(ctx, `h = ${p.h} м`, 90, topY - 8, { size: 10.5, color: "#134a70", weight: 700 });
+        // зонд падает
+        const cyc = (t * 0.03) % 1;
+        const probeY = lerp(topY, base - 22, cyc * cyc);
+        contactShadow(ctx, capX + 40, base - 2, 12, 4, 0.2);
+        shadowed(ctx, 10, "rgba(40,60,90,0.26)", 4, () => {
+            fillRR(ctx, capX + 28, probeY, 24, 20, 8, lin(ctx, 0, probeY, 0, probeY + 20, [[0, "#ffe9a8"], [1, "#d9a94a"]]));
+        });
+        // парашют-маркер цели
+        ctx.strokeStyle = "rgba(46,163,106,0.75)"; ctx.lineWidth = 1.6;
+        ctx.beginPath(); ctx.moveTo(capX + 40, topY + 4); ctx.lineTo(capX + 40, base - 6); ctx.stroke();
+        fillRR(ctx, capX + 8, topY, 64, 8, 4, "rgba(46,163,106,0.22)");
+        // секундомер
+        fillRR(ctx, 520, 40, 168, 92, 12, "#fdfefe");
+        strokeRR(ctx, 520, 40, 168, 92, 12, "rgba(90,116,145,0.45)", 1.4);
+        ctx.fillStyle = "rgba(190,225,205,0.85)"; ctx.fillRect(532, 52, 144, 34);
+        text(ctx, `${fmt2(p.h)} м`, 604, 76, { size: 17, align: "center", color: "#1c5a41", weight: 800, family: "'Courier New', monospace" });
+        text(ctx, tr3("высота сброса", "тастау биіктігі", "drop height"), 604, 102, { size: 9.5, align: "center", color: C.soft, weight: 700 });
+        text(ctx, `t = ${fmt2(calc.t)} с`, 604, 122, { size: 12, align: "center", color: calc.pass ? "#227a4d" : "#b4632a", weight: 800 });
+        handle(ctx, capX + 40, topY + 4, "h", { kind: "drag", key: "h", axis: "y", x: capX + 40, y: topY + 4, from: base - 40, to: 70, min: 5, max: 45 });
+        dragChip(ctx, 150, 62, tr3("тяни зонд — высота сброса", "зондты тарт", "drag the probe"));
+        pillText(ctx, `t = √(2h/g)`, 24, 32, { size: 11, color: "#1f6f9c" });
+    };
+
+    SCENES.g9_energy = (ctx, w, h, p, calc, t) => {
+        skyBackdrop(ctx, w, h, t);
+        const base = h * 0.86;
+        // наклонная плоскость
+        const rampX0 = 90, rampX1 = 470;
+        const rampH = map(p.h, 1, 10, 40, 170);
+        const topY = base - rampH;
+        ctx.beginPath();
+        ctx.moveTo(rampX0, base); ctx.lineTo(rampX0, topY); ctx.lineTo(rampX1, base); ctx.closePath();
+        ctx.fillStyle = lin(ctx, 0, topY, 0, base, [[0, "#e6edf5"], [1, "#b7c5d3"]]); ctx.fill();
+        ctx.strokeStyle = "rgba(70,92,116,0.45)"; ctx.lineWidth = 1.6; ctx.stroke();
+        // высота
+        ctx.strokeStyle = "rgba(60,110,160,0.6)"; ctx.lineWidth = 1.4; ctx.setLineDash([7, 5]);
+        ctx.beginPath(); ctx.moveTo(rampX0 - 26, topY); ctx.lineTo(rampX0 - 26, base); ctx.stroke(); ctx.setLineDash([]);
+        ctx.beginPath(); ctx.moveTo(rampX0 - 32, topY); ctx.lineTo(rampX0 - 20, topY); ctx.stroke();
+        ctx.beginPath(); ctx.moveTo(rampX0 - 32, base); ctx.lineTo(rampX0 - 20, base); ctx.stroke();
+        text(ctx, `h = ${p.h} м`, rampX0 - 66, (topY + base) / 2, { size: 10.5, color: "#134a70", weight: 700 });
+        // груз скатывается
+        const cyc = (t * 0.012) % 1;
+        const pos = Math.min(0.98, cyc);
+        const gx = lerp(rampX0 + 16, rampX1 - 26, pos);
+        const gy = lerp(topY + 10, base - 10, pos);
+        contactShadow(ctx, gx, gy + 12, 16, 5, 0.22);
+        shadowed(ctx, 12, "rgba(40,60,90,0.28)", 5, () => {
+            ctx.beginPath(); ctx.arc(gx, gy, 14, 0, Math.PI * 2);
+            ctx.fillStyle = rad(ctx, gx - 5, gy - 6, 2, 18, [[0, "#ffffff"], [0.55, "#9fb0c1"], [1, "#5d7183"]]);
+            ctx.fill();
+        });
+        text(ctx, `m = ${p.m} кг`, gx - 14, gy + 32, { size: 10, align: "center", color: "#134a70", weight: 800 });
+        // столб энергии
+        const bx = 560, by = base - 150;
+        fillRR(ctx, bx, by, 150, 150, 10, "rgba(255,255,255,0.9)");
+        strokeRR(ctx, bx, by, 150, 150, 10, "rgba(90,116,145,0.4)", 1.2);
+        text(ctx, tr3("энергия", "энергия", "energy"), bx + 75, by + 20, { size: 10.5, align: "center", color: C.soft, weight: 700 });
+        const eK = clamp(calc.e / 180, 0, 1);
+        const potK = Math.max(0, 1 - pos);
+        fillRR(ctx, bx + 20, by + 136, 46, -(136 - 30) * potK, 5, "rgba(47,125,184,0.75)");
+        fillRR(ctx, bx + 84, by + 136, 46, -(136 - 30) * (1 - potK) * clamp(1 - Math.abs(calc.e / 150 - 1) * 0.06, 0.2, 1), 5, "rgba(46,163,106,0.8)");
+        text(ctx, "Eₖ", bx + 43, by + 148, { size: 9.5, align: "center", color: "#1f6f9c", weight: 700 });
+        text(ctx, "Eₚ", bx + 107, by + 148, { size: 9.5, align: "center", color: "#227a4d", weight: 700 });
+        text(ctx, `${fmt2(calc.e)} Дж`, bx + 75, by + 170, { size: 13, align: "center", color: calc.pass ? "#227a4d" : "#b4632a", weight: 800 });
+        handle(ctx, gx, gy - 24, "h", { kind: "drag", key: "h", axis: "y", x: gx, y: gy - 24, from: base - 20, to: topY - 40, min: 1, max: 10 });
+        handle(ctx, rampX1 + 26, base - 20, "m", { kind: "drag", key: "m", axis: "x", x: rampX1 + 26, y: base - 20, from: rampX1 + 10, to: rampX1 + 120, min: 0.5, max: 5 });
+        pillText(ctx, "E = m·g·h", 24, 32, { size: 11, color: "#1f6f9c" });
+    };
+
+    SCENES.g9_resonance = (ctx, w, h, p, calc, t) => {
+        labRoom(ctx, w, h, t, { horizon: 0.9 });
+        const base = h * 0.9;
+        // опоры моста
+        steelBar(ctx, 120, base - 96, 22, 96, 4);
+        steelBar(ctx, 520, base - 96, 22, 96, 4);
+        // пролёт моста (колеблется)
+        const amp = calc.amp * 14;
+        const wob = Math.sin(t * 0.06) * amp;
+        ctx.save();
+        ctx.beginPath();
+        ctx.moveTo(131, base - 96);
+        ctx.quadraticCurveTo(336, base - 96 + wob * 1.5, 531, base - 96);
+        ctx.lineWidth = 7; ctx.strokeStyle = "#9aa9ba"; ctx.stroke();
+        ctx.lineWidth = 4; ctx.strokeStyle = "#c3cfdb"; ctx.stroke();
+        ctx.restore();
+        // перила
+        ctx.strokeStyle = "rgba(120,146,172,0.7)"; ctx.lineWidth = 1.6;
+        ctx.beginPath(); ctx.moveTo(131, base - 118); ctx.quadraticCurveTo(336, base - 118 + wob * 1.5, 531, base - 118); ctx.stroke();
+        for (let i = 1; i < 9; i++) {
+            const x = 131 + i * 50, k = Math.sin((i / 9) * Math.PI);
+            ctx.beginPath(); ctx.moveTo(x, base - 96 + wob * 1.5 * k); ctx.lineTo(x, base - 118 + wob * 1.5 * k); ctx.stroke();
+        }
+        // генератор толчков
+        const gx = 100;
+        fillRR(ctx, gx - 54, base - 46, 108, 44, 8, lin(ctx, 0, base - 46, 0, base - 2, [[0, "#f7fafd"], [1, "#b9c6d4"]]));
+        strokeRR(ctx, gx - 54, base - 46, 108, 44, 8, "rgba(70,92,116,0.4)", 1.2);
+        const armY = base - 52 - Math.abs(Math.sin(t * 0.06)) * 10 * clamp(calc.amp + 0.2, 0, 1.2);
+        steelBar(ctx, gx - 5, armY, 10, base - 50 - armY + 4, 3);
+        brassKnob(ctx, gx, base - 24, 9, t * 0.02);
+        text(ctx, tr3("вибростенд", "вибростенд", "shaker"), gx, base - 56, { size: 9.5, align: "center", color: C.ink2, weight: 700 });
+        // шкала амплитуды + резонансная кривая
+        const bx = 590, by = 34, bw = 146, bh = 108;
+        fillRR(ctx, bx, by, bw, bh, 10, "rgba(255,255,255,0.92)");
+        strokeRR(ctx, bx, by, bw, bh, 10, "rgba(90,116,145,0.4)", 1.2);
+        ctx.strokeStyle = "rgba(90,116,145,0.5)"; ctx.lineWidth = 1.2;
+        ctx.beginPath(); ctx.moveTo(bx + 10, by + bh - 14); ctx.lineTo(bx + bw - 10, by + bh - 14); ctx.stroke();
+        // кривая
+        ctx.strokeStyle = "rgba(47,125,184,0.55)"; ctx.lineWidth = 1.8;
+        ctx.beginPath();
+        for (let i = 0; i <= 60; i++) {
+            const f = 4 + (i / 60) * 8;
+            const a2 = 1 / Math.sqrt(1 + Math.pow((f - p.f0) / 0.35, 2));
+            const x = bx + 10 + (i / 60) * (bw - 20);
+            const y = by + bh - 14 - a2 * (bh - 30);
+            i ? ctx.lineTo(x, y) : ctx.moveTo(x, y);
+        }
+        ctx.stroke();
+        // рабочая точка
+        const fk = clamp((p.f - 4) / 8, 0, 1);
+        const px2 = bx + 10 + fk * (bw - 20);
+        const py2 = by + bh - 14 - calc.amp * (bh - 30);
+        ctx.beginPath(); ctx.arc(px2, py2, 5.5, 0, Math.PI * 2);
+        ctx.fillStyle = calc.pass ? "rgba(46,163,106,0.95)" : "rgba(207,74,74,0.9)"; ctx.fill();
+        ctx.strokeStyle = "#fff"; ctx.lineWidth = 1.6; ctx.stroke();
+        text(ctx, `A ≈ ${(calc.amp * 100).toFixed(0)} %`, bx + bw / 2, by + 16, { size: 10, align: "center", color: C.ink2, weight: 700 });
+        text(ctx, `f₀ = ${p.f0} Гц`, bx + 8, by + bh + 18, { size: 9.5, color: C.soft, weight: 700 });
+        // ручки
+        handle(ctx, bx + bw / 2, by + bh + 26, "f", { kind: "drag", key: "f", axis: "x", x: bx + bw / 2, y: by + bh + 26, from: bx + 10, to: bx + bw - 10, min: 2, max: 12 });
+        handle(ctx, 90, base - 118, "f₀", { kind: "drag", key: "f0", axis: "x", x: 90, y: base - 118, from: 70, to: 220, min: 4, max: 9 });
+        pillText(ctx, `f = ${fmt2(p.f)} Гц`, 24, 32, { size: 11.5, color: calc.pass ? "#227a4d" : "#b4632a" });
+    };
+
+    SCENES.g9_emwave = (ctx, w, h, p, calc, t) => {
+        skyBackdrop(ctx, w, h, t);
+        const base = h * 0.86;
+        // мачта антенны
+        const mx = 150;
+        ctx.beginPath();
+        ctx.moveTo(mx - 14, base); ctx.lineTo(mx, 34); ctx.lineTo(mx + 14, base); ctx.closePath();
+        ctx.fillStyle = lin(ctx, mx - 14, 0, mx + 14, 0, [[0, "#c3cfdb"], [0.45, "#f4f8fc"], [1, "#9aa9ba"]]); ctx.fill();
+        ctx.strokeStyle = "rgba(70,92,116,0.4)"; ctx.lineWidth = 1.2; ctx.stroke();
+        for (let i = 1; i < 7; i++) {
+            const y = 34 + i * 26, k = i / 7;
+            ctx.strokeStyle = "rgba(90,116,145,0.55)"; ctx.lineWidth = 1.2;
+            ctx.beginPath(); ctx.moveTo(mx - 14 * k, y); ctx.lineTo(mx + 14 * k, y); ctx.stroke();
+        }
+        // параболическая тарелка
+        ctx.beginPath(); ctx.arc(mx, 40, 26, Math.PI * 0.15, Math.PI * 0.85, true);
+        ctx.fillStyle = "rgba(230,238,246,0.95)"; ctx.fill();
+        ctx.strokeStyle = "rgba(120,146,172,0.8)"; ctx.lineWidth = 2; ctx.stroke();
+        // волны
+        const lamPx = map(p.lam, 0.5, 5, 34, 128);
+        for (let k = 0; k < 3; k++) {
+            ctx.strokeStyle = `rgba(47,125,184,${0.5 - k * 0.12})`; ctx.lineWidth = 1.8;
+            ctx.beginPath();
+            for (let x = 0; x <= 520; x += 4) {
+                const y = 70 + k * 34 + Math.sin((x / lamPx) * Math.PI * 2 - t * 0.06) * 11;
+                x ? ctx.lineTo(mx + 30 + x, y) : ctx.moveTo(mx + 30, y);
+            }
+            ctx.stroke();
+        }
+        // длина волны — мерная скоба
+        const wx = mx + 90;
+        ctx.strokeStyle = "rgba(207,74,74,0.85)"; ctx.lineWidth = 1.6;
+        ctx.beginPath(); ctx.moveTo(wx, 168); ctx.lineTo(wx + lamPx, 168); ctx.stroke();
+        [[wx, 1], [wx + lamPx, -1]].forEach(([x]) => {
+            ctx.beginPath(); ctx.moveTo(x, 162); ctx.lineTo(x, 174); ctx.stroke();
+        });
+        pillText(ctx, `λ = ${fmt2(p.lam)} м`, wx + lamPx / 2 - 22, 188, { size: 10.5, color: "#a4342c" });
+        // приёмник
+        const rx = clamp(mx + 470, 560, w - 60);
+        steelBar(ctx, rx, base - 120, 6, 120, 3);
+        fillRR(ctx, rx - 30, base - 148, 66, 30, 8, lin(ctx, 0, base - 148, 0, base - 118, [[0, "#ffffff"], [1, "#c3cfdb"]]));
+        strokeRR(ctx, rx - 30, base - 148, 66, 30, 8, "rgba(70,92,116,0.4)", 1.2);
+        fillRR(ctx, rx - 14, base - 144, 14, 8, 3, calc.pass ? "rgba(46,163,106,0.9)" : "rgba(180,200,215,0.9)");
+        // шкала диапазона
+        const bx = 500, by = 26;
+        fillRR(ctx, bx, by, 236, 74, 10, "rgba(255,255,255,0.92)");
+        strokeRR(ctx, bx, by, 236, 74, 10, "rgba(90,116,145,0.4)", 1.2);
+        text(ctx, "FM 88–108 МГц", bx + 12, by + 18, { size: 9.5, color: C.soft, weight: 700 });
+        const barX = bx + 12, barW = 212;
+        fillRR(ctx, barX, by + 28, barW, 12, 6, "rgba(120,146,172,0.22)");
+        const bandA = barX + barW * (88 - 60) / 60, bandB = barX + barW * (108 - 60) / 60;
+        fillRR(ctx, bandA, by + 28, bandB - bandA, 12, 6, "rgba(46,163,106,0.35)");
+        const nk = barX + clamp((calc.nu - 60) / 60, 0, 1) * barW;
+        ctx.beginPath(); ctx.arc(nk, by + 34, 6, 0, Math.PI * 2);
+        ctx.fillStyle = calc.pass ? "#2ea36a" : "#cf4a4a"; ctx.fill();
+        ctx.strokeStyle = "#fff"; ctx.lineWidth = 1.6; ctx.stroke();
+        text(ctx, `ν = ${fmt2(calc.nu)} МГц`, nk, by + 64, { size: 10, align: "center", color: calc.pass ? "#227a4d" : "#a4342c", weight: 800 });
+        handle(ctx, wx + lamPx, 168, "λ", { kind: "drag", key: "lam", axis: "x", x: wx + lamPx, y: 168, from: wx + 20, to: mx + 560, min: 0.5, max: 5 });
+        pillText(ctx, `ν = c/λ`, 24, 32, { size: 11, color: "#1f6f9c" });
+    };
+
+    SCENES.g9_binding = (ctx, w, h, p, calc, t) => {
+        spaceBackdrop(ctx, w, h, t);
+        const cx = 290, cy = h * 0.54;
+        // ядро: протоны и нейтроны
+        const positions = [];
+        const rGen = rnd(7);
+        for (let i = 0; i < 13; i++) {
+            const a = i * 2.399, rr2 = 12 + Math.sqrt(i) * 9;
+            positions.push([Math.cos(a) * rr2, Math.sin(a) * rr2 * 0.86]);
+        }
+        positions.forEach(([dx, dy], i) => {
+            const jitter = Math.sin(t * 0.01 + i) * 1.6;
+            ctx.beginPath(); ctx.arc(cx + dx + jitter, cy + dy + jitter, 11, 0, Math.PI * 2);
+            ctx.fillStyle = i % 2
+                ? rad(ctx, cx + dx - 3, cy + dy - 3, 1, 12, [[0, "#ffd9c9"], [1, "#c2483c"]])
+                : rad(ctx, cx + dx - 3, cy + dy - 3, 1, 12, [[0, "#dbe9f7"], [1, "#4a7ba8"]]);
+            ctx.fill();
+            ctx.strokeStyle = "rgba(255,255,255,0.55)"; ctx.lineWidth = 1.2; ctx.stroke();
+        });
+        text(ctx, tr3("ядро", "ядро", "nucleus"), cx, cy + 86, { size: 10.5, align: "center", color: C.ink2, weight: 700 });
+        // дефект масс — весы
+        const sx = 560, sy = h * 0.36;
+        ctx.strokeStyle = "#8c9cae"; ctx.lineWidth = 4; ctx.lineCap = "round";
+        ctx.beginPath(); ctx.moveTo(sx, sy - 46); ctx.lineTo(sx, sy + 58); ctx.stroke();
+        ctx.beginPath(); ctx.moveTo(sx - 74, sy - 46); ctx.lineTo(sx + 74, sy - 46); ctx.stroke();
+        ctx.lineWidth = 2;
+        [[-62, 1], [62, -1]].forEach(([dx, sgn]) => {
+            const drop = clamp(calc.e / 90, 0, 1) * 12 * sgn;
+            ctx.beginPath(); ctx.moveTo(sx + dx, sy - 46); ctx.lineTo(sx + dx, sy - 6 + drop); ctx.stroke();
+            fillRR(ctx, sx + dx - 30, sy - 6 + drop, 60, 16, 5, "rgba(255,255,255,0.95)");
+            strokeRR(ctx, sx + dx - 30, sy - 6 + drop, 60, 16, 5, "rgba(90,116,145,0.5)", 1);
+        });
+        text(ctx, "Z·mₚ + N·mₙ", sx - 62, sy + 26, { size: 8.8, align: "center", color: C.soft, weight: 700 });
+        text(ctx, "M ядра", sx + 62, sy + 26, { size: 8.8, align: "center", color: C.soft, weight: 700 });
+        text(ctx, `Δm = ${p.dm.toFixed(3)} а.е.м.`, sx, sy + 52, { size: 10.5, align: "center", color: "#134a70", weight: 800 });
+        // энергия связи — шкала
+        const bx = 470, by = 190;
+        fillRR(ctx, bx, by, 250, 34, 10, "rgba(255,255,255,0.9)");
+        strokeRR(ctx, bx, by, 250, 34, 10, "rgba(90,116,145,0.4)", 1.2);
+        fillRR(ctx, bx + 8, by + 10, 234 * clamp(calc.e / 90, 0, 1), 14, 7, lin(ctx, bx + 8, 0, bx + 242, 0, [[0, "#8fd0a8"], [1, "#2ea36a"]]));
+        text(ctx, `E = ${fmt2(calc.e)} МэВ`, bx + 125, by + 56, { size: 12, align: "center", color: calc.pass ? "#227a4d" : "#b4632a", weight: 800 });
+        // ручка дефекта масс
+        handle(ctx, sx + 100, sy - 6, "Δm", { kind: "drag", key: "dm", axis: "y", x: sx + 100, y: sy - 6, from: sy + 44, to: sy - 60, min: 0.01, max: 0.3 });
+        pillText(ctx, "E = Δm · 931,5 МэВ", 24, 32, { size: 11, color: "#1f6f9c" });
+    };
+
+
     /* ======================= ВЗАИМОДЕЙСТВИЕ ======================= */
     function currentLang() {
         try { if (window.I18n && I18n.currentLang) return I18n.currentLang; } catch (e) {}
@@ -1900,6 +2770,19 @@
             html[data-theme="light"] #pq-sim89-section .pq-sim89-card b { color: #0f2740; }
             html[data-theme="light"] #pq-sim89-section .pq-sim89-card small { color: #4b6683; }
             html[data-theme="light"] #pq-sim89-section .pq-sim89-card-top { color: #2f7db8; }
+            html[data-theme="light"] #pq-sim89-section .pq-sim89-card-icon { filter: saturate(1.05); }
+            html[data-theme="light"] #pq-sim89-section .pq-sim89-card-chapter { color: #2f7db8; }
+            html[data-theme="light"] #pq-sim89-section .pq-sim89-topic-head {
+                background: rgba(47, 125, 184, 0.08);
+                border: 1px solid rgba(47, 125, 184, 0.26);
+            }
+            html[data-theme="light"] #pq-sim89-section .pq-sim89-topic-head b { color: #10263c; }
+            html[data-theme="light"] #pq-sim89-section .pq-sim89-topic-head span { color: #1d6fb8; }
+            html[data-theme="light"] #pq-sim89-section .pq-sim89-card-tip {
+                background: rgba(47, 125, 184, 0.08);
+                border: 1px solid rgba(47, 125, 184, 0.2);
+                color: #33587c !important;
+            }
             html[data-theme="light"] #pq-sim89-section .pq-sim89-card em { color: #1d6fb8; }
             html[data-theme="light"] #pq-sim89-section .pq-sim89-card.done {
                 background: #f2fbf5;

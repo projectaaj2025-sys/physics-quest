@@ -29,6 +29,7 @@
         8: [
             {
                 id: "g8_calorimeter",
+                topic: "heat",
                 icon: "🔥",
                 para: "§ 7–9",
                 title: { ru: "Калориметр и тепловой баланс", kk: "Калориметр және жылу балансы", en: "Calorimeter & Thermal Balance" },
@@ -76,6 +77,7 @@
             },
             {
                 id: "g8_phase",
+                topic: "heat",
                 icon: "🧊",
                 para: "§ 10–14",
                 title: { ru: "Плавление льда и кривая нагрева", kk: "Мұздың балқуы және қыздыру қисығы", en: "Ice Melting & Phase Curve" },
@@ -128,6 +130,7 @@
             },
             {
                 id: "g8_ohm",
+                topic: "electro",
                 icon: "💡",
                 para: "§ 22–26",
                 title: { ru: "Цепь постоянного тока и реостат", kk: "Тұрақты ток тізбегі және реостат", en: "DC Circuit & Sliding Rheostat" },
@@ -167,6 +170,7 @@
             },
             {
                 id: "g8_joule",
+                topic: "electro",
                 icon: "🏙️",
                 para: "§ 27–30",
                 title: { ru: "Энергосеть кварталов · Джоуль–Ленц", kk: "Орамдар желісі · Джоуль–Ленц", en: "District Power Grid · Joule–Lenz" },
@@ -207,6 +211,7 @@
             },
             {
                 id: "g8_faraday",
+                topic: "magnets",
                 icon: "🧲",
                 para: "§ 31–36",
                 title: { ru: "Электромагнитная индукция Фарадея", kk: "Фарадейдің электромагниттік индукциясы", en: "Faraday Electromagnetic Induction" },
@@ -242,6 +247,7 @@
             },
             {
                 id: "g8_optics",
+                topic: "optics",
                 icon: "🔭",
                 para: "§ 37–43",
                 title: { ru: "Оптическая скамья и тонкая линза", kk: "Оптикалық орындық және жұқа линза", en: "Optical Bench & Thin Converging Lens" },
@@ -284,6 +290,7 @@
             },
             {
                 id: "g8_hydraulic",
+                topic: "mech",
                 icon: "🛠️",
                 para: "§ 24–28",
                 title: { ru: "Гидравлический пресс", kk: "Гидравликалық пресс", en: "Hydraulic Press" },
@@ -323,6 +330,7 @@
             },
             {
                 id: "g8_archimedes",
+                topic: "mech",
                 icon: "🚢",
                 para: "§ 46–49",
                 title: { ru: "Плавучесть батискафа", kk: "Батискафтың қалқуы", en: "Bathyscaphe Buoyancy" },
@@ -367,6 +375,7 @@
             },
             {
                 id: "g8_echo",
+                topic: "waves",
                 icon: "📡",
                 para: "§ 30–33",
                 title: { ru: "Эхолот и ультразвук", kk: "Эхолот және ультрадыбыс", en: "Sonar & Ultrasound" },
@@ -406,12 +415,437 @@
                         )
                     };
                 }
+            },
+            {
+                id: "g8_heat_cond",
+                topic: "heat",
+                icon: "🧱",
+                para: "§ 4",
+                title: { ru: "Теплопроводность обшивки", kk: "Қаптаманың жылу өткізгіштігі", en: "Hull Thermal Conductivity" },
+                chapter: { ru: "Тепловые явления · q = λ·ΔT/d", kk: "Жылу құбылыстары · q = λ·ΔT/d", en: "Thermal Physics · q = λ·ΔT/d" },
+                story: {
+                    ru: "Квант: обшивка купола теряет тепло. Сравни медь, сталь, стекло и пенопласт и подбери стенку, через которую уходит 2000–5000 Вт с каждого квадратного метра.",
+                    kk: "Квант: күмбез қаптамасы жылу жоғалтып жатыр. Мыс, болат, шыны және пенопластты салыстырып, әр шаршы метрден 2000–5000 Вт кететін қабырғаны таңда.",
+                    en: "KVANT: the dome hull is losing heat. Compare copper, steel, glass and foam and pick a wall that leaks 2000–5000 W per square metre."
+                },
+                goal: {
+                    ru: "Тепловой поток 2–5 кВт/м²: подбери материал, толщину и перепад температур, затем введи q (Вт/м²).",
+                    kk: "Жылу ағыны 2–5 кВт/м²: материал, қалыңдық және температура айырмасын таңдап, q енгіз (Вт/м²).",
+                    en: "Heat flux 2–5 kW/m²: choose material, thickness and temperature difference, then enter q (W/m²)."
+                },
+                tip: {
+                    ru: "q = λ·ΔT/d: медь проводит тепло лучше стали, а пенопласт почти не проводит.",
+                    kk: "q = λ·ΔT/d: мыс болаттан жақсы өткізеді, пенопласт дерлік өткізбейді.",
+                    en: "q = λ·ΔT/d: copper conducts better than steel, foam conducts almost nothing."
+                },
+                unit: "W/m²",
+                tol: 60,
+                defaults: { mat: "steel", d: 20, dT: 40 },
+                controls: [
+                    { id: "mat", type: "select", label: { ru: "Материал стенки", kk: "Қабырға материалы", en: "Wall material" }, options: [
+                        { value: "cu", label: { ru: "Медь (λ = 380 Вт/(м·К))", kk: "Мыс (λ = 380 Вт/(м·К))", en: "Copper (λ = 380 W/(m·K))" } },
+                        { value: "steel", label: { ru: "Сталь (λ = 45 Вт/(м·К))", kk: "Болат (λ = 45 Вт/(м·К))", en: "Steel (λ = 45 W/(m·K))" } },
+                        { value: "glass", label: { ru: "Стекло (λ = 0,8 Вт/(м·К))", kk: "Шыны (λ = 0,8 Вт/(м·К))", en: "Glass (λ = 0.8 W/(m·K))" } },
+                        { value: "foam", label: { ru: "Пенопласт (λ = 0,04 Вт/(м·К))", kk: "Пенопласт (λ = 0,04 Вт/(м·К))", en: "Foam (λ = 0.04 W/(m·K))" } }
+                    ] },
+                    { id: "d", type: "range", min: 5, max: 50, step: 5, unit: { ru: "см", kk: "см", en: "cm" }, label: { ru: "Толщина стенки d", kk: "Қабырға қалыңдығы d", en: "Wall thickness d" } },
+                    { id: "dT", type: "range", min: 5, max: 80, step: 5, unit: { ru: "К", kk: "К", en: "K" }, label: { ru: "Перепад температур ΔT", kk: "Температура айырмасы ΔT", en: "Temperature difference ΔT" } }
+                ],
+                compute(p) {
+                    const lam = { cu: 380, steel: 45, glass: 0.8, foam: 0.04 }[p.mat] || 45;
+                    const d = p.d / 100;
+                    const q = lam * p.dT / d;
+                    return {
+                        expected: Number(q.toFixed(0)),
+                        pass: q >= 2000 && q <= 5000,
+                        q, lam,
+                        readout: tr(
+                            `q = λ·ΔT/d = ${lam}·${p.dT}/${d.toFixed(2)} = ${q.toFixed(0)} Вт/м²`,
+                            `q = λ·ΔT/d = ${lam}·${p.dT}/${d.toFixed(2)} = ${q.toFixed(0)} Вт/м²`,
+                            `q = λ·ΔT/d = ${lam}·${p.dT}/${d.toFixed(2)} = ${q.toFixed(0)} W/m²`
+                        )
+                    };
+                }
+            },
+            {
+                id: "g8_engine",
+                topic: "heat",
+                icon: "🔥",
+                para: "§ 15–16",
+                title: { ru: "Тепловой двигатель и КПД", kk: "Жылу қозғалтқышы және ПӘК", en: "Heat Engine & Efficiency" },
+                chapter: { ru: "Тепловые машины · η = (Q₁ − Q₂)/Q₁", kk: "Жылу машиналары · η = (Q₁ − Q₂)/Q₁", en: "Heat Engines · η = (Q₁ − Q₂)/Q₁" },
+                story: {
+                    ru: "Инженер: турбина получает от нагревателя Q₁ и отдаёт холодильнику Q₂. Выведи КПД в рабочий коридор 35–45 % и подтверди расчёт.",
+                    kk: "Инженер: турбина қыздырғыштан Q₁ алып, тоңазытқышқа Q₂ береді. ПӘК-ті 35–45 % дәлізіне шығарып, есепті раста.",
+                    en: "ENGINEER: the turbine takes Q₁ from the heater and gives Q₂ to the cooler. Bring efficiency into the 35–45 % band and verify the calculation."
+                },
+                goal: {
+                    ru: "КПД 35–45 %: подбери Q₁ и Q₂ и введи η (%).",
+                    kk: "ПӘК 35–45 %: Q₁ мен Q₂ таңдап, η енгіз (%).",
+                    en: "Efficiency 35–45 %: tune Q₁ and Q₂ and enter η (%)."
+                },
+                tip: {
+                    ru: "η = (Q₁ − Q₂)/Q₁ · 100 %, полезная работа A = Q₁ − Q₂.",
+                    kk: "η = (Q₁ − Q₂)/Q₁ · 100 %, пайдалы жұмыс A = Q₁ − Q₂.",
+                    en: "η = (Q₁ − Q₂)/Q₁ · 100 %, useful work A = Q₁ − Q₂."
+                },
+                unit: "%",
+                tol: 0.6,
+                defaults: { q1: 500, q2: 400 },
+                controls: [
+                    { id: "q1", type: "range", min: 100, max: 1000, step: 50, unit: { ru: "кДж", kk: "кДж", en: "kJ" }, label: { ru: "Теплота от нагревателя Q₁", kk: "Қыздырғыштан алынған жылу Q₁", en: "Heat from heater Q₁" } },
+                    { id: "q2", type: "range", min: 10, max: 900, step: 10, unit: { ru: "кДж", kk: "кДж", en: "kJ" }, label: { ru: "Теплота холодильнику Q₂", kk: "Тоңазытқышқа берілген жылу Q₂", en: "Heat to cooler Q₂" } }
+                ],
+                compute(p) {
+                    const a = p.q1 - p.q2;
+                    const eta = p.q1 > 0 ? (a / p.q1) * 100 : 0;
+                    return {
+                        expected: Number(eta.toFixed(1)),
+                        pass: eta >= 35 && eta <= 45,
+                        eta, work: a,
+                        readout: tr(
+                            `η = (${p.q1} − ${p.q2})/${p.q1}·100 % = ${eta.toFixed(1)} % · A = ${a} кДж`,
+                            `η = (${p.q1} − ${p.q2})/${p.q1}·100 % = ${eta.toFixed(1)} % · A = ${a} кДж`,
+                            `η = (${p.q1} − ${p.q2})/${p.q1}·100 % = ${eta.toFixed(1)} % · A = ${a} kJ`
+                        )
+                    };
+                }
+            },
+            {
+                id: "g8_coulomb",
+                topic: "electro",
+                icon: "⚡",
+                para: "§ 19",
+                title: { ru: "Закон Кулона: два зонда", kk: "Кулон заңы: екі зонд", en: "Coulomb's Law: Two Probes" },
+                chapter: { ru: "Электростатика · F = k·q₁·q₂/r²", kk: "Электростатика · F = k·q₁·q₂/r²", en: "Electrostatics · F = k·q₁·q₂/r²" },
+                story: {
+                    ru: "Квант: два заряженных зонда на орбите отталкиваются. Подбери заряды и расстояние так, чтобы сила Кулона попала в диапазон 200–300 мкН.",
+                    kk: "Квант: орбитадағы екі зарядталған зонд тебіседі. Кулон күші 200–300 мкН диапазонына түсетіндей зарядтар мен қашықтықты таңда.",
+                    en: "KVANT: two charged probes on orbit repel each other. Tune charges and distance until the Coulomb force lands within 200–300 µN."
+                },
+                goal: {
+                    ru: "Сила 200–300 мкН, затем введи F (мкН).",
+                    kk: "Күш 200–300 мкН, сосын F енгіз (мкН).",
+                    en: "Force 200–300 µN, then enter F (µN)."
+                },
+                tip: {
+                    ru: "F = k·q₁·q₂/r², k = 9·10⁹ Н·м²/Кл². Сила падает как квадрат расстояния.",
+                    kk: "F = k·q₁·q₂/r², k = 9·10⁹ Н·м²/Кл². Күш қашықтықтың квадратына кері пропорционал.",
+                    en: "F = k·q₁·q₂/r², k = 9·10⁹ N·m²/C². The force falls as the square of the distance."
+                },
+                unit: "µN",
+                tol: 4,
+                defaults: { q1: 4, q2: 4, r: 8 },
+                controls: [
+                    { id: "q1", type: "range", min: 1, max: 10, step: 1, unit: { ru: "нКл", kk: "нКл", en: "nC" }, label: { ru: "Заряд первого зонда q₁", kk: "Бірінші зондтың заряды q₁", en: "First probe charge q₁" } },
+                    { id: "q2", type: "range", min: 1, max: 10, step: 1, unit: { ru: "нКл", kk: "нКл", en: "nC" }, label: { ru: "Заряд второго зонда q₂", kk: "Екінші зондтың заряды q₂", en: "Second probe charge q₂" } },
+                    { id: "r", type: "range", min: 2, max: 12, step: 1, unit: { ru: "см", kk: "см", en: "cm" }, label: { ru: "Расстояние r", kk: "Қашықтық r", en: "Distance r" } }
+                ],
+                compute(p) {
+                    const r = p.r / 100;
+                    const f = 9e9 * (p.q1 * 1e-9) * (p.q2 * 1e-9) / (r * r);
+                    const micro = f * 1e6;
+                    return {
+                        expected: Number(micro.toFixed(1)),
+                        pass: micro >= 200 && micro <= 300,
+                        f, micro,
+                        readout: tr(
+                            `F = k·q₁·q₂/r² = ${micro.toFixed(1)} мкН`,
+                            `F = k·q₁·q₂/r² = ${micro.toFixed(1)} мкН`,
+                            `F = k·q₁·q₂/r² = ${micro.toFixed(1)} µN`
+                        )
+                    };
+                }
+            },
+            {
+                id: "g8_capacitor",
+                topic: "electro",
+                icon: "🔋",
+                para: "§ 21",
+                title: { ru: "Конденсатор сенсора", kk: "Сенсор конденсаторы", en: "Sensor Capacitor" },
+                chapter: { ru: "Электроёмкость · C = ε₀·ε·S/d", kk: "Электр сыйымдылығы · C = ε₀·ε·S/d", en: "Capacitance · C = ε₀·ε·S/d" },
+                story: {
+                    ru: "Сенсор купола настраивают под ёмкость 35–55 пФ. Выбери диэлектрик, площадь пластин и зазор между ними.",
+                    kk: "Күмбез сенсоры 35–55 пФ сыйымдылыққа реттеледі. Диэлектрик, пластина ауданы мен саңылауды таңда.",
+                    en: "The dome sensor is tuned to 35–55 pF. Choose the dielectric, plate area and gap."
+                },
+                goal: {
+                    ru: "Ёмкость 35–55 пФ, затем введи C (пФ).",
+                    kk: "Сыйымдылық 35–55 пФ, сосын C енгіз (пФ).",
+                    en: "Capacitance 35–55 pF, then enter C (pF)."
+                },
+                tip: {
+                    ru: "C = ε₀·ε·S/d: больше площадь — больше C, больше зазор — меньше C.",
+                    kk: "C = ε₀·ε·S/d: аудан үлкен — C үлкен, саңылау үлкен — C кіші.",
+                    en: "C = ε₀·ε·S/d: more area means more C, a bigger gap means less C."
+                },
+                unit: "pF",
+                tol: 1.2,
+                defaults: { mat: "glass", s: 20, d: 4 },
+                controls: [
+                    { id: "mat", type: "select", label: { ru: "Диэлектрик", kk: "Диэлектрик", en: "Dielectric" }, options: [
+                        { value: "air", label: { ru: "Воздух (ε = 1)", kk: "Ауа (ε = 1)", en: "Air (ε = 1)" } },
+                        { value: "glass", label: { ru: "Стекло (ε = 6)", kk: "Шыны (ε = 6)", en: "Glass (ε = 6)" } },
+                        { value: "mica", label: { ru: "Слюда (ε = 5,4)", kk: "Слюда (ε = 5,4)", en: "Mica (ε = 5.4)" } }
+                    ] },
+                    { id: "s", type: "range", min: 10, max: 100, step: 5, unit: { ru: "см²", kk: "см²", en: "cm²" }, label: { ru: "Площадь пластин S", kk: "Пластина ауданы S", en: "Plate area S" } },
+                    { id: "d", type: "range", min: 0.5, max: 5, step: 0.5, unit: { ru: "мм", kk: "мм", en: "mm" }, label: { ru: "Зазор d", kk: "Саңылау d", en: "Gap d" } }
+                ],
+                compute(p) {
+                    const eps = { air: 1, glass: 6, mica: 5.4 }[p.mat] || 1;
+                    const c = 0.8854 * eps * p.s / p.d;
+                    return {
+                        expected: Number(c.toFixed(1)),
+                        pass: c >= 35 && c <= 55,
+                        c, eps,
+                        readout: tr(
+                            `C = ε₀·ε·S/d = ${c.toFixed(1)} пФ`,
+                            `C = ε₀·ε·S/d = ${c.toFixed(1)} пФ`,
+                            `C = ε₀·ε·S/d = ${c.toFixed(1)} pF`
+                        )
+                    };
+                }
+            },
+            {
+                id: "g8_resistivity",
+                topic: "electro",
+                icon: "🧵",
+                para: "§ 25",
+                title: { ru: "Сопротивление обмотки", kk: "Орама кедергісі", en: "Coil Resistance" },
+                chapter: { ru: "Сопротивление проводника · R = ρ·L/S", kk: "Өткізгіш кедергісі · R = ρ·L/S", en: "Conductor Resistance · R = ρ·L/S" },
+                story: {
+                    ru: "Обмотке реле нужен провод с сопротивлением 4–6 Ом. Материал, длина и сечение — на твой выбор.",
+                    kk: "Реле орамасына кедергісі 4–6 Ом сым керек. Материал, ұзындық және қима — өз таңдауың.",
+                    en: "The relay coil needs a wire with 4–6 Ω resistance. Material, length and cross-section are up to you."
+                },
+                goal: {
+                    ru: "Сопротивление 4–6 Ом, затем введи R (Ом).",
+                    kk: "Кедергі 4–6 Ом, сосын R енгіз (Ом).",
+                    en: "Resistance 4–6 Ω, then enter R (Ω)."
+                },
+                tip: {
+                    ru: "R = ρ·L/S. У меди ρ = 0,017, у нихрома — 1,1 Ом·мм²/м.",
+                    kk: "R = ρ·L/S. Мыста ρ = 0,017, нихромда — 1,1 Ом·мм²/м.",
+                    en: "R = ρ·L/S. Copper has ρ = 0.017, nichrome 1.1 Ω·mm²/m."
+                },
+                unit: "Ω",
+                tol: 0.15,
+                defaults: { mat: "fe", len: 5, s: 0.5 },
+                controls: [
+                    { id: "mat", type: "select", label: { ru: "Материал провода", kk: "Сым материалы", en: "Wire material" }, options: [
+                        { value: "cu", label: { ru: "Медь (ρ = 0,017)", kk: "Мыс (ρ = 0,017)", en: "Copper (ρ = 0.017)" } },
+                        { value: "fe", label: { ru: "Железо (ρ = 0,10)", kk: "Темір (ρ = 0,10)", en: "Iron (ρ = 0.10)" } },
+                        { value: "ni", label: { ru: "Никель (ρ = 0,42)", kk: "Никель (ρ = 0,42)", en: "Nickel (ρ = 0.42)" } },
+                        { value: "chr", label: { ru: "Нихром (ρ = 1,1)", kk: "Нихром (ρ = 1,1)", en: "Nichrome (ρ = 1.1)" } }
+                    ] },
+                    { id: "len", type: "range", min: 1, max: 20, step: 1, unit: { ru: "м", kk: "м", en: "m" }, label: { ru: "Длина провода L", kk: "Сым ұзындығы L", en: "Wire length L" } },
+                    { id: "s", type: "range", min: 0.1, max: 2, step: 0.1, unit: { ru: "мм²", kk: "мм²", en: "mm²" }, label: { ru: "Сечение S", kk: "Қима S", en: "Cross-section S" } }
+                ],
+                compute(p) {
+                    const rho = { cu: 0.017, fe: 0.10, ni: 0.42, chr: 1.1 }[p.mat] || 0.1;
+                    const r = rho * p.len / p.s;
+                    return {
+                        expected: Number(r.toFixed(2)),
+                        pass: r >= 4 && r <= 6,
+                        r, rho,
+                        readout: tr(
+                            `R = ρ·L/S = ${rho}·${p.len}/${p.s} = ${r.toFixed(2)} Ом`,
+                            `R = ρ·L/S = ${rho}·${p.len}/${p.s} = ${r.toFixed(2)} Ом`,
+                            `R = ρ·L/S = ${rho}·${p.len}/${p.s} = ${r.toFixed(2)} Ω`
+                        )
+                    };
+                }
+            },
+            {
+                id: "g8_electromagnet",
+                topic: "magnets",
+                icon: "🧲",
+                para: "§ 33–34",
+                title: { ru: "Электромагнит крана", kk: "Кран электромагниті", en: "Crane Electromagnet" },
+                chapter: { ru: "Магнитное поле катушки · B = μ₀·μ·N·I/L", kk: "Ораманың магнит өрісі · B = μ₀·μ·N·I/L", en: "Coil Magnetic Field · B = μ₀·μ·N·I/L" },
+                story: {
+                    ru: "Подъёмный кран удерживает контейнер на электромагните. Катушка с сердечником должна дать индукцию 8–15 мТл.",
+                    kk: "Көтергіш кран контейнерді электромагнитте ұстап тұр. Өзекті орама 8–15 мТл индукция беруі керек.",
+                    en: "The crane holds a container on an electromagnet. The cored coil must produce 8–15 mT."
+                },
+                goal: {
+                    ru: "Индукция 8–15 мТл, затем введи B (мТл).",
+                    kk: "Индукция 8–15 мТл, сосын B енгіз (мТл).",
+                    en: "Flux density 8–15 mT, then enter B (mT)."
+                },
+                tip: {
+                    ru: "B = μ₀·μ·N·I/L: больше витков и тока — сильнее поле, сердечник усиливает его.",
+                    kk: "B = μ₀·μ·N·I/L: орам мен ток көбейсе — өріс күшейеді, өзек оны күшейтеді.",
+                    en: "B = μ₀·μ·N·I/L: more turns and current mean a stronger field; the core amplifies it."
+                },
+                unit: "mT",
+                tol: 0.4,
+                defaults: { core: "air", n: 200, i: 1, len: 20 },
+                controls: [
+                    { id: "core", type: "select", label: { ru: "Сердечник", kk: "Өзек", en: "Core" }, options: [
+                        { value: "air", label: { ru: "Без сердечника (μ = 1)", kk: "Өзексіз (μ = 1)", en: "No core (μ = 1)" } },
+                        { value: "steel", label: { ru: "Стальной (μ = 100)", kk: "Болат (μ = 100)", en: "Steel (μ = 100)" } },
+                        { value: "iron", label: { ru: "Железный (μ = 200)", kk: "Темір (μ = 200)", en: "Iron (μ = 200)" } }
+                    ] },
+                    { id: "n", type: "range", min: 100, max: 1000, step: 50, unit: { ru: "вит.", kk: "орам", en: "turns" }, label: { ru: "Число витков N", kk: "Орам саны N", en: "Number of turns N" } },
+                    { id: "i", type: "range", min: 0.5, max: 5, step: 0.5, unit: { ru: "А", kk: "А", en: "A" }, label: { ru: "Сила тока I", kk: "Ток күші I", en: "Current I" } },
+                    { id: "len", type: "range", min: 5, max: 20, step: 1, unit: { ru: "см", kk: "см", en: "cm" }, label: { ru: "Длина катушки L", kk: "Орама ұзындығы L", en: "Coil length L" } }
+                ],
+                compute(p) {
+                    const mu = { air: 1, steel: 100, iron: 200 }[p.core] || 1;
+                    const b = 0.12566 * mu * p.n * p.i / p.len;
+                    return {
+                        expected: Number(b.toFixed(2)),
+                        pass: b >= 8 && b <= 15,
+                        b, mu,
+                        readout: tr(
+                            `B = μ₀·μ·N·I/L = ${b.toFixed(2)} мТл`,
+                            `B = μ₀·μ·N·I/L = ${b.toFixed(2)} мТл`,
+                            `B = μ₀·μ·N·I/L = ${b.toFixed(2)} mT`
+                        )
+                    };
+                }
+            },
+            {
+                id: "g8_reflection",
+                topic: "optics",
+                icon: "🪞",
+                para: "§ 38",
+                title: { ru: "Зеркало примерочной", kk: "Киім бөлмесінің айнасы", en: "Fitting-Room Mirror" },
+                chapter: { ru: "Отражение света · h = H/2", kk: "Жарықтың шағылуы · h = H/2", en: "Light Reflection · h = H/2" },
+                story: {
+                    ru: "В куполе ставят зеркало для проверки скафандров. Инженер ростом H должен видеть себя в полный рост — подбери высоту зеркала.",
+                    kk: "Күмбезде скафандрларды тексеруге айна қойылады. Биіктігі H инженер өзін толық көруі керек — айна биіктігін таңда.",
+                    en: "A mirror is installed in the dome for suit checks. An engineer of height H must see the full figure — choose the mirror height."
+                },
+                goal: {
+                    ru: "Высота зеркала должна равняться половине роста (±2 см), затем введи h (см).",
+                    kk: "Айна биіктігі бойдың жартысына тең болуы керек (±2 см), сосын h енгіз (см).",
+                    en: "Mirror height must equal half the person's height (±2 cm); then enter h (cm)."
+                },
+                tip: {
+                    ru: "Чтобы увидеть себя в полный рост, нужно зеркало h = H/2 — расстояние до зеркала не важно.",
+                    kk: "Өзіңді толық көру үшін h = H/2 айна керек — айнаға дейінгі қашықтық маңызды емес.",
+                    en: "To see your full height you need a mirror of h = H/2 — the distance to it does not matter."
+                },
+                unit: "cm",
+                tol: 2,
+                defaults: { hs: 180, mir: 70 },
+                controls: [
+                    { id: "hs", type: "range", min: 160, max: 200, step: 5, unit: { ru: "см", kk: "см", en: "cm" }, label: { ru: "Рост инженера H", kk: "Инженер бойы H", en: "Engineer height H" } },
+                    { id: "mir", type: "range", min: 60, max: 120, step: 5, unit: { ru: "см", kk: "см", en: "cm" }, label: { ru: "Высота зеркала h", kk: "Айна биіктігі h", en: "Mirror height h" } }
+                ],
+                compute(p) {
+                    const need = p.hs / 2;
+                    return {
+                        expected: Number(need.toFixed(1)),
+                        pass: Math.abs(p.mir - need) <= 2,
+                        need, mir: p.mir,
+                        readout: tr(
+                            `нужно h = H/2 = ${need.toFixed(1)} см · сейчас ${p.mir} см`,
+                            `керек h = H/2 = ${need.toFixed(1)} см · қазір ${p.mir} см`,
+                            `need h = H/2 = ${need.toFixed(1)} cm · now ${p.mir} cm`
+                        )
+                    };
+                }
+            },
+            {
+                id: "g8_refraction",
+                topic: "optics",
+                icon: "🔷",
+                para: "§ 40",
+                title: { ru: "Преломление в пластине", kk: "Пластинадағы сыну", en: "Refraction in a Plate" },
+                chapter: { ru: "Преломление света · sin α / sin β = n", kk: "Жарықтың сынуы · sin α / sin β = n", en: "Light Refraction · sin α / sin β = n" },
+                story: {
+                    ru: "Луч входит в стеклянную пластину. Угол преломления должен попасть в 22–30°, иначе прибор не откалибруется.",
+                    kk: "Сәуле шыны пластинаға кіреді. Сыну бұрышы 22–30° болуы керек, әйтпесе аспап калибрленбейді.",
+                    en: "A ray enters a glass plate. The angle of refraction must land in 22–30°, otherwise the instrument stays uncalibrated."
+                },
+                goal: {
+                    ru: "Угол преломления 22–30°, затем введи β (°).",
+                    kk: "Сыну бұрышы 22–30°, сосын β енгіз (°).",
+                    en: "Angle of refraction 22–30°, then enter β (°)."
+                },
+                tip: {
+                    ru: "sin α / sin β = n. В плотной среде луч идёт ближе к нормали.",
+                    kk: "sin α / sin β = n. Тығыз ортада сәуле нормальға жақындайды.",
+                    en: "sin α / sin β = n. In a denser medium the ray bends toward the normal."
+                },
+                unit: "°",
+                tol: 0.6,
+                defaults: { alpha: 30, mat: "glass" },
+                controls: [
+                    { id: "alpha", type: "range", min: 20, max: 70, step: 5, unit: { ru: "°", kk: "°", en: "°" }, label: { ru: "Угол падения α", kk: "Түсу бұрышы α", en: "Angle of incidence α" } },
+                    { id: "mat", type: "select", label: { ru: "Среда", kk: "Орта", en: "Medium" }, options: [
+                        { value: "water", label: { ru: "Вода (n = 1,33)", kk: "Су (n = 1,33)", en: "Water (n = 1.33)" } },
+                        { value: "glass", label: { ru: "Стекло (n = 1,5)", kk: "Шыны (n = 1,5)", en: "Glass (n = 1.5)" } },
+                        { value: "diamond", label: { ru: "Алмаз (n = 2,42)", kk: "Алмаз (n = 2,42)", en: "Diamond (n = 2.42)" } }
+                    ] }
+                ],
+                compute(p) {
+                    const n = { water: 1.33, glass: 1.5, diamond: 2.42 }[p.mat] || 1.5;
+                    const beta = Math.asin(Math.sin(p.alpha * Math.PI / 180) / n) * 180 / Math.PI;
+                    return {
+                        expected: Number(beta.toFixed(1)),
+                        pass: beta >= 22 && beta <= 30,
+                        beta, n,
+                        readout: tr(
+                            `β = arcsin(sin α / n) = ${beta.toFixed(1)}° · n = ${n}`,
+                            `β = arcsin(sin α / n) = ${beta.toFixed(1)}° · n = ${n}`,
+                            `β = arcsin(sin α / n) = ${beta.toFixed(1)}° · n = ${n}`
+                        )
+                    };
+                }
+            },
+            {
+                id: "g8_eye",
+                topic: "optics",
+                icon: "👁️",
+                para: "§ 42",
+                title: { ru: "Глаз и очки", kk: "Көз және көзілдірік", en: "Eye & Glasses" },
+                chapter: { ru: "Оптическая система глаза · D = 1/d + 1/f", kk: "Көздің оптикалық жүйесі · D = 1/d + 1/f", en: "Eye Optics · D = 1/d + 1/f" },
+                story: {
+                    ru: "Окуляр скафандра: глаз фокусирует изображение на сетчатке в 2,4 см от линзы. Подбери оптическую силу глаза так, чтобы предмет на заданном расстоянии был резким.",
+                    kk: "Скафандр окуляры: көз бейнені линзадан 2,4 см қашықтықтағы торға фокустайды. Берілген қашықтықтағы зат анық көрінетіндей көздің оптикалық күшін таңда.",
+                    en: "Suit visor: the eye focuses the image on the retina 2.4 cm behind the lens. Choose the eye's optical power so an object at the set distance is sharp."
+                },
+                goal: {
+                    ru: "Сфокусируй глаз на предмете и введи нужную оптическую силу D (дптр).",
+                    kk: "Көзді затқа фокустап, қажет оптикалық күшті енгіз D (дптр).",
+                    en: "Focus the eye on the object and enter the required optical power D (dpt)."
+                },
+                tip: {
+                    ru: "1/F = 1/d + 1/f, F = 1/D. Сетчатка в 2,4 см от линзы.",
+                    kk: "1/F = 1/d + 1/f, F = 1/D. Тор линзадан 2,4 см қашықтықта.",
+                    en: "1/F = 1/d + 1/f, F = 1/D. The retina is 2.4 cm behind the lens."
+                },
+                unit: "dpt",
+                tol: 0.4,
+                defaults: { d: 100, dpt: 46 },
+                controls: [
+                    { id: "d", type: "range", min: 25, max: 200, step: 5, unit: { ru: "см", kk: "см", en: "cm" }, label: { ru: "Расстояние до предмета d", kk: "Затқа дейінгі қашықтық d", en: "Object distance d" } },
+                    { id: "dpt", type: "range", min: 40, max: 60, step: 0.5, unit: { ru: "дптр", kk: "дптр", en: "dpt" }, label: { ru: "Оптическая сила глаза D", kk: "Көздің оптикалық күші D", en: "Eye optical power D" } }
+                ],
+                compute(p) {
+                    const need = 100 / p.d + 1 / 0.024;
+                    return {
+                        expected: Number(need.toFixed(1)),
+                        pass: Math.abs(p.dpt - need) <= 0.4,
+                        need, dpt: p.dpt,
+                        readout: tr(
+                            `нужно D = 1/d + 1/f = ${need.toFixed(1)} дптр · сейчас ${p.dpt.toFixed(1)}`,
+                            `керек D = 1/d + 1/f = ${need.toFixed(1)} дптр · қазір ${p.dpt.toFixed(1)}`,
+                            `need D = 1/d + 1/f = ${need.toFixed(1)} dpt · now ${p.dpt.toFixed(1)}`
+                        )
+                    };
+                }
             }
         ],
 
         9: [
             {
                 id: "g9_ballistics",
+                topic: "kinematics",
                 icon: "🎯",
                 para: "§ 6–10",
                 title: { ru: "Баллистический полигон", kk: "Баллистикалық полигон", en: "Ballistic Trajectory Range" },
@@ -453,6 +887,7 @@
             },
             {
                 id: "g9_orbit",
+                topic: "dynamics",
                 icon: "🛰️",
                 para: "§ 15–19",
                 title: { ru: "Орбита спутника «Беркут»", kk: "«Бүркіт» серігінің орбитасы", en: "Berkut Satellite Orbital Insertion" },
@@ -494,6 +929,7 @@
             },
             {
                 id: "g9_collision",
+                topic: "dynamics",
                 icon: "🚀",
                 para: "§ 20–23",
                 title: { ru: "Орбитальная стыковка и импульс", kk: "Орбиталық түйісу және импульс", en: "Orbital Docking & Momentum Track" },
@@ -538,6 +974,7 @@
             },
             {
                 id: "g9_oscillator",
+                topic: "osc",
                 icon: "🕰️",
                 para: "§ 24–29",
                 title: { ru: "Маятник Гюйгенса и осциллограф", kk: "Гюйгенс маятнигі және осциллограф", en: "Pendulum & Live Oscilloscope" },
@@ -577,6 +1014,7 @@
             },
             {
                 id: "g9_waves",
+                topic: "osc",
                 icon: "🌊",
                 para: "§ 30–35",
                 title: { ru: "Волновая камера и эффект Доплера", kk: "Толқындық камера және Доплер эффектісі", en: "Wave Tank & Doppler Shift" },
@@ -612,6 +1050,7 @@
             },
             {
                 id: "g9_quantum",
+                topic: "quantum",
                 icon: "⚛️",
                 para: "§ 36–43",
                 title: { ru: "Фотоэлемент Эйнштейна", kk: "Эйнштейн фотоэлементі", en: "Einstein Vacuum Photocell" },
@@ -654,6 +1093,7 @@
             },
             {
                 id: "g9_coulomb",
+                topic: "electro9",
                 icon: "⚡",
                 para: "§ 1–8",
                 title: { ru: "Закон Кулона: два заряда", kk: "Кулон заңы: екі заряд", en: "Coulomb's Law: Two Charges" },
@@ -692,6 +1132,7 @@
             },
             {
                 id: "g9_decay",
+                topic: "quantum",
                 icon: "☢️",
                 para: "§ 29–36",
                 title: { ru: "Радиоактивный распад", kk: "Радиоактивті ыдырау", en: "Radioactive Decay" },
@@ -731,6 +1172,7 @@
             },
             {
                 id: "g9_induction",
+                topic: "electro9",
                 icon: "🧲",
                 para: "§ 37–44",
                 title: { ru: "ЭДС индукции в катушке", kk: "Орамадағы индукция ЭҚК", en: "Induced EMF in a Coil" },
@@ -768,9 +1210,382 @@
                         )
                     };
                 }
+            },
+            {
+                id: "g9_speed",
+                topic: "kinematics",
+                icon: "🛰️",
+                para: "§ 1–2",
+                title: { ru: "Трасса разведчика", kk: "Барлаушы трассасы", en: "Scout Track" },
+                chapter: { ru: "Механическое движение · v = s/t", kk: "Механикалық қозғалыс · v = s/t", en: "Motion · v = s/t" },
+                story: {
+                    ru: "Разведчик «Орбиты-9» проходит трассу. Подбери путь и время так, чтобы скорость была 6–8 м/с.",
+                    kk: "«Орбита-9» барлаушысы трассадан өтеді. Жылдамдығы 6–8 м/с болатындай жол мен уақытты таңда.",
+                    en: "The Orbita-9 scout runs the track. Choose distance and time so the speed is 6–8 m/s."
+                },
+                goal: {
+                    ru: "Скорость 6–8 м/с, затем введи v (м/с).",
+                    kk: "Жылдамдық 6–8 м/с, сосын v енгіз (м/с).",
+                    en: "Speed 6–8 m/s, then enter v (m/s)."
+                },
+                tip: {
+                    ru: "v = s/t: скорость — это путь за единицу времени.",
+                    kk: "v = s/t: жылдамдық — уақыт бірлігіндегі жол.",
+                    en: "v = s/t: speed is the distance covered per unit time."
+                },
+                unit: "m/s",
+                tol: 0.15,
+                defaults: { s: 100, t: 20 },
+                controls: [
+                    { id: "s", type: "range", min: 20, max: 200, step: 10, unit: { ru: "м", kk: "м", en: "m" }, label: { ru: "Путь s", kk: "Жол s", en: "Distance s" } },
+                    { id: "t", type: "range", min: 2, max: 20, step: 1, unit: { ru: "с", kk: "с", en: "s" }, label: { ru: "Время t", kk: "Уақыт t", en: "Time t" } }
+                ],
+                compute(p) {
+                    const v = p.s / p.t;
+                    return {
+                        expected: Number(v.toFixed(2)),
+                        pass: v >= 6 && v <= 8,
+                        v,
+                        readout: tr(
+                            `v = s/t = ${p.s}/${p.t} = ${v.toFixed(2)} м/с`,
+                            `v = s/t = ${p.s}/${p.t} = ${v.toFixed(2)} м/с`,
+                            `v = s/t = ${p.s}/${p.t} = ${v.toFixed(2)} m/s`
+                        )
+                    };
+                }
+            },
+            {
+                id: "g9_accel",
+                topic: "kinematics",
+                icon: "🏁",
+                para: "§ 3–4",
+                title: { ru: "Разгон платформы", kk: "Платформаның үдеуі", en: "Platform Acceleration" },
+                chapter: { ru: "Равноускоренное движение · a = (v − v₀)/t", kk: "Бірқалыпты үдемелі қозғалыс · a = (v − v₀)/t", en: "Uniform Acceleration · a = (v − v₀)/t" },
+                story: {
+                    ru: "Платформа разгоняется на испытательном треке. Нужно ускорение 1,5–2,5 м/с² — иначе груз сорвётся с креплений.",
+                    kk: "Платформа сынақ трегінде үдейді. 1,5–2,5 м/с² үдеу керек — әйтпесе жүк бекітпестен шығып кетеді.",
+                    en: "The platform accelerates on the test track. It needs 1.5–2.5 m/s², or the cargo tears loose."
+                },
+                goal: {
+                    ru: "Ускорение 1,5–2,5 м/с², затем введи a (м/с²).",
+                    kk: "Үдеу 1,5–2,5 м/с², сосын a енгіз (м/с²).",
+                    en: "Acceleration 1.5–2.5 m/s², then enter a (m/s²)."
+                },
+                tip: {
+                    ru: "a = (v − v₀)/t: разность скоростей делим на время разгона.",
+                    kk: "a = (v − v₀)/t: жылдамдықтар айырмасын уақытқа бөлеміз.",
+                    en: "a = (v − v₀)/t: divide the speed change by the time."
+                },
+                unit: "m/s²",
+                tol: 0.08,
+                defaults: { v0: 0, v: 20, t: 4 },
+                controls: [
+                    { id: "v0", type: "range", min: 0, max: 10, step: 1, unit: { ru: "м/с", kk: "м/с", en: "m/s" }, label: { ru: "Начальная скорость v₀", kk: "Бастапқы жылдамдық v₀", en: "Initial speed v₀" } },
+                    { id: "v", type: "range", min: 5, max: 25, step: 1, unit: { ru: "м/с", kk: "м/с", en: "m/s" }, label: { ru: "Конечная скорость v", kk: "Соңғы жылдамдық v", en: "Final speed v" } },
+                    { id: "t", type: "range", min: 2, max: 10, step: 0.5, unit: { ru: "с", kk: "с", en: "s" }, label: { ru: "Время разгона t", kk: "Үдеу уақыты t", en: "Acceleration time t" } }
+                ],
+                compute(p) {
+                    const a = (p.v - p.v0) / p.t;
+                    return {
+                        expected: Number(a.toFixed(2)),
+                        pass: a >= 1.5 && a <= 2.5,
+                        a,
+                        readout: tr(
+                            `a = (${p.v} − ${p.v0})/${p.t} = ${a.toFixed(2)} м/с²`,
+                            `a = (${p.v} − ${p.v0})/${p.t} = ${a.toFixed(2)} м/с²`,
+                            `a = (${p.v} − ${p.v0})/${p.t} = ${a.toFixed(2)} m/s²`
+                        )
+                    };
+                }
+            },
+            {
+                id: "g9_newton2",
+                topic: "dynamics",
+                icon: "🚚",
+                para: "§ 15",
+                title: { ru: "Второй закон Ньютона", kk: "Ньютонның екінші заңы", en: "Newton's Second Law" },
+                chapter: { ru: "Динамика · a = F/m", kk: "Динамика · a = F/m", en: "Dynamics · a = F/m" },
+                story: {
+                    ru: "Маневровый двигатель толкает капсулу. Подбери силу и массу так, чтобы ускорение было 2–3 м/с².",
+                    kk: "Маневрлік қозғалтқыш капсуланы итереді. Үдеу 2–3 м/с² болатындай күш пен массаны таңда.",
+                    en: "A manoeuvring engine pushes the capsule. Choose force and mass so the acceleration is 2–3 m/s²."
+                },
+                goal: {
+                    ru: "Ускорение 2–3 м/с², затем введи a (м/с²).",
+                    kk: "Үдеу 2–3 м/с², сосын a енгіз (м/с²).",
+                    en: "Acceleration 2–3 m/s², then enter a (m/s²)."
+                },
+                tip: {
+                    ru: "a = F/m: чем больше сила и меньше масса, тем больше ускорение.",
+                    kk: "a = F/m: күш үлкен, масса кіші болса — үдеу үлкен.",
+                    en: "a = F/m: more force and less mass give more acceleration."
+                },
+                unit: "m/s²",
+                tol: 0.08,
+                defaults: { f: 20, m: 2 },
+                controls: [
+                    { id: "f", type: "range", min: 2, max: 20, step: 0.5, unit: { ru: "Н", kk: "Н", en: "N" }, label: { ru: "Сила тяги F", kk: "Тарту күші F", en: "Thrust F" } },
+                    { id: "m", type: "range", min: 0.5, max: 5, step: 0.5, unit: { ru: "кг", kk: "кг", en: "kg" }, label: { ru: "Масса капсулы m", kk: "Капсула массасы m", en: "Capsule mass m" } }
+                ],
+                compute(p) {
+                    const a = p.f / p.m;
+                    return {
+                        expected: Number(a.toFixed(2)),
+                        pass: a >= 2 && a <= 3,
+                        a,
+                        readout: tr(
+                            `a = F/m = ${p.f}/${p.m} = ${a.toFixed(2)} м/с²`,
+                            `a = F/m = ${p.f}/${p.m} = ${a.toFixed(2)} м/с²`,
+                            `a = F/m = ${p.f}/${p.m} = ${a.toFixed(2)} m/s²`
+                        )
+                    };
+                }
+            },
+            {
+                id: "g9_fall",
+                topic: "kinematics",
+                icon: "🪂",
+                para: "§ 5",
+                title: { ru: "Свободное падение зонда", kk: "Зондтың еркін құлауы", en: "Free Fall of a Probe" },
+                chapter: { ru: "Свободное падение · t = √(2h/g)", kk: "Еркін құлау · t = √(2h/g)", en: "Free Fall · t = √(2h/g)" },
+                story: {
+                    ru: "Капсула сбрасывает зонд с высоты. Время падения должно быть 1,2–1,6 с — иначе парашют не успеет раскрыться.",
+                    kk: "Капсула зондты биіктіктен тастайды. Құлау уақыты 1,2–1,6 с болуы керек — әйтпесе парашют ашылмайды.",
+                    en: "The capsule drops a probe. The fall time must be 1.2–1.6 s, or the parachute will not open in time."
+                },
+                goal: {
+                    ru: "Время падения 1,1–1,8 с, затем введи t (с).",
+                    kk: "Құлау уақыты 1,1–1,8 с, сосын t енгіз (с).",
+                    en: "Fall time 1.1–1.8 s, then enter t (s)."
+                },
+                tip: {
+                    ru: "h = g·t²/2, значит t = √(2h/g), g = 9,8 м/с².",
+                    kk: "h = g·t²/2, демек t = √(2h/g), g = 9,8 м/с².",
+                    en: "h = g·t²/2, so t = √(2h/g) with g = 9.8 m/s²."
+                },
+                unit: "s",
+                tol: 0.05,
+                defaults: { h: 45 },
+                controls: [
+                    { id: "h", type: "range", min: 5, max: 45, step: 1, unit: { ru: "м", kk: "м", en: "m" }, label: { ru: "Высота сброса h", kk: "Тастау биіктігі h", en: "Drop height h" } }
+                ],
+                compute(p) {
+                    const t = Math.sqrt(2 * p.h / 9.8);
+                    return {
+                        expected: Number(t.toFixed(2)),
+                        pass: t >= 1.1 && t <= 1.8,
+                        t,
+                        readout: tr(
+                            `t = √(2h/g) = √(2·${p.h}/9,8) = ${t.toFixed(2)} с`,
+                            `t = √(2h/g) = √(2·${p.h}/9,8) = ${t.toFixed(2)} с`,
+                            `t = √(2h/g) = √(2·${p.h}/9.8) = ${t.toFixed(2)} s`
+                        )
+                    };
+                }
+            },
+            {
+                id: "g9_energy",
+                topic: "dynamics",
+                icon: "⛰️",
+                para: "§ 22–23",
+                title: { ru: "Энергия на наклонной", kk: "Көлбеудегі энергия", en: "Energy on a Ramp" },
+                chapter: { ru: "Закон сохранения энергии · E = m·g·h", kk: "Энергияның сақталу заңы · E = m·g·h", en: "Energy Conservation · E = m·g·h" },
+                story: {
+                    ru: "Груз скатывается по наклонной без трения. Энергия системы должна попасть в 100–150 Дж — это рабочий режим генератора.",
+                    kk: "Жүк үйкеліссіз көлбеуден сырғанайды. Жүйе энергиясы 100–150 Дж болуы керек — бұл генератордың жұмыс режимі.",
+                    en: "A load rolls down a frictionless ramp. The system energy must land in 100–150 J — the generator's working band."
+                },
+                goal: {
+                    ru: "Энергия 100–150 Дж, затем введи E (Дж).",
+                    kk: "Энергия 100–150 Дж, сосын E енгіз (Дж).",
+                    en: "Energy 100–150 J, then enter E (J)."
+                },
+                tip: {
+                    ru: "E = m·g·h: вся потенциальная энергия переходит в кинетическую.",
+                    kk: "E = m·g·h: барлық потенциалдық энергия кинетикалыққа айналады.",
+                    en: "E = m·g·h: all potential energy turns into kinetic energy."
+                },
+                unit: "J",
+                tol: 1,
+                defaults: { m: 1, h: 2 },
+                controls: [
+                    { id: "m", type: "range", min: 0.5, max: 5, step: 0.5, unit: { ru: "кг", kk: "кг", en: "kg" }, label: { ru: "Масса груза m", kk: "Жүк массасы m", en: "Load mass m" } },
+                    { id: "h", type: "range", min: 1, max: 10, step: 0.5, unit: { ru: "м", kk: "м", en: "m" }, label: { ru: "Высота h", kk: "Биіктік h", en: "Height h" } }
+                ],
+                compute(p) {
+                    const e = p.m * 9.8 * p.h;
+                    return {
+                        expected: Number(e.toFixed(1)),
+                        pass: e >= 100 && e <= 150,
+                        e,
+                        readout: tr(
+                            `E = m·g·h = ${p.m}·9,8·${p.h} = ${e.toFixed(1)} Дж`,
+                            `E = m·g·h = ${p.m}·9,8·${p.h} = ${e.toFixed(1)} Дж`,
+                            `E = m·g·h = ${p.m}·9.8·${p.h} = ${e.toFixed(1)} J`
+                        )
+                    };
+                }
+            },
+            {
+                id: "g9_resonance",
+                topic: "osc",
+                icon: "🌉",
+                para: "§ 27",
+                title: { ru: "Резонанс моста", kk: "Көпір резонансы", en: "Bridge Resonance" },
+                chapter: { ru: "Резонанс · f = f₀", kk: "Резонанс · f = f₀", en: "Resonance · f = f₀" },
+                story: {
+                    ru: "Мост входит в резонанс, когда частота толчков совпадает с собственной частотой. Настрой генератор и определи резонансную частоту.",
+                    kk: "Көпір серпіліс жиілігі меншікті жиілікке сәйкес келгенде резонансқа түседі. Генераторды реттеп, резонанс жиілігін анықта.",
+                    en: "The bridge resonates when the drive frequency matches its natural frequency. Tune the generator and find the resonant frequency."
+                },
+                goal: {
+                    ru: "Совпади с собственной частотой (±0,3 Гц) и введи резонансную частоту (Гц).",
+                    kk: "Меншікті жиілікке дәл кел (±0,3 Гц) және резонанс жиілігін енгіз (Гц).",
+                    en: "Match the natural frequency (±0.3 Hz) and enter the resonant frequency (Hz)."
+                },
+                tip: {
+                    ru: "Резонанс наступает при f = f₀: амплитуда резко растёт.",
+                    kk: "Резонанс f = f₀ кезінде болады: амплитуда күрт өседі.",
+                    en: "Resonance happens at f = f₀: the amplitude shoots up."
+                },
+                unit: "Hz",
+                tol: 0.1,
+                defaults: { f0: 6, f: 2 },
+                controls: [
+                    { id: "f0", type: "range", min: 4, max: 9, step: 0.5, unit: { ru: "Гц", kk: "Гц", en: "Hz" }, label: { ru: "Собственная частота моста f₀", kk: "Көпірдің меншікті жиілігі f₀", en: "Bridge natural frequency f₀" } },
+                    { id: "f", type: "range", min: 2, max: 12, step: 0.1, unit: { ru: "Гц", kk: "Гц", en: "Hz" }, label: { ru: "Частота толчков f", kk: "Серпіліс жиілігі f", en: "Drive frequency f" } }
+                ],
+                compute(p) {
+                    const detune = Math.abs(p.f - p.f0);
+                    const amp = 1 / Math.sqrt(1 + Math.pow(detune / 0.35, 2));
+                    return {
+                        expected: Number(p.f0.toFixed(1)),
+                        pass: detune <= 0.3,
+                        amp, detune,
+                        readout: tr(
+                            `f = ${p.f.toFixed(1)} Гц, f₀ = ${p.f0.toFixed(1)} Гц · амплитуда ${(amp * 100).toFixed(0)} %`,
+                            `f = ${p.f.toFixed(1)} Гц, f₀ = ${p.f0.toFixed(1)} Гц · амплитуда ${(amp * 100).toFixed(0)} %`,
+                            `f = ${p.f.toFixed(1)} Hz, f₀ = ${p.f0.toFixed(1)} Hz · amplitude ${(amp * 100).toFixed(0)} %`
+                        )
+                    };
+                }
+            },
+            {
+                id: "g9_emwave",
+                topic: "osc",
+                icon: "📡",
+                para: "§ 31",
+                title: { ru: "Антенна и длина волны", kk: "Антенна және толқын ұзындығы", en: "Antenna & Wavelength" },
+                chapter: { ru: "Электромагнитные волны · ν = c/λ", kk: "Электромагниттік толқындар · ν = c/λ", en: "Electromagnetic Waves · ν = c/λ" },
+                story: {
+                    ru: "Антенна должна принять сигнал в диапазоне 90–110 МГц. Подбери длину волны так, чтобы попасть в этот канал.",
+                    kk: "Антенна 90–110 МГц диапазонындағы сигналды қабылдауы керек. Осы арнаға түсетіндей толқын ұзындығын таңда.",
+                    en: "The antenna must receive a 90–110 MHz signal. Choose the wavelength that lands in this channel."
+                },
+                goal: {
+                    ru: "Частота 90–110 МГц, затем введи ν (МГц).",
+                    kk: "Жиілік 90–110 МГц, сосын ν енгіз (МГц).",
+                    en: "Frequency 90–110 MHz, then enter ν (MHz)."
+                },
+                tip: {
+                    ru: "ν = c/λ, c = 3·10⁸ м/с. Чем короче волна, тем выше частота.",
+                    kk: "ν = c/λ, c = 3·10⁸ м/с. Толқын қысқа болса, жиілік жоғары.",
+                    en: "ν = c/λ with c = 3·10⁸ m/s. Shorter waves mean higher frequency."
+                },
+                unit: "MHz",
+                tol: 1,
+                defaults: { lam: 5 },
+                controls: [
+                    { id: "lam", type: "range", min: 0.5, max: 5, step: 0.1, unit: { ru: "м", kk: "м", en: "m" }, label: { ru: "Длина волны λ", kk: "Толқын ұзындығы λ", en: "Wavelength λ" } }
+                ],
+                compute(p) {
+                    const nu = 300 / p.lam;
+                    return {
+                        expected: Number(nu.toFixed(1)),
+                        pass: nu >= 90 && nu <= 110,
+                        nu,
+                        readout: tr(
+                            `ν = c/λ = 300/${p.lam.toFixed(1)} = ${nu.toFixed(1)} МГц`,
+                            `ν = c/λ = 300/${p.lam.toFixed(1)} = ${nu.toFixed(1)} МГц`,
+                            `ν = c/λ = 300/${p.lam.toFixed(1)} = ${nu.toFixed(1)} MHz`
+                        )
+                    };
+                }
+            },
+            {
+                id: "g9_binding",
+                topic: "quantum",
+                icon: "⚛️",
+                para: "§ 37",
+                title: { ru: "Энергия связи ядра", kk: "Ядроның байланыс энергиясы", en: "Nuclear Binding Energy" },
+                chapter: { ru: "Дефект масс · E = Δm·931,5 МэВ", kk: "Масса ақауы · E = Δm·931,5 МэВ", en: "Mass Defect · E = Δm·931.5 MeV" },
+                story: {
+                    ru: "Реактору нужна энергия связи 50–70 МэВ. Подбери дефект масс ядра и подтверди расчёт.",
+                    kk: "Реакторға 55–65 МэВ байланыс энергиясы керек. Ядроның масса ақауын таңдап, есепті раста.",
+                    en: "The reactor needs 55–65 MeV of binding energy. Choose the nuclear mass defect and verify the calculation."
+                },
+                goal: {
+                    ru: "Энергия связи 50–70 МэВ, затем введи E (МэВ).",
+                    kk: "Байланыс энергиясы 50–70 МэВ, сосын E енгіз (МэВ).",
+                    en: "Binding energy 50–70 MeV, then enter E (MeV)."
+                },
+                tip: {
+                    ru: "E = Δm · 931,5 МэВ/а.е.м.: дефект масс превращается в энергию связи.",
+                    kk: "E = Δm · 931,5 МэВ/а.е.м.: масса ақауы байланыс энергиясына айналады.",
+                    en: "E = Δm · 931.5 MeV/u: the mass defect becomes binding energy."
+                },
+                unit: "MeV",
+                tol: 0.6,
+                defaults: { dm: 0.02 },
+                controls: [
+                    { id: "dm", type: "range", min: 0.01, max: 0.3, step: 0.005, unit: { ru: "а.е.м.", kk: "а.е.м.", en: "u" }, label: { ru: "Дефект масс Δm", kk: "Масса ақауы Δm", en: "Mass defect Δm" } }
+                ],
+                compute(p) {
+                    const e = p.dm * 931.5;
+                    return {
+                        expected: Number(e.toFixed(1)),
+                        pass: e >= 50 && e <= 70,
+                        e,
+                        readout: tr(
+                            `E = Δm·931,5 = ${p.dm.toFixed(3)}·931,5 = ${e.toFixed(1)} МэВ`,
+                            `E = Δm·931,5 = ${p.dm.toFixed(3)}·931,5 = ${e.toFixed(1)} МэВ`,
+                            `E = Δm·931.5 = ${p.dm.toFixed(3)}·931.5 = ${e.toFixed(1)} MeV`
+                        )
+                    };
+                }
             }
         ]
     };
+
+    /* Темы галереи: каждая карточка относится к своей теме (порядок = порядок изучения) */
+    const TOPICS_BY_GRADE = {
+        8: [
+            { id: "heat", range: "§§ 1–17", title: { ru: "Тепловые явления", kk: "Жылу құбылыстары", en: "Thermal Phenomena" } },
+            { id: "electro", range: "§§ 18–30", title: { ru: "Электричество", kk: "Электричество", en: "Electricity" } },
+            { id: "mech", range: "§§ 24–28, 46–49", title: { ru: "Давление и плавучесть", kk: "Қысым және жүзу", en: "Pressure & Buoyancy" } },
+            { id: "magnets", range: "§§ 31–36", title: { ru: "Магнетизм", kk: "Магнетизм", en: "Magnetism" } },
+            { id: "waves", range: "§§ 30–33", title: { ru: "Звук и волны", kk: "Дыбыс және толқындар", en: "Sound & Waves" } },
+            { id: "optics", range: "§§ 37–43", title: { ru: "Оптика", kk: "Оптика", en: "Optics" } }
+        ],
+        9: [
+            { id: "kinematics", range: "§§ 1–12", title: { ru: "Кинематика", kk: "Кинематика", en: "Kinematics" } },
+            { id: "dynamics", range: "§§ 13–23", title: { ru: "Динамика и законы сохранения", kk: "Динамика және сақталу заңдары", en: "Dynamics & Conservation Laws" } },
+            { id: "osc", range: "§§ 24–31", title: { ru: "Колебания, волны и излучение", kk: "Тербелістер, толқындар және сәулелену", en: "Oscillations, Waves & Radiation" } },
+            { id: "electro9", range: "§§ 1–8, 37–44", title: { ru: "Электростатика и индукция", kk: "Электростатика және индукция", en: "Electrostatics & Induction" } },
+            { id: "quantum", range: "§§ 29–43", title: { ru: "Квантовая и ядерная физика", kk: "Кванттық және ядролық физика", en: "Quantum & Nuclear Physics" } }
+        ]
+    };
+
+    function paraStart(lab) {
+        const m = String((lab && lab.para) || "").match(/(\d+)/);
+        return m ? Number(m[1]) : 999;
+    }
+    function labsWord(n) {
+        const mod10 = n % 10, mod100 = n % 100;
+        if (mod10 === 1 && mod100 !== 11) return "симулятор";
+        if (mod10 >= 2 && mod10 <= 4 && (mod100 < 12 || mod100 > 14)) return "симулятора";
+        return "симуляторов";
+    }
 
     function storageKey(grade) {
         const prefix = (window.PQAccount && window.PQAccount.getActiveStudentPrefix) ? window.PQAccount.getActiveStudentPrefix() : "";
@@ -1658,9 +2473,42 @@
                 font-size: 13px;
             }
             .pq-sim89-grid {
+                display: flex;
+                flex-direction: column;
+                gap: 18px;
+            }
+            .pq-sim89-topic {
+                display: flex;
+                flex-direction: column;
+                gap: 10px;
+            }
+            .pq-sim89-topic-head {
+                display: flex;
+                align-items: baseline;
+                justify-content: space-between;
+                gap: 10px;
+                flex-wrap: wrap;
+                padding: 8px 12px;
+                border-radius: 12px;
+                background: rgba(56, 189, 248, 0.09);
+                border: 1px solid rgba(56, 189, 248, 0.26);
+            }
+            .pq-sim89-topic-head b { font-size: 14px; color: #e0f2fe; letter-spacing: 0.01em; }
+            .pq-sim89-topic-head span { font-size: 11.5px; font-weight: 800; color: #7dd3fc; }
+            .pq-sim89-topic-grid {
                 display: grid;
                 grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
                 gap: 12px;
+            }
+            .pq-sim89-card-icon { font-size: 22px; line-height: 1; }
+            .pq-sim89-card-chapter { font-size: 11.5px; font-weight: 800; color: #7dd3fc; letter-spacing: 0.01em; }
+            .pq-sim89-card-tip {
+                padding: 7px 10px;
+                border-radius: 10px;
+                background: rgba(56, 189, 248, 0.1);
+                border: 1px solid rgba(56, 189, 248, 0.22);
+                color: #bae6fd !important;
+                font-size: 11.5px !important;
             }
             .pq-sim89-card {
                 text-align: left;
@@ -1886,16 +2734,21 @@
             const p = document.getElementById("pq-sim89-prog");
             const cb = document.getElementById("pq-sim89-classic-btn");
             if (k) k.textContent = tr("ИНТЕРАКТИВНЫЕ ФИЗИЧЕСКИЕ СИМУЛЯТОРЫ · CANVAS 2D", "ИНТЕРАКТИВТІ ФИЗИКАЛЫҚ СИМУЛЯТОРЛАР · CANVAS 2D", "INTERACTIVE PHYSICS SIMULATORS · CANVAS 2D");
-            const countRu = `${labs.length} ${labs.length % 10 === 1 && labs.length % 100 !== 11 ? "симулятор" : (labs.length % 10 >= 2 && labs.length % 10 <= 4 && (labs.length % 100 < 12 || labs.length % 100 > 14) ? "симулятора" : "симуляторов")}`;
+            const countRu = `${labs.length} ${labsWord(labs.length)}`;
             if (t) t.textContent = grade === 8
                 ? tr(`🔬 Лабораторный комплекс «Эквилибриум» (${countRu})`, `🔬 «Эквилибриум» зертханалық кешені (${labs.length} симулятор)`, `🔬 Equilibrium Interactive Lab Suite (${labs.length} Simulators)`)
                 : tr(`🛰️ Испытательный полигон «Орбита-9» (${countRu})`, `🛰️ «Орбита-9» сынақ полигоны (${labs.length} симулятор)`, `🛰️ Orbita-9 Proving Grounds (${labs.length} Simulators)`);
+            const topicCount = (TOPICS_BY_GRADE[grade] || []).length;
             if (s) s.textContent = tr(
-                "Реалистичные модели с живой анимацией: управляй приборами, выводи установку в целевой режим и подтверждай расчёт (+30 XP и +5 💎).",
-                "Жанды анимациясы бар шынайы модельдер: аспаптарды басқарып, есепті дәлелде (+30 XP және +5 💎).",
-                "Realistic live-animated apparatus: adjust parameters, reach target regime, and verify your calculation (+30 XP & +5 💎)."
+                `${labs.length} лабораторий по ${topicCount} темам курса: у каждой темы свои опыты — управляй приборами, выводи установку в целевой режим и подтверждай расчёт (+30 XP и +5 💎).`,
+                `${labs.length} зертхана курстың ${topicCount} тақырыбы бойынша: әр тақырыптың өз тәжірибелері бар — аспаптарды басқарып, есепті дәлелде (+30 XP және +5 💎).`,
+                `${labs.length} labs across ${topicCount} course topics: each topic has its own trials — adjust the apparatus, reach the target regime, and verify your calculation (+30 XP & +5 💎).`
             );
-            if (p) p.textContent = `🔑 ${doneCount} / ${labs.length}`;
+            if (p) p.textContent = tr(
+                `🔑 Фрагменты ключа: ${doneCount} / ${labs.length}`,
+                `🔑 Кілт фрагменттері: ${doneCount} / ${labs.length}`,
+                `🔑 Key fragments: ${doneCount} / ${labs.length}`
+            );
             if (cb) {
                 const configs = window.GRADE_LAB_GAMES_CONFIG || {};
                 const hasBench = Object.keys(configs).length > 0 && typeof LabGames !== "undefined";
@@ -1915,20 +2768,38 @@
 
             const grid = document.getElementById("pq-sim89-grid");
             if (!grid) return;
-            grid.innerHTML = labs.map(l => {
-                const isDone = !!doneMap[l.id];
-                return `
-                    <button type="button" class="pq-sim89-card ${isDone ? "done" : ""}" data-s89="${l.id}">
-                        <div class="pq-sim89-card-top">
-                            <span>${l.icon} ${l.para}</span>
-                            <span>${loc(l.chapter)}</span>
-                        </div>
-                        <b>${loc(l.title)}</b>
-                        <small>${loc(l.goal)}</small>
-                        <em>${isDone ? tr("✓ Испытание пройдено", "✓ Сынақ өтілді", "✓ Trial Completed") : tr("▶ Открыть установку →", "▶ Қондырғыны ашу →", "▶ Launch Apparatus →")}</em>
-                    </button>
-                `;
-            }).join("");
+            const topics = TOPICS_BY_GRADE[grade] || [];
+            const ordered = labs.slice().sort((a, b) => paraStart(a) - paraStart(b));
+            const used = new Set();
+            const groups = topics.map(tp => {
+                const list = ordered.filter(l => l.topic === tp.id);
+                list.forEach(l => used.add(l.id));
+                return { tp, list };
+            }).filter(g => g.list.length);
+            const rest = ordered.filter(l => !used.has(l.id));
+            if (rest.length) groups.push({ tp: { range: "", title: { ru: "Дополнительные опыты", kk: "Қосымша тәжірибелер", en: "Extra Trials" } }, list: rest });
+            grid.innerHTML = groups.map(g => `
+                <div class="pq-sim89-topic">
+                    <div class="pq-sim89-topic-head">
+                        <b>${loc(g.tp.title)}</b>
+                        <span>${g.tp.range ? g.tp.range + " · " : ""}${g.list.length} ${tr(labsWord(g.list.length), "симулятор", g.list.length === 1 ? "simulator" : "simulators")}</span>
+                    </div>
+                    <div class="pq-sim89-topic-grid">
+                        ${g.list.map(l => {
+                            const isDone = !!doneMap[l.id];
+                            return `
+                            <button type="button" class="pq-sim89-card ${isDone ? "done" : ""}" data-s89="${l.id}">
+                                <span class="pq-sim89-card-icon">${l.icon}</span>
+                                <span class="pq-sim89-card-chapter">${l.para} · ${loc(l.chapter)}</span>
+                                <b>${loc(l.title)}</b>
+                                <small>${isDone ? tr("Испытание пройдено — можно повторить опыт", "Сынақ өтілді — тәжірибені қайталауға болады", "Trial completed — you can repeat it") : loc(l.goal)}</small>
+                                ${l.tip ? `<small class="pq-sim89-card-tip">💡 ${loc(l.tip)}</small>` : ""}
+                                <em>${isDone ? tr("✓ Испытание пройдено", "✓ Сынақ өтілді", "✓ Trial Completed") : tr("▶ Открыть установку →", "▶ Қондырғыны ашу →", "▶ Launch Apparatus →")}</em>
+                            </button>`;
+                        }).join("")}
+                    </div>
+                </div>
+            `).join("");
             grid.querySelectorAll("[data-s89]").forEach(btn => {
                 btn.onclick = () => this.openLab(btn.getAttribute("data-s89"));
             });

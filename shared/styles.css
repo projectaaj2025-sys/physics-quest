@@ -5142,8 +5142,9 @@ html[data-theme="dark"] .rpg-maint-pair select { background: rgba(255,255,255,.0
 .lab-result.ok { background: linear-gradient(135deg,#e8f5e9,#e0f7fa); border-color: #66bb6a; color: #1b5e20; }
 .lab-result.bad { background: linear-gradient(135deg,#fce4ec,#fff3e0); border-color: #ef9a9a; color: var(--bad-ink); }
 .lab-actions { display: flex; gap: 8px; flex-wrap: wrap; justify-content: center; margin-top: 12px; }
-.circuit-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; max-width: 340px; margin: 12px auto; }
-.circuit-cell { aspect-ratio: 1; border: 2px solid #b0bec5; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 26px; cursor: pointer; background: #fafdff; transition: all .2s; user-select: none; }
+.circuit-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px; max-width: 340px; margin: 12px auto; }
+.circuit-cell { min-width: 0; aspect-ratio: 1; border: 2px solid #b0bec5; border-radius: 12px; display: flex; flex-direction: column; gap: 3px; align-items: center; justify-content: center; font-size: 24px; line-height: 1.05; cursor: pointer; background: #fafdff; transition: all .2s; user-select: none; padding: 4px; text-align: center; }
+.circuit-cell small { display: block; font-size: 10px; line-height: 1.15; font-weight: 800; color: var(--text); word-break: break-word; }
 .circuit-cell.on { background: #e0f7fa; border-color: #00b8d4; box-shadow: 0 0 12px rgba(0,184,212,0.4); transform: scale(1.03); }
 .circuit-cell.done { background: #e8f5e9; border-color: #66bb6a; }
 .lab-hint { font-size: 12px; color: var(--text-dim); text-align: center; margin-top: 6px; }
