@@ -948,7 +948,7 @@ const TASKS_DATABASE_EXT = [
       "kk": "Жылжымалы және салыстырмалы жылдамдықтарды қос.",
       "en": "Add the relative and transported speed."
     },
-    "formula": "υ = υ_пер + υ_отн",
+    "formula": {"ru": "υ = υ_пер + υ_отн", "en": "υ = υ_trans + υ_rel", "kk": "υ = υ_ауыс + υ_сал"},
     "id": "p1-q8",
     "topic": "p1"
   },
@@ -2004,7 +2004,7 @@ const TASKS_DATABASE_EXT = [
       "kk": "Орташа жылдамдық — барлық жолды барлық уақытқа бөлу.",
       "en": "Average speed — divide the total distance by the total time."
     },
-    "formula": "υ_ср = (s₁+s₂)/(t₁+t₂)",
+    "formula": {"ru": "υ_ср = (s₁+s₂)/(t₁+t₂)", "en": "υ_avg = (s₁+s₂)/(t₁+t₂)", "kk": "υ_орт = (s₁+s₂)/(t₁+t₂)"},
     "id": "p3-q9",
     "topic": "p3"
   },
@@ -8149,7 +8149,7 @@ const TASKS_DATABASE_EXT = [
       "kk": "Сызылу формуласы бойынша μ-ді өрнекте.",
       "en": "Express μ from the friction formula."
     },
-    "formula": "μ = F_тр/N",
+    "formula": {"ru": "μ = F_тр/N", "en": "μ = F_fr/N", "kk": "μ = F_үйк/N"},
     "id": "p14-q11",
     "topic": "p14"
   },
@@ -12354,7 +12354,7 @@ const TASKS_DATABASE_EXT = [
       "kk": "Кинетикалық энергия формуласында қой.",
       "en": "Substitute into the kinetic energy formula."
     },
-    "formula": "E_к = mυ²/2",
+    "formula": {"ru": "E_к = mυ²/2", "en": "E_k = mυ²/2", "kk": "E_к = mυ²/2"},
     "id": "p22-q6",
     "topic": "p22"
   },
@@ -12378,7 +12378,7 @@ const TASKS_DATABASE_EXT = [
       "kk": "Потенциалдық энергия.",
       "en": "Potential energy."
     },
-    "formula": "E_п = mgh",
+    "formula": {"ru": "E_п = mgh", "en": "E_p = mgh", "kk": "E_п = mgh"},
     "id": "p22-q7",
     "topic": "p22"
   },
@@ -32435,7 +32435,7 @@ const TASKS_DATABASE_EXT = [
     },
     "correctAnswer": 3.2,
     "tolerance": 0.1,
-    "formula": "E = 200 МэВ",
+    "formula": {"ru": "E = 200 МэВ", "en": "E = 200 MeV", "kk": "E = 200 МэВ"},
     "explanation": {
       "ru": "E = 200·10⁶·1,6·10⁻¹⁹ = 3,2·10⁻¹¹ Дж.",
       "en": "E = 200·10⁶·1.6·10⁻¹⁹ = 3.2·10⁻¹¹ J.",
@@ -32707,7 +32707,7 @@ const TASKS_DATABASE_EXT = [
       "en": "Divide 15 by 10.",
       "kk": "15-ті 10-ға бөл."
     },
-    "formula": "T = 15·10⁶ К"
+    "formula": {"ru": "T = 15·10⁶ К", "en": "T = 15·10⁶ K", "kk": "T = 15·10⁶ К"}
   },
   {
     "id": "p40-ap5",

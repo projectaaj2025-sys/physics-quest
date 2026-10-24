@@ -355,7 +355,10 @@ Object.assign(RPG, {
         const given = escapeHtml(entry.given || rpgT("bbNoAnswer"));
         const correct = entry.correct ? formatFormula(entry.correct) : "";
         const explain = entry.explanation ? formatFormula(entry.explanation) : "";
-        const formula = entry.formula ? `<div class="rpg-bb-formula">${formatFormula(entry.formula)}</div>` : "";
+        const formulaRaw = entry.formula && typeof entry.formula === "object"
+            ? (entry.formula.ru || entry.formula.en || entry.formula.kk || "")
+            : entry.formula;
+        const formula = formulaRaw ? `<div class="rpg-bb-formula">${formatFormula(formulaRaw)}</div>` : "";
         const theory = `
             <div class="rpg-bb-theory" hidden>
                 <div class="rpg-bb-theory-title">📘 ${escapeHtml(rpgT("bbTheoryTitle"))}</div>

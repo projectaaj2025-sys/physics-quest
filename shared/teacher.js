@@ -720,7 +720,10 @@ const Teacher = {
         document.getElementById("form-question-ru").value = task.question.ru || "";
         document.getElementById("form-question-en").value = task.question.en || "";
         document.getElementById("form-question-kk").value = task.question.kk || "";
-        document.getElementById("form-formula").value = task.formula || "";
+        const formulaValue = task.formula && typeof task.formula === "object"
+            ? (task.formula.ru || task.formula.en || task.formula.kk || "")
+            : (task.formula || "");
+        document.getElementById("form-formula").value = formulaValue;
         document.getElementById("form-hint").value = task.hint?.ru || "";
         document.getElementById("form-explanation").value = task.explanation?.ru || "";
 
