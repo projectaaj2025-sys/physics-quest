@@ -127,7 +127,8 @@ const BossIntro = {
             done=true;
             overlay.classList.remove("active");
             document.removeEventListener("keydown", onKey);
-            onGo();
+            // onGo необязателен: движок может открыть интро и без колбэка
+            if (typeof onGo === "function") { try { onGo(); } catch (e) {} }
         };
         const onKey=(e)=>{ if(e.code==="Space"||e.code==="Enter") finish(); };
         goBtn.onclick=finish;

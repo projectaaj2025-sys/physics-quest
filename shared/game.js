@@ -499,13 +499,30 @@ const Game = {
                 setTimeout(() => LabGames.tryShow(this.currentLevel, this), 700);
             }
         }
-        if (this.levelConfig && this.levelConfig.boss && typeof BossIntro !== "undefined" && BossIntro.show) {
-            try { BossIntro.show(this.currentLevel, this); } catch (e) {}
-        }
         this.storyOpen = false;
         this.pausedTotal = 0;
         this.pauseStartedAt = 0;
         document.getElementById("pause-overlay").classList.remove("active");
+
+        // Интро босса: оверлей поверх поля. Пока он открыт, мир стоит на паузе —
+        // иначе астероиды летят за оверлеем и щит города падает «вслепую».
+        // Ставим паузу ПОСЛЕ сброса pausedTotal/pauseStartedAt выше.
+        this.bossIntroOpen = false;
+        if (this.levelConfig && this.levelConfig.boss && typeof BossIntro !== "undefined" && BossIntro.show) {
+            try {
+                this.paused = true;
+                this.pauseStartedAt = Date.now();
+                this.bossIntroOpen = true;
+                BossIntro.show(this.currentLevel, this, () => {
+                    this.bossIntroOpen = false;
+                    if (this.paused) this.resumeGame();
+                });
+            } catch (e) {
+                this.bossIntroOpen = false;
+                this.paused = false;
+                this.pauseStartedAt = 0;
+            }
+        }
 
         // Очистить таймеры предыдущего уровня (перезапуск без endLevel)
         clearInterval(this.asteroidTimer);
@@ -517,8 +534,13 @@ const Game = {
         // Спавн: ~1 астероид в 4.2-5.6 с; каждые 3 астероида — вопрос (~1 вопрос в 15 секунд)
         const levelNum = typeof this.currentLevel === "number" ? this.currentLevel : 25;
         const spawnInterval = Math.max(4200, Math.min(5600, 5600 - levelNum * 28));
-        this.asteroidTimer = setInterval(() => this.spawnAsteroid(), spawnInterval);
+        // На паузе (интро босса, ручная пауза) новые астероиды не появляются:
+        // иначе они копятся за оверлеем и разом обрушиваются после снятия паузы.
+        this.asteroidTimer = setInterval(() => {
+            if (!this.paused) this.spawnAsteroid();
+        }, spawnInterval);
         this.energyTimer = setInterval(() => {
+            if (this.paused) return;
             if (this.energyOrbs.length < 7) this.spawnEnergyOrb(); // больше энергии — больше динамики
         }, this.levelConfig.energySpawnRate);
         // В начале уровня сразу небольшой поток астероидов (3 штуки), разнесённых
@@ -530,24 +552,23 @@ const Game = {
             if (spawned) spawned.y = -40 - i * 90; // -40, -130, -220
         }
 
-        // Первое задание через 5 секунд после старта
+        // Первое задание через 5 секунд после старта.
+        // Если мир стоит на паузе/открыт брифинг/уже идёт вопрос — ждём и пробуем снова,
+        // чтобы первый вопрос не «прозевал» игрока за оверлеем (брифинг миссии, интро босса).
         const sid = this.sessionId;
-        this.firstTaskTimeout = setTimeout(() => {
-            this.firstTaskTimeout = null;
-            if (sid === this.sessionId && this.running && !this.isTaskActive && !this.storyOpen) {
+        const scheduleFirstTask = (delay) => {
+            this.firstTaskTimeout = setTimeout(() => {
+                this.firstTaskTimeout = null;
+                if (sid !== this.sessionId || !this.running) return;
+                if (this.paused || this.isTaskActive || this.storyOpen) {
+                    scheduleFirstTask(500);
+                    return;
+                }
                 this.taskTriggeredThisLevel++;
                 this.triggerTask();
-            } else if (sid === this.sessionId && this.running && this.storyOpen) {
-                // Не теряем первый вопрос, если сюжетный брифинг открыт дольше пяти секунд.
-                this.firstTaskTimeout = setTimeout(() => {
-                    this.firstTaskTimeout = null;
-                    if (sid === this.sessionId && this.running && !this.isTaskActive && !this.storyOpen) {
-                        this.taskTriggeredThisLevel++;
-                        this.triggerTask();
-                    }
-                }, 500);
-            }
-        }, 5000);
+            }, delay);
+        };
+        scheduleFirstTask(5000);
 
         showScreen("game-screen");
         showStoryBriefing(levelId);

@@ -575,12 +575,17 @@ const RPG = {
         const levelNum = typeof game.currentLevel === "number" ? game.currentLevel : 25;
         const baseSpawn = Math.max(4200, Math.min(5600, 5600 - levelNum * 28));
         const spawnMs = Math.max(1800, Math.round(baseSpawn * (mission.asteroidIntervalMul || 1) * (1 - Math.max(-0.3, Math.min(0.4, this.storyBonus("spawn"))))));
-        game.asteroidTimer = setInterval(() => game.spawnAsteroid(), spawnMs);
+        // Пауза (ручная или интро босса) останавливает и спавн: иначе за оверлеем
+        // копятся астероиды и после снятия паузы падают разом.
+        game.asteroidTimer = setInterval(() => {
+            if (!game.paused) game.spawnAsteroid();
+        }, spawnMs);
 
         const baseEnergy = Number(cfg.energySpawnRate) || 3500;
         const energyMs = Math.max(850, Math.round(baseEnergy * (mission.orbRateMul || 1)));
         const orbLimit = mission.id === "harvest" ? 11 : 7;
         game.energyTimer = setInterval(() => {
+            if (game.paused) return;
             if (game.energyOrbs.length < orbLimit) game.spawnEnergyOrb();
         }, energyMs);
 
