@@ -449,8 +449,15 @@ const Game = {
         );
         // В пуле теперь 22 задания: 20 основных + 2 бытовых. Порог уровня
         // остаётся 20/20, а практические вопросы гарантированно попадут в эти 20.
-        const configuredTaskTotal = Number(this.levelConfig.tasksTotal) || matchingLevelTasks.length;
-        this.levelTasksTotal = Math.min(configuredTaskTotal, matchingLevelTasks.length);
+        const configuredTaskTotal = Number(this.levelConfig.tasksTotal) || 20;
+        // План уровня: 20 случайных заданий из пула темы, собранных при старте.
+        // Так каждый заход даёт новый набор, без повторов, со всеми типами заданий.
+        this.taskPlan = typeof Teacher.buildLevelTaskPlan === "function"
+            ? Teacher.buildLevelTaskPlan(this.levelConfig, configuredTaskTotal)
+            : [];
+        this.levelTasksTotal = this.taskPlan.length > 0
+            ? this.taskPlan.length
+            : Math.min(configuredTaskTotal, matchingLevelTasks.length);
         this.practicalTaskIds = matchingLevelTasks.filter(t => t.isPractical).map(t => t.id);
         this.lastTaskCloseTime = Date.now();
         this.asteroids = [];
@@ -597,6 +604,7 @@ const Game = {
         this.pausedTotal = 0;
         this.pauseStartedAt = 0;
         document.getElementById("pause-overlay").classList.remove("active");
+        this.taskPlan = [];
         showLevelSelect();
     },
 
@@ -803,9 +811,17 @@ const Game = {
     // ============ ЗАДАНИЯ ============
     triggerTask() {
         if (this.isTaskActive) return;
+        const askedIds = new Set([...this.completedTaskIds, ...this.failedTaskIds]);
+        // Основной путь — план уровня (20 случайных заданий, выбранных при старте):
+        // задания не повторяются, все типы встречаются хотя бы раз.
+        if (Array.isArray(this.taskPlan) && this.taskPlan.length) {
+            const next = this.taskPlan.find(t => !askedIds.has(t.id));
+            if (next) { this.showTask(next); return; }
+            return; // план исчерпан — уровень завершается в closeTask()
+        }
+        // Резервный путь (учительские уроки без плана и внешние вызовы)
         // Сначала гарантируем два практических бытовых вопроса уровня,
         // затем выдаём остальные задания в обычном порядке.
-        const askedIds = new Set([...this.completedTaskIds, ...this.failedTaskIds]);
         const practicalPending = (this.practicalTaskIds || []).filter(id => !askedIds.has(id));
         const task = Teacher.getTaskForLevel(this.levelConfig, this.completedTaskIds, this.failedTaskIds, practicalPending);
         if (!task) return;
@@ -818,6 +834,7 @@ const Game = {
         this.currentTask = task;
         this.taskAttempts = 0;
         this.taskHintsLeft = 3;
+        this.taskResolved = false;
 
         const modal = document.getElementById("task-modal");
         document.getElementById("task-title").textContent = I18n.t("task") + " #" + (this.completedTaskIds.length + 1);
@@ -1061,6 +1078,7 @@ const Game = {
 
     checkAnswer() {
         if (!this.currentTask) return;
+        if (this.taskResolved) return; // задание уже решено или закрыто — не считаем дважды
         if (this.taskAttempts >= MAX_TASK_ATTEMPTS) return; // попытки исчерпаны
         this.taskAttempts++;
         this.tasksAttempted++;
@@ -1077,6 +1095,7 @@ const Game = {
                 feedback.innerHTML += `<br><strong>${I18n.t("explanation")}</strong> ${formatFormula(I18n.getLocalized(this.currentTask, "explanation"))}`;
             }
             this.tasksSolved++;
+            this.taskResolved = true;
             this.completedTaskIds.push(this.currentTask.id);
             Storage.updateStats(true, this.currentTask.topic, this.currentTask.type);
 
@@ -1117,6 +1136,7 @@ const Game = {
                 if (this.currentTask.explanation) {
                     feedback.innerHTML += `<br><strong>${I18n.t("explanation")}</strong> ${formatFormula(I18n.getLocalized(this.currentTask, "explanation"))}`;
                 }
+                this.taskResolved = true;
                 if (!this.failedTaskIds.includes(this.currentTask.id)) {
                     this.failedTaskIds.push(this.currentTask.id);
                 }
@@ -1138,7 +1158,7 @@ const Game = {
             // На попытках 1–4 — только «Неверно» и остаток попыток.
             // Правильный ответ и пояснение показываем лишь после 5-й неверной
             // попытки (ветка attemptsLeft <= 0 ниже).
-            feedback.innerHTML = `✗ ${I18n.t("wrong")} ${I18n.t("attemptsLeft", attemptsLeft)}`;
+            feedback.innerHTML = `✗ ${I18n.t("wrong")} · ${I18n.t("attemptsLeft", attemptsLeft)}`;
             // Урон городу
             showNotification(I18n.t("wrongAnswer"), "error");
             // Сбросить выбор/пары для новой попытки

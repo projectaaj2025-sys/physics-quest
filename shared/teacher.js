@@ -857,7 +857,42 @@ const Teacher = {
         const ch = (typeof TASKS_DATABASE_CH !== "undefined" && Array.isArray(TASKS_DATABASE_CH)) ? TASKS_DATABASE_CH : [];
         const ext2 = (typeof TASKS_DATABASE_EXT2 !== "undefined" && Array.isArray(TASKS_DATABASE_EXT2)) ? TASKS_DATABASE_EXT2 : [];
         const practical = (typeof TASKS_DATABASE_PRACTICAL !== "undefined" && Array.isArray(TASKS_DATABASE_PRACTICAL)) ? TASKS_DATABASE_PRACTICAL : [];
-        return [...base, ...ext, ...ch, ...ext2, ...practical, ...Storage.getCustomTasks()];
+        // Задания интерактивных типов для 8–9 классов (сгенерированы tools/gen-task-types.js)
+        const types = (typeof TASKS_DATABASE_TYPES !== "undefined" && Array.isArray(TASKS_DATABASE_TYPES)) ? TASKS_DATABASE_TYPES : [];
+        return [...base, ...ext, ...ch, ...ext2, ...practical, ...types, ...Storage.getCustomTasks()];
+    },
+
+    // План уровня: 20 случайных заданий из пула темы.
+    // Гарантирует, что за один заход не будет повторов, попадут практические
+    // вопросы и встретятся все доступные типы заданий (в 7–9 классах — до 7 типов).
+    buildLevelTaskPlan(levelConfig, count = 20) {
+        const all = this.getAllTasks();
+        const cfgId = String(levelConfig.id);
+        const lessonKey = cfgId.indexOf("custom:") === 0 ? cfgId : "lesson:" + cfgId;
+        const pool = all.filter(t => t.topic === lessonKey || (levelConfig.topics || []).includes(t.topic));
+        if (pool.length === 0) return [];
+        const target = Math.max(1, Math.min(Number(count) || 20, pool.length));
+        const plan = [];
+        const take = (t) => {
+            if (t && plan.length < target && !plan.some(p => p.id === t.id)) plan.push(t);
+        };
+        const randomOf = (arr) => arr[Math.floor(Math.random() * arr.length)];
+        // 1. Практические (бытовые) вопросы — не больше двух, как и раньше
+        pool.filter(t => t.isPractical).slice(0, 2).forEach(take);
+        // 2. По одному заданию каждого типа — знакомство со всеми форматами
+        [...new Set(pool.map(t => t.type))].forEach(type => {
+            const candidates = pool.filter(t => t.type === type && !plan.some(p => p.id === t.id));
+            if (candidates.length) take(randomOf(candidates));
+        });
+        // 3. Добираем случайные до 20
+        const rest = pool.filter(t => !plan.some(p => p.id === t.id));
+        while (plan.length < target && rest.length) take(rest.splice(Math.floor(Math.random() * rest.length), 1)[0]);
+        // 4. Перемешиваем порядок
+        for (let i = plan.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [plan[i], plan[j]] = [plan[j], plan[i]];
+        }
+        return plan;
     },
 
     // Получить задание для текущего уровня.

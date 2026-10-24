@@ -10,7 +10,7 @@ const fs = require("fs");
 const path = require("path");
 
 const ROOT = path.resolve(__dirname, "..");
-const SKIP_DIRS = new Set([".git", "node_modules", "tools", ".github"]);
+const SKIP_DIRS = new Set([".git", "node_modules", "tools", ".github", "docs"]); // docs — отчёты и скриншоты, офлайн-игре не нужны
 const EXT = new Set([".html", ".js", ".css", ".json", ".png", ".jpg", ".jpeg", ".svg", ".webmanifest", ".pdf"]);
 
 function walk(dir, out) {

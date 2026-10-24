@@ -719,6 +719,9 @@
 
         const scripts = [
             `./${grade}/tasks.js`,
+            // Дополнительные типы заданий (multi-select, short-answer, matching),
+            // сгенерированы tools/gen-task-types.js
+            `./${grade}/tasks-types.js`,
             `./${grade}/content.js`,
             "./shared/levels.js",
             "./shared/locales-base.js",

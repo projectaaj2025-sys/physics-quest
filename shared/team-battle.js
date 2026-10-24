@@ -347,6 +347,7 @@
                 try { if (typeof TASKS_DATABASE_CH !== "undefined" && Array.isArray(TASKS_DATABASE_CH)) tasks = tasks.concat(TASKS_DATABASE_CH); } catch (_) {}
                 try { if (typeof TASKS_DATABASE_EXT2 !== "undefined" && Array.isArray(TASKS_DATABASE_EXT2)) tasks = tasks.concat(TASKS_DATABASE_EXT2); } catch (_) {}
                 try { if (typeof TASKS_DATABASE_PRACTICAL !== "undefined" && Array.isArray(TASKS_DATABASE_PRACTICAL)) tasks = tasks.concat(TASKS_DATABASE_PRACTICAL); } catch (_) {}
+                try { if (typeof TASKS_DATABASE_TYPES !== "undefined" && Array.isArray(TASKS_DATABASE_TYPES)) tasks = tasks.concat(TASKS_DATABASE_TYPES); } catch (_) {}
             }
             const grade = Number(window.CURRENT_GRADE) || 8;
             const allowed = ["multiple-choice", "true-false", "numeric"];

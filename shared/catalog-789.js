@@ -2,7 +2,7 @@
 window.GRADE_CATALOG = {
   "7": {
     "grade": 7,
-    "totalTasks": 349,
+    "totalTasks": 1096,
     "heroIcon": "🛡️",
     "accent": "#00b8d4",
     "title": {
@@ -924,7 +924,7 @@ window.GRADE_CATALOG = {
   },
   "8": {
     "grade": 8,
-    "totalTasks": 1210,
+    "totalTasks": 1381,
     "heroIcon": "⚡",
     "accent": "#ff8a00",
     "title": {
@@ -1932,7 +1932,7 @@ window.GRADE_CATALOG = {
   },
   "9": {
     "grade": 9,
-    "totalTasks": 1009,
+    "totalTasks": 1198,
     "heroIcon": "🛰️",
     "accent": "#7c4dff",
     "title": {
