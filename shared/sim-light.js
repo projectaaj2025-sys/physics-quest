@@ -862,7 +862,8 @@
         // скорость
         arrow(ctx, mx + 40, base - 46, mx + 84, base - 46, "#2f7db8", 2.5, `v = ${p.v}`);
         hit({ kind: "drag", key: "v", axis: "x", x: mx, y: base - 46, from: 340, to: 60, min: 1, max: 10 });
-        dragChip(ctx, 62, base - 78, tr3("оттяни магнит — скорость", "магнитті тарт — жылдамдық", "pull the magnet — speed"));
+        // подсказка — под надписью ε, чтобы не накрывать магнит в левом положении
+        dragChip(ctx, 66, 44, tr3("оттяни магнит — скорость", "магнитті тарт — жылдамдық", "pull the magnet — speed"));
         handle(ctx, coilX + 40, base - 96, "N", { key: "N", axis: "y", x: coilX + 40, y: base - 96, from: base - 60, to: base - 150, min: 50, max: 400 });
         pillText(ctx, `ε = ${fmt2(calc.emf)} В`, 66, 30, { size: 12, color: "#1f6f9c" });
     };
