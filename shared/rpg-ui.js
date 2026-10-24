@@ -506,9 +506,20 @@ Object.assign(RPG, {
             this.dom.missionSub.textContent = desc || rpgT("briefingSub");
         }
         if (this.dom.missionMeta) {
+            // Если работа назначена учителем — показываем его лимиты до старта
+            let limits = null;
+            try {
+                if (b.code && typeof Storage !== "undefined" && Storage.getAssignmentLimits) {
+                    limits = Storage.getAssignmentLimits(b.code);
+                }
+            } catch (e) {}
+            const limitsChip = limits
+                ? `<span class="rpg-chip" title="${escapeHtml(rpgT("asHintsLabel"))} · ${escapeHtml(rpgT("asAttemptsLabel"))}">💡 ${limits.hints} · 🎯 ${limits.attempts}</span>`
+                : "";
             this.dom.missionMeta.innerHTML = `
                 <span class="rpg-chip">📚 ${rpgT("levelWord")} ${escapeHtml(String(levelIdDisplay(b.levelId)))}</span>
                 <span class="rpg-chip">❓ ${tasksTotal} ${rpgT("questionsWord")}</span>
+                ${limitsChip}
                 <span class="rpg-chip gold">${rpgStars(levelStars)} ${escapeHtml(rpgT("bestWord"))}</span>
                 <span class="rpg-chip pink">🧬 ${rpgT("levelShortCap")} ${this.state.level}</span>
             `;

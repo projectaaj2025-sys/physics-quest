@@ -1227,7 +1227,7 @@ const TeacherHQ = {
                     <div class="hq-kpi"><b>${data.students}</b><span>${escapeHtml(rpgT("hqKpiStudents"))}</span></div>
                     <div class="hq-kpi"><b>${data.assignments}</b><span>${escapeHtml(rpgT("hqKpiAssignments"))}</span></div>
                     <div class="hq-kpi"><b>${doneText}</b><span>${escapeHtml(rpgT("hqKpiDone"))}</span></div>
-                    <div class="hq-kpi"><b>${accuracyText}</b><span>${escapeHtml(rpgT("hqKpiAccuracy"))}</span></div>
+                    <div class="hq-kpi"><b>${accuracyText}</b><span>${escapeHtml(rpgT("hqKpiAccuracy"))}${data.attempts && window.PQMarks ? " · " + PQMarks.tenPoint(data.accuracy) + "/10" : ""}</span></div>
                     <div class="hq-kpi"><b>${data.active}</b><span>${escapeHtml(rpgT("hqKpiActive"))}</span></div>
                 </div>
             </section>`;
@@ -1374,6 +1374,7 @@ const TeacherHQ = {
                     <span class="hq-st-right">
                         <b class="hq-status ${row.status}">${escapeHtml(rpgT(statusKey))}</b>
                         <span class="hq-st-acc">${row.attempted ? row.accuracy + "%" : "—"}</span>
+                        ${row.attempted && window.PQMarks ? `<span class="hq-st-mark">${escapeHtml(PQMarks.tenPointShort(row.accuracy))}</span>` : ""}
                     </span>
                 </button>`;
         }).join("");
@@ -1667,6 +1668,7 @@ const TeacherHQ = {
                 <td>${r.victory ? "✅" : "—"}</td>
                 <td>${hqNum(r.score)}</td>
                 <td>${hqNum(r.accuracy)}%</td>
+                <td>${window.PQMarks ? escapeHtml(PQMarks.tenPointShort(r.accuracy)) : "—"}</td>
             </tr>`).join("");
 
         body.innerHTML = `
@@ -1703,6 +1705,7 @@ const TeacherHQ = {
                     <th>${escapeHtml(rpgT("hqWin"))}</th>
                     <th>${escapeHtml(rpgT("hqScore"))}</th>
                     <th>${escapeHtml(rpgT("hqAccuracyShort"))}</th>
+                    <th>${escapeHtml(rpgT("hqMark10"))}</th>
                 </tr></thead><tbody>${historyRows}</tbody></table></div>` : `<div class="hq-empty-mini">${escapeHtml(rpgT("hqNoHistory"))}</div>`}
             </div>
             <div class="hq-sc-block">
@@ -1919,7 +1922,7 @@ const TeacherHQ = {
             const rows = [[
                 rpgT("hqCsvDate"), rpgT("hqCsvClass"), rpgT("hqCsvStudent"), rpgT("hqCsvCode"),
                 rpgT("hqCsvLevel"), rpgT("hqCsvScore"), rpgT("hqCsvAccuracy"), rpgT("hqCsvSolved"),
-                rpgT("hqCsvAttempts"), rpgT("hqCsvStatus")
+                rpgT("hqCsvAttempts"), rpgT("hqCsvMark10"), rpgT("hqCsvStatus")
             ]];
             data.roster.forEach(student => {
                 const list = this.inPeriod(student.results, view.days);
@@ -1935,6 +1938,7 @@ const TeacherHQ = {
                         hqNum(r.accuracy) + "%",
                         hqNum(r.solved),
                         hqNum(r.attempted),
+                        window.PQMarks ? PQMarks.tenPointShort(r.accuracy) : "",
                         r.victory ? rpgT("hqDone") : "—"
                     ]);
                 });

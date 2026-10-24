@@ -192,6 +192,22 @@ const Teacher = {
         });
     },
 
+    // Дополнительная 10-балльная оценка к точности результата
+    markSuffix(accuracy) {
+        if (typeof PQMarks === "undefined" || !PQMarks.hasResult(accuracy)) return "";
+        return ` · ${I18n.t("mark10Short", PQMarks.tenPoint(accuracy))}`;
+    },
+
+    // Селекты «подсказок» и «попыток» в формах назначения
+    readLimitsFromForm(hintsId, attemptsId) {
+        const hintsField = document.getElementById(hintsId);
+        const attemptsField = document.getElementById(attemptsId);
+        return {
+            hints: hintsField ? Number(hintsField.value) : Storage.DEFAULT_QUEST_LIMITS.hints,
+            attempts: attemptsField ? Number(attemptsField.value) : Storage.DEFAULT_QUEST_LIMITS.attempts
+        };
+    },
+
     assignToClass() {
         const classId = document.getElementById("assignment-class").value;
         const levelInput = document.getElementById("class-assignment-level");
@@ -205,7 +221,8 @@ const Teacher = {
             return;
         }
         const levelId = levelInput.value.indexOf("custom:") === 0 ? levelInput.value : parseInt(levelInput.value, 10);
-        const added = Storage.addAssignmentsForClass(classId, levelId, noteInput.value);
+        const limits = this.readLimitsFromForm("class-assignment-hints", "class-assignment-attempts");
+        const added = Storage.addAssignmentsForClass(classId, levelId, noteInput.value, limits);
         if (!added.length) {
             showNotification(I18n.t("classNeedStudents"), "warning");
             return;
@@ -230,12 +247,15 @@ const Teacher = {
             showNotification(I18n.t("assignmentNeedLevel"), "warning");
             return;
         }
+        const limits = this.readLimitsFromForm("assignment-hints", "assignment-attempts");
         const saved = Storage.addAssignment({
             studentName,
             playerId,
             studentCode: playerId,
             levelId: levelInput.value.indexOf("custom:") === 0 ? levelInput.value : parseInt(levelInput.value, 10),
-            note: noteInput.value
+            note: noteInput.value,
+            hints: limits.hints,
+            attempts: limits.attempts
         });
         nameInput.value = "";
         idInput.value = "";
@@ -299,15 +319,20 @@ const Teacher = {
                 escapeHtml(this.getAssignmentLevelLabel(assignment.levelId)),
                 assignment.className ? `👥 ${escapeHtml(assignment.className)}` : "",
                 assignment.note ? escapeHtml(assignment.note) : "",
+                (assignment.hints != null || assignment.attempts != null)
+                    ? I18n.t("assignmentLimitsChip",
+                        assignment.hints != null ? assignment.hints : Storage.DEFAULT_QUEST_LIMITS.hints,
+                        assignment.attempts != null ? assignment.attempts : Storage.DEFAULT_QUEST_LIMITS.attempts)
+                    : "",
                 formatRecordDate(assignment.assignedAt)
             ].filter(Boolean).join(" • ");
             const statusHtml = completed
                 ? "✅ " + I18n.t("assignmentCompleted")
                 : lastAttempt ? "⏳ " + I18n.t("assignmentInProgress") : "🕘 " + I18n.t("assignmentPending");
             const resultLine = result
-                ? `<div class="assignment-item-result">${I18n.t("assignmentResult", result.score || 0, result.accuracy || 0)} · ${I18n.t("assignmentPassedAt", formatRecordDate(result.date))}</div>`
+                ? `<div class="assignment-item-result">${I18n.t("assignmentResult", result.score || 0, result.accuracy || 0)}${this.markSuffix(result.accuracy)} · ${I18n.t("assignmentPassedAt", formatRecordDate(result.date))}</div>`
                 : lastAttempt
-                    ? `<div class="assignment-item-result">${I18n.t("assignmentResult", lastAttempt.score || 0, lastAttempt.accuracy || 0)} · ${I18n.t("assignmentLastAttempt", formatRecordDate(lastAttempt.date))}</div>`
+                    ? `<div class="assignment-item-result">${I18n.t("assignmentResult", lastAttempt.score || 0, lastAttempt.accuracy || 0)}${this.markSuffix(lastAttempt.accuracy)} · ${I18n.t("assignmentLastAttempt", formatRecordDate(lastAttempt.date))}</div>`
                     : "";
             return `
                 <div class="assignment-item">
@@ -823,7 +848,10 @@ const Teacher = {
         const acc = stats.totalAnswered > 0
             ? Math.round((stats.correctAnswers / stats.totalAnswered) * 100)
             : 0;
-        document.getElementById("stat-accuracy").textContent = acc + "%";
+        const accuracyLabel = stats.totalAnswered > 0 && typeof PQMarks !== "undefined"
+            ? `${acc}% · ${PQMarks.tenPoint(acc)}/10`
+            : acc + "%";
+        document.getElementById("stat-accuracy").textContent = accuracyLabel;
         document.getElementById("stat-best").textContent = progress.bestScore || 0;
 
         // По темам

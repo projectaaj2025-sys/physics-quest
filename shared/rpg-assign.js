@@ -222,6 +222,14 @@ const AssignHQ = {
                 this.wizard.due = String(t.value || "");
                 this.renderWizard();
             }
+            if (t.id === "as-wiz-hints" && this.wizard) {
+                this.wizard.hints = Number(t.value);
+                return;
+            }
+            if (t.id === "as-wiz-attempts" && this.wizard) {
+                this.wizard.attempts = Number(t.value);
+                return;
+            }
             if (t.id === "as-quick-class" && this.quickLink) this.quickLink.classId = t.value;
             if (t.id === "as-quick-level" && this.quickLink) this.quickLink.levelId = t.value;
             if (t.id === "as-quick-due" && this.quickLink) this.quickLink.due = String(t.value || "");
@@ -679,6 +687,8 @@ const AssignHQ = {
             search: "",
             due: "",
             note: "",
+            hints: Storage.getQuestLimits().hints,
+            attempts: Storage.getQuestLimits().attempts,
             result: null
         };
         const modal = document.getElementById("as-modal");
@@ -957,7 +967,23 @@ const AssignHQ = {
             </div>
             <label class="as-field"><span>${escapeHtml(rpgT("asNote"))}</span>
                 <input type="text" id="as-wiz-note" maxlength="160" value="${asAttr(w.note)}" placeholder="${escapeHtml(rpgT("asNotePh"))}">
-            </label>`;
+            </label>
+            <div class="as-limits">
+                <div class="as-limits-head">⚙ ${escapeHtml(rpgT("asLimitsTitle"))}</div>
+                <div class="as-limits-grid">
+                    <label class="as-field"><span>${escapeHtml(rpgT("asHintsLabel"))}</span>
+                        <select id="as-wiz-hints">
+                            ${Array.from({ length: 11 }, (_, i) => `<option value="${i}"${Number(w.hints) === i ? " selected" : ""}>${i}</option>`).join("")}
+                        </select>
+                    </label>
+                    <label class="as-field"><span>${escapeHtml(rpgT("asAttemptsLabel"))}</span>
+                        <select id="as-wiz-attempts">
+                            ${Array.from({ length: 10 }, (_, i) => i + 1).map(n => `<option value="${n}"${Number(w.attempts) === n ? " selected" : ""}>${n}</option>`).join("")}
+                        </select>
+                    </label>
+                </div>
+                <p class="as-hint">${escapeHtml(rpgT("asLimitsHint"))}</p>
+            </div>`;
     },
 
     stepCheck(w) {
@@ -992,6 +1018,7 @@ const AssignHQ = {
                 <div><span>${escapeHtml(rpgT("asPreviewWhat"))}</span><b>${asEscape(asLevelLabel(w.levelId))}</b></div>
                 <div><span>${escapeHtml(rpgT("asPreviewWhen"))}</span><b>${asEscape(dueText)}</b></div>
                 ${w.note ? `<div><span>${escapeHtml(rpgT("asNote"))}</span><b>${asEscape(w.note)}</b></div>` : ""}
+                <div><span>${escapeHtml(rpgT("asLimitsTitle"))}</span><b>💡 ${w.hints} · 🎯 ${w.attempts}</b></div>
             </div>`;
     },
 
@@ -1019,6 +1046,9 @@ const AssignHQ = {
                 createdVia: "wizard"
             };
             if (w.due) row.dueAt = asDueIso(w.due);
+            const limits = Storage.clampQuestLimits({ hints: w.hints, attempts: w.attempts });
+            row.hints = limits.hints;
+            row.attempts = limits.attempts;
             list.push(row);
             created.push(row);
         };

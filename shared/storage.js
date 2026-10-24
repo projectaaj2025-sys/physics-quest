@@ -339,7 +339,7 @@ const Storage = {
         return classes;
     },
 
-    addAssignmentsForClass(classId, levelId, note = "") {
+    addAssignmentsForClass(classId, levelId, note = "", limits = null) {
         const classItem = this.getClasses().find(item => item.id === classId);
         if (!classItem) return [];
         const assignedAt = new Date().toISOString();
@@ -360,6 +360,13 @@ const Storage = {
             className: classItem.name,
             assignedAt
         }));
+        if (limits && (limits.hints != null || limits.attempts != null)) {
+            const fixed = this.clampQuestLimits({ hints: limits.hints, attempts: limits.attempts });
+            added.forEach(row => {
+                row.hints = fixed.hints;
+                row.attempts = fixed.attempts;
+            });
+        }
         assignments.push(...added);
         this.save(this.KEYS.ASSIGNMENTS, assignments);
         return added;
@@ -471,6 +478,11 @@ const Storage = {
             className: String(assignment.className || "").trim(),
             assignedAt: assignment.assignedAt || new Date().toISOString()
         };
+        if (assignment.hints != null || assignment.attempts != null) {
+            const limits = this.clampQuestLimits({ hints: assignment.hints, attempts: assignment.attempts });
+            item.hints = limits.hints;
+            item.attempts = limits.attempts;
+        }
         assignments.push(item);
         this.save(this.KEYS.ASSIGNMENTS, assignments);
         return item;
@@ -713,6 +725,49 @@ const Storage = {
     },
 
     // === НАСТРОЙКИ (ЕДИНЫЕ ДЛЯ 7–9 КЛАССОВ + СИНХРОНИЗАЦИЯ С PQAccount) ===
+    // Лимиты задания: сколько подсказок и попыток даётся ученику.
+    // Учитель задаёт их при назначении, ученик — в профиле для самостоятельной игры.
+    DEFAULT_QUEST_LIMITS: { hints: 3, attempts: 5 },
+
+    clampQuestLimits(raw = {}) {
+        const defaults = this.DEFAULT_QUEST_LIMITS;
+        const hints = Number(raw && raw.hints);
+        const attempts = Number(raw && raw.attempts);
+        return {
+            hints: Number.isFinite(hints) ? Math.max(0, Math.min(10, Math.round(hints))) : defaults.hints,
+            attempts: Number.isFinite(attempts) ? Math.max(1, Math.min(10, Math.round(attempts))) : defaults.attempts
+        };
+    },
+
+    getQuestLimits() {
+        const settings = this.getSettings();
+        return this.clampQuestLimits(settings.questLimits || {});
+    },
+
+    setQuestLimits(limits = {}) {
+        const merged = this.clampQuestLimits({ ...this.getQuestLimits(), ...(limits || {}) });
+        this.setSettings({ questLimits: merged });
+        return merged;
+    },
+
+    // Лимиты из назначения учителя. Если учитель их не задавал — null,
+    // и тогда действуют настройки профиля ученика.
+    getAssignmentLimits(code) {
+        const normalized = this.normalizeAssignmentCode(code);
+        if (!normalized) return null;
+        const row = this.getAssignments().find(item =>
+            this.normalizeAssignmentCode(item.assignmentCode) === normalized &&
+            (item.hints != null || item.attempts != null)
+        );
+        if (!row) return null;
+        return this.clampQuestLimits({ hints: row.hints, attempts: row.attempts });
+    },
+
+    // Итоговые лимиты для старта уровня: назначение важнее профиля.
+    resolveQuestLimits(code) {
+        return this.getAssignmentLimits(code) || this.getQuestLimits();
+    },
+
     getSettings() {
         this.ensureMigrated();
         const acc = window.PQAccount ? window.PQAccount.get() : null;

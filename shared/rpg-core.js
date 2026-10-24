@@ -1003,8 +1003,22 @@ const RPG = {
             try {
                 if (R.run && R.run.active) {
                     R.run.taskShownAt = Date.now();
-                    this.taskHintsLeft = 3 + R.extraHints();
+                    // Базовый лимит задаёт учитель в назначении или ученик в профиле.
+                    // Бонус навыка «Подсказчик» действует только в свободной игре,
+                    // чтобы назначение с нулём подсказок нельзя было обойти.
+                    let base = Number(this.taskHintsLimit);
+                    if (!Number.isFinite(base)) base = 3;
+                    let bonus = R.extraHints();
+                    try {
+                        if (this.activeAssignmentCode && typeof Storage !== "undefined" && Storage.getAssignmentLimits
+                            && Storage.getAssignmentLimits(this.activeAssignmentCode)) {
+                            bonus = 0;
+                        }
+                    } catch (e) {}
+                    this.taskHintsLeft = Math.max(0, base) + bonus;
                     this.updateTaskStats();
+                    const hintBtn = document.getElementById("btn-hint");
+                    if (hintBtn) hintBtn.disabled = this.taskHintsLeft <= 0;
                     R.updateTaskChip();
                 }
             } catch (e) {

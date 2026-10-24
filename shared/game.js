@@ -263,6 +263,9 @@ const Game = {
     practicalTaskIds: [],
     taskAttempts: 0,
     taskHintsLeft: 3,
+    // Лимиты на задание: приходят из назначения учителя или из профиля ученика
+    taskAttemptsLimit: 5,
+    taskHintsLimit: 3,
     isTaskActive: false,
     pendingTask: null,
     taskTriggeredThisLevel: 0,
@@ -425,6 +428,13 @@ const Game = {
         const parsedLvl = typeof parseLevelRef === "function" ? parseLevelRef(levelId) : { levelId };
         levelId = parsedLvl.levelId;
         this.activeAssignmentCode = Storage.normalizeAssignmentCode(assignmentCode);
+        // Назначение учителя важнее профиля: учитель мог урезать подсказки
+        // и число попыток именно для этой работы.
+        const questLimits = (typeof Storage.resolveQuestLimits === "function")
+            ? Storage.resolveQuestLimits(this.activeAssignmentCode)
+            : { hints: 3, attempts: MAX_TASK_ATTEMPTS };
+        this.taskHintsLimit = Math.max(0, Number(questLimits.hints) || 0);
+        this.taskAttemptsLimit = Math.max(1, Number(questLimits.attempts) || MAX_TASK_ATTEMPTS);
         this.currentLevel = levelId;
         this.currentTheme = typeof getThemeForLevel === "function" ? getThemeForLevel(levelId) : null;
         this.levelConfig = getLevelConfig(levelId);
@@ -745,6 +755,7 @@ const Game = {
             <div class="stat-line"><span class="stat-line-label">${I18n.t("asteroidsDefeated")}</span><span class="stat-line-value">${result.asteroidsDeflected}</span></div>
             <div class="stat-line"><span class="stat-line-label">${I18n.t("tasksSolved")}</span><span class="stat-line-value">${result.tasksSolved}/${result.tasksAttempted}</span></div>
             <div class="stat-line"><span class="stat-line-label">${I18n.t("accuracyStat")}</span><span class="stat-line-value">${result.accuracy}%</span></div>
+            ${(window.PQMarks && PQMarks.hasResult(result.accuracy)) ? `<div class="stat-line"><span class="stat-line-label">${I18n.t("mark10Stat")}</span><span class="stat-line-value">${I18n.t("mark10Short", PQMarks.tenPoint(result.accuracy))}</span></div>` : ""}
             <div class="stat-line"><span class="stat-line-label">${I18n.t("timePlayed")}</span><span class="stat-line-value">${formatTime(result.time)}</span></div>
             <div class="stat-line" style="border:none"><span class="stat-line-label">${I18n.t("starsLabel")}</span><span class="stat-line-value" style="font-size:20px">${stars}</span></div>
         `;
@@ -837,7 +848,7 @@ const Game = {
         this.isTaskActive = true;
         this.currentTask = task;
         this.taskAttempts = 0;
-        this.taskHintsLeft = 3;
+        this.taskHintsLeft = this.taskHintsLimit;
         this.taskResolved = false;
 
         const modal = document.getElementById("task-modal");
@@ -864,7 +875,8 @@ const Game = {
 
         // Кнопка подсказки
         const hintBtn = document.getElementById("btn-hint");
-        hintBtn.disabled = false;
+        // Если подсказки отключены настройками — кнопка сразу неактивна
+        hintBtn.disabled = this.taskHintsLeft <= 0;
         hintBtn.onclick = () => this.useHint();
 
         modal.classList.add("active");
@@ -1066,7 +1078,7 @@ const Game = {
 
     updateTaskStats() {
         document.getElementById("task-attempts").textContent =
-            `${I18n.t("attempts")} ${this.taskAttempts} / ${MAX_TASK_ATTEMPTS}`;
+            `${I18n.t("attempts")} ${this.taskAttempts} / ${this.taskAttemptsLimit || MAX_TASK_ATTEMPTS}`;
         document.getElementById("task-hint-stat").textContent =
             `${I18n.t("hintsAvailable")} ${this.taskHintsLeft}`;
         // Прогресс: какой по счёту вопрос темы сейчас задан
@@ -1083,7 +1095,7 @@ const Game = {
     checkAnswer() {
         if (!this.currentTask) return;
         if (this.taskResolved) return; // задание уже решено или закрыто — не считаем дважды
-        if (this.taskAttempts >= MAX_TASK_ATTEMPTS) return; // попытки исчерпаны
+        if (this.taskAttempts >= (this.taskAttemptsLimit || MAX_TASK_ATTEMPTS)) return; // попытки исчерпаны
         this.taskAttempts++;
         this.tasksAttempted++;
         this.updateTaskStats();
@@ -1125,7 +1137,7 @@ const Game = {
             if (this.autoCloseTimeout) clearTimeout(this.autoCloseTimeout);
             this.autoCloseTimeout = setTimeout(() => { this.autoCloseTimeout = null; this.closeTask(true); }, 1800);
         } else {
-            const attemptsLeft = MAX_TASK_ATTEMPTS - this.taskAttempts;
+            const attemptsLeft = (this.taskAttemptsLimit || MAX_TASK_ATTEMPTS) - this.taskAttempts;
             this.cityHealth = Math.max(0, this.cityHealth - 10);
             this.shakeScreen();
             Storage.updateStats(false, this.currentTask.topic, this.currentTask.type);

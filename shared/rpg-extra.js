@@ -1503,10 +1503,11 @@ Object.assign(RPG, {
         const R = this;
         if (typeof Storage === "undefined") return;
 
-        // Массовое назначение классу: принимаем 4-й аргумент и проставляем срок.
+        // Массовое назначение классу: сохраняем лимиты подсказок/попыток (4-й аргумент)
+        // и проставляем срок выполнения (5-й аргумент).
         const prevForClass = Storage.addAssignmentsForClass;
-        Storage.addAssignmentsForClass = function (classId, levelId, note, dueAt) {
-            const added = prevForClass.call(Storage, classId, levelId, note);
+        Storage.addAssignmentsForClass = function (classId, levelId, note, limits, dueAt) {
+            const added = prevForClass.call(Storage, classId, levelId, note, limits);
             if (dueAt && Array.isArray(added)) {
                 added.forEach(item => { if (item && item.id) R.setAssignmentDue(item.id, dueAt); });
             }
@@ -1519,7 +1520,7 @@ Object.assign(RPG, {
             Teacher.assignToClass = function () {
                 const due = R.readDueInput("rpg-class-assignment-due");
                 const prev = Storage.addAssignmentsForClass;
-                Storage.addAssignmentsForClass = function (c, l, n) { return prev.call(Storage, c, l, n, due); };
+                Storage.addAssignmentsForClass = function (c, l, n, lim) { return prev.call(Storage, c, l, n, lim, due); };
                 try {
                     return prevAssignClass.apply(this, arguments);
                 } finally {

@@ -357,6 +357,22 @@ function setupMainMenu() {
         Storage.setSettings(s);
     });
 
+    // Профиль ученика: лимиты подсказок и попыток для самостоятельной игры
+    const limitsGrid = document.querySelector(".quest-limits-grid");
+    if (limitsGrid) {
+        limitsGrid.addEventListener("change", () => {
+            const hintsSelect = document.getElementById("profile-hints");
+            const attemptsSelect = document.getElementById("profile-attempts");
+            const limits = Storage.setQuestLimits({
+                hints: hintsSelect ? hintsSelect.value : undefined,
+                attempts: attemptsSelect ? attemptsSelect.value : undefined
+            });
+            if (hintsSelect) hintsSelect.value = String(limits.hints);
+            if (attemptsSelect) attemptsSelect.value = String(limits.attempts);
+            showNotification(I18n.t("questLimitsSaved"), "success");
+        });
+    }
+
     // Теория перед уровнем
     document.getElementById("btn-theory-start").addEventListener("click", () => {
         const id = pendingLevelId;
@@ -1057,6 +1073,12 @@ function showProfile() {
     document.getElementById("profile-name").value = s.playerName || "";
     const playerIdField = document.getElementById("profile-player-id");
     if (playerIdField) playerIdField.value = s.playerCode || s.playerId || "";
+    // Правила тренировки: сколько подсказок и попыток на задание
+    const limits = Storage.getQuestLimits();
+    const hintsSelect = document.getElementById("profile-hints");
+    const attemptsSelect = document.getElementById("profile-attempts");
+    if (hintsSelect) hintsSelect.value = String(limits.hints);
+    if (attemptsSelect) attemptsSelect.value = String(limits.attempts);
     renderRocketGrid();
     updateProfileNotesDownload();
     showScreen("profile-screen");

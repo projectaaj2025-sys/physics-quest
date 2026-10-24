@@ -152,6 +152,44 @@
                 <div class="rocket-grid" id="rocket-grid"></div>
             </div>
             <div class="profile-field">
+                <label data-i18n="questLimitsTitle">⚙ Настройки тренировки</label>
+                <p class="profile-sub" style="margin:0 0 10px" data-i18n="questLimitsSub">Сколько подсказок и попыток даётся на каждое задание в самостоятельной игре.</p>
+                <div class="quest-limits-grid">
+                    <label class="quest-limit">
+                        <span data-i18n="questHintsLabel">Подсказок на задание</span>
+                        <select id="profile-hints">
+                        <option value="0">0</option>
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3" selected>3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                        <option value="6">6</option>
+                        <option value="7">7</option>
+                        <option value="8">8</option>
+                        <option value="9">9</option>
+                        <option value="10">10</option>
+                        </select>
+                    </label>
+                    <label class="quest-limit">
+                        <span data-i18n="questAttemptsLabel">Попыток на задание</span>
+                        <select id="profile-attempts">
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5" selected>5</option>
+                        <option value="6">6</option>
+                        <option value="7">7</option>
+                        <option value="8">8</option>
+                        <option value="9">9</option>
+                        <option value="10">10</option>
+                        </select>
+                    </label>
+                </div>
+                <small class="profile-sub quest-limits-note" data-i18n="questLimitsTeacherNote">Если учитель назначил работу, действуют его настройки из назначения.</small>
+            </div>
+            <div class="profile-field">
                 <label data-i18n="profileConspektTitle">📘 Полный конспект</label>
                 <p class="profile-sub" style="margin:0 0 10px" data-i18n="profileConspektNote">Полный конспект всех 43 параграфов — открой в окне</p>
                 <div class="profile-conspekt-actions">
@@ -430,6 +468,37 @@
                         <label for="class-assignment-note" data-i18n="classAssignmentNote">Комментарий для класса (необязательно)</label>
                         <input type="text" id="class-assignment-note" maxlength="160" data-i18n-placeholder="assignmentNotePlaceholder" placeholder="Например: пройти до пятницы" />
                     </div>
+                    <div class="form-group">
+                        <label for="class-assignment-hints" data-i18n="questHintsLabel">Подсказок на задание</label>
+                        <select id="class-assignment-hints">
+                        <option value="0">0</option>
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3" selected>3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                        <option value="6">6</option>
+                        <option value="7">7</option>
+                        <option value="8">8</option>
+                        <option value="9">9</option>
+                        <option value="10">10</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="class-assignment-attempts" data-i18n="questAttemptsLabel">Попыток на задание</label>
+                        <select id="class-assignment-attempts">
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5" selected>5</option>
+                        <option value="6">6</option>
+                        <option value="7">7</option>
+                        <option value="8">8</option>
+                        <option value="9">9</option>
+                        <option value="10">10</option>
+                        </select>
+                    </div>
                     <button type="button" class="btn btn-primary" id="btn-assign-class">
                         <span data-i18n="assignToClass">👥 Назначить всему классу</span>
                     </button>
@@ -453,6 +522,37 @@
                 <div class="form-group">
                     <label for="assignment-note" data-i18n="assignmentNote">Комментарий (необязательно)</label>
                     <input type="text" id="assignment-note" maxlength="160" data-i18n-placeholder="assignmentNotePlaceholder" placeholder="Например: пройти до пятницы" />
+                </div>
+                <div class="form-group">
+                    <label for="assignment-hints" data-i18n="questHintsLabel">Подсказок на задание</label>
+                    <select id="assignment-hints">
+                        <option value="0">0</option>
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3" selected>3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                        <option value="6">6</option>
+                        <option value="7">7</option>
+                        <option value="8">8</option>
+                        <option value="9">9</option>
+                        <option value="10">10</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="assignment-attempts" data-i18n="questAttemptsLabel">Попыток на задание</label>
+                    <select id="assignment-attempts">
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5" selected>5</option>
+                        <option value="6">6</option>
+                        <option value="7">7</option>
+                        <option value="8">8</option>
+                        <option value="9">9</option>
+                        <option value="10">10</option>
+                    </select>
                 </div>
                 <button type="button" class="btn btn-primary" id="btn-add-assignment">
                     <span data-i18n="addAssignment">+ Назначить</span>
@@ -728,6 +828,7 @@
             "./shared/levels.js",
             "./shared/locales-base.js",
             "./shared/storage.js",
+            "./shared/marks.js",
             "./shared/teacher.js",
             "./shared/game.js",
             "./shared/i18n.js",
