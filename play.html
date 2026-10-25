@@ -854,12 +854,12 @@
             "./shared/rpg-boot.js"
         ];
         if (grade === 7) {
-            scripts.push("./shared/sim-light-7.js", "./7/simulators.js");
+            scripts.push("./shared/lab-workbench.js", "./shared/sim-light-7.js", "./7/simulators.js");
         } else if (grade === 8) {
             // Лабораторные мини-игры уровней 45–55 (конфиги — в 8/content.js)
-            scripts.push("./shared/lab-games.js");
+            scripts.push("./shared/lab-workbench.js", "./shared/lab-games.js");
         } else if (grade === 9) {
-            scripts.push("./shared/lab-games.js", "./9/extras.js");
+            scripts.push("./shared/lab-workbench.js", "./shared/lab-games.js", "./9/extras.js");
         }
         // Знакомство с героями и общий сюжет — показывается в «Лор и сюжет» перед комиксом
         scripts.push("./shared/story-cast.js");

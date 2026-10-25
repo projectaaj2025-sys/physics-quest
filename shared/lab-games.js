@@ -34,6 +34,7 @@ const LabGames = {
                 const inp = document.getElementById("lab-" + s.id);
                 if (inp) values[s.id] = parseFloat(inp.value);
             });
+            if (window.PQWorkbench) window.PQWorkbench.reset();
             if (this.activeCfg.type === "circuit") {
                 values.on = [...document.querySelectorAll("#lab-circuit .circuit-cell.on")].map(c => Number(c.getAttribute("data-idx")));
             }
@@ -101,38 +102,48 @@ const LabGames = {
         if (circuitEl) circuitEl.style.display = "none";
         if (content) content.innerHTML = "";
         if (cfg.type === "slider" && content && resultEl) {
-            content.innerHTML = cfg.sliders.map(s => `
-                <div class="lab-slider-row">
-                    <label>${pick(s, "label")}</label>
-                    <input type="range" id="lab-${s.id}" min="${s.min}" max="${s.max}" step="${s.step}" value="${(values && values[s.id] != null) ? values[s.id] : s.val}">
-                    <span class="lab-value" id="lab-v-${s.id}">${numTxt((values && values[s.id] != null) ? values[s.id] : s.val)}</span>
-                </div>
-            `).join("");
+            // Ползунки убраны: ученик работает руками (полка деталей, ручки-верньеры,
+            // «Провести опыт» и приборы со стрелками) — см. shared/lab-workbench.js.
             const update = () => {
                 const vals = {};
                 cfg.sliders.forEach(s => {
                     const inp = document.getElementById("lab-" + s.id);
-                    const out = document.getElementById("lab-v-" + s.id);
-                    const v = parseFloat(inp.value);
-                    vals[s.id] = v;
-                    if (out) out.textContent = numTxt(v);
+                    vals[s.id] = inp ? parseFloat(inp.value) : Number(s.val);
                 });
                 const res = cfg.formula(vals);
-                resultEl.style.display = "";
+                resultEl.style.display = "none";     // измерение показывают приборы
                 const resWord = L === "kk" ? "Нәтиже" : L === "en" ? "Result" : "Результат";
                 const goalWord = L === "kk" ? "мақсат" : L === "en" ? "target" : "цель";
-                // Безразмерные величины (показатель преломления) печатаем без лишнего пробела.
                 const uTxt = unitOf(cfg) ? " " + unitOf(cfg) : "";
                 resultEl.textContent = `${resWord}: ${numTxt(res.toFixed(2))}${uTxt} (${goalWord} ${numTxt(cfg.target)} ±${numTxt(cfg.tol)})`;
                 const ok = Math.abs(res - cfg.target) <= cfg.tol;
-                resultEl.className = "lab-result " + (ok ? "ok" : "bad");
-                resultEl._ok = ok;
+                // Пока ученик не провёл опыт, приборы не показали измерение — зачёт не идёт
+                const measured = !window.PQWorkbench || window.PQWorkbench._ran;
+                resultEl.className = "lab-result " + (ok && measured ? "ok" : "bad");
+                resultEl._ok = ok && measured;
                 resultEl._val = res;
             };
-            cfg.sliders.forEach(s => {
-                document.getElementById("lab-" + s.id)?.addEventListener("input", update);
-            });
-            update();
+            if (window.PQWorkbench) {
+                window.PQWorkbench.attach(content, cfg, values, update);
+                cfg.sliders.forEach(s => {
+                    document.getElementById("lab-" + s.id)?.addEventListener("input", update);
+                });
+                update();
+            } else {
+                // страховка: если модуль почему-то не подключён, старые ползунки
+                content.innerHTML = cfg.sliders.map(s => `
+                    <div class="lab-slider-row">
+                        <label>${pick(s, "label")}</label>
+                        <input type="number" id="lab-${s.id}" min="${s.min}" max="${s.max}" step="${s.step}" value="${(values && values[s.id] != null) ? values[s.id] : s.val}">
+                        <span class="lab-value" id="lab-v-${s.id}">${numTxt((values && values[s.id] != null) ? values[s.id] : s.val)}</span>
+                    </div>
+                `).join("");
+                cfg.sliders.forEach(s => {
+                    document.getElementById("lab-" + s.id)?.addEventListener("input", update);
+                });
+                resultEl.style.display = "";
+                update();
+            }
         } else if (cfg.type === "circuit" && circuitEl && resultEl) {
             const items = [
                 { i: "🔋", name: L === "kk" ? "Батарея" : L === "en" ? "Battery" : "Батарея" },
@@ -173,6 +184,7 @@ const LabGames = {
         overlay.classList.add("active");
     },
     hide(success) {
+        if (window.PQWorkbench) window.PQWorkbench.reset();
         const overlay = document.getElementById("lab-overlay");
         if (overlay) overlay.classList.remove("active");
         if (this.activeGame) {

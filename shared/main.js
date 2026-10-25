@@ -52,23 +52,25 @@ function setStoryModalContent(kicker, title, html, mode = "journal") {
     const target = layout ? layout.lore : document.getElementById("story-content");
     target.innerHTML = html || "";
     if (layout) {
-        const showComic = mode === "journal";
-        layout.zone.style.display = showComic ? "block" : "none";
-        if (!showComic) layout.zone.innerHTML = "";
-        document.querySelector(".story-modal-content")?.classList.toggle("story-has-comic", showComic);
+        layout.zone.style.display = "none";
+        layout.zone.innerHTML = "";
+        document.querySelector(".story-modal-content")?.classList.remove("story-has-comic");
     }
     const continueButton = document.getElementById("btn-story-continue");
     continueButton.style.display = mode === "briefing" ? "inline-flex" : "none";
     document.getElementById("story-modal").classList.add("active");
     if (layout && mode === "journal") {
-        if (typeof TrilogyDiary !== "undefined" && TrilogyDiary.renderInto) {
-            try { TrilogyDiary.renderInto(layout.zone); } catch (e) { console.error(e); }
+        // Комикс больше не живёт отдельной секцией: он встроен в каждую главу
+        // лора (см. showStoryJournal → TrilogyDiary.inlineHtml).
+        if (typeof TrilogyDiary !== "undefined" && TrilogyDiary.bindInline) {
+            try { TrilogyDiary.bindInline(target); } catch (e) { console.error(e); }
         }
-        // Быстрый переход от героев к комиксу — иначе он в самом низу окна
+        // Кнопка «Комикс по главам» у героев ведёт к комиксу первой главы
         const jump = target.querySelector('[data-pq-jump="comic"]');
         if (jump) jump.onclick = (e) => {
             e.preventDefault();
-            try { layout.zone.scrollIntoView({ block: "start", behavior: "smooth" }); } catch (err) {}
+            const first = target.querySelector(".pq-td-inline");
+            try { (first || target).scrollIntoView({ block: "start", behavior: "smooth" }); } catch (err) {}
         };
     }
 }
@@ -135,6 +137,11 @@ function showStoryJournal() {
                 const unlocked = revelations.filter(item => completed >= item.required);
                 const locked = revelations.filter(item => completed < item.required);
                 const story = completed > 0 || current ? (chapter.narrative || chapter.intro) : chapter.intro;
+                // Комикс этой главы идёт сразу под её лором — одной лентой, без
+                // переключателя классов: ученик видит только свой класс.
+                const comicBlock = (typeof TrilogyDiary !== "undefined" && TrilogyDiary.inlineHtml)
+                    ? (() => { try { return TrilogyDiary.inlineHtml(chapter.from, chapter.to); } catch (e) { return ""; } })()
+                    : "";
                 const evidence = revelations.length
                     ? `<div class="story-revelations"><div class="story-story-label">${I18n.t("storyEvidenceTitle")}</div>${unlocked.map(item => `<div class="story-revelation"><h4>🔓 ${escapeHtml(storyText(item.title))}</h4><p>${escapeHtml(storyText(item.text))}</p></div>`).join("")}${locked.map(item => `<div class="story-locked-revelation">🔒 ${I18n.t("storyLockedDetail", item.required - completed)}</div>`).join("")}</div>`
                     : `<div class="story-revelations"><div class="story-locked-revelation">🔒 ${I18n.t("storyNoEvidence")}</div></div>`;
@@ -147,6 +154,7 @@ function showStoryJournal() {
                     <div class="story-story-label">${I18n.t("storyChapterStory")}</div>
                     <div class="story-setting"><strong>${I18n.t("storySettingLabel")}:</strong> ${escapeHtml(storyText(chapter.setting))}</div>
                     <div class="story-chapter-story">${storyParagraphsHtml(story)}</div>
+                    ${comicBlock}
                     <div class="story-goal"><strong>${I18n.t("storyMissionGoal")}:</strong> ${escapeHtml(storyText(chapter.goal))}</div>
                     ${evidence}
                     ${epilogue}
