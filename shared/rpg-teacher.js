@@ -756,7 +756,7 @@ const TeacherHQ = {
        кабинет дважды при переходе со старых кодов R1 на новые R2. */
     resultSignature(entry) {
         return [
-            String(entry.studentCode || "").toUpperCase(),
+            Storage.canonicalStudentCode(entry.studentCode || ""),
             entry.nameHash || hqNameHash(entry.name || ""),
             String(entry.levelToken || this.levelToken(entry.levelId)),
             entry.victory ? "V" : "D",
@@ -837,7 +837,7 @@ const TeacherHQ = {
         const levelId = typeof parseLevelRef === "function" ? parseLevelRef(rawLevel, record.grade || Storage.grade()).canonical : rawLevel;
         const nested = player || {};
         const entry = {
-            studentCode: String(record.playerCode || nested.code || nested.playerCode || "").toUpperCase(),
+            studentCode: Storage.canonicalStudentCode(record.playerCode || nested.code || nested.playerCode || ""),
             // The name stored with that run is stable even if the profile is renamed later.
             nameHash: hqNameHash(record.name || nested.name || ""),
             levelToken: this.levelToken(levelId),
@@ -934,13 +934,15 @@ const TeacherHQ = {
     },
 
     resultsForStudent(student, cls, results) {
-        const code = String(student.studentCode || student.playerId || "").toUpperCase();
+        const code = Storage.canonicalStudentCode(student.studentCode || student.playerId || "");
         const hash = hqNameHash(student.name);
+        // Коды старых версий (P7X4K) и новые (7X4K) считаются одним учеником.
+        const sameCode = row => !!code && !!row && Storage.sameStudentCode(row, code);
         return (results || this.allResults()).filter(r => {
-            if (code && r.studentCode && String(r.studentCode).toUpperCase() === code) return true;
+            if (code && r.studentCode && sameCode(r.studentCode)) return true;
             if (r.nameHash && r.nameHash === hash) {
                 // Если в коде есть чужой код ученика — это другой человек.
-                if (code && r.studentCode && String(r.studentCode).toUpperCase() !== code) return false;
+                if (code && r.studentCode && !sameCode(r.studentCode)) return false;
                 return true;
             }
             return false;
@@ -948,21 +950,22 @@ const TeacherHQ = {
     },
 
     studentKey(cls, student) {
-        const code = String(student.studentCode || student.playerId || "").toUpperCase();
+        const code = Storage.canonicalStudentCode(student.studentCode || student.playerId || "");
         return String(cls.id) + "|" + (code || "n:" + hqNameHash(student.name));
     },
 
     assignmentsFor(cls, student) {
         const rows = Storage.getAssignments() || [];
         const name = hqNorm(student.name);
-        const code = String(student.studentCode || student.playerId || "").toUpperCase();
+        const code = Storage.canonicalStudentCode(student.studentCode || student.playerId || "");
+        const sameCode = row => !!code && !!row && Storage.sameStudentCode(row, code);
         return rows.filter(a => {
             if (!a) return false;
             if (a.classId) return a.classId === cls.id && (
-                (code && String(a.studentCode || a.playerId || "").toUpperCase() === code)
+                sameCode(a.studentCode || a.playerId || "")
                 || (!!name && hqNorm(a.studentName) === name)
             );
-            return (code && String(a.studentCode || a.playerId || "").toUpperCase() === code)
+            return sameCode(a.studentCode || a.playerId || "")
                 || (!!name && hqNorm(a.studentName) === name);
         });
     },
@@ -1396,7 +1399,7 @@ const TeacherHQ = {
                 <details${open}>
                     <summary>📥 ${escapeHtml(rpgT("hqImportTitle"))}</summary>
                     <p class="hq-hint">${escapeHtml(rpgT("hqImportHint"))}</p>
-                    <textarea id="hq-codes" rows="4" spellcheck="false" placeholder="R1-P1234-7K2QX9-L31-V-9-10-1840-261018-4M8T"></textarea>
+                    <textarea id="hq-codes" rows="4" spellcheck="false" placeholder="R2-K7M2-7K2QX9-L31-V-9-10-1840-261018-G8H2Q"></textarea>
                     <div class="hq-bridge-actions">
                         <button type="button" class="btn btn-primary" data-hq-action="import-codes">${escapeHtml(rpgT("hqImportBtn"))}</button>
                         <label class="btn btn-secondary hq-file-btn" for="hq-report-file">${escapeHtml(rpgT("hqImportFile"))}</label>
@@ -2058,7 +2061,7 @@ const TeacherHQ = {
             ? parseLevelRef(summary.levelId, (run && run.grade) || Storage.grade()).canonical
             : summary.levelId;
         const entry = {
-            studentCode: (run && run.playerCode) || settings.playerCode || "",
+            studentCode: Storage.canonicalStudentCode((run && run.playerCode) || settings.playerCode || ""),
             name: (run && run.name) || settings.playerName || "",
             levelId: canonicalLevelId,
             levelToken: this.levelToken(canonicalLevelId),

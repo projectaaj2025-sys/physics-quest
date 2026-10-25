@@ -92,7 +92,7 @@
 
     function loginUrl(student, cls) {
         const grade = Number(cls.grade) || Number(window.CURRENT_GRADE) || 8;
-        const code = encodeURIComponent(student.studentCode || student.playerId || "");
+        const code = encodeURIComponent(Storage.canonicalStudentCode(student.studentCode || student.playerId || ""));
         const name = encodeURIComponent(student.name || "");
         return `${baseUrl()}play.html?grade=${grade}&code=${code}${name ? "&name=" + name : ""}`;
     }
@@ -239,7 +239,7 @@
         cardHtml(student, cls) {
             const grade = Number(cls.grade) || Number(window.CURRENT_GRADE) || 8;
             const name = student.name || t("nameMissing");
-            const code = String(student.studentCode || student.playerId || "—").toUpperCase();
+            const code = Storage.canonicalStudentCode(student.studentCode || student.playerId || "") || "—";
             return `
                 <article class="pq-card">
                     <div class="pq-card-top">
