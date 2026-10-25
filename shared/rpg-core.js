@@ -73,16 +73,19 @@ const RPG = {
                 playedLevels: [],
                 clearedLevels: []
             },
-            daily: {
-                date: "",
+            // Еженедельные задания: три случайных квеста на неделю, обновление в понедельник.
+            weekly: {
+                week: "",
                 items: [],
                 counters: {}
             },
-            // Серия дней: сколько дней подряд ученик заходил и играл.
+            // Дни в игре: сколько всего дней ученик играл (подряд не обязательно).
+            // count — все дни, run — текущая серия подряд, best — рекорд подряд.
             // days — последние отметки (YYYY-MM-DD), нужны для полоски недели.
             streak: {
                 count: 0,
                 best: 0,
+                run: 0,
                 last: "",
                 days: []
             },
@@ -135,11 +138,17 @@ const RPG = {
         state.achievements = Object.assign({}, raw.achievements || {});
         state.missionRecords = Object.assign({}, raw.missionRecords || {});
         state.lastMission = Object.assign({}, raw.lastMission || {});
-        state.daily = Object.assign({}, def.daily, raw.daily || {});
+        // Задания теперь недельные. Раньше поле называлось daily — переносим прогресс.
+        const rawWeekly = raw.weekly || raw.daily || {};
+        state.weekly = Object.assign({}, def.weekly, rawWeekly);
+        state.weekly.items = Array.isArray(rawWeekly.items) ? rawWeekly.items.slice() : [];
+        state.weekly.counters = Object.assign({}, rawWeekly.counters || {});
+        delete state.daily;
         state.streak = Object.assign({}, def.streak, raw.streak || {});
+        state.streak.count = Math.max(0, Number(state.streak.count) || 0);
+        state.streak.best = Math.max(0, Number(state.streak.best) || 0);
+        state.streak.run = Math.max(0, Number(state.streak.run) || 0);
         state.streak.days = Array.isArray(raw.streak && raw.streak.days) ? raw.streak.days.slice(-30) : [];
-        state.daily.items = Array.isArray(raw.daily && raw.daily.items) ? raw.daily.items.slice() : [];
-        state.daily.counters = Object.assign({}, (raw.daily && raw.daily.counters) || {});
         state.review = Object.assign({}, def.review, raw.review || {});
         state.review.queue = Array.isArray(raw.review && raw.review.queue) ? raw.review.queue.slice(0, 60) : [];
         state.story = Object.assign({}, def.story, raw.story || {});
@@ -186,19 +195,39 @@ const RPG = {
         return { asteroids: 0, correct: 0, missions: 0, orbs: 0, boss: 0, bestStreak: 0, score: 0 };
     },
 
-    ensureDaily() {
+    /* Ключ недели — дата понедельника (YYYY-MM-DD). */
+    weekKey(ts) {
+        const d = new Date(Number.isFinite(ts) ? ts : Date.now());
+        const dow = (d.getDay() + 6) % 7; // 0 — понедельник
+        const monday = new Date(d.getFullYear(), d.getMonth(), d.getDate() - dow);
+        return this.streakDayKey(monday.getTime());
+    },
+
+    /* Сколько дней осталось до смены набора (обновление в понедельник). */
+    weekLeft() {
+        const dow = (new Date().getDay() + 6) % 7;
+        return 7 - dow;
+    },
+
+    /* Три случайных задания на неделю. Набор фиксируется в состоянии до понедельника. */
+    ensureWeekly() {
         if (!this.state) return;
-        const today = this.todayKey();
-        if (this.state.daily.date === today && this.state.daily.items.length) return;
-        const dayNumber = Math.floor(Date.now() / 86400000);
+        const week = this.weekKey();
+        const cur = this.state.weekly = Object.assign({ week: "", items: [], counters: {} }, this.state.weekly || {});
+        if (cur.week === week && Array.isArray(cur.items) && cur.items.length) return;
+        const pool = QUEST_POOL.slice();
         const items = [];
-        for (let i = 0; i < 3; i++) {
-            const q = QUEST_POOL[(dayNumber * 3 + i) % QUEST_POOL.length];
-            if (q && !items.some(item => item.id === q.id)) items.push({ id: q.id, claimed: false });
+        while (items.length < 3 && pool.length) {
+            const idx = Math.floor(Math.random() * pool.length);
+            const q = pool.splice(idx, 1)[0];
+            items.push({ id: q.id, claimed: false });
         }
-        this.state.daily = { date: today, items, counters: this.emptyCounters() };
+        this.state.weekly = { week, items, counters: this.emptyCounters() };
         this.saveSoon();
     },
+
+    /* Старое имя — оставлено, чтобы не сломать вызовы из других модулей. */
+    ensureDaily() { this.ensureWeekly(); },
 
     questDef(id) {
         return QUEST_POOL.find(q => q.id === id) || null;
@@ -207,13 +236,13 @@ const RPG = {
     questProgress(item) {
         const def = this.questDef(item && item.id);
         if (!def) return 0;
-        const counters = (this.state.daily && this.state.daily.counters) || {};
+        const counters = (this.state.weekly && this.state.weekly.counters) || {};
         return Math.max(0, Number(counters[def.counter]) || 0);
     },
 
-    dailyTick(counter, amount, mode = "add") {
-        this.ensureDaily();
-        const counters = this.state.daily.counters;
+    weeklyTick(counter, amount, mode = "add") {
+        this.ensureWeekly();
+        const counters = this.state.weekly.counters;
         const value = Number(amount) || 0;
         if (mode === "max") counters[counter] = Math.max(Number(counters[counter]) || 0, value);
         else counters[counter] = (Number(counters[counter]) || 0) + value;
@@ -234,15 +263,14 @@ const RPG = {
     },
 
     streakState() {
-        if (!this.state.streak) this.state.streak = { count: 0, best: 0, last: "", days: [] };
+        if (!this.state.streak) this.state.streak = { count: 0, best: 0, run: 0, last: "", days: [] };
         const st = this.state.streak;
         const today = this.streakDayKey();
-        const yesterday = this.streakDayKey(Date.now() - this.dayMs());
-        // Серия «жива», если отмечались сегодня или вчера; иначе она уже прервалась.
-        const alive = st.last === today || st.last === yesterday;
+        // Считаются все дни, когда ученик играл: подряд идти не обязательно.
         return {
-            count: alive ? Math.max(0, Number(st.count) || 0) : 0,
+            count: Math.max(0, Number(st.count) || 0),
             best: Math.max(0, Number(st.best) || 0),
+            run: Math.max(0, Number(st.run) || 0),
             last: st.last || "",
             today: st.last === today,
             days: Array.isArray(st.days) ? st.days.slice(-30) : []
@@ -263,28 +291,28 @@ const RPG = {
     /* Отметка «сегодня играл». Возвращает { count, bonus, continued, isNew }. */
     touchStreak(opts = {}) {
         if (!this.state) return { count: 0, bonus: 0, continued: false, isNew: false };
-        const st = this.state.streak = Object.assign({ count: 0, best: 0, last: "", days: [] }, this.state.streak || {});
+        const st = this.state.streak = Object.assign({ count: 0, best: 0, run: 0, last: "", days: [] }, this.state.streak || {});
         const today = this.streakDayKey();
-        const yesterday = this.streakDayKey(Date.now() - this.dayMs());
         if (st.last === today) {
             const info = this.streakState();
             return { count: info.count, bonus: 0, continued: false, isNew: false };
         }
+        const yesterday = this.streakDayKey(Date.now() - this.dayMs());
         const continued = st.last === yesterday;
-        st.count = continued ? Math.min(3650, (Number(st.count) || 0) + 1) : 1;
-        st.best = Math.max(Number(st.best) || 0, st.count);
+        // count — все дни в игре, run — сколько из них идут подряд прямо сейчас.
+        st.count = Math.min(36500, (Number(st.count) || 0) + 1);
+        st.run = continued ? Math.min(3650, (Number(st.run) || 0) + 1) : 1;
+        st.best = Math.max(Number(st.best) || 0, st.run);
         st.last = today;
         const days = Array.isArray(st.days) ? st.days.filter(d => d !== today) : [];
         days.push(today);
         st.days = days.slice(-30);
 
-        // Бонус за регулярность: со второго дня подряд, 10 XP за день, максимум 50 XP.
-        const bonus = st.count >= 2 ? Math.min(50, 10 * (st.count - 1)) : 0;
-        if (bonus > 0) {
-            try { this.addXP(bonus, { silent: true, toast: false, noOverlay: true }); } catch (e) {}
-        }
+        // Бонус за новый день в игре: +10 XP, плюс +5 XP, если играешь второй день подряд.
+        const bonus = 10 + (continued ? 5 : 0);
+        try { this.addXP(bonus, { silent: true, toast: false, noOverlay: true }); } catch (e) {}
         this.saveSoon();
-        if (opts.toast !== false && bonus > 0) {
+        if (opts.toast !== false) {
             try { this.toast("🔥", rpgT("streakToast", st.count, bonus), rpgT(this.streakBadgeKey(st.count)), "tier-gold"); } catch (e) {}
         }
         if (opts.render !== false) {
@@ -313,8 +341,8 @@ const RPG = {
     },
 
     claimQuest(id) {
-        this.ensureDaily();
-        const item = this.state.daily.items.find(q => q.id === id);
+        this.ensureWeekly();
+        const item = this.state.weekly.items.find(q => q.id === id);
         const def = this.questDef(id);
         if (!item || !def || item.claimed) return false;
         if (this.questProgress(item) < def.target) return false;
@@ -608,7 +636,7 @@ const RPG = {
     },
 
     beginRun(levelId, missionId) {
-        this.ensureDaily();
+        this.ensureWeekly();
         if (this.run && this.run.blitzInterval) {
             clearInterval(this.run.blitzInterval);
         }
@@ -765,9 +793,9 @@ const RPG = {
         run.streak += 1;
         run.bestStreak = Math.max(run.bestStreak, run.streak);
         this.state.stats.bestStreak = Math.max(Number(this.state.stats.bestStreak) || 0, run.streak);
-        this.dailyTick("bestStreak", run.streak, "max");
+        this.weeklyTick("bestStreak", run.streak, "max");
         this.state.stats.questionsCorrect = (this.state.stats.questionsCorrect || 0) + 1;
-        this.dailyTick("correct", 1);
+        this.weeklyTick("correct", 1);
 
         const difficulty = Number(task && task.difficulty) || 1;
         const base = 50 + difficulty * 30;
@@ -816,7 +844,7 @@ const RPG = {
         game.score += 200;
         game.shield = Math.min(game.levelConfig.shieldCapacity, game.shield + 40);
         this.state.stats.bossKills = (this.state.stats.bossKills || 0) + 1;
-        this.dailyTick("boss", 1);
+        this.weeklyTick("boss", 1);
         const bx = game.width / 2;
         const by = Math.min(game.width < 768 ? 252 : 120, game.height * (game.width < 768 ? 0.34 : 0.2));
         for (let i = 0; i < 4; i++) {
@@ -949,14 +977,14 @@ const RPG = {
         if (victory && mission.id === "blitz") st.blitzWins = (st.blitzWins || 0) + 1;
         if (victory && mission.id === "survival") st.survivalWins = (st.survivalWins || 0) + 1;
 
-        // Серия дней: отметка «сегодня играл» + бонус за регулярность.
+        // Дни в игре: отметка «сегодня играл» + бонус за новый день.
         let streakInfo = { count: 0, bonus: 0 };
         try { streakInfo = this.touchStreak({ toast: false, render: false }); } catch (e) { console.warn("RPG streak", e); }
 
         // Дневные задания
-        this.dailyTick("missions", 1);
-        this.dailyTick("score", Math.max(0, Math.round(game.score)));
-        this.dailyTick("bestStreak", run.bestStreak, "max");
+        this.weeklyTick("missions", 1);
+        this.weeklyTick("score", Math.max(0, Math.round(game.score)));
+        this.weeklyTick("bestStreak", run.bestStreak, "max");
 
         // Рекорд миссии
         const recordKey = String(run.levelId) + "|" + mission.id;
@@ -1155,7 +1183,7 @@ const RPG = {
                 if (R.run && R.run.active && this.running) {
                     R.run.asteroids += 1;
                     R.state.stats.totalAsteroids = (R.state.stats.totalAsteroids || 0) + 1;
-                    R.dailyTick("asteroids", 1);
+                    R.weeklyTick("asteroids", 1);
                     const extra = Math.round(20 * (R.scoreBonusMultiplier() + Math.min(R.run.streak, 5) * 0.04));
                     if (extra > 0) this.score += extra;
                     R.addXP(1, { live: true, toast: false });
@@ -1237,7 +1265,7 @@ const RPG = {
                 if (diff > 0 && run && run.active) {
                     run.orbs += diff;
                     R.state.stats.totalOrbs = (R.state.stats.totalOrbs || 0) + diff;
-                    R.dailyTick("orbs", diff);
+                    R.weeklyTick("orbs", diff);
                     if (R.hasArtifact("a_compass")) {
                         this.shield = Math.min(this.levelConfig.shieldCapacity, this.shield + 5 * diff);
                     }
@@ -1397,7 +1425,7 @@ const RPG = {
     /* ---------------- СТАРТ ---------------- */
     boot() {
         this.state = this.load();
-        this.ensureDaily();
+        this.ensureWeekly();
         this.initDOM();
         this.bindUI();
         this.patchGame();
