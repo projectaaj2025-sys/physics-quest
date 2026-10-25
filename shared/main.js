@@ -1030,7 +1030,12 @@ function downloadConspektPdf() {
 }
 
 function closeTheory() {
-    document.getElementById("theory-modal").classList.remove("active");
+    const modal = document.getElementById("theory-modal");
+    if (modal) {
+        modal.classList.remove("active");
+        // теорию могли открыть поверх «техобслуживания» — возвращаем обычный слой
+        modal.style.zIndex = "";
+    }
     pendingLevelId = null;
 }
 

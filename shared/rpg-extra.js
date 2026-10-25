@@ -27,6 +27,158 @@ function rpgTopicLabel(topic) {
     return String(topic || "").replace(/^lesson:/, "§");
 }
 
+
+/* ---------------- ПОХОЖАЯ ЗАДАЧА ДЛЯ ЗАКРЕПЛЕНИЯ ----------------
+   Берём расчётное задание, подставляем другие «красивые» числа и
+   пересчитываем ответ тем же движком, что разбирает формулы
+   (PQProblemSolver). Если движок не уверен — блока просто не будет. */
+function rpgNiceNumber(value) {
+    const v = Number(value);
+    if (!Number.isFinite(v) || v === 0) return NaN;
+    const factors = [1.5, 2, 2.5, 3, 0.5, 0.75, 1.2];
+    const f = factors[Math.floor(Math.random() * factors.length)];
+    const nv = v * f;
+    const abs = Math.abs(nv);
+    if (abs >= 1000) return Math.round(nv / 10) * 10;
+    if (abs >= 100) return Math.round(nv / 5) * 5;
+    if (abs >= 10) return Math.round(nv);
+    if (abs >= 1) return Math.round(nv * 10) / 10;
+    return Math.round(nv * 100) / 100;
+}
+
+function rpgVariantOf(task) {
+    if (!task || task.type !== "numeric") return null;
+    if (typeof PQProblemSolver === "undefined" || typeof PQProblemSolver.analyze !== "function") return null;
+    if (!Number.isFinite(Number(task.correctAnswer))) return null;
+    const text = rpgPlain(I18n.getLocalized(task, "question"));
+    let givens = [];
+    try { givens = PQProblemSolver.parseGivens(text, task) || []; } catch (e) { return null; }
+    if (!givens.length) return null;
+
+    let base = null;
+    try { base = PQProblemSolver.analyze(task); } catch (e) { return null; }
+    if (!base || !Number.isFinite(base.numeric) || !base.numeric) return null;
+    // правим масштаб ответа (Дж → кДж и т.п.): движок считает в СИ
+    const k = Number(task.correctAnswer) / base.numeric;
+    if (!Number.isFinite(k) || k <= 0) return null;
+
+    let out = text;
+    let replaced = 0;
+    const used = new Set();
+    for (const g of givens) {
+        if (replaced >= 2) break;
+        const raw = String(g.rawText || g.value || "");
+        if (!raw || used.has(raw)) continue;
+        const nv = rpgNiceNumber(g.value);
+        if (!Number.isFinite(nv)) continue;
+        const idx = out.indexOf(raw);
+        if (idx < 0) continue;
+        out = out.slice(0, idx) + String(nv) + out.slice(idx + raw.length);
+        used.add(raw);
+        replaced += 1;
+    }
+    if (!replaced) return null;
+
+    const variant = JSON.parse(JSON.stringify(task));
+    variant.id = String(task.id || "task") + "-v";
+    variant.question = {};
+    ["ru", "en", "kk"].forEach((l) => { variant.question[l] = out; });
+    delete variant.correctAnswer;
+    delete variant.tolerance;
+
+    let data = null;
+    try { data = PQProblemSolver.analyze(variant); } catch (e) { return null; }
+    if (!data || !Number.isFinite(data.numeric) || data.numeric <= 0) return null;
+    if (data.unknown && data.unknown.length) return null;
+
+    const answer = Math.round(data.numeric * k * 1000) / 1000;
+    if (!Number.isFinite(answer) || Math.abs(answer) < 1e-9) return null;
+    // защита от абсурда: ответ не должен разойтись с исходным в сотни раз
+    const ratio = Math.abs(answer) / Math.abs(Number(task.correctAnswer) || 1);
+    if (ratio < 0.02 || ratio > 50) return null;
+
+    variant.correctAnswer = answer;
+    variant.tolerance = Math.max(Number(task.tolerance) || 0, Math.abs(answer) * 0.02, 0.01);
+    return variant;
+}
+
+/* ---------------- ТЕОРИЯ И РАЗБОР ДЛЯ ТЕХОБСЛУЖИВАНИЯ ----------------
+   В «техобслуживании» ученик разбирает свою ошибку, поэтому после ответа
+   ему мало верного числа: нужны правило, формула и шаги решения. Теорию
+   берём из параграфа (LEVEL_THEORY), шаги — из того же движка, что
+   проверяет расчёт (PQProblemSolver). */
+function rpgTheoryKey(topic) {
+    // У техники безопасности нет параграфа: её теория лежит под ключом «bonus».
+    const raw = String(topic || "");
+    try {
+        if (typeof LEVEL_THEORY !== "undefined") {
+            if (LEVEL_THEORY[raw]) return raw;
+            if (LEVEL_THEORY.bonus && /^(safety|bonus)$/i.test(raw)) return "bonus";
+            if (LEVEL_THEORY.custom && /^custom/i.test(raw)) return "custom";
+        }
+    } catch (e) {}
+    return raw;
+}
+
+function rpgTheoryPack(topic) {
+    const lang = (typeof I18n !== "undefined" && I18n.currentLang) || "ru";
+    const empty = { formulas: [], bullets: [] };
+    let raw = "";
+    try {
+        if (typeof LEVEL_THEORY === "undefined" || !topic) return empty;
+        const entry = LEVEL_THEORY[rpgTheoryKey(topic)];
+        if (!entry) return empty;
+        raw = entry[lang] || entry.ru || entry.en || "";
+    } catch (e) { return empty; }
+    const formulas = [];
+    const bullets = [];
+    String(raw).split("\n").forEach((line) => {
+        const text = line.trim();
+        if (text.indexOf("> ") === 0) formulas.push(text.slice(2).trim());
+        else if (text.indexOf("• ") === 0) bullets.push(text.slice(2).trim());
+    });
+    return { formulas: formulas.slice(0, 2), bullets: bullets.slice(0, 2) };
+}
+
+function rpgTheoryLevelId(topic) {
+    // Параграф "p2" — это не id уровня, поэтому ищем первый уровень с этим параграфом.
+    if (!topic || typeof theoryKeyFor !== "function") return null;
+    const key = rpgTheoryKey(topic);
+    for (let id = 1; id <= 80; id++) {
+        try {
+            if (theoryKeyFor(id) === key) return id;
+        } catch (e) { return null; }
+    }
+    return null;
+}
+
+function rpgSolutionSteps(task) {
+    if (!task || task.type !== "numeric") return [];
+    if (typeof PQProblemSolver === "undefined" || typeof PQProblemSolver.analyze !== "function") return [];
+    let data = null;
+    try { data = PQProblemSolver.analyze(task); } catch (e) { return []; }
+    if (!data) return [];
+    const steps = [];
+    if (data.givens && data.givens.length) {
+        steps.push({
+            label: "maintTheoryGiven",
+            text: data.givens.map((g) => `${g.label} = ${g.rawText} ${g.rawUnit}`.replace(/\s+$/, "")).join(", ")
+        });
+    }
+    if (data.formula) steps.push({ label: "maintTheoryFormula", text: data.formula });
+    if (data.substituted) {
+        const lhs = data.parts && data.parts.lhs ? data.parts.lhs + " = " : "";
+        steps.push({ label: "maintTheorySub", text: lhs + data.substituted });
+    }
+    const answer = Number(task.correctAnswer);
+    if (Number.isFinite(answer)) {
+        // ответ подписываем той же величиной, что и в формуле: «T = 293», а не просто число
+        const lhs = data.parts && data.parts.lhs ? data.parts.lhs + " = " : "";
+        steps.push({ label: "maintTheoryAnswer", text: `${lhs}${answer} ${task.unit || ""}`.replace(/\s+$/, "") });
+    }
+    return steps;
+}
+
 function rpgFindTask(taskId) {
     try {
         return Teacher.getAllTasks().find(t => t.id === taskId) || null;
@@ -539,6 +691,14 @@ Object.assign(RPG, {
         const item = st.items[st.idx].item;
         const progress = st.items.map((_, i) =>
             `<i class="${i < st.idx ? "done" : i === st.idx ? "now" : ""}"></i>`).join("");
+        // Подсказку открывает сам ученик: она не выдаёт ответ, а напоминает правило.
+        const hintText = rpgPlain(I18n.getLocalized(task, "hint")) || rpgPlain(I18n.getLocalized(task, "formula"));
+        const hintHtml = hintText
+            ? `<div class="rpg-maint-tools">
+                   <button type="button" class="rpg-maint-hint-btn" data-maint="hint">💡 ${escapeHtml(rpgT("maintHintBtn"))}</button>
+               </div>
+               <div class="rpg-maint-hint" id="rpg-maint-hint" hidden>${formatFormula(hintText)}</div>`
+            : "";
         let inputHtml = "";
         if (task.type === "fill-blank" || task.type === "short-answer" || task.type === "numeric") {
             const numeric = task.type === "numeric";
@@ -560,6 +720,7 @@ Object.assign(RPG, {
             <div class="rpg-maint-progress">${progress}</div>
             <div class="rpg-maint-topic">${escapeHtml(rpgTopicLabel(task.topic))}</div>
             <div class="rpg-maint-question">${formatFormula(rpgPlain(I18n.getLocalized(task, "question")))}</div>
+            ${hintHtml}
             ${inputHtml}
             <div class="rpg-maint-options" id="rpg-maint-options">${this.maintOptionsHtml(task)}</div>
             <div class="rpg-maint-feedback" id="rpg-maint-feedback"></div>
@@ -572,6 +733,113 @@ Object.assign(RPG, {
             input.focus();
             input.addEventListener("keydown", e => { if (e.key === "Enter") this.answerMaintenance(input.value); });
         }
+    },
+
+    maintVariantHtml(task) {
+        return `
+            <div class="rpg-maint-variant">
+                <div class="rpg-maint-variant-head">🎯 ${escapeHtml(rpgT("maintVariantTitle"))}</div>
+                <div class="rpg-maint-variant-lead">${escapeHtml(rpgT("maintVariantLead"))}</div>
+                <div class="rpg-maint-variant-q">${formatFormula(rpgPlain(I18n.getLocalized(task, "question")))}</div>
+                <div class="rpg-maint-fill">
+                    <input type="text" id="rpg-maint-variant-input" autocomplete="off" inputmode="decimal"
+                        placeholder="${escapeHtml(rpgT("maintEnterNumber"))}" />
+                    <button type="button" class="btn btn-primary" data-maint="variant-check">${escapeHtml(rpgT("maintCheck"))}</button>
+                </div>
+                <div class="rpg-maint-variant-fb" id="rpg-maint-variant-fb"></div>
+            </div>`;
+    },
+
+    /* Теория и разбор: правило, формула, шаги решения и кнопка «открыть тему».
+       Показываем после ответа — вместе с ним ученик видит, откуда взялся ответ. */
+    maintTheoryHtml(task) {
+        const pack = rpgTheoryPack(task.topic);
+        const rule = rpgPlain(I18n.getLocalized(task, "formula")) || pack.formulas[0] || "";
+        const explanation = rpgPlain(I18n.getLocalized(task, "explanation"));
+        const steps = rpgSolutionSteps(task);
+        const levelId = rpgTheoryLevelId(task.topic);
+        const label = (key) => `<span class="rpg-maint-theory-label">${escapeHtml(rpgT(key))}</span>`;
+        let html = `<div class="rpg-maint-theory">
+            <div class="rpg-maint-theory-head">📖 ${escapeHtml(rpgT("maintTheoryTitle"))}</div>`;
+        if (rule) {
+            html += `<div class="rpg-maint-theory-rule">${label("maintTheoryRule")}
+                <div class="rpg-maint-theory-formula">${formatFormula(rule)}</div>
+            </div>`;
+        }
+        if (pack.bullets.length) {
+            html += `<ul class="rpg-maint-theory-list">${
+                pack.bullets.map((item) => `<li>${formatFormula(item)}</li>`).join("")}</ul>`;
+        }
+        if (steps.length) {
+            html += `<div class="rpg-maint-theory-steps">${label("maintTheorySteps")}
+                <ol>${steps.map((step) => `<li>
+                    <span class="rpg-maint-theory-step-label">${escapeHtml(rpgT(step.label))}</span>
+                    <span class="rpg-maint-theory-step-text">${formatFormula(step.text)}</span>
+                </li>`).join("")}</ol>
+            </div>`;
+        }
+        if (explanation) {
+            html += `<div class="rpg-maint-theory-why">${label("maintTheoryWhy")}
+                <div>${formatFormula(explanation)}</div>
+            </div>`;
+        }
+        if (levelId) {
+            html += `<button type="button" class="rpg-maint-theory-open" data-maint="open-theory"
+                data-level="${levelId}">${escapeHtml(rpgT("maintTheoryOpen"))}</button>`;
+        }
+        return html + `</div>`;
+    },
+
+    toggleMaintHint() {
+        const box = document.getElementById("rpg-maint-hint");
+        if (!box) return;
+        const willShow = box.hasAttribute("hidden");
+        if (willShow) box.removeAttribute("hidden");
+        else box.setAttribute("hidden", "");
+        const btn = document.querySelector('[data-maint="hint"]');
+        if (btn) btn.classList.toggle("on", willShow);
+    },
+
+    openMaintTheory() {
+        const btn = document.querySelector('[data-maint="open-theory"]');
+        const levelId = btn ? Number(btn.getAttribute("data-level")) : 0;
+        if (!levelId || typeof openTheory !== "function") return;
+        // модалка техобслуживания лежит выше обычных окон (z-index 4000),
+        // поэтому теорию поднимаем над ней; closeTheory() вернёт слой назад
+        const modal = document.getElementById("theory-modal");
+        if (modal) modal.style.zIndex = "4100";
+        try { openTheory(levelId); } catch (e) {}
+    },
+
+    checkMaintVariant() {
+        const st = this._maint;
+        if (!st || !st.variant || st.variant.done) return;
+        const input = document.getElementById("rpg-maint-variant-input");
+        const fb = document.getElementById("rpg-maint-variant-fb");
+        if (!input || !fb) return;
+        const value = Number(String(input.value).replace(",", "."));
+        if (!Number.isFinite(value)) {
+            input.classList.add("pq-invalid");
+            return;
+        }
+        const task = st.variant.task;
+        const tol = Math.max(Number(task.tolerance) || 0, Math.abs(task.correctAnswer) * 0.02, 0.01);
+        const ok = Math.abs(value - task.correctAnswer) <= tol;
+        st.variant.done = true;
+        input.disabled = true;
+        input.classList.remove("pq-invalid");
+        input.classList.add(ok ? "right" : "wrong");
+        const btn = document.querySelector('[data-maint="variant-check"]');
+        if (btn) btn.disabled = true;
+        fb.className = "rpg-maint-variant-fb show " + (ok ? "ok" : "bad");
+        let html = `<b>${escapeHtml(rpgT(ok ? "maintVariantOk" : "maintVariantNo"))}</b>`;
+        if (!ok) {
+            html += `<div class="rpg-maint-answer">${escapeHtml(rpgT("bbCorrect"))}: <b>${formatFormula(String(task.correctAnswer))}</b></div>`;
+        }
+        const formula = rpgPlain(I18n.getLocalized(task, "formula"));
+        if (formula) html += `<div class="rpg-maint-explain">${formatFormula(formula)}</div>`;
+        html += `<div class="rpg-maint-due">${escapeHtml(rpgT("maintVariantDone"))}</div>`;
+        fb.innerHTML = html;
     },
 
     maintOptionsHtml(task) {
@@ -719,10 +987,25 @@ Object.assign(RPG, {
                 html += `<div class="rpg-maint-answer">${escapeHtml(rpgT("bbCorrect"))}: ${formatFormula(rpgPlain(correctText))}</div>`;
             }
             if (gainLine) html += gainLine;
-            const explanation = rpgPlain(I18n.getLocalized(task, "explanation"));
-            if (explanation) html += `<div class="rpg-maint-explain">${formatFormula(explanation)}</div>`;
+            html += this.maintTheoryHtml(task);
+            // Расчётное задание закрепляем похожим, но с другими числами.
+            if (task.type === "numeric") {
+                const variant = rpgVariantOf(task);
+                if (variant) {
+                    st.variant = { task: variant, done: false };
+                    html += this.maintVariantHtml(variant);
+                }
+            }
             if (!isCorrect) html += `<div class="rpg-maint-due">🕘 ${escapeHtml(rpgT("maintDueTomorrow"))}</div>`;
             feedback.innerHTML = html;
+            const variantBtn = feedback.querySelector('[data-maint="variant-check"]');
+            if (variantBtn) variantBtn.addEventListener("click", () => this.checkMaintVariant());
+            const variantInput = document.getElementById("rpg-maint-variant-input");
+            if (variantInput) {
+                variantInput.addEventListener("keydown", (e) => {
+                    if (e.key === "Enter") this.checkMaintVariant();
+                });
+            }
         }
         const foot = document.getElementById("rpg-maint-foot");
         if (foot) foot.removeAttribute("hidden");
@@ -1655,6 +1938,8 @@ Object.assign(RPG, {
                 const what = maintBtn.getAttribute("data-maint");
                 if (what === "next") R.nextMaintenance();
                 else if (what === "close") R.closeMaintenance();
+                else if (what === "hint") R.toggleMaintHint();
+                else if (what === "open-theory") R.openMaintTheory();
                 else if (what === "again") { R._maint = null; R.startMaintenance(); }
                 else if (what === "check") {
                     const input = document.getElementById("rpg-maint-input");

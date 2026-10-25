@@ -99,11 +99,12 @@ html, body {
 }
 .btn:active { transform: translateY(0); }
 .btn-primary {
-    background: var(--gradient-primary);
+    background: linear-gradient(135deg, #00a2bd 0%, #1565c0 100%);
     color: #fff;
-    border-color: var(--primary);
-    text-shadow: 0 1px 2px rgba(0,0,0,0.2);
+    border-color: #0a86b8;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.25);
 }
+.btn-primary:disabled { opacity: .72; text-shadow: none; }
 .btn-primary:hover { box-shadow: var(--glow-strong), var(--shadow-strong); }
 .btn-secondary {
     background: var(--bg-card);
@@ -3772,7 +3773,6 @@ html[data-theme="dark"] .rpg-maint-pair select { background: rgba(255,255,255,.0
 .rpg-maint-foot { margin-top: 12px; display: flex; justify-content: flex-end; }
 .rpg-maint-foot[hidden] { display: none; }
 .rpg-maint-foot .btn { margin: 0; padding: 9px 16px; font-size: 12px; }
-.rpg-maint-hint { display: none; }
 .rpg-maint-done { text-align: center; padding: 6px 4px 2px; }
 .rpg-maint-done-icon { font-size: 44px; margin-bottom: 4px; }
 .rpg-maint-done h2 { margin: 4px 0 8px; color: var(--ink); font-size: 20px; }
@@ -4077,7 +4077,7 @@ html[data-theme="dark"] .rpg-maint-pair select { background: rgba(255,255,255,.0
     cursor: pointer;
 }
 .hq-period button + button { border-left: 1px solid var(--border-light); }
-.hq-period button.active { background: var(--primary); color: #fff; }
+.hq-period button.active { background: linear-gradient(135deg, #0093b3, #00708a); color: #fff; }
 
 .hq-section {
     background: #fff;
@@ -5588,3 +5588,183 @@ html[data-theme="dark"] .comic-panel { background-color: var(--bg-card); }
 html[data-theme="dark"] .diary-page-indicator { background-color: var(--bg-card); }
 html[data-theme="dark"] .diary-locked { background-color: var(--bg-card); }
 html[data-theme="dark"] .diary-bubble { background: var(--bg-card); }
+
+
+/* ============================================================
+   ТЁМНАЯ ТЕМА 2.0 — читаемость и «живые» поверхности.
+   Правим две вещи, на которые жаловались глазами:
+   1) тёмные переменные RPG-блока (иначе имя пилота тёмным по тёмному);
+   2) вместо плоской заливки — мягкие цветные пятна, как в светлой теме.
+   ============================================================ */
+html[data-theme="dark"] {
+    --rpg-ink: #eaf3ff;
+    --rpg-panel: #13223a;
+    --rpg-muted: #aec2dc;
+    --rpg-gold-soft: rgba(255, 179, 0, 0.18);
+    --rpg-bronze: #e5a86b;
+    --rpg-silver: #c3d2e4;
+    --rpg-platinum: #6fd3ff;
+}
+
+/* Фон страницы: те же цветные пятна, что и в светлой версии, только ночные */
+html[data-theme="dark"] body {
+    background-image:
+        radial-gradient(1200px 800px at 12% 0%, rgba(0, 150, 200, 0.22), transparent 62%),
+        radial-gradient(1000px 700px at 88% 6%, rgba(150, 50, 170, 0.18), transparent 64%),
+        radial-gradient(1100px 820px at 50% 110%, rgba(255, 120, 40, 0.12), transparent 60%),
+        linear-gradient(135deg, #0a1424 0%, #0e1c31 52%, #141026 100%);
+    background-attachment: fixed;
+}
+html[data-theme="dark"] .menu-bg { opacity: 0.9; filter: saturate(1.15); }
+
+/* Карточки: не плоская заливка, а подсветка по углам */
+html[data-theme="dark"] :is(.rpg-hub-content, .task-body, .level-story-top,
+    .modal-content, .rpg-stat, .rpg-mission-card, .teacher-panel, .tab-content,
+    .rpg-profile-card, .rpg-menu-card, .level-card) {
+    background-image:
+        radial-gradient(120% 150% at 0% 0%, rgba(0, 184, 212, 0.12), transparent 58%),
+        radial-gradient(120% 150% at 100% 100%, rgba(216, 27, 96, 0.09), transparent 60%);
+}
+
+/* Полоса пилота на экране уровней: была белой карточкой */
+html[data-theme="dark"] .rpg-levelbar {
+    background:
+        radial-gradient(120% 160% at 0% 0%, rgba(0, 184, 212, 0.16), transparent 60%),
+        linear-gradient(135deg, #16273f, #0f1d33);
+    border-color: rgba(110, 200, 255, 0.34);
+    box-shadow: 0 10px 26px rgba(0, 0, 0, 0.42);
+}
+html[data-theme="dark"] .rpg-lb-row .muted,
+html[data-theme="dark"] .rpg-menu-meta { color: #b9cbe4; }
+html[data-theme="dark"] .rpg-menu-kicker { color: #7fd7ff; }
+html[data-theme="dark"] .rpg-menu-title { color: #b9cbe4; }
+html[data-theme="dark"] .rpg-menu-name { color: #f2f8ff; }
+
+/* Заголовки секций на светлой «плашке» */
+html[data-theme="dark"] .level-section-title {
+    background: rgba(255, 255, 255, 0.06);
+    color: #8fe6ff;
+    border-top-color: rgba(110, 200, 255, 0.26);
+    border-bottom-color: rgba(110, 200, 255, 0.26);
+}
+html[data-theme="dark"] .level-theory-btn { color: #9fe8ff; border-color: rgba(110, 200, 255, 0.42); }
+html[data-theme="dark"] .rpg-mission-chip {
+    color: color-mix(in srgb, var(--chip-color, #008ba3) 45%, #ffffff);
+    background-color: color-mix(in srgb, var(--chip-color, #008ba3) 16%, transparent);
+}
+
+/* Активные вкладки и языки: белый текст на бирюзе читался плохо */
+.lang-btn.active,
+.level-screen-tab.active,
+.tab-btn.active {
+    background: linear-gradient(135deg, #0093b3, #00708a);
+    border-color: #00708a;
+    color: #ffffff;
+}
+.assignment-count { color: #3a2200; }
+.level-card.level-safety .level-badge,
+.level-card.level-custom .level-badge { color: #3a2200; }
+.level-card.level-chapter .level-badge {
+    background: linear-gradient(135deg, #0093b3, #00708a);
+    color: #ffffff;
+}
+
+/* Мелочи, которые «проваливались» в темноте */
+html[data-theme="dark"] .rpg-streak-badge span,
+html[data-theme="dark"] .rpg-streak-runbadge span { color: #c7d6ea; }
+html[data-theme="dark"] .rpg-streak-week span { color: #c7d6ea; }
+html[data-theme="dark"] .rpg-streak-best { color: #c7d6ea; }
+html[data-theme="dark"] .rpg-streak-top small { color: #c7d6ea; }
+
+/* ---------------- ТЕХОБСЛУЖИВАНИЕ: ЗАКРЕПЛЕНИЕ РАСЧЁТА ---------------- */
+.rpg-maint-variant {
+    margin-top: 12px;
+    padding: 12px 14px;
+    border-radius: 12px;
+    border: 1.5px dashed rgba(0, 184, 212, 0.45);
+    background: linear-gradient(135deg, rgba(0, 184, 212, 0.08), rgba(255, 255, 255, 0.94));
+    text-align: left;
+}
+.rpg-maint-variant-head { font-weight: 900; color: var(--ink); font-size: 13px; }
+.rpg-maint-variant-lead { font-size: 11.5px; color: var(--text-dim); margin-top: 2px; }
+.rpg-maint-variant-q { margin: 8px 0 10px; font-weight: 700; color: var(--ink); line-height: 1.45; }
+.rpg-maint-variant-fb { margin-top: 8px; font-size: 12px; line-height: 1.5; }
+.rpg-maint-variant-fb.ok b { color: var(--ok-ink); }
+.rpg-maint-variant-fb.bad b { color: var(--bad-ink); }
+html[data-theme="dark"] .rpg-maint-variant {
+    background: linear-gradient(135deg, rgba(0, 184, 212, 0.14), rgba(17, 33, 58, 0.92));
+    border-color: rgba(110, 200, 255, 0.42);
+}
+
+/* Техобслуживание в тёмной теме: подпись и вердикт были тёмными на тёмном */
+html[data-theme="dark"] .rpg-maint-kicker { color: #7fd7ff; }
+html[data-theme="dark"] .rpg-maint-feedback.ok b,
+html[data-theme="dark"] .rpg-maint-variant-fb.ok b { color: #86efac; }
+html[data-theme="dark"] .rpg-maint-feedback.bad b,
+html[data-theme="dark"] .rpg-maint-variant-fb.bad b { color: #ffb4ab; }
+
+/* ---------------- ТЕХОБСЛУЖИВАНИЕ: ТЕОРИЯ И РАЗБОР ----------------
+   После ответа ученик видит не только число, но и правило, формулу,
+   шаги решения и ссылку в теорию параграфа. */
+.rpg-maint-tools { margin: 6px 0 0; text-align: left; }
+.rpg-maint-hint-btn {
+    border: 1px dashed rgba(0, 136, 176, .45); background: rgba(0, 184, 212, .08);
+    color: #0a6f8c; border-radius: 999px; padding: 5px 12px; font: inherit; font-size: 11.5px;
+    font-weight: 800; cursor: pointer; line-height: 1.2;
+}
+.rpg-maint-hint-btn.on { background: rgba(0, 184, 212, .18); }
+.rpg-maint-hint {
+    margin-top: 6px; padding: 8px 11px; border-radius: 9px; text-align: left;
+    background: rgba(255, 193, 7, .12); border: 1px solid rgba(255, 152, 0, .35);
+    color: #7a4a00; font-size: 12px; line-height: 1.5;
+}
+.rpg-maint-hint[hidden] { display: none; }
+.rpg-maint-theory {
+    margin-top: 12px; padding: 12px 14px; border-radius: 12px; text-align: left;
+    background: linear-gradient(135deg, rgba(21, 101, 192, .07), rgba(255, 255, 255, .95));
+    border: 1px solid rgba(21, 101, 192, .22);
+}
+.rpg-maint-theory-head { font-weight: 900; color: var(--ink); font-size: 13px; }
+.rpg-maint-theory-label {
+    display: inline-block; margin: 9px 0 3px; font-size: 10px; letter-spacing: .1em;
+    text-transform: uppercase; font-weight: 900; color: #1565c0;
+}
+.rpg-maint-theory-rule .rpg-maint-theory-label { margin-top: 6px; }
+.rpg-maint-theory-formula {
+    display: inline-block; padding: 3px 10px; border-radius: 8px;
+    background: rgba(21, 101, 192, .1); border: 1px solid rgba(21, 101, 192, .25);
+    font-weight: 800; color: #0d47a1;
+}
+.rpg-maint-theory-list { margin: 4px 0 0; padding-left: 18px; color: var(--ink-2); font-size: 12px; line-height: 1.55; }
+.rpg-maint-theory-list li { margin: 2px 0; }
+.rpg-maint-theory-steps ol { margin: 2px 0 0; padding-left: 18px; font-size: 12px; line-height: 1.6; color: var(--ink-2); }
+.rpg-maint-theory-step-label {
+    display: inline-block; min-width: 84px; font-weight: 800; color: var(--ink); font-size: 11.5px;
+}
+.rpg-maint-theory-step-text { font-weight: 700; color: #0d47a1; }
+.rpg-maint-theory-why { margin-top: 4px; font-size: 12px; line-height: 1.55; color: var(--ink-2); }
+.rpg-maint-theory-open {
+    margin-top: 10px; border: 1px solid rgba(21, 101, 192, .35); background: #fff;
+    color: #0d47a1; border-radius: 9px; padding: 6px 12px; font: inherit; font-size: 11.5px;
+    font-weight: 800; cursor: pointer;
+}
+.rpg-maint-theory-open:hover { background: rgba(21, 101, 192, .08); }
+html[data-theme="dark"] .rpg-maint-theory {
+    background: linear-gradient(135deg, rgba(0, 184, 212, .12), rgba(17, 33, 58, .92));
+    border-color: rgba(110, 200, 255, .35);
+}
+html[data-theme="dark"] .rpg-maint-theory-label,
+html[data-theme="dark"] .rpg-maint-theory-formula,
+html[data-theme="dark"] .rpg-maint-theory-step-text,
+html[data-theme="dark"] .rpg-maint-theory-open { color: #9fd8ff; }
+html[data-theme="dark"] .rpg-maint-theory-formula {
+    background: rgba(110, 200, 255, .12); border-color: rgba(110, 200, 255, .3);
+}
+html[data-theme="dark"] .rpg-maint-theory-list,
+html[data-theme="dark"] .rpg-maint-theory-why,
+html[data-theme="dark"] .rpg-maint-theory-steps ol { color: #c7d6ea; }
+html[data-theme="dark"] .rpg-maint-theory-open { background: #16294a; border-color: rgba(110, 200, 255, .4); }
+html[data-theme="dark"] .rpg-maint-hint-btn,
+html[data-theme="dark"] .rpg-maint-hint {
+    background: rgba(255, 193, 7, .12); color: #ffd68a; border-color: rgba(255, 193, 7, .35);
+}
