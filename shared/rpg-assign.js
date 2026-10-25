@@ -230,6 +230,11 @@ const AssignHQ = {
                 this.wizard.attempts = Number(t.value);
                 return;
             }
+            if (t.id === "as-wiz-metrics" && this.wizard) {
+                this.wizard.metrics = !!t.checked;
+                this.renderWizard();
+                return;
+            }
             if (t.id === "as-quick-class" && this.quickLink) this.quickLink.classId = t.value;
             if (t.id === "as-quick-level" && this.quickLink) this.quickLink.levelId = t.value;
             if (t.id === "as-quick-due" && this.quickLink) this.quickLink.due = String(t.value || "");
@@ -330,6 +335,7 @@ const AssignHQ = {
                     dueAt: row.dueAt || "",
                     note: row.note || "",
                     archived: !!row.archivedAt,
+                    metrics: !!row.metrics,
                     rows: []
                 };
                 map.set(key, batch);
@@ -337,6 +343,7 @@ const AssignHQ = {
             if (!batch.dueAt && row.dueAt) batch.dueAt = row.dueAt;
             if (!batch.note && row.note) batch.note = row.note;
             if (row.archivedAt) batch.archived = true;
+            if (row.metrics) batch.metrics = true;
             const own = this.resultsForRow(row, all);
             const status = TeacherHQ.assignmentStatus(row, own);
             batch.rows.push({ row, status: status.status, result: status.result });
@@ -456,6 +463,7 @@ const AssignHQ = {
             batch.className ? `<span class="as-meta-class">👥 ${asEscape(batch.className)}</span>` : `<span class="as-meta-class">👤 ${asEscape(batch.students[0] || rpgT("asSolo"))}</span>`,
             batch.code ? `<span class="as-meta-code">🔑 ${asEscape(batch.code)}</span>` : "",
             `<span class="as-due ${dueClass}">${dueClass === "overdue" ? "⚠️" : "⏳"} ${asEscape(dueText)}</span>`,
+            batch.metrics ? `<span class="as-meta-metrics">${asEscape(rpgT("asMetricsChip"))}</span>` : "",
             batch.note ? `<span class="as-meta-note">💬 ${asEscape(batch.note)}</span>` : ""
         ].filter(Boolean).join("");
 
@@ -690,6 +698,8 @@ const AssignHQ = {
             note: "",
             hints: Storage.getQuestLimits().hints,
             attempts: Storage.getQuestLimits().attempts,
+            // Метрики вовлечённости — выключены по умолчанию: учитель включает их сам.
+            metrics: false,
             result: null
         };
         const modal = document.getElementById("as-modal");
@@ -984,6 +994,13 @@ const AssignHQ = {
                     </label>
                 </div>
                 <p class="as-hint">${escapeHtml(rpgT("asLimitsHint"))}</p>
+            </div>
+            <div class="as-metrics">
+                <label class="as-check">
+                    <input type="checkbox" id="as-wiz-metrics" ${w.metrics ? "checked" : ""}>
+                    <span>📊 ${escapeHtml(rpgT("asMetricsToggle"))}</span>
+                </label>
+                <p class="as-hint">${escapeHtml(rpgT("asMetricsHint"))}</p>
             </div>`;
     },
 
@@ -1020,6 +1037,7 @@ const AssignHQ = {
                 <div><span>${escapeHtml(rpgT("asPreviewWhen"))}</span><b>${asEscape(dueText)}</b></div>
                 ${w.note ? `<div><span>${escapeHtml(rpgT("asNote"))}</span><b>${asEscape(w.note)}</b></div>` : ""}
                 <div><span>${escapeHtml(rpgT("asLimitsTitle"))}</span><b>💡 ${w.hints} · 🎯 ${w.attempts}</b></div>
+                <div><span>${escapeHtml(rpgT("asMetricsLabel"))}</span><b>${w.metrics ? "📊 " + escapeHtml(rpgT("asMetricsOn")) : "— " + escapeHtml(rpgT("asMetricsOff"))}</b></div>
             </div>`;
     },
 
@@ -1050,6 +1068,7 @@ const AssignHQ = {
             const limits = Storage.clampQuestLimits({ hints: w.hints, attempts: w.attempts });
             row.hints = limits.hints;
             row.attempts = limits.attempts;
+            if (w.metrics) row.metrics = true;
             list.push(row);
             created.push(row);
         };

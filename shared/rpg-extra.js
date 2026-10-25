@@ -644,8 +644,19 @@ Object.assign(RPG, {
         const isCorrect = this.maintCheck(task, value);
         st.answered = true;
         const item = entry.item;
+        // Награда за усилие видна сразу: +18 XP и +3 кристалла за каждый
+        // разобранный вопрос, а не «где-то в конце» подходa.
+        const GAIN_XP = 18;
+        const GAIN_CRYSTALS = 3;
+        let gainLine = "";
         if (isCorrect) {
             st.correct += 1;
+            st.xp = (Number(st.xp) || 0) + GAIN_XP;
+            st.crystals = (Number(st.crystals) || 0) + GAIN_CRYSTALS;
+            try { this.addXP(GAIN_XP, { silent: true, toast: false, noOverlay: true }); } catch (e) {}
+            try { this.addCrystals(GAIN_CRYSTALS, { silent: true }); } catch (e) {}
+            try { this.toast("🛠", rpgT("maintGain", GAIN_XP, GAIN_CRYSTALS), rpgT("maintGainToast"), "tier-gold"); } catch (e) {}
+            gainLine = `<div class="rpg-maint-gain">${escapeHtml(rpgT("maintGain", GAIN_XP, GAIN_CRYSTALS))}</div>`;
             item.streak = (Number(item.streak) || 0) + 1;
             item.understood = true;
             const steps = [1, 3, 7];
@@ -707,6 +718,7 @@ Object.assign(RPG, {
                 try { correctText = Game.getCorrectAnswerText(task); } catch (e) {}
                 html += `<div class="rpg-maint-answer">${escapeHtml(rpgT("bbCorrect"))}: ${formatFormula(rpgPlain(correctText))}</div>`;
             }
+            if (gainLine) html += gainLine;
             const explanation = rpgPlain(I18n.getLocalized(task, "explanation"));
             if (explanation) html += `<div class="rpg-maint-explain">${formatFormula(explanation)}</div>`;
             if (!isCorrect) html += `<div class="rpg-maint-due">🕘 ${escapeHtml(rpgT("maintDueTomorrow"))}</div>`;
@@ -766,16 +778,14 @@ Object.assign(RPG, {
         const body = modal && modal.querySelector("#rpg-maint-body");
         const st = this._maint;
         if (!body || !st) return;
-        const xp = st.correct * 18;
-        const crystals = st.correct * 3;
-        st.xp = xp;
-        st.crystals = crystals;
+        // Награда уже начислена по ходу разбора — здесь только итог подхода.
+        const xp = Number(st.xp) || 0;
+        const crystals = Number(st.crystals) || 0;
         if (!st.rewarded) {
             st.rewarded = true;
-            try { this.addXP(xp, { toast: false }); } catch (e) {}
-            try { this.addCrystals(crystals, { silent: true }); } catch (e) {}
             this.state.review.sessions = (Number(this.state.review.sessions) || 0) + 1;
             try { this.addClassEnergy(null, { maintenance: st.correct }); } catch (e) {}
+            try { this.touchStreak({ toast: false, render: false }); } catch (e) {}
             this.saveSoon();
             this.refreshAll();
         }
