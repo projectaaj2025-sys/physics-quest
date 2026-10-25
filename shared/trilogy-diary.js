@@ -1295,29 +1295,6 @@
                 font-size: 16px;
                 flex-shrink: 0;
             }
-            .pq-td-parts {
-                display: grid;
-                grid-template-columns: repeat(3, 1fr);
-                gap: 8px;
-                margin-bottom: 12px;
-            }
-            .pq-td-part {
-                padding: 9px 12px;
-                border-radius: 12px;
-                border: 1px solid rgba(148, 163, 184, 0.22);
-                background: rgba(255, 255, 255, 0.04);
-                color: #cbd5e1;
-                font-weight: 800;
-                font-size: 13px;
-                cursor: pointer;
-                transition: all 0.16s ease;
-            }
-            .pq-td-part.active {
-                background: linear-gradient(135deg, rgba(14, 165, 233, 0.32), rgba(99, 102, 241, 0.32));
-                border-color: #38bdf8;
-                color: #ffffff;
-                box-shadow: 0 6px 18px rgba(56, 189, 248, 0.22);
-            }
             .pq-td-eps {
                 display: flex;
                 gap: 6px;
@@ -1502,12 +1479,47 @@
                 background: linear-gradient(135deg, #0ea5e9, #2563eb);
                 border-color: transparent;
             }
+            .pq-f-chip {
+                display: inline-block; font-style: normal; font-weight: 800; font-size: 12.5px;
+                padding: 4px 9px; margin: 2px 0; border-radius: 8px;
+                background: rgba(14, 165, 233, 0.12); border: 1px solid rgba(56, 189, 248, 0.32);
+                color: #e0f2fe; letter-spacing: .01em;
+            }
+            .pq-f-sep { margin: 0 7px; color: #38bdf8; font-weight: 900; }
+            .pq-td-inline {
+                margin: 14px 0 4px; padding: 14px; border-radius: 16px;
+                background: rgba(9, 20, 40, 0.55); border: 1px solid rgba(56, 189, 248, 0.24);
+            }
+            .pq-td-inline-head {
+                display: flex; justify-content: space-between; align-items: center; gap: 10px; margin-bottom: 10px;
+            }
+            .pq-td-inline-kicker { font-size: 12px; font-weight: 900; letter-spacing: .08em; text-transform: uppercase; color: #7dd3fc; }
+            .pq-td-inline-nav { display: flex; gap: 8px; margin-top: 10px; }
+            .pq-td-inline-locked { padding: 0; background: transparent; border: 0; }
             @media (max-width: 760px) {
-                .pq-td-parts, .pq-td-bubbles { grid-template-columns: 1fr; }
+                .pq-td-bubbles { grid-template-columns: 1fr; }
                 .pq-td-card { padding: 16px; }
             }
         `;
         document.head.appendChild(st);
+    }
+
+    /* Разделитель формул « · » сливался с умножением: «Q = c · m · Δt» читалось
+       как три разные формулы. Разбираем строку на законченные формулы и рисуем
+       каждую отдельной плашкой, а « · » внутри формулы оставляем умножением. */
+    function formulaChipsHtml(str) {
+        const text = String(str || "").trim();
+        if (!text) return "";
+        const parts = [];
+        text.split(" · ").forEach((seg) => {
+            const piece = seg.trim();
+            if (!piece) return;
+            const startsNew = piece.includes("=") || piece.includes("≈") || /^[А-ЯӘҒҚҢӨҰҮҺІA-Z]{2,}\s*:/.test(piece);
+            if (!parts.length || startsNew) parts.push(piece);
+            else parts[parts.length - 1] += " · " + piece;
+        });
+        if (parts.length < 2) return esc(text);
+        return parts.map(p => `<i class="pq-f-chip">${esc(p)}</i>`).join('<span class="pq-f-sep">•</span>');
     }
 
     const TrilogyDiary = {
@@ -1671,6 +1683,110 @@
                 </div>`;
         },
 
+        /* ===== КОМИКС ВНУТРИ ЛОРА =====
+           Лор и комикс идут одной лентой: у каждой главы сюжета своего класса
+           сразу под текстом стоит её комикс-страница. Переключателя классов
+           здесь нет — ученик видит только главы своего класса. */
+        bookForGrade(grade) {
+            const g = [7, 8, 9].includes(Number(grade)) ? Number(grade) : (Number(window.CURRENT_GRADE) || 7);
+            return TRILOGY_BOOKS[g] || TRILOGY_BOOKS[7] || [];
+        },
+
+        itemForRange(from, to, grade) {
+            const list = this.bookForGrade(grade);
+            const a = Number(from) || 1;
+            const b = Number(to) || a;
+            return list.find((ch) => Number(ch.to) >= a && Number(ch.from) <= b) || null;
+        },
+
+        /* Одна глава комикса без вкладок и списка эпизодов — для вставки в лор. */
+        inlineHtml(from, to, grade) {
+            injectStyles();
+            const g = [7, 8, 9].includes(Number(grade)) ? Number(grade) : (Number(window.CURRENT_GRADE) || 7);
+            const list = this.bookForGrade(g);
+            const item = this.itemForRange(from, to, g);
+            if (!item) return "";
+            if (this.unlockedLevel(g) < Number(item.from || 1)) {
+                return `<div class="pq-td-inline pq-td-inline-locked" data-td-inline="${item.ep}">
+                    <div class="pq-td-locked">
+                        <div class="pq-td-locked-icon">🔒</div>
+                        <div>
+                            <strong>${esc(ui("lockedTitle"))}</strong>
+                            <p>${esc(ui("lockedText", item.from))}</p>
+                        </div>
+                    </div>
+                </div>`;
+            }
+            const extra = this.extraFor(item);
+            const extraArt = extra && extra.img ? `
+                <div class="pq-td-art-wrap pq-td-art-extra">
+                    <img src="${esc(extra.img)}" alt="${esc(loc(item.title))}" loading="lazy">
+                    <div class="pq-td-art-caption">
+                        <div>
+                            <div class="pq-td-ch-date">${esc(loc(item.date))}</div>
+                            <div class="pq-td-ch-title">${esc(ui("pageTwo", item.ep))}</div>
+                        </div>
+                        <span class="pq-td-range">${esc(ui("levelsRange", item.from, item.to))}</span>
+                    </div>
+                </div>` : "";
+            const extraBubbles = extra && Array.isArray(extra.panels) ? extra.panels.map(p => `
+                <div class="pq-td-bubble" style="--sp-color:${p.color || '#38bdf8'}">
+                    <div class="pq-td-who">${esc(loc(p.who))}</div>
+                    <div>${esc(loc(p.text))}</div>
+                </div>`).join("") : "";
+            const idx = list.indexOf(item);
+            return `<div class="pq-td-inline" data-td-inline="${item.ep}">
+                <div class="pq-td-inline-head">
+                    <span class="pq-td-inline-kicker">📚 ${esc(ui("modalTitle"))}</span>
+                    <span class="pq-td-range">${esc(ui("levelsRange", item.from, item.to))}</span>
+                </div>
+                <div class="pq-td-art-wrap">
+                    <img src="${esc(item.img)}" alt="${esc(loc(item.title))}" loading="lazy">
+                    <div class="pq-td-art-caption">
+                        <div>
+                            <div class="pq-td-ch-date">${esc(loc(item.date))}</div>
+                            <div class="pq-td-ch-title">${esc(loc(item.title))}</div>
+                        </div>
+                        <span class="pq-td-range">${esc(ui("levelsRange", item.from, item.to))}</span>
+                    </div>
+                    ${item.act ? `<div class="pq-td-act">🎬 ${esc(ui("actLabel"))}: ${esc(softTitle(loc(item.act)))}</div>` : ""}
+                </div>
+                <div class="pq-td-bubbles">
+                    ${item.panels.map(p => `
+                        <div class="pq-td-bubble" style="--sp-color:${p.color || '#38bdf8'}">
+                            <div class="pq-td-who">${esc(loc(p.who))}</div>
+                            <div>${esc(loc(p.text))}</div>
+                        </div>`).join("")}
+                </div>
+                ${extraArt}
+                ${extraBubbles ? `<div class="pq-td-bubbles">${extraBubbles}</div>` : ""}
+                <div class="pq-td-keybox">
+                    <div><strong>${esc(ui("physKey"))}</strong> ${esc(loc(extra && extra.note ? extra.note : item.note))}</div>
+                    <span class="pq-td-formula">${formulaChipsHtml(item.formula)}</span>
+                </div>
+                <div class="pq-td-inline-nav">
+                    <button type="button" class="pq-td-navbtn" data-td-inline-prev="${idx}">${esc(ui("prev"))}</button>
+                    <button type="button" class="pq-td-navbtn" data-td-inline-next="${idx}">${esc(ui("next"))}</button>
+                </div>
+            </div>`;
+        },
+
+        // Кнопки «предыдущая/следующая глава» внутри ленты лора
+        bindInline(root) {
+            if (!root) return;
+            root.querySelectorAll("[data-td-inline-prev],[data-td-inline-next]").forEach(btn => {
+                btn.onclick = () => {
+                    const list = this.bookForGrade(Number(window.CURRENT_GRADE) || 7);
+                    const prev = btn.hasAttribute("data-td-inline-prev");
+                    const idx = Number(btn.getAttribute(prev ? "data-td-inline-prev" : "data-td-inline-next")) + (prev ? -1 : 1);
+                    const target = list[idx];
+                    if (!target) return;
+                    const node = root.querySelector(`[data-td-inline="${target.ep}"]`);
+                    if (node) node.scrollIntoView({ block: "center", behavior: "smooth" });
+                };
+            });
+        },
+
         /* Отрисовка комикса внутри секции окна «Лор и сюжет» */
         renderInto(host) {
             if (!host) return;
@@ -1687,6 +1803,9 @@
                 root.classList.add("open");
             }
             this.host = root;
+            // Только свой класс: чужие книги комикса не показываем и переключателя нет.
+            const ownGrade = [7, 8, 9].includes(Number(window.CURRENT_GRADE)) ? Number(window.CURRENT_GRADE) : this.grade;
+            this.grade = [7, 8, 9].includes(Number(ownGrade)) ? Number(ownGrade) : 7;
             const list = TRILOGY_BOOKS[this.grade] || TRILOGY_BOOKS[7];
             const item = list[this.index] || list[0];
 
@@ -1695,14 +1814,6 @@
                     <div class="pq-td-sec-head">
                         <span class="pq-td-sec-title">${esc(ui("modalTitle"))}</span>
                         <span class="pq-td-sec-hint">${esc(ui("modalSub"))}</span>
-                    </div>
-
-                    <div class="pq-td-parts">
-                        ${[7, 8, 9].map(g => `
-                            <button type="button" class="pq-td-part ${this.grade === g ? "active" : ""}" data-td-grade="${g}">
-                                ${esc(ui("part" + g))}
-                            </button>
-                        `).join("")}
                     </div>
 
                     <div class="pq-td-eps">
@@ -1746,7 +1857,7 @@
 
                     <div class="pq-td-keybox">
                         <div><strong>${esc(ui("physKey"))}</strong> ${esc(loc(item.note))}</div>
-                        <span class="pq-td-formula">${esc(item.formula)}</span>
+                        <span class="pq-td-formula">${formulaChipsHtml(item.formula)}</span>
                     </div>
                     ${this.extraHtml(item)}
                     </div>`}
@@ -1771,13 +1882,6 @@
                 </div>
             `;
 
-            root.querySelectorAll("[data-td-grade]").forEach(b => {
-                b.onclick = () => {
-                    this.grade = Number(b.getAttribute("data-td-grade"));
-                    this.index = 0;
-                    this.render();
-                };
-            });
             root.querySelectorAll("[data-td-idx]").forEach(b => {
                 b.onclick = () => {
                     const idx = Number(b.getAttribute("data-td-idx"));
