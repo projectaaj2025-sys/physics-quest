@@ -23,6 +23,8 @@
             designs: { space: "Космос", light: "Светлый", paper: "Пергамент", sky: "Небо" },
             close: "Закрыть",
             errName: "Введите фамилию и имя — сертификат должен быть именным.",
+            lockHint: "Сертификат за класс открывается только при входе через этот класс: зайди в игру нужного класса и открой паспорт там.",
+            currentGradeNote: "Сейчас открыт {g} класс — сертификат за него доступен.",
             grade: "класс",
             levels: "Уровней пройдено",
             tasks: "Очков за миссии",
@@ -62,6 +64,8 @@
             designs: { space: "Space", light: "Light", paper: "Parchment", sky: "Sky" },
             close: "Close",
             errName: "Enter both first name and surname — the certificate is personalised.",
+            lockHint: "A grade certificate unlocks only when you enter through that grade: open the game of that grade and issue the passport there.",
+            currentGradeNote: "You are in Grade {g} — its certificate is available.",
             grade: "grade",
             levels: "Levels completed",
             tasks: "Mission score",
@@ -101,6 +105,8 @@
             designs: { space: "Ғарыш", light: "Ашық", paper: "Пергамент", sky: "Аспан" },
             close: "Жабу",
             errName: "Тегі мен атын енгізіңіз — сертификат атаулы болуы керек.",
+            lockHint: "Сынып сертификаты тек сол сынып арқылы кіргенде ашылады: қажет сыныптың ойынына кіріп, паспортты сонда аш.",
+            currentGradeNote: "Қазір {g}-сынып ашық — оның сертификаты қолжетімді.",
             grade: "сынып",
             levels: "Өткен деңгейлер",
             tasks: "Миссия ұпайлары",
@@ -168,35 +174,48 @@
     // фоны, три светлых варианта рисуются прямо на canvas (их можно печатать на
     // обычной бумаге без тёмной заливки).
     const DESIGNS = {
+        // «Космос» — прежние сгенерированные фоны (свой на каждый класс).
         space: {
             kind: "image",
+            tone: "dark",
             text: "#ffffff", sub: "rgba(220,235,255,0.8)", accent: "#ffd479",
             frame: "rgba(255,214,120,0.85)", frameSoft: "rgba(255,214,120,0.3)",
             rule: "rgba(255,212,121,0.55)", bar: "rgba(255,255,255,0.16)",
-            seal: "rgba(255,212,121,0.95)", sealAlpha: 0.92
+            seal: "rgba(255,229,168,0.96)", sealAlpha: 0.95, sealInk: "#ffe9b0",
+            sealBack: "rgba(7,12,26,0.72)",
+            sealX: 0.8125, sealY: 0.732, sealR: 112
         },
+        // «Светлый», «Пергамент» и «Небо» — красивые иллюстрированные фоны
+        // (физические приборы, старинные инструменты, аэростаты и спутники).
         light: {
-            kind: "light", bgTop: "#ffffff", bgBottom: "#eef2f8",
+            kind: "image", tone: "light", bg: "./assets/certs/cert-light.jpg",
             text: "#14213d", sub: "#4a5c7c", accent: "#a97a1c",
-            frame: "#c9a24a", frameSoft: "rgba(201,162,74,0.45)",
+            frame: "rgba(201,162,74,0.9)", frameSoft: "rgba(201,162,74,0.42)",
             rule: "rgba(169,122,28,0.5)", bar: "rgba(20,33,61,0.12)",
-            seal: "rgba(168,58,46,0.82)", sealAlpha: 0.82
+            seal: "rgba(168,58,46,0.9)", sealAlpha: 0.9, sealInk: "rgba(168,58,46,0.95)",
+            sealBack: "rgba(255,255,255,0.62)",
+            sealX: 0.40, sealY: 0.792, sealR: 118
         },
         paper: {
-            kind: "paper", bgTop: "#fbf5e6", bgBottom: "#efe2c4",
+            kind: "image", tone: "light", bg: "./assets/certs/cert-paper.jpg",
             text: "#3a2a14", sub: "#6b5636", accent: "#8a5a1e",
-            frame: "#9c7a44", frameSoft: "rgba(156,122,68,0.5)",
+            frame: "rgba(156,122,68,0.9)", frameSoft: "rgba(156,122,68,0.5)",
             rule: "rgba(138,90,30,0.55)", bar: "rgba(58,42,20,0.14)",
-            seal: "rgba(128,36,44,0.8)", sealAlpha: 0.8
+            seal: "rgba(128,36,44,0.86)", sealAlpha: 0.86, sealInk: "rgba(128,36,44,0.92)",
+            sealBack: "rgba(253,246,228,0.6)",
+            sealX: 0.40, sealY: 0.792, sealR: 118
         },
         sky: {
-            kind: "sky", bgTop: "#eaf6ff", bgBottom: "#fdfefe",
+            kind: "image", tone: "light", bg: "./assets/certs/cert-sky.jpg",
             text: "#0b2545", sub: "#3f5f85", accent: "#1769aa",
-            frame: "#2b6cb0", frameSoft: "rgba(43,108,176,0.35)",
+            frame: "rgba(43,108,176,0.85)", frameSoft: "rgba(43,108,176,0.35)",
             rule: "rgba(23,105,170,0.45)", bar: "rgba(11,37,69,0.12)",
-            seal: "rgba(29,111,184,0.78)", sealAlpha: 0.8
+            seal: "rgba(29,111,184,0.86)", sealAlpha: 0.86, sealInk: "rgba(24,92,152,0.92)",
+            sealBack: "rgba(255,255,255,0.6)",
+            sealX: 0.40, sealY: 0.792, sealR: 118
         }
     };
+
     const DESIGN_ORDER = ["space", "light", "paper", "sky"];
 
     const MONTHS = {
@@ -220,6 +239,13 @@
         const row = (RANKS[grade] || RANKS[8])[idx];
         const l = lang();
         return l === "en" ? row[1] : l === "kk" ? row[2] : row[0];
+    }
+
+    // Класс, через который ученик вошёл в игру. Сертификат за другой класс
+    // получить нельзя: он выдаётся только за тот класс, в котором ты учишься.
+    function currentGrade() {
+        const g = Number(window.CURRENT_GRADE);
+        return [7, 8, 9].includes(g) ? g : 8;
     }
 
     function totalLevels(grade) {
@@ -286,7 +312,8 @@
                 if (saved && DESIGNS[saved]) this.design = saved;
             } catch (_) {}
             if (!document.getElementById("pq-cert-modal")) this.buildModal();
-            this.mode = Number(grade) || Number(window.CURRENT_GRADE) || 8;
+            // Всегда открываем сертификат того класса, через который вошли.
+            this.mode = currentGrade();
             const modal = document.getElementById("pq-cert-modal");
             modal.classList.add("active");
             this.syncTabs();
@@ -317,9 +344,13 @@
                     <div class="pq-cert-body">
                         <div class="pq-cert-controls">
                             <div class="pq-cert-tabs" role="tablist">
-                                ${[7, 8, 9].map((g) => `<button type="button" class="pq-cert-tab" data-cert-grade="${g}">${g} ${esc(t("grade"))}</button>`).join("")}
+                                ${[7, 8, 9].map((g) => {
+                                    const locked = g !== currentGrade();
+                                    return `<button type="button" class="pq-cert-tab${locked ? " locked" : ""}" data-cert-grade="${g}" data-locked="${locked ? 1 : 0}" ${locked ? `title="${esc(t("lockHint"))}"` : ""}>${locked ? "🔒 " : ""}${g} ${esc(t("grade"))}</button>`;
+                                }).join("")}
                                 <button type="button" class="pq-cert-tab" data-cert-grade="all">🏆 ${esc(t("tabAll"))}</button>
                             </div>
+                            <p class="pq-cert-locknote">${esc(t("currentGradeNote").replace("{g}", String(currentGrade())))}</p>
                             <div class="pq-cert-designs" role="group" aria-label="${esc(t("design"))}">
                                 ${DESIGN_ORDER.map((id) => `<button type="button" class="pq-cert-design" data-cert-design="${id}"><i class="dot dot-${id}"></i>${esc((t("designs") || {})[id] || id)}</button>`).join("")}
                             </div>
@@ -348,6 +379,11 @@
             modal.querySelectorAll("[data-cert-grade]").forEach((btn) => {
                 btn.addEventListener("click", () => {
                     const g = btn.getAttribute("data-cert-grade");
+                    if (btn.getAttribute("data-locked") === "1") {
+                        // Сертификат за чужой класс не выдаём — объясняем, как его получить.
+                        this.toast(t("lockHint"), "warning");
+                        return;
+                    }
                     this.mode = g === "all" ? "all" : Number(g);
                     this.syncTabs();
                     this.draw();
@@ -395,7 +431,9 @@
         syncTabs() {
             document.querySelectorAll("#pq-cert-modal [data-cert-grade]").forEach((btn) => {
                 const g = btn.getAttribute("data-cert-grade");
-                btn.classList.toggle("active", String(this.mode) === g);
+                const locked = g !== "all" && Number(g) !== currentGrade();
+                btn.classList.toggle("locked", locked);
+                btn.classList.toggle("active", !locked && String(this.mode) === g);
             });
         },
 
@@ -439,6 +477,21 @@
             });
         },
 
+        // Отдельный фон для светлых оформлений: у «Светлого», «Пергамента» и
+        // «Неба» своя иллюстрация, не зависящая от класса.
+        ensureDesignBg(id) {
+            const th = DESIGNS[id];
+            if (!th || !th.bg) return Promise.resolve(null);
+            const key = "design:" + id;
+            if (this._bg[key]) return Promise.resolve(this._bg[key]);
+            return new Promise((resolve) => {
+                const img = new Image();
+                img.onload = () => { this._bg[key] = img; resolve(img); };
+                img.onerror = () => { this._bg[key] = null; resolve(null); };
+                img.src = th.bg;
+            });
+        },
+
         designOf(id) {
             return DESIGNS[id] || DESIGNS.space;
         },
@@ -452,12 +505,23 @@
                     const ratio = Math.max(w / bg.width, h / bg.height);
                     const dw = bg.width * ratio, dh = bg.height * ratio;
                     ctx.drawImage(bg, (w - dw) / 2, (h - dh) / 2, dw, dh);
-                    const scrim = ctx.createLinearGradient(0, 0, w * 0.72, 0);
-                    scrim.addColorStop(0, "rgba(4,8,20,0.86)");
-                    scrim.addColorStop(0.55, "rgba(4,8,20,0.55)");
-                    scrim.addColorStop(1, "rgba(4,8,20,0.1)");
-                    ctx.fillStyle = scrim;
-                    ctx.fillRect(0, 0, w, h);
+                    if (th.tone === "light") {
+                        // На светлой иллюстрации достаточно лёгкой вуали слева:
+                        // текст остаётся контрастным, картинка — видимой.
+                        const veil = ctx.createLinearGradient(0, 0, w * 0.66, 0);
+                        veil.addColorStop(0, "rgba(255,255,255,0.55)");
+                        veil.addColorStop(0.62, "rgba(255,255,255,0.28)");
+                        veil.addColorStop(1, "rgba(255,255,255,0)");
+                        ctx.fillStyle = veil;
+                        ctx.fillRect(0, 0, w, h);
+                    } else {
+                        const scrim = ctx.createLinearGradient(0, 0, w * 0.72, 0);
+                        scrim.addColorStop(0, "rgba(4,8,20,0.86)");
+                        scrim.addColorStop(0.55, "rgba(4,8,20,0.55)");
+                        scrim.addColorStop(1, "rgba(4,8,20,0.1)");
+                        ctx.fillStyle = scrim;
+                        ctx.fillRect(0, 0, w, h);
+                    }
                     return;
                 }
                 const g = ctx.createLinearGradient(0, 0, w, h);
@@ -601,12 +665,14 @@
             ctx.translate(x, y);
             ctx.rotate(-0.18);
             if (th.kind === "image") {
-                // на пёстром космическом фоне печать читается только на подложке
-                const back = ctx.createRadialGradient(0, 0, r * 0.2, 0, 0, r * 1.16);
-                back.addColorStop(0, "rgba(7,12,26,0.72)");
-                back.addColorStop(1, "rgba(7,12,26,0)");
+                // На фотографическом фоне печать читается только на подложке:
+                // тёмной для «Космоса», светлой — для светлых оформлений.
+                const back = ctx.createRadialGradient(0, 0, r * 0.24, 0, 0, r * 1.18);
+                back.addColorStop(0, th.sealBack || "rgba(7,12,26,0.72)");
+                back.addColorStop(0.72, (th.sealBack || "rgba(7,12,26,0.72)").replace(/[\d.]+\)$/, "0.35)"));
+                back.addColorStop(1, (th.sealBack || "rgba(7,12,26,0.72)").replace(/[\d.]+\)$/, "0)"));
                 ctx.fillStyle = back;
-                ctx.beginPath(); ctx.arc(0, 0, r * 1.16, 0, Math.PI * 2); ctx.fill();
+                ctx.beginPath(); ctx.arc(0, 0, r * 1.18, 0, Math.PI * 2); ctx.fill();
             }
             ctx.globalAlpha = th.sealAlpha == null ? 0.9 : th.sealAlpha;
             ctx.strokeStyle = th.seal;
@@ -621,15 +687,16 @@
 
             ctx.textAlign = "center";
             ctx.textBaseline = "middle";
-            ctx.font = "700 15px 'Trebuchet MS', Arial, sans-serif";
-            this.arcText(ctx, top, r - 22, -Math.PI / 2, false);
-            ctx.font = "600 12px 'Trebuchet MS', Arial, sans-serif";
-            this.arcText(ctx, bottom, r - 22, Math.PI / 2, true);
+            const k = r / 78;                      // печать масштабируется целиком
+            ctx.font = `700 ${Math.round(15 * k)}px 'Trebuchet MS', Arial, sans-serif`;
+            this.arcText(ctx, top, r - 22 * k, -Math.PI / 2, false);
+            ctx.font = `600 ${Math.round(12 * k)}px 'Trebuchet MS', Arial, sans-serif`;
+            this.arcText(ctx, bottom, r - 22 * k, Math.PI / 2, true);
 
-            this.star(ctx, 0, -13, 16);
+            this.star(ctx, 0, -14 * k, 16 * k);
             ctx.fillStyle = th.seal;
-            ctx.font = "700 17px Georgia, 'Times New Roman', serif";
-            ctx.fillText(gradeText, 0, 16);
+            ctx.font = `700 ${Math.round(18 * k)}px Georgia, 'Times New Roman', serif`;
+            ctx.fillText(gradeText, 0, 17 * k);
             ctx.restore();
         },
 
@@ -751,29 +818,62 @@
                 const mentor = (acc && acc.teacher && acc.teacher.name) || "";
                 const date = formatDate(lang());
 
+                // Подвал держим внутри рамки: раньше «Наставник» уходил за неё.
                 ctx.fillStyle = sub;
                 ctx.font = "400 22px 'Trebuchet MS', Arial, sans-serif";
-                ctx.fillText(`${t("code")}: ${code}`, 92, h - 128);
-                ctx.fillText(`${t("date")}: ${date}`, 92, h - 92);
-                if (mentor) ctx.fillText(`${t("mentor")}: ${mentor}`, 92, h - 56);
+                ctx.fillText(`${t("code")}: ${code}`, 92, h - 188);
+                ctx.fillText(`${t("date")}: ${date}`, 92, h - 152);
+                if (mentor) ctx.fillText(`${t("mentor")}: ${mentor}`, 92, h - 116);
 
                 ctx.textAlign = "right";
+                ctx.font = "700 26px Georgia, 'Times New Roman', serif";
+                const sig1 = "Asteria · Equilibrium · Orbit-9";
+                const sig2 = t("trilogy");
+                const sigW = Math.max(ctx.measureText(sig1).width, (() => {
+                    ctx.font = "400 20px 'Trebuchet MS', Arial, sans-serif";
+                    return ctx.measureText(sig2).width;
+                })());
+                // На иллюстрированных фонах подпись стоит на предметах — под ней
+                // аккуратная плашка по размеру текста, а не белая заливка угла.
+                if (th.kind === "image") {
+                    const padX = 22, padY = 12;
+                    const bx = w - 120 - sigW - padX;
+                    const by = h - 92 - 30 - padY;
+                    const bw = sigW + padX * 2;
+                    const bh = 60 + padY * 2;
+                    ctx.fillStyle = th.tone === "light" ? "rgba(255,255,255,0.74)" : "rgba(7,12,26,0.5)";
+                    this.roundRect(ctx, bx, by, bw, bh, 16);
+                    ctx.fill();
+                    ctx.strokeStyle = th.frameSoft;
+                    ctx.lineWidth = 1.2;
+                    this.roundRect(ctx, bx, by, bw, bh, 16);
+                    ctx.stroke();
+                }
                 ctx.fillStyle = accent;
                 ctx.font = "700 26px Georgia, 'Times New Roman', serif";
-                ctx.fillText("Asteria · Equilibrium · Orbit-9", w - 120, h - 92);
+                ctx.fillText(sig1, w - 120, h - 92);
                 ctx.fillStyle = sub;
                 ctx.font = "400 20px 'Trebuchet MS', Arial, sans-serif";
-                ctx.fillText(t("trilogy"), w - 120, h - 60);
+                ctx.fillText(sig2, w - 120, h - 60);
                 ctx.textAlign = "left";
 
-                this.paintSeal(ctx, w - 300, h - 300, 78, th, isAll ? "7–9" : String(grade));
+                const sealR = th.sealR || 104;
+                const sealX = Math.round((th.sealX || 0.8125) * w);
+                const sealY = Math.round((th.sealY || 0.732) * h);
+                this.paintSeal(ctx, sealX, sealY, sealR, th, isAll ? "7–9" : String(grade));
 
                 this._lastName = name;
                 this._lastMode = mode;
             };
 
-            if (th.kind === "image") this.ensureBg(mode).then((img) => paint(img)).catch(() => paint(null));
-            else paint(null);
+            if (th.bg) {
+                // Светлые оформления: своя иллюстрация на каждое оформление.
+                this.ensureDesignBg(this.design).then((img) => paint(img)).catch(() => paint(null));
+            } else if (th.kind === "image") {
+                this.ensureBg(mode).then((img) => paint(img)).catch(() => paint(null));
+            } else {
+                paint(null);
+            }
         },
 
         stars(ctx, w, h) {
@@ -845,9 +945,9 @@
             win.document.close();
         },
 
-        toast(text) {
+        toast(text, type = "success") {
             if (typeof showNotification === "function") {
-                try { showNotification(text, "success"); return; } catch (_) {}
+                try { showNotification(text, type); return; } catch (_) {}
             }
         }
     };
