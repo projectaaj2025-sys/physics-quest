@@ -197,6 +197,8 @@
             const picked = this.pickFor(levelId, config);
             picked.levelId = levelId;
             this.active = picked;
+            // Новый небольшой состав кораблей для каждого запуска уровня.
+            try { Game.backgroundFleetSeed = Math.floor(Math.random() * 1000000); } catch (_) {}
             this.updateChip(picked);
             try {
                 const root = document.getElementById("game-screen") || document.documentElement;
@@ -237,9 +239,84 @@
             if (this._cache.canvas) {
                 try { ctx.drawImage(this._cache.canvas, 0, 0, game.width, game.height); } catch (_) {}
             }
+            const time = Date.now() / 1000;
             this.drawDynamic(ctx, game.width, game.height, theme, picked.variant || 0);
             this.drawStars(ctx, game, theme);
+            this.drawFleet(ctx, game, theme, picked.variant || 0, time);
             return true;
+        },
+
+        /* Небольшие исследовательские корабли в небе: фон меняется по миру и запуску,
+           не перекрывая игровые объекты, город или интерфейс задания. */
+        drawFleet(ctx, game, theme, variant, time) {
+            if (!ctx || !game || !game.width || !game.height) return;
+            const w = game.width, h = game.height;
+            const grade = Number(window.CURRENT_GRADE) || 8;
+            const level = Number(game.currentLevel) || 1;
+            const seed = Number(game.backgroundFleetSeed) || (grade * 97 + level * 31 + (variant || 0));
+            const models = [0, 1, 2, 3];
+            const first = (Math.abs(seed + grade + level) >>> 0) % models.length;
+            const second = (first + 1 + (level % 2)) % models.length;
+            const ships = [
+                { model: first, x: 0.22, y: 0.20, scale: Math.max(0.72, Math.min(1.05, w / 1500)), phase: 0.4, alpha: 0.78 },
+                { model: second, x: 0.76, y: 0.38, scale: Math.max(0.56, Math.min(0.82, w / 1900)), phase: 2.1, alpha: 0.62 }
+            ];
+            if ((seed + level) % 3 === 0) {
+                ships.push({ model: (second + 2) % models.length, x: 0.52, y: 0.14, scale: Math.max(0.42, Math.min(0.62, w / 2300)), phase: 4.2, alpha: 0.48 });
+            }
+            ships.forEach((ship, i) => {
+                const drift = Math.sin(time * 0.14 + ship.phase) * 0.025;
+                const bob = Math.sin(time * 0.34 + ship.phase) * 7;
+                const x = (ship.x + drift) * w;
+                const y = ship.y * h + bob;
+                const sc = ship.scale;
+                const accent = theme.accent || "#70e8ff";
+                const fill = `rgba(221,242,255,${ship.alpha})`;
+                ctx.save();
+                ctx.translate(x, y);
+                ctx.rotate(Math.sin(time * 0.08 + ship.phase) * 0.035);
+                ctx.scale(sc, sc);
+                ctx.globalAlpha = ship.alpha;
+                ctx.shadowColor = accent;
+                ctx.shadowBlur = 18;
+                ctx.fillStyle = fill;
+                ctx.strokeStyle = accent;
+                ctx.lineWidth = 1.8;
+                ctx.beginPath();
+                if (ship.model === 0) {
+                    // Треугольный перехватчик
+                    ctx.moveTo(31, 0); ctx.lineTo(9, -10); ctx.lineTo(15, -3);
+                    ctx.lineTo(-28, -13); ctx.lineTo(-18, 0); ctx.lineTo(-28, 13);
+                    ctx.lineTo(15, 3); ctx.lineTo(9, 10); ctx.closePath();
+                } else if (ship.model === 1) {
+                    // Широкий разведчик с длинными крыльями
+                    ctx.moveTo(30, 0); ctx.lineTo(10, -7); ctx.lineTo(-10, -18);
+                    ctx.lineTo(-5, -5); ctx.lineTo(-27, -8); ctx.lineTo(-16, 0);
+                    ctx.lineTo(-27, 8); ctx.lineTo(-5, 5); ctx.lineTo(-10, 18);
+                    ctx.lineTo(10, 7); ctx.closePath();
+                } else if (ship.model === 2) {
+                    // Межпланетный шаттл
+                    ctx.moveTo(30, 0); ctx.lineTo(15, -7); ctx.lineTo(-20, -7);
+                    ctx.lineTo(-28, -15); ctx.lineTo(-25, -3); ctx.lineTo(-25, 3);
+                    ctx.lineTo(-28, 15); ctx.lineTo(-20, 7); ctx.lineTo(15, 7); ctx.closePath();
+                } else {
+                    // Орбитальная капсула с кольцевыми крыльями
+                    ctx.ellipse(0, 0, 23, 8, 0, 0, Math.PI * 2);
+                    ctx.moveTo(33, 0); ctx.lineTo(17, -5); ctx.lineTo(17, 5); ctx.closePath();
+                    ctx.moveTo(-18, -1); ctx.lineTo(-29, -8); ctx.lineTo(-24, 0); ctx.lineTo(-29, 8); ctx.closePath();
+                }
+                ctx.fill();
+                ctx.stroke();
+                ctx.shadowBlur = 0;
+                // Кабина и два двигателя дают разный силуэт при смене модели.
+                ctx.fillStyle = "rgba(75,224,255,0.95)";
+                ctx.beginPath(); ctx.ellipse(4, 0, 6, 3.2, 0, 0, Math.PI * 2); ctx.fill();
+                ctx.fillStyle = accent;
+                ctx.globalAlpha = ship.alpha * (0.55 + (i % 2) * 0.18);
+                ctx.beginPath(); ctx.ellipse(-25, -4, 5 + Math.sin(time * 3 + i) * 1.2, 1.7, 0, 0, Math.PI * 2); ctx.fill();
+                ctx.beginPath(); ctx.ellipse(-25, 4, 5 + Math.sin(time * 3 + i + 1) * 1.2, 1.7, 0, 0, Math.PI * 2); ctx.fill();
+                ctx.restore();
+            });
         },
 
         buildStatic(w, h, theme, variant) {

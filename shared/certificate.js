@@ -858,8 +858,10 @@
                 ctx.textAlign = "left";
 
                 const sealR = th.sealR || 104;
-                const sealX = Math.round((th.sealX || 0.8125) * w);
-                const sealY = Math.round((th.sealY || 0.732) * h);
+                // В паспорте всей трилогии три строки прогресса занимают левую
+                // часть листа: переносим печать вправо, чтобы она не закрывала 9 класс.
+                const sealX = Math.round((isAll ? 0.82 : (th.sealX || 0.8125)) * w);
+                const sealY = Math.round((isAll ? 0.74 : (th.sealY || 0.732)) * h);
                 this.paintSeal(ctx, sealX, sealY, sealR, th, isAll ? "7–9" : String(grade));
 
                 this._lastName = name;
