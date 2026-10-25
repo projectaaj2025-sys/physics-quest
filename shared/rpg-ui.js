@@ -456,7 +456,9 @@ Object.assign(RPG, {
         const rank = rpgRankForLevel(st.level);
         const title = this.currentTitle();
         const streak = this.streakState();
-        const badge = rpgT(this.streakBadgeKey(streak.count));
+        const badge = rpgT(this.attendanceBadgeKey(streak.count));
+        const runBadgeKey = this.runBadgeKey(streak.run);
+        const runBadge = runBadgeKey ? rpgT(runBadgeKey) : (streak.run ? rpgT("streakRunCurrent", streak.run) : rpgT("streakRunNone"));
         const week = this.streakWeek();
         card.innerHTML = `
             <div class="rpg-hero-level" style="width:56px;height:56px;flex-basis:56px;border-radius:15px"><b>${st.level}</b><small>LVL</small></div>
@@ -471,7 +473,8 @@ Object.assign(RPG, {
                     <b>${streak.count}</b>
                     <small>${escapeHtml(rpgT("streakDaysPlayed"))}</small>
                 </div>
-                <div class="rpg-streak-badge">${escapeHtml(badge)}</div>
+                <div class="rpg-streak-badge"><span>${escapeHtml(rpgT("attendanceBadgeLabel"))}:</span> ${escapeHtml(badge)}</div>
+                <div class="rpg-streak-runbadge"><span>${escapeHtml(rpgT("consecutiveBadgeLabel"))}:</span> ${escapeHtml(runBadge)}</div>
                 <div class="rpg-streak-week">
                     ${week.map(d => `<span class="${d.on ? "on" : ""} ${d.today ? "today" : ""}" title="${escapeHtml(d.key)}">${escapeHtml(d.letter)}</span>`).join("")}
                 </div>

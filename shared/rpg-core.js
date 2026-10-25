@@ -266,18 +266,22 @@ const RPG = {
         if (!this.state.streak) this.state.streak = { count: 0, best: 0, run: 0, last: "", days: [] };
         const st = this.state.streak;
         const today = this.streakDayKey();
+        const yesterday = this.streakDayKey(Date.now() - this.dayMs());
+        const last = st.last || "";
+        // Серия «подряд» активна только сегодня или если вчера был последний визит.
+        const runNow = last === today || last === yesterday ? Math.max(0, Number(st.run) || 0) : 0;
         // Считаются все дни, когда ученик играл: подряд идти не обязательно.
         return {
             count: Math.max(0, Number(st.count) || 0),
             best: Math.max(0, Number(st.best) || 0),
-            run: Math.max(0, Number(st.run) || 0),
-            last: st.last || "",
-            today: st.last === today,
+            run: runNow,
+            last,
+            today: last === today,
             days: Array.isArray(st.days) ? st.days.slice(-30) : []
         };
     },
 
-    /* Название бейджа по длине серии: 0 — нет, 1 — разминка … 5 — месяц в строю. */
+    /* Legacy helper retained for old saves/tests; new UI separates attendance and active runs. */
     streakBadgeKey(count) {
         const n = Number(count) || 0;
         if (n <= 0) return "streakBadge0";
@@ -286,6 +290,31 @@ const RPG = {
         if (n < 14) return "streakBadge3";
         if (n < 30) return "streakBadge4";
         return "streakBadge5";
+    },
+
+    /* Посещаемость: отдельные частые вехи по общему числу игровых дней. */
+    attendanceBadgeKey(count) {
+        const n = Math.max(0, Number(count) || 0);
+        if (n >= 100) return "attendanceBadge10";
+        if (n >= 50) return "attendanceBadge9";
+        if (n >= 30) return "attendanceBadge8";
+        if (n >= 20) return "attendanceBadge7";
+        if (n >= 14) return "attendanceBadge6";
+        if (n >= 10) return "attendanceBadge5";
+        if (n >= 7) return "attendanceBadge4";
+        if (n >= 5) return "attendanceBadge3";
+        if (n >= 3) return "attendanceBadge2";
+        if (n >= 1) return "attendanceBadge1";
+        return "attendanceBadge0";
+    },
+
+    /* Сохраняем три исходных формулировки, но выдаём их именно за дни подряд. */
+    runBadgeKey(run) {
+        const n = Math.max(0, Number(run) || 0);
+        if (n >= 30) return "streakBadge5";
+        if (n >= 14) return "streakBadge4";
+        if (n >= 7) return "streakBadge3";
+        return "";
     },
 
     /* Отметка «сегодня играл». Возвращает { count, bonus, continued, isNew }. */
@@ -313,7 +342,12 @@ const RPG = {
         try { this.addXP(bonus, { silent: true, toast: false, noOverlay: true }); } catch (e) {}
         this.saveSoon();
         if (opts.toast !== false) {
-            try { this.toast("🔥", rpgT("streakToast", st.count, bonus), rpgT(this.streakBadgeKey(st.count)), "tier-gold"); } catch (e) {}
+            try {
+                const attendance = rpgT(this.attendanceBadgeKey(st.count));
+                const runKey = this.runBadgeKey(st.run);
+                const detail = runKey ? `${attendance} · ${rpgT(runKey)}` : attendance;
+                this.toast("🔥", rpgT("streakToast", st.count, bonus), detail, "tier-gold");
+            } catch (e) {}
         }
         if (opts.render !== false) {
             try { this.renderMenuCard(); } catch (e) {}
