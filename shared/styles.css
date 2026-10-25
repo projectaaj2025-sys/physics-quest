@@ -43,7 +43,7 @@
     --shadow-strong: 0 8px 30px rgba(15, 35, 70, 0.18);
     --gradient-bg: linear-gradient(135deg, #e3f2fd 0%, #ffffff 50%, #fce4ec 100%);
     --gradient-card: linear-gradient(135deg, #ffffff 0%, #f5fbff 100%);
-    --gradient-primary: linear-gradient(135deg, #00b8d4 0%, #1976d2 100%);
+    --gradient-primary: linear-gradient(135deg, #0a7d99 0%, #1565c0 100%);
     --gradient-pink: linear-gradient(135deg, #d81b60 0%, #ff4081 100%);
 }
 
@@ -816,9 +816,9 @@ html, body {
 }
 .theory-tab:hover { border-color: var(--primary); color: var(--text-bright); }
 .theory-tab.active {
-    background: var(--primary);
+    background: linear-gradient(135deg, #0a7d99, #066376);
     color: #fff;
-    border-color: var(--primary);
+    border-color: #0a7d99;
 }
 .theory-conspekt-title {
     color: var(--primary-dark);
@@ -2113,7 +2113,7 @@ html, body {
 .rpg-menu-info { flex: 1; min-width: 0; }
 .rpg-menu-kicker {
     font-size: 10px; font-weight: 900; letter-spacing: 1.6px;
-    text-transform: uppercase; color: #008ba3;
+    text-transform: uppercase; color: #066376;
 }
 .rpg-menu-name {
     font-size: 20px; font-weight: 900; color: var(--rpg-ink); line-height: 1.15;
@@ -2181,7 +2181,7 @@ html, body {
 .rpg-lb-badge {
     width: 42px; height: 42px; flex: 0 0 42px;
     border-radius: 12px;
-    background: linear-gradient(145deg, #00b8d4, #1976d2);
+    background: linear-gradient(145deg, #0a7d99, #1565c0);
     color: #fff;
     display: flex; flex-direction: column; align-items: center; justify-content: center;
     line-height: .9;
@@ -2501,7 +2501,7 @@ html, body {
 .rpg-hero-level {
     width: 74px; height: 74px; flex: 0 0 74px;
     border-radius: 20px;
-    background: linear-gradient(145deg, #00b8d4, #1976d2 60%, #d81b60);
+    background: linear-gradient(145deg, #0a7d99, #1976d2 60%, #c2185b);
     color: #fff;
     display: flex; flex-direction: column; align-items: center; justify-content: center;
     box-shadow: 0 8px 20px rgba(0, 130, 180, 0.32);
@@ -2857,7 +2857,7 @@ html, body {
 .rpg-ph-badge {
     width: 42px; flex: 0 0 42px;
     border-radius: 10px;
-    background: linear-gradient(145deg, var(--rpg-accent, #00b8d4), #145c9e);
+    background: linear-gradient(145deg, color-mix(in srgb, var(--rpg-accent, #00b8d4) 70%, #06303f), #145c9e);
     display: flex; flex-direction: column; align-items: center; justify-content: center;
     line-height: .95;
     color: #fff;
@@ -3181,6 +3181,10 @@ html, body {
 .rpg-profile-card .rpg-profile-main { flex: 1; min-width: 0; }
 .rpg-profile-card b { font-size: 15px; color: var(--ink); display: block; }
 .rpg-profile-card small { font-size: 11px; color: var(--text-dim); font-weight: 700; }
+/* бейджи уровня внутри профиля: белые подписи не должны тонуть в --text-dim */
+.rpg-profile-card .rpg-hero-level small,
+.rpg-profile-card .rpg-ph-badge small,
+.rpg-profile-card .rpg-lb-badge small { color: #fff; }
 .rpg-profile-card .rpg-xpbar { margin-top: 6px; }
 
 /* Серия дней в профиле: счётчик, бейдж, полоска недели */
@@ -3692,7 +3696,7 @@ html[data-theme="dark"] .rpg-bb-row-tag { background: rgba(0, 184, 212, .18); co
 }
 .rpg-maint-x:hover { color: #d81b60; border-color: rgba(216, 27, 96, .4); }
 .rpg-maint-head { display: flex; justify-content: space-between; align-items: baseline; gap: 10px; padding-right: 34px; }
-.rpg-maint-kicker { font-size: 9.5px; font-weight: 900; letter-spacing: 1.6px; color: #00838f; }
+.rpg-maint-kicker { font-size: 9.5px; font-weight: 900; letter-spacing: 1.6px; color: #066376; }
 .rpg-maint-step { font-size: 10px; font-weight: 800; color: var(--text-dim); }
 .rpg-maint-progress { display: flex; gap: 5px; margin: 8px 0 14px; }
 .rpg-maint-progress i {
@@ -5768,3 +5772,114 @@ html[data-theme="dark"] .rpg-maint-hint-btn,
 html[data-theme="dark"] .rpg-maint-hint {
     background: rgba(255, 193, 7, .12); color: #ffd68a; border-color: rgba(255, 193, 7, .35);
 }
+
+/* ============================================================
+   СВЕТЛАЯ ТЕМА: КОНТРАСТ ТЕКСТА
+   Яркая бирюза #00b8d4 на белом давала 2,38:1 — подписи сливались.
+   Здесь акценты для текста и «белый текст на цветном» затемнены до
+   4,5:1, а сочные оттенки оставлены только заливкам без текста.
+   ============================================================ */
+html[data-theme="light"] {
+    --primary: #0a7d99;            /* 4,77:1 с белым текстом */
+    --primary-dark: #066376;
+    --border: rgba(10, 125, 153, 0.32);
+    --glow: 0 0 16px rgba(10, 125, 153, 0.35);
+    --glow-strong: 0 0 28px rgba(10, 125, 153, 0.6);
+}
+
+/* белый текст на акцентных плашках */
+html[data-theme="light"] .lang-btn.active,
+html[data-theme="light"] .level-screen-tab.active,
+html[data-theme="light"] .tab-btn.active,
+html[data-theme="light"] .theory-tab.active {
+    background: linear-gradient(135deg, #0a7d99, #066376);
+    border-color: #066376;
+    color: #fff;
+}
+html[data-theme="light"] .pq-grade-pill.active[data-g="7"] {
+    background: linear-gradient(135deg, #0a7d99, #066376);
+}
+html[data-theme="light"] .pq-grade-pill.active[data-g="8"] {
+    background: linear-gradient(135deg, #b35400, #8f4200);
+}
+html[data-theme="light"] .btn-primary {
+    background: linear-gradient(135deg, #0b7fa0, #1565c0);
+    border-color: #0a6f8c;
+}
+
+/* вторичные синие подписи */
+html[data-theme="light"] .pq-of-kicker,
+html[data-theme="light"] .pq-of-var,
+html[data-theme="light"] .pq-sim89-kicker,
+html[data-theme="light"] .pq-sim89-card-chapter { color: #23618f; }
+
+/* сюжетная линия и имя пилота: акцент ракеты на светлом фоне */
+html[data-theme="light"] .story-progress strong { color: #8a5a00; }
+html[data-theme="light"] .pilot-line strong { color: color-mix(in srgb, var(--pilot-accent, #0a7d99) 42%, #0a1530); }
+
+/* чипы миссий на карте уровней: цвет миссии, но читаемый */
+html[data-theme="light"] .rpg-mission-chip { color: color-mix(in srgb, var(--chip-color) 45%, #0a1530); }
+
+/* доска битвы */
+html[data-theme="light"] .pq-battle-kicker { color: #06708a; }
+html[data-theme="light"] .pq-battle-crew-head b { color: color-mix(in srgb, var(--crew-color) 55%, #0b2545); }
+html[data-theme="light"] .pq-battle-player { color: #44617f; }
+
+/* акцент ракеты: в тёмной теме — как есть, в светлой — затемнённый (см. блок выше) */
+.pilot-line strong { color: var(--pilot-accent, var(--primary-dark)); }
+
+/* ещё несколько мелких подписей: тёмнее, чтобы не сливались на белом */
+html[data-theme="light"] .rpg-bb-kicker { color: #8a5200; }
+html[data-theme="light"] .pq-battle-place .place-score { color: color-mix(in srgb, var(--crew-color) 60%, #0b2545); }
+html[data-theme="light"] .pq-battle-player { color: #3b5673; }
+
+/* ============================================================
+   ТЁМНАЯ ТЕМА: заголовки и бейджи теории.
+   Базовый цвет #008ba3 (var(--primary-dark)) на тёмном фоне даёт
+   3.2–4.0 — текст сливается, поэтому в тёмной теме берём светлый циан.
+   ============================================================ */
+html[data-theme="dark"] .theory-title,
+html[data-theme="dark"] .theory-conspekt-title { color: #8ceafb; }
+html[data-theme="dark"] .theory-badge {
+    color: #c2f2fb;
+    background: rgba(0, 184, 212, 0.18);
+    border-color: rgba(125, 211, 252, 0.46);
+}
+html[data-theme="dark"] .theory-content .theory-h { color: #7ee3f4; }
+html[data-theme="dark"] .theory-content .t-formula { color: #eaf6ff; }
+html[data-theme="dark"] .hud-value { color: #7fe3f2; }
+
+/* Тёмная тема: белый текст на бирюзово-синем градиенте давал 2.4–3.3.
+   В светлой теме эти же плашки уже затемнены — переносим на тёмную. */
+html[data-theme="dark"] .btn-primary {
+    background: linear-gradient(135deg, #0a7d99, #1565c0);
+    border-color: #0a7d99;
+}
+html[data-theme="dark"] .pq-grade-pill.active[data-g="7"] {
+    background: linear-gradient(135deg, #0a7d99, #066376);
+}
+html[data-theme="dark"] .pq-grade-pill.active[data-g="8"] {
+    background: linear-gradient(135deg, #b35400, #8f4200);
+}
+html[data-theme="dark"] .theory-tab.active {
+    background: linear-gradient(135deg, #0a7d99, #066376);
+    border-color: #0a7d99;
+    color: #fff;
+}
+
+/* Светлая тема: мелкие подписи и цифры на цветных бейджах профиля */
+html[data-theme="light"] .rpg-streak-week span { color: #4a5a70; }
+.rpg-profile-card .rpg-hero-level b,
+.rpg-profile-card .rpg-ph-badge b,
+.rpg-profile-card .rpg-lb-badge b { color: #fff; }
+
+/* Игровой HUD живёт на тёмной сцене в обеих темах */
+html[data-theme="light"] .btn-exit-level {
+    color: #b3123f;
+    border-color: rgba(179, 18, 63, 0.5);
+    background: rgba(255, 60, 90, 0.1);
+}
+html[data-theme="light"] .btn-pause { color: #066376; }
+html[data-theme="light"] .hud-label { color: #4c5d75; }
+html[data-theme="light"] .controls-hint,
+html[data-theme="light"] .minimap-label { color: #dbe8f5; }

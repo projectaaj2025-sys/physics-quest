@@ -590,7 +590,7 @@ function showLevelSelect() {
     const pname = settings.playerName ? escapeHtml(settings.playerName) : I18n.t("anonymous");
     const st = getRocketStyle(settings.rocketStyle);
     document.getElementById("pilot-line").innerHTML =
-        `👨‍🚀 ${I18n.t("pilot")}: <strong style="color:${st.accent}">${pname}</strong>`;
+        `👨‍🚀 ${I18n.t("pilot")}: <strong style="--pilot-accent:${st.accent}">${pname}</strong>`;
     const storyProgress = document.getElementById("story-progress");
     if (storyProgress) {
         const currentChapter = getStoryChapter(Number(progress.unlockedLevel) || 1);

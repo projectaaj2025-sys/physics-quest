@@ -2697,7 +2697,7 @@
                 box-shadow: 0 30px 80px rgba(28, 48, 76, 0.35) !important;
                 color: #152a40 !important;
             }
-            html[data-theme="light"] #pq-sim89-modal .pq-sim89-kicker { color: #2f7db8 !important; }
+            html[data-theme="light"] #pq-sim89-modal .pq-sim89-kicker { color: #23618f !important; }
             html[data-theme="light"] #pq-sim89-modal .pq-s89-dialog h2 { color: #10263c !important; }
             html[data-theme="light"] #pq-sim89-modal .pq-s89-dialog p { color: #59748f !important; }
             html[data-theme="light"] #pq-sim89-modal .pq-td-x {
@@ -2757,11 +2757,11 @@
             }
             html[data-theme="light"] #pq-sim89-section .pq-sim89-head h2 { color: #10263c; }
             html[data-theme="light"] #pq-sim89-section .pq-sim89-head p { color: #4b6683; }
-            html[data-theme="light"] #pq-sim89-section .pq-sim89-kicker { color: #2f7db8; }
+            html[data-theme="light"] #pq-sim89-section .pq-sim89-kicker { color: #23618f; }
             html[data-theme="light"] #pq-sim89-section .pq-sim89-prog {
                 background: rgba(47, 125, 184, 0.10);
                 border: 1px solid rgba(47, 125, 184, 0.28);
-                color: #1d6fb8;
+                color: #23618f;
             }
             html[data-theme="light"] #pq-sim89-section .pq-sim89-card,
             html[data-theme="light"] #pq-sim89-modal .pq-sim89-card {
@@ -2773,21 +2773,21 @@
             html[data-theme="light"] #pq-sim89-section .pq-sim89-card:hover { border-color: #2f7db8; }
             html[data-theme="light"] #pq-sim89-section .pq-sim89-card b { color: #0f2740; }
             html[data-theme="light"] #pq-sim89-section .pq-sim89-card small { color: #4b6683; }
-            html[data-theme="light"] #pq-sim89-section .pq-sim89-card-top { color: #2f7db8; }
+            html[data-theme="light"] #pq-sim89-section .pq-sim89-card-top { color: #23618f; }
             html[data-theme="light"] #pq-sim89-section .pq-sim89-card-icon { filter: saturate(1.05); }
-            html[data-theme="light"] #pq-sim89-section .pq-sim89-card-chapter { color: #2f7db8; }
+            html[data-theme="light"] #pq-sim89-section .pq-sim89-card-chapter { color: #23618f; }
             html[data-theme="light"] #pq-sim89-section .pq-sim89-topic-head {
                 background: rgba(47, 125, 184, 0.08);
                 border: 1px solid rgba(47, 125, 184, 0.26);
             }
             html[data-theme="light"] #pq-sim89-section .pq-sim89-topic-head b { color: #10263c; }
-            html[data-theme="light"] #pq-sim89-section .pq-sim89-topic-head span { color: #1d6fb8; }
+            html[data-theme="light"] #pq-sim89-section .pq-sim89-topic-head span { color: #23618f; }
             html[data-theme="light"] #pq-sim89-section .pq-sim89-card-tip {
                 background: rgba(47, 125, 184, 0.08);
                 border: 1px solid rgba(47, 125, 184, 0.2);
                 color: #33587c !important;
             }
-            html[data-theme="light"] #pq-sim89-section .pq-sim89-card em { color: #1d6fb8; }
+            html[data-theme="light"] #pq-sim89-section .pq-sim89-card em { color: #23618f; }
             html[data-theme="light"] #pq-sim89-section .pq-sim89-card.done {
                 background: #f2fbf5;
                 border-color: rgba(34, 197, 94, 0.5);
