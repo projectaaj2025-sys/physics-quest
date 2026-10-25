@@ -87,14 +87,15 @@ const UI = {
         buy: "Купить",
         owned: "Куплено",
         artifactBought: "Артефакт активирован",
-        questsTitle: "ЕЖЕДНЕВНЫЕ ЗАДАНИЯ",
-        questsHint: "Три задания на день. Прогресс сохраняется между миссиями и обновляется в полночь.",
-        resetAt: "Обновление в 00:00",
+        questsTitle: "ЕЖЕНЕДЕЛЬНЫЕ ЗАДАНИЯ",
+        questsHint: "Три случайных задания на неделю. Набор обновляется в понедельник, прогресс сохраняется между миссиями.",
+        resetAt: "Новое в понедельник",
+        weekLeft: "осталось {0} дн.",
         claim: "Забрать",
         claimed: "Получено",
         questReward: "+{0} XP · +{1} 💎",
         questDone: "выполнено",
-        allQuestsDone: "Все задания дня закрыты. Отличная работа!",
+        allQuestsDone: "Все задания недели закрыты. Отличная работа!",
         achievementToast: "ДОСТИЖЕНИЕ",
         achievementUnlockedToast: "Достижение получено!",
         newLevelToast: "НОВЫЙ УРОВЕНЬ!",
@@ -152,11 +153,11 @@ const UI = {
         howtoRpgProgress: "Опыт, уровни и навыки",
         howtoRpgProgressText: "За миссии дают опыт и кристаллы. Новый уровень — 1 очко навыка: щит, регенерация, гравитатор, подсказки, феникс и другие улучшения. Кристаллы тратятся в штабе на артефакты.",
         howtoRpgAch: "Достижения и задания",
-        howtoRpgAchText: "Достижения ({0} штук) открываются за игру и дают очки, опыт и кристаллы; очки открывают титулы. Три ежедневных задания обновляются в полночь. Всё это — кнопка «Штаб» в меню и на экране выбора уровня.",
+        howtoRpgAchText: "Достижения ({0} штук) открываются за игру и дают очки, опыт и кристаллы; очки открывают титулы. Три случайных задания недели обновляются в понедельник. Всё это — кнопка «Штаб» в меню и на экране выбора уровня.",
         howtoRpgHint: "Совет: у каждой миссии своя дополнительная цель — она даёт бонусные очки и кристаллы.",
 
         openProfileHub: "Открыть штаб",
-        dailyLabel: "Задания дня",
+        dailyLabel: "Задания недели",
         levelBarHint: "до следующего уровня",
         rankUpToast: "НОВОЕ ЗВАНИЕ",
         scoreBonus: "+{0}",
@@ -284,14 +285,15 @@ const UI = {
         buy: "Buy",
         owned: "Owned",
         artifactBought: "Artifact activated",
-        questsTitle: "DAILY QUESTS",
-        questsHint: "Three quests per day. Progress is saved between missions and resets at midnight.",
-        resetAt: "Resets at 00:00",
+        questsTitle: "WEEKLY QUESTS",
+        questsHint: "Three random quests per week. The set refreshes on Monday, progress is kept between missions.",
+        resetAt: "New set on Monday",
+        weekLeft: "{0} days left",
         claim: "Claim",
         claimed: "Claimed",
         questReward: "+{0} XP · +{1} 💎",
         questDone: "done",
-        allQuestsDone: "All daily quests completed. Great job!",
+        allQuestsDone: "All weekly quests completed. Great job!",
         achievementToast: "ACHIEVEMENT",
         achievementUnlockedToast: "Achievement unlocked!",
         newLevelToast: "NEW LEVEL!",
@@ -349,11 +351,11 @@ const UI = {
         howtoRpgProgress: "XP, levels and skills",
         howtoRpgProgressText: "Missions grant XP and crystals. Each level gives 1 skill point: shield, regeneration, gravitator, hints, phoenix and more. Crystals buy artifacts in the hub.",
         howtoRpgAch: "Achievements and quests",
-        howtoRpgAchText: "Achievements ({0} of them) unlock through play and grant points, XP and crystals; points unlock titles. Three daily quests reset at midnight. All of it lives behind the Hub button in the menu and on the level screen.",
+        howtoRpgAchText: "Achievements ({0} of them) unlock through play and grant points, XP and crystals; points unlock titles. Three random quests refresh every Monday. All of it lives behind the Hub button in the menu and on the level screen.",
         howtoRpgHint: "Tip: every mission has its own bonus objective — extra score and crystals.",
 
         openProfileHub: "Open hub",
-        dailyLabel: "Daily quests",
+        dailyLabel: "Weekly quests",
         levelBarHint: "to next level",
         rankUpToast: "NEW RANK",
         scoreBonus: "+{0}",
@@ -734,31 +736,31 @@ const ACHIEVEMENTS = [
     ach("no_damage", "🏰", "silver", "Броня города", "City Armor", "Заверши миссию без урона городу", "Complete a mission without city damage", "noDamageMissions", 1),
     ach("no_hints", "🧩", "bronze", "Своими силами", "On Your Own", "Пройди миссию без подсказок", "Complete a mission without hints", "noHintMissions", 1),
     ach("crystals_500", "💎", "silver", "Кристальный магнат", "Crystal Magnate", "Заработай 500 кристаллов", "Earn 500 crystals", "crystalsEarned", 500),
-    ach("quests_5", "📜", "bronze", "Исполнитель", "Quest Runner", "Выполни 5 ежедневных заданий", "Complete 5 daily quests", "questsClaimed", 5),
+    ach("quests_5", "📜", "bronze", "Исполнитель", "Quest Runner", "Выполни 5 еженедельных заданий", "Complete 5 weekly quests", "questsClaimed", 5),
     ach("speed_8", "🏁", "gold", "Скоростной протокол", "Speed Protocol", "8 быстрых ответов за миссию «Блиц»", "8 fast answers in one Speed Protocol mission", "speedAnswersBest", 8)
 ];
 
-/* ---------------- ЕЖЕДНЕВНЫЕ ЗАДАНИЯ ---------------- */
+/* ---------------- ЕЖЕНЕДЕЛЬНЫЕ ЗАДАНИЯ (3 случайных на неделю) ---------------- */
 const QUEST_POOL = [
     {
-        id: "q_asteroids", icon: "☄️", counter: "asteroids", target: 30, xp: 70, crystals: 20,
+        id: "q_asteroids", icon: "☄️", counter: "asteroids", target: 120, xp: 140, crystals: 40,
         name: { ru: "Чистое небо", en: "Clear Sky" },
-        desc: { ru: "Сбей 30 астероидов за день", en: "Deflect 30 asteroids today" }
+        desc: { ru: "Сбей 120 астероидов за неделю", en: "Deflect 120 asteroids this week" }
     },
     {
-        id: "q_correct", icon: "🧠", counter: "correct", target: 25, xp: 90, crystals: 25,
-        name: { ru: "Эрудит дня", en: "Scholar of the Day" },
-        desc: { ru: "Дай 25 правильных ответов", en: "Give 25 correct answers" }
+        id: "q_correct", icon: "🧠", counter: "correct", target: 100, xp: 180, crystals: 50,
+        name: { ru: "Эрудит недели", en: "Scholar of the Week" },
+        desc: { ru: "Дай 100 правильных ответов", en: "Give 100 correct answers" }
     },
     {
-        id: "q_mission", icon: "🚀", counter: "missions", target: 1, xp: 60, crystals: 15,
+        id: "q_mission", icon: "🚀", counter: "missions", target: 4, xp: 120, crystals: 30,
         name: { ru: "На смене", en: "On Duty" },
-        desc: { ru: "Заверши 1 миссию", en: "Complete 1 mission" }
+        desc: { ru: "Заверши 4 миссии за неделю", en: "Complete 4 missions this week" }
     },
     {
-        id: "q_orbs", icon: "🔋", counter: "orbs", target: 10, xp: 50, crystals: 15,
+        id: "q_orbs", icon: "🔋", counter: "orbs", target: 40, xp: 100, crystals: 30,
         name: { ru: "Энергосбор", en: "Power Gathering" },
-        desc: { ru: "Собери 10 энергоядер", en: "Collect 10 energy orbs" }
+        desc: { ru: "Собери 40 энергоядер", en: "Collect 40 energy orbs" }
     },
     {
         id: "q_boss", icon: "👁", counter: "boss", target: 1, xp: 120, crystals: 40,
@@ -766,14 +768,14 @@ const QUEST_POOL = [
         desc: { ru: "Уничтожь ядро в миссии «Босс»", en: "Destroy a core in a boss mission" }
     },
     {
-        id: "q_streak", icon: "🔥", counter: "bestStreak", target: 5, xp: 60, crystals: 20,
+        id: "q_streak", icon: "🔥", counter: "bestStreak", target: 8, xp: 90, crystals: 25,
         name: { ru: "Без промаха", en: "No Misses" },
-        desc: { ru: "Достигни серии из 5 верных ответов", en: "Reach a 5-answer correct streak" }
+        desc: { ru: "Достигни серии из 8 верных ответов", en: "Reach an 8-answer correct streak" }
     },
     {
-        id: "q_score", icon: "⭐", counter: "score", target: 1500, xp: 80, crystals: 25,
+        id: "q_score", icon: "⭐", counter: "score", target: 6000, xp: 160, crystals: 50,
         name: { ru: "Рекордсмен", en: "Record Holder" },
-        desc: { ru: "Набери 1500 очков за день", en: "Earn 1500 score today" }
+        desc: { ru: "Набери 6000 очков за неделю", en: "Earn 6000 score this week" }
     }
 ];
 
@@ -888,14 +890,15 @@ UI.kk = {
     "buy": "Сатып алу",
     "owned": "Сатып алынды",
     "artifactBought": "Артефакт іске қосылды",
-    "questsTitle": "КҮНДЕЛІКТІ ТАПСЫРМАЛАР",
-    "questsHint": "Күніне үш тапсырма. Прогресс миссиялар арасында сақталады және түн ортасында жаңарады.",
-    "resetAt": "Жаңару 00:00",
+    "questsTitle": "АПТАЛЫҚ ТАПСЫРМАЛАР",
+    "questsHint": "Аптаға үш кездейсоқ тапсырма. Жинақ дүйсенбіде жаңарады, прогресс миссиялар арасында сақталады.",
+    "resetAt": "Жаңасы дүйсенбіде",
+    "weekLeft": "қалғаны {0} күн",
     "claim": "Алу",
     "claimed": "Алынды",
     "questReward": "+{0} XP · +{1} 💎",
     "questDone": "орындалды",
-    "allQuestsDone": "Күннің барлық тапсырмасы жабылды. Керемет жұмыс!",
+    "allQuestsDone": "Аптаның барлық тапсырмасы жабылды. Керемет жұмыс!",
     "achievementToast": "ЖЕТІСТІК",
     "achievementUnlockedToast": "Жетістік алынды!",
     "newLevelToast": "ЖАҢА ДЕҢГЕЙ!",
@@ -953,10 +956,10 @@ UI.kk = {
     "howtoRpgProgress": "Тәжірибе, деңгейлер және дағдылар",
     "howtoRpgProgressText": "Миссиялар тәжірибе мен кристал береді. Жаңа деңгей — 1 дағды ұпайы: қалқан, регенерация, гравитатор, кеңестер, феникс және басқа жақсартулар. Кристалдар штабта артефактілерге жұмсалады.",
     "howtoRpgAch": "Жетістіктер мен тапсырмалар",
-    "howtoRpgAchText": "Жетістіктер ({0} дана) ойын барысында ашылып, ұпай, тәжірибе және кристал береді; ұпайлар титулдарды ашады. Үш күнделікті тапсырма түн ортасында жаңарады. Мұның бәрі — мәзірдегі және деңгей таңдау экранындағы «Штаб» батырмасы.",
+    "howtoRpgAchText": "Жетістіктер ({0} дана) ойын барысында ашылып, ұпай, тәжірибе және кристал береді; ұпайлар титулдарды ашады. Үш кездейсоқ апталық тапсырма дүйсенбіде жаңарады. Мұның бәрі — мәзірдегі және деңгей таңдау экранындағы «Штаб» батырмасы.",
     "howtoRpgHint": "Кеңес: әр миссияның өз қосымша мақсаты бар — ол қосымша ұпай мен кристал береді.",
     "openProfileHub": "Штабты ашу",
-    "dailyLabel": "Күн тапсырмалары",
+    "dailyLabel": "Апта тапсырмалары",
     "levelBarHint": "келесі деңгейге дейін",
     "rankUpToast": "ЖАҢА ДӘРЕЖЕ",
     "scoreBonus": "+{0}",
@@ -1038,10 +1041,11 @@ Object.assign(UI.ru, {
     maintDoneXp: "+{0} XP · +{1} 💎",
     maintGain: "+{0} XP · +{1} 💎 — за разбор ошибки",
     maintGainToast: "Ошибка разобрана",
-    streakHint: "Серия дней: сколько дней подряд ты заходил и играл. Со второго дня подряд — бонус опыта за регулярность.",
+    streakHint: "Дни в игре: считаются все дни, когда ты играл, — подряд идти не обязательно. За каждый новый день дают бонус опыта, а бейджи растут от общего числа дней.",
     streakDays: "{0} дн.",
-    streakBest: "Рекорд: {0}",
-    streakToast: "Серия {0} дн. · +{1} XP",
+    streakDaysPlayed: "Дней в игре",
+    streakBest: "Рекорд подряд: {0} дн.",
+    streakToast: "День {0} в игре · +{1} XP",
     streakWeekdays: "Пн,Вт,Ср,Чт,Пт,Сб,Вс",
     streakBadge0: "Без серии",
     streakBadge1: "Разминка",
@@ -1049,7 +1053,7 @@ Object.assign(UI.ru, {
     streakBadge3: "Неделя подряд",
     streakBadge4: "Две недели в строю",
     streakBadge5: "Месяц в строю",
-    statDayStreak: "Дней подряд",
+    statDayStreak: "Дней в игре",
     maintClose: "Закрыть",
     maintAgain: "Ещё подход",
     maintNoTasks: "Пока нечего ремонтировать: ошибок в очереди нет.",
@@ -1281,10 +1285,11 @@ Object.assign(UI.en, {
     maintDoneXp: "+{0} XP · +{1} 💎",
     maintGain: "+{0} XP · +{1} 💎 for fixing an error",
     maintGainToast: "Error fixed",
-    streakHint: "Day streak: how many days in a row you signed in and played. From day two you get an XP bonus for consistency.",
+    streakHint: "Days in game: every day you play counts, they do not have to be in a row. Each new day gives an XP bonus, and badges grow with the total number of days.",
     streakDays: "{0} days",
-    streakBest: "Best: {0}",
-    streakToast: "{0}-day streak · +{1} XP",
+    streakDaysPlayed: "Days in game",
+    streakBest: "Best in a row: {0} days",
+    streakToast: "Day {0} in game · +{1} XP",
     streakWeekdays: "Mo,Tu,We,Th,Fr,Sa,Su",
     streakBadge0: "No streak",
     streakBadge1: "Warm-up",
@@ -1292,7 +1297,7 @@ Object.assign(UI.en, {
     streakBadge3: "A week in a row",
     streakBadge4: "Two weeks on duty",
     streakBadge5: "A month on duty",
-    statDayStreak: "Days in a row",
+    statDayStreak: "Days in game",
     maintClose: "Close",
     maintAgain: "One more round",
     maintNoTasks: "Nothing to repair yet: no mistakes in the queue.",
@@ -1525,10 +1530,11 @@ Object.assign(UI.kk, {
     maintDoneXp: "+{0} XP · +{1} 💎",
     maintGain: "Қатені талдағаны үшін +{0} XP · +{1} 💎",
     maintGainToast: "Қате талданды",
-    streakHint: "Күндер сериясы: қатарынан неше күн кіріп, ойнағаның. Екінші күннен бастап тұрақтылық үшін тәжірибе бонусы.",
+    streakHint: "Ойын күндері: ойнаған барлық күндер саналады, қатарынан болуы міндетті емес. Әр жаңа күн үшін тәжірибе бонусы беріледі, ал белгілер жалпы күн санынан өседі.",
     streakDays: "{0} күн",
-    streakBest: "Рекорд: {0}",
-    streakToast: "{0} күн серия · +{1} XP",
+    streakDaysPlayed: "Ойын күндері",
+    streakBest: "Қатарынан рекорд: {0} күн",
+    streakToast: "Ойында {0}-күн · +{1} XP",
     streakWeekdays: "Дс,Сс,Ср,Бс,Жм,Сн,Жс",
     streakBadge0: "Серия жоқ",
     streakBadge1: "Қыздыру",
@@ -1536,7 +1542,7 @@ Object.assign(UI.kk, {
     streakBadge3: "Қатарынан апта",
     streakBadge4: "Екі апта сапта",
     streakBadge5: "Бір ай сапта",
-    statDayStreak: "Қатарынан күн",
+    statDayStreak: "Ойын күндері",
     maintClose: "Жабу",
     maintAgain: "Тағы бір айналым",
     maintNoTasks: "Әзірге жөндейтін нәрсе жоқ: кезекте қате жоқ.",
@@ -2043,7 +2049,7 @@ const RPG_KK = {
     ],
     "quests_5": [
         "Орындаушы",
-        "5 күнделікті тапсырманы орында"
+        "5 апталық тапсырманы орында"
     ],
     "speed_8": [
         "Жылдамдық протоколы",
@@ -2053,19 +2059,19 @@ const RPG_KK = {
     quests: {
     "q_asteroids": [
         "Таза аспан",
-        "Күніне 30 астероидты қақ"
+        "Аптада 120 астероидты қақ"
     ],
     "q_correct": [
-        "Күн эрудиті",
-        "25 дұрыс жауап бер"
+        "Апта эрудиті",
+        "100 дұрыс жауап бер"
     ],
     "q_mission": [
         "Кезекте",
-        "1 миссияны аяқта"
+        "Аптада 4 миссияны аяқта"
     ],
     "q_orbs": [
         "Энергия жинау",
-        "10 энергия ядросын жина"
+        "40 энергия ядросын жина"
     ],
     "q_boss": [
         "Ядро жоюшы",
@@ -2073,11 +2079,11 @@ const RPG_KK = {
     ],
     "q_streak": [
         "Қатесіз",
-        "5 дұрыс жауаптан тұратын серияға жет"
+        "8 дұрыс жауаптан тұратын серияға жет"
     ],
     "q_score": [
         "Рекордшы",
-        "Күніне 1500 ұпай жина"
+        "Аптада 6000 ұпай жина"
     ]
 }
 };

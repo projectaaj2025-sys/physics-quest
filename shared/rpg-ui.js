@@ -351,7 +351,7 @@ Object.assign(RPG, {
         if (!this.state) return 0;
         let n = 0;
         try {
-            const items = (this.state.daily && this.state.daily.items) || [];
+            const items = (this.state.weekly && this.state.weekly.items) || [];
             n += items.filter(q => !q.claimed && this.questProgress(q) >= ((this.questDef(q.id) || {}).target || Infinity)).length;
         } catch (e) {}
         if (this.state.skillPoints > 0) n += 1;
@@ -469,7 +469,7 @@ Object.assign(RPG, {
                 <div class="rpg-streak-top">
                     <span class="rpg-streak-flame">🔥</span>
                     <b>${streak.count}</b>
-                    <small>${escapeHtml(rpgT("streakDays", streak.count))}</small>
+                    <small>${escapeHtml(rpgT("streakDaysPlayed"))}</small>
                 </div>
                 <div class="rpg-streak-badge">${escapeHtml(badge)}</div>
                 <div class="rpg-streak-week">
@@ -957,9 +957,9 @@ Object.assign(RPG, {
     },
 
     renderQuests() {
-        this.ensureDaily();
-        const daily = this.state.daily;
-        const items = daily.items.map(item => {
+        this.ensureWeekly();
+        const weekly = this.state.weekly;
+        const items = weekly.items.map(item => {
             const def = this.questDef(item.id);
             if (!def) return "";
             const progress = this.questProgress(item);
@@ -986,14 +986,14 @@ Object.assign(RPG, {
                 </div>
             `;
         }).join("");
-        const allDone = daily.items.every(item => item.claimed);
+        const allDone = weekly.items.every(item => item.claimed);
         return `
             <div class="rpg-quests-head">
                 <div>
                     <div class="rpg-section-title" style="margin-bottom:2px">${escapeHtml(rpgT("questsTitle"))}</div>
                     <p class="rpg-section-note" style="margin-bottom:0">${escapeHtml(rpgT("questsHint"))}</p>
                 </div>
-                <span class="rpg-quests-reset">🕛 ${escapeHtml(rpgT("resetAt"))}</span>
+                <span class="rpg-quests-reset">🕛 ${escapeHtml(rpgT("resetAt"))} · ${escapeHtml(rpgT("weekLeft", this.weekLeft()))}</span>
             </div>
             <div class="rpg-quest-list">${items}</div>
             ${allDone ? `<p class="rpg-section-note" style="margin-top:14px;text-align:center">✅ ${escapeHtml(rpgT("allQuestsDone"))}</p>` : ""}
@@ -1013,7 +1013,7 @@ Object.assign(RPG, {
             try { localStorage.removeItem(RPG_STORAGE_KEY); } catch (e) {}
             this.state = this.defaultState();
             this._pendingLevelUps = 0;
-            this.ensureDaily();
+            this.ensureWeekly();
             this.save();
             this.closeHub();
             this.renderMenuCard();
