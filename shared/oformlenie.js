@@ -339,7 +339,7 @@
             }
             .pq-of-kicker {
                 font-size: 10.5px; font-weight: 900; letter-spacing: 0.09em;
-                color: #2f7db8; text-transform: uppercase;
+                color: #23618f; text-transform: uppercase;
             }
             .pq-of-card h3 { margin: 4px 0 6px; font-size: 17px; color: #10263c; }
             .pq-of-intro { margin: 0 0 12px; font-size: 13px; line-height: 1.5; color: #46688c; }
@@ -360,7 +360,7 @@
             .pq-of-table .pq-of-main { grid-row: span 2; border-left: 1px solid rgba(120, 152, 186, 0.28); }
             .pq-of-table .pq-of-row-eq { font-family: ui-monospace, Menlo, Consolas, monospace; font-weight: 800; color: #17324d; }
             .pq-of-table .pq-of-answer { font-weight: 900; color: #1d7a4c; }
-            .pq-of-var { font-family: ui-monospace, Menlo, Consolas, monospace; font-weight: 800; color: #2f7db8; }
+            .pq-of-var { font-family: ui-monospace, Menlo, Consolas, monospace; font-weight: 800; color: #23618f; }
             .pq-of-fig { font-style: italic; color: #46688c; font-size: 12px; }
             .pq-of-steps { margin: 12px 0 0; padding-left: 20px; font-size: 12.5px; line-height: 1.55; color: #33546f; }
             .pq-of-steps li { margin-bottom: 3px; }

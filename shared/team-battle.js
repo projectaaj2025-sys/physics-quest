@@ -1,10 +1,13 @@
 /* ============================================================
-   PQ TEAM BATTLE — «Интерактивная доска / Битва экипажей»
-   Командный режим как в Kahoot: вопрос один на всех и висит на доске,
-   оба экипажа отвечают на него одновременно — каждый игрок своим
-   вариантом. Экипаж получает очки, только если верно ответила
-   БОЛЬШАЯ ПОЛОВИНА команды; чем дружнее ответ, тем выше коэффициент.
-   Светлая тема — по умолчанию, тёмная включается ползунком.
+   PQ TEAM BATTLE — «Битва экипажей» (интерактивная доска)
+   Формат Kahoot для команды:
+   • вопрос один на всех и висит на доске;
+   • оба экипажа отвечают на него одновременно —
+     каждый игрок жмёт свой вариант в панели экипажа;
+   • экипаж получает очки, только если верно ответила
+     БОЛЬШАЯ половина команды; чем дружнее ответ, тем выше
+     коэффициент (×1 / ×1,25 / ×1,5);
+   • светлая и тёмная тема, обе — с объёмным фоном.
    ============================================================ */
 (function () {
     "use strict";
@@ -41,23 +44,32 @@
             winner: "Победил",
             again: "🔁 Ещё раз",
             exit: "Выйти",
-            noTasks: "Не удалось найти подходящие вопросы для этой темы.",
+            noTasks: "Для этой темы не нашлось подходящих вопросов.",
             close: "Закрыть",
             tie: "Ничья — дружба побеждает!",
             right: "Верный ответ",
             time: "сек",
-            shareLine: "Верно {0} из {1}",
+            shareLine: "Верных {0} из {1}",
             coefLine: "коэффициент ×{0}",
             gain: "+{0} очков",
             noGain: "меньше половины — без очков",
             halfGain: "ровно половина — без очков",
-            teamDone: "ответили все",
+            teamDone: "все ответили",
             waiting: "отвечают",
-            rulePoints: "Очки: 100 за вопрос, если верна большая половина команды. 75 % и выше — ×1,25, все верно — ×1,5.",
-            ruleShield: "Щит: +4 % за дружный ответ, −14 % если половина и меньше ответили верно.",
+            rulePoints: "Очки: 100 × коэффициент, если верно ответила большая половина экипажа (75 % и выше — ×1,25, все верно — ×1,5).",
+            ruleShield: "Щит: +4 % за дружный ответ, −14 % если верных половина и меньше.",
             pointsShort: "очк.",
             place: "{0} место",
-            playersShort: "игр."
+            playersShort: "игр.",
+            pick: "Вариант",
+            members: "Игроки",
+            answeredCount: "{0} из {1} ответили",
+            teamCorrect: "✅ {0} из {1} верно",
+            teamWrong: "❌ {0} из {1} верно",
+            resultsHint: "Итоги экипажей и вклад каждого игрока",
+            playerLine: "Игрок {0}",
+            personalScore: "{0} верных из {1}",
+            sharePct: "{0} % верных"
         },
         en: {
             menuBtn: "Team battle",
@@ -102,11 +114,20 @@
             halfGain: "exactly half — no points",
             teamDone: "everyone answered",
             waiting: "answering",
-            rulePoints: "Points: 100 per question when the majority of the crew is correct. 75 % and above — ×1.25, all correct — ×1.5.",
+            rulePoints: "Points: 100 × coefficient when the majority of the crew is correct (75 % and above — ×1.25, all correct — ×1.5).",
             ruleShield: "Shield: +4 % for a united answer, −14 % when half or fewer were correct.",
             pointsShort: "pts",
             place: "Place {0}",
-            playersShort: "pl."
+            playersShort: "pl.",
+            pick: "Option",
+            members: "Players",
+            answeredCount: "{0} of {1} answered",
+            teamCorrect: "✅ {0} of {1} correct",
+            teamWrong: "❌ {0} of {1} correct",
+            resultsHint: "Crew results and each player's contribution",
+            playerLine: "Player {0}",
+            personalScore: "{0} correct of {1}",
+            sharePct: "{0} % correct"
         },
         kk: {
             menuBtn: "Командалық сайыс",
@@ -151,13 +172,126 @@
             halfGain: "дәл жартысы — ұпай жоқ",
             teamDone: "барлығы жауап берді",
             waiting: "жауап беруде",
-            rulePoints: "Ұпай: команданың басым бөлігі дұрыс болса, сұраққа 100. 75 % және одан жоғары — ×1,25, барлығы дұрыс — ×1,5.",
+            rulePoints: "Ұпай: команданың басым бөлігі дұрыс болса, 100 × коэффициент (75 % және одан жоғары — ×1,25, барлығы дұрыс — ×1,5).",
             ruleShield: "Қалқан: біртұтас жауап үшін +4 %, жартысы және одан азы дұрыс болса −14 %.",
             pointsShort: "ұп.",
             place: "{0} орын",
-            playersShort: "ойын."
+            playersShort: "ойын.",
+            pick: "Нұсқа",
+            members: "Ойыншылар",
+            answeredCount: "{0} / {1} жауап берді",
+            teamCorrect: "✅ {1} ішінен {0} дұрыс",
+            teamWrong: "❌ {1} ішінен {0} дұрыс",
+            resultsHint: "Экипаж қорытындысы және әр ойыншының үлесі",
+            playerLine: "{0}-ойыншы",
+            personalScore: "{1} ішінен {0} дұрыс",
+            sharePct: "{0} % дұрыс"
         }
     };
+
+    /* ---------- тексты режима «отвечают телефоны» ---------- */
+    const PHONE_L = {
+        ru: {
+            modeLabel: "Как отвечают игроки?",
+            modePads: "Панели на доске",
+            modePhones: "📱 Телефоны по QR",
+            phoneHint: "Каждый ученик заходит по QR со своего телефона. Команды собираются случайно — до финала никто не знает, кто с кем.",
+            createRoom: "📱 Создать комнату",
+            roomKicker: "КОМНАТА ГОТОВА",
+            roomLead: "Наведи камеру телефона на QR или открой адрес и введи код комнаты.",
+            roomCode: "Код комнаты",
+            roomLink: "Адрес для телефона",
+            joinedTitle: "Кто уже в игре",
+            joinedNone: "Пока никто не подключился…",
+            joinedCount: "Подключились: {0}",
+            needPlayers: "Нужно хотя бы два игрока",
+            startBattle: "🚀 Начать битву",
+            roomOnline: "Комната в интернете",
+            roomLocal: "Локальный режим — только это устройство",
+            roomWaiting: "Соединяемся с сервером комнаты…",
+            roomError: "Комната недоступна. Проверьте интернет и попробуйте снова.",
+            newRoom: "Сменить код",
+            answeredPhone: "Ответили: {0} из {1}",
+            phoneWait: "Ученики отвечают на телефонах…",
+            crewAuto: "Экипаж {0}",
+            crewMembersHidden: "Состав скрыт до финала",
+            phoneStartHint: "Экипажи собраны случайно — на доске только счётчики",
+            resultsMembers: "Состав экипажей",
+            resultsHintPhone: "Команды и участники — можно показать классу",
+            playerNamed: "{0} · {1} верных",
+            noAnswers: "никто не ответил",
+            startAnyway: "Начать без телефонов",
+            lobbyCodeHint: "Продиктуйте код, если камера не читает QR",
+            scanQr: "QR для входа в игру"
+        },
+        en: {
+            modeLabel: "How do players answer?",
+            modePads: "Panels on the board",
+            modePhones: "📱 Phones via QR",
+            phoneHint: "Every student joins from their own phone by QR. Crews are drawn at random — nobody knows their team until the end.",
+            createRoom: "📱 Create a room",
+            roomKicker: "ROOM IS READY",
+            roomLead: "Point the phone camera at the QR code, or open the address and type the room code.",
+            roomCode: "Room code",
+            roomLink: "Phone address",
+            joinedTitle: "Already in the game",
+            joinedNone: "Nobody has joined yet…",
+            joinedCount: "Joined: {0}",
+            needPlayers: "At least two players are needed",
+            startBattle: "🚀 Start the battle",
+            roomOnline: "Room is online",
+            roomLocal: "Local mode — this device only",
+            roomWaiting: "Connecting to the room server…",
+            roomError: "The room is unavailable. Check the internet and try again.",
+            newRoom: "Change code",
+            answeredPhone: "Answered: {0} of {1}",
+            phoneWait: "Students are answering on their phones…",
+            crewAuto: "Crew {0}",
+            crewMembersHidden: "Members hidden until the end",
+            phoneStartHint: "Crews were drawn at random — the board shows counters only",
+            resultsMembers: "Crew members",
+            resultsHintPhone: "Crews and members — ready to show the class",
+            playerNamed: "{0} · {1} correct",
+            noAnswers: "nobody answered",
+            startAnyway: "Play without phones",
+            lobbyCodeHint: "Dictate the code if the camera cannot read the QR",
+            scanQr: "QR to join the game"
+        },
+        kk: {
+            modeLabel: "Ойыншылар қалай жауап береді?",
+            modePads: "Тақтадағы панельдер",
+            modePhones: "📱 QR арқылы телефондар",
+            phoneHint: "Әр оқушы өз телефонынан QR арқылы кіреді. Командалар кездейсоқ жиналады — финалға дейін кіммен бірге екенін ешкім білмейді.",
+            createRoom: "📱 Бөлме құру",
+            roomKicker: "БӨЛМЕ ДАЙЫН",
+            roomLead: "Телефон камерасын QR-ға бағыттаңыз немесе мекенжайды ашып, бөлме кодын енгізіңіз.",
+            roomCode: "Бөлме коды",
+            roomLink: "Телефон мекенжайы",
+            joinedTitle: "Кім ойында",
+            joinedNone: "Әзірге ешкім қосылған жоқ…",
+            joinedCount: "Қосылды: {0}",
+            needPlayers: "Кемінде екі ойыншы керек",
+            startBattle: "🚀 Сайысты бастау",
+            roomOnline: "Бөлме интернетте",
+            roomLocal: "Жергілікті режим — тек осы құрылғы",
+            roomWaiting: "Бөлме серверіне қосылып жатырмыз…",
+            roomError: "Бөлме қолжетімсіз. Интернетті тексеріп, қайталап көріңіз.",
+            newRoom: "Кодты ауыстыру",
+            answeredPhone: "Жауап берді: {1} ішінен {0}",
+            phoneWait: "Оқушылар телефондарында жауап беріп жатыр…",
+            crewAuto: "Экипаж {0}",
+            crewMembersHidden: "Құрам финалға дейін жасырын",
+            phoneStartHint: "Экипаждар кездейсоқ жиналды — тақтада тек санауыштар",
+            resultsMembers: "Экипаж құрамы",
+            resultsHintPhone: "Командалар мен қатысушылар — сыныпқа көрсетуге дайын",
+            playerNamed: "{0} · {1} дұрыс",
+            noAnswers: "ешкім жауап бермеді",
+            startAnyway: "Телефонсыз ойнау",
+            lobbyCodeHint: "Камера QR-ды оқымаса, кодты айтып беріңіз",
+            scanQr: "Ойынға кіру QR-ы"
+        }
+    };
+    Object.keys(PHONE_L).forEach((k) => { if (L[k]) Object.assign(L[k], PHONE_L[k]); });
 
     function lang() {
         try { return (typeof I18n !== "undefined" && I18n.currentLang) || localStorage.getItem("pq_lang") || "ru"; } catch (_) { return "ru"; }
@@ -179,10 +313,6 @@
         const l = lang();
         return obj[l] || obj.ru || obj.en || obj.kk || "";
     }
-    function num(v) {
-        const n = Number(String(v == null ? "" : v).replace(",", "."));
-        return Number.isFinite(n) ? n : NaN;
-    }
 
     const COLORS = ["#00a6c8", "#ef8b1f", "#7c5cff"];
     const ICONS = ["🛡️", "⚡", "🔥"];
@@ -198,6 +328,11 @@
     }
     function fmtCoef(c) {
         return String(c).replace(".", ",");
+    }
+    function shieldFor(share) {
+        if (share > 0.5) return 4;
+        if (Math.abs(share - 0.5) < 1e-9) return 0;
+        return -14;
     }
 
     const Battle = {
@@ -225,7 +360,10 @@
             this.injectButtons();
             const root = document.getElementById("pq-battle");
             if (!root) return;
+            // пока открыто лобби с QR, не перерисовываем экран: иначе потеряется комната
+            if (this.room && !this.state) return;
             if (!this.state) this.renderSetup();
+            else if (this.state.phase === "results") this.showResults();
             else if (this.state.phase === "reveal") this.renderReveal();
             else this.renderQuestion();
         },
@@ -281,6 +419,8 @@
 
         close() {
             if (this.timer) { clearInterval(this.timer); this.timer = null; }
+            this.closeRoom();
+            this.pendingPlayers = [];
             const el = document.getElementById("pq-battle");
             if (el) el.remove();
             document.body.classList.remove("pq-battle-open");
@@ -329,7 +469,15 @@
                                 ${levels.map((l) => `<option value="${l.id}">${esc(l.name)}</option>`).join("")}
                             </select>
                         </div>
+                        <div class="pq-battle-field pq-battle-field-wide">
+                            <label>${esc(t("modeLabel"))}</label>
+                            <div class="pq-battle-seg pq-battle-mode-seg" id="pq-battle-mode">
+                                <button type="button" class="active" data-mode="pads">${esc(t("modePads"))}</button>
+                                <button type="button" data-mode="phones">${esc(t("modePhones"))}</button>
+                            </div>
+                        </div>
                     </div>
+                    <div class="pq-battle-phone-hint" id="pq-battle-phone-hint" hidden>${esc(t("phoneHint"))}</div>
                     <div class="pq-battle-crew-inputs" id="pq-battle-crew-inputs"></div>
                     <div class="pq-battle-actions">
                         <button type="button" class="btn btn-primary pq-battle-start" id="pq-battle-start">${esc(t("start"))}</button>
@@ -357,6 +505,24 @@
                 });
             });
             this.renderCrewInputs(2);
+            this.setupMode = "pads";
+            const modeBox = root.querySelector("#pq-battle-mode");
+            modeBox.querySelectorAll("button").forEach((b) => {
+                b.addEventListener("click", () => {
+                    modeBox.querySelectorAll("button").forEach((x) => x.classList.remove("active"));
+                    b.classList.add("active");
+                    this.setupMode = b.dataset.mode;
+                    const phones = this.setupMode === "phones";
+                    const hint = document.getElementById("pq-battle-phone-hint");
+                    if (hint) hint.hidden = !phones;
+                    const inputs = document.getElementById("pq-battle-crew-inputs");
+                    if (inputs) inputs.style.display = phones ? "none" : "";
+                    const playersField = root.querySelector("#pq-battle-players")?.closest(".pq-battle-field");
+                    if (playersField) playersField.style.display = phones ? "none" : "";
+                    const startBtn = document.getElementById("pq-battle-start");
+                    if (startBtn) startBtn.textContent = phones ? t("createRoom") : t("start");
+                });
+            });
             root.querySelector("#pq-battle-start").addEventListener("click", () => this.start());
             root.querySelector("#pq-battle-exit").addEventListener("click", () => this.close());
         },
@@ -383,7 +549,7 @@
         renderCrewInputs(count) {
             const box = document.getElementById("pq-battle-crew-inputs");
             if (!box) return;
-            const defaults = lang() === "en" ? ["Alpha", "Beta", "Gamma"] : lang() === "kk" ? ["Альфа", "Бета", "Гамма"] : ["Альфа", "Бета", "Гамма"];
+            const defaults = lang() === "en" ? ["Alpha", "Beta", "Gamma"] : ["Альфа", "Бета", "Гамма"];
             const prev = Array.from(box.querySelectorAll("input")).map((i) => i.value);
             box.innerHTML = Array.from({ length: count }).map((_, i) => `
                 <label class="pq-battle-crew-input" style="--crew-color:${COLORS[i]}">
@@ -393,10 +559,216 @@
             `).join("");
         },
 
+        /* ---------- комната для телефонов ---------- */
+
+        phoneUrl(code) {
+            const grade = Number(window.CURRENT_GRADE) || 8;
+            let base = "./battle.html";
+            try {
+                base = new URL("battle.html", window.location.href).href;
+            } catch (_) {}
+            const sep = base.indexOf("?") >= 0 ? "&" : "?";
+            return `${base}${sep}room=${encodeURIComponent(code)}&grade=${grade}&lang=${encodeURIComponent(lang())}`;
+        },
+
+        openRoom() {
+            const root = document.getElementById("pq-battle");
+            if (!root) return;
+            if (!window.PQBattleRoom) {
+                this.toast(t("roomError"));
+                return;
+            }
+            const count = Number(root.querySelector("#pq-battle-count .active")?.dataset.count || 2);
+            const rounds = Number(root.querySelector("#pq-battle-rounds").value) || 8;
+            const topic = root.querySelector("#pq-battle-topic").value;
+            const pool = this.buildPool(topic);
+            if (!pool.length) { this.toast(t("noTasks")); return; }
+
+            const code = window.PQBattleRoom.newCode(4);
+            this.pendingPlayers = [];
+            this.pendingCfg = { count, rounds, pool, topic };
+
+            root.innerHTML = this.lobbyHtml(code);
+            this.drawQr(code);
+            const link = document.getElementById("pq-lobby-link");
+            if (link) link.textContent = this.phoneUrl(code);
+            this.refreshLobby();
+
+            this.room = window.PQBattleRoom.create(code, {
+                onJoin: (p) => {
+                    if (!p || !p.id) return;
+                    if (this.pendingPlayers.some((x) => x.id === p.id)) return;
+                    this.pendingPlayers.push({ id: p.id, name: p.name || `#${this.pendingPlayers.length + 1}` });
+                    this.refreshLobby();
+                    if (typeof PQSound !== "undefined") PQSound.play("click");
+                },
+                onLeave: (id) => {
+                    this.pendingPlayers = (this.pendingPlayers || []).filter((x) => x.id !== id);
+                    this.refreshLobby();
+                },
+                onAnswer: (id, opt) => this.answerFromPhone(id, opt),
+                onStatus: (mode, reason) => {
+                    const el = document.getElementById("pq-lobby-status");
+                    if (!el) return;
+                    if (mode === "online") { el.textContent = t("roomOnline"); el.dataset.mode = "online"; }
+                    else if (mode === "local") { el.textContent = t("roomLocal"); el.dataset.mode = "local"; }
+                    else if (mode === "waiting" || mode === "connecting") { el.textContent = t("roomWaiting"); el.dataset.mode = "waiting"; }
+                    else if (mode === "error") { el.textContent = t("roomError"); el.dataset.mode = "error"; }
+                }
+            });
+
+            const start = document.getElementById("pq-lobby-start");
+            if (start) start.addEventListener("click", () => this.startPhoneBattle());
+            const cancel = document.getElementById("pq-lobby-cancel");
+            if (cancel) cancel.addEventListener("click", () => { this.closeRoom(); this.renderSetup(); });
+        },
+
+        lobbyHtml(code) {
+            return `
+                <div class="pq-battle-setup pq-battle-lobby">
+                    <div class="pq-battle-kicker">${esc(t("roomKicker"))}</div>
+                    <h1>${esc(t("title"))}</h1>
+                    <p class="pq-battle-lead">${esc(t("roomLead"))}</p>
+                    <div class="pq-lobby">
+                        <div class="pq-lobby-qr-wrap">
+                            <div class="pq-lobby-qr" id="pq-lobby-qr" aria-label="${esc(t("scanQr"))}"></div>
+                            <div class="pq-lobby-qr-cap">${esc(t("scanQr"))}</div>
+                        </div>
+                        <div class="pq-lobby-side">
+                            <div class="pq-lobby-codewrap">
+                                <span>${esc(t("roomCode"))}</span>
+                                <b id="pq-lobby-code">${esc(code)}</b>
+                                <i>${esc(t("lobbyCodeHint"))}</i>
+                            </div>
+                            <div class="pq-lobby-linkrow">
+                                <span>${esc(t("roomLink"))}</span>
+                                <code id="pq-lobby-link"></code>
+                            </div>
+                            <div class="pq-lobby-status" id="pq-lobby-status" data-mode="waiting">${esc(t("roomWaiting"))}</div>
+                            <div class="pq-lobby-joined">
+                                <div class="pq-lobby-joined-head">${esc(t("joinedTitle"))} · <b id="pq-lobby-count">0</b></div>
+                                <div class="pq-lobby-list" id="pq-lobby-list">${esc(t("joinedNone"))}</div>
+                            </div>
+                            <div class="pq-battle-actions">
+                                <button type="button" class="btn btn-primary" id="pq-lobby-start" disabled>${esc(t("startBattle"))}</button>
+                                <button type="button" class="btn btn-secondary" id="pq-lobby-cancel">${esc(t("exit"))}</button>
+                            </div>
+                            <div class="pq-lobby-note">${esc(t("phoneStartHint"))} · ${esc(t("needPlayers"))}</div>
+                        </div>
+                    </div>
+                </div>`;
+        },
+
+        drawQr(code) {
+            const box = document.getElementById("pq-lobby-qr");
+            if (!box || typeof qrcode !== "function") return;
+            try {
+                const qr = qrcode(0, "M");
+                qr.addData(this.phoneUrl(code));
+                qr.make();
+                box.innerHTML = qr.createSvgTag({ cellSize: 6, margin: 1, scalable: true });
+            } catch (_) {}
+        },
+
+        refreshLobby() {
+            const list = document.getElementById("pq-lobby-list");
+            const count = document.getElementById("pq-lobby-count");
+            const start = document.getElementById("pq-lobby-start");
+            const players = this.pendingPlayers || [];
+            if (count) count.textContent = String(players.length);
+            if (list) {
+                list.innerHTML = players.length
+                    ? players.map((p) => `<span class="pq-lobby-chip">${esc(p.name)}</span>`).join("")
+                    : `<span class="pq-lobby-empty">${esc(t("joinedNone"))}</span>`;
+            }
+            if (start) start.disabled = players.length < 2;
+        },
+
+        closeRoom() {
+            if (this.room) {
+                try { this.room.broadcast({ t: "closed" }); this.room.close(); } catch (_) {}
+                this.room = null;
+            }
+        },
+
+        startPhoneBattle() {
+            const players = (this.pendingPlayers || []).slice();
+            if (players.length < 2) { this.toast(t("needPlayers")); return; }
+            const cfg = this.pendingCfg || {};
+            const count = Math.max(2, Math.min(Number(cfg.count) || 2, players.length));
+            // случайный порядок и случайные команды: до финала состав скрыт
+            for (let i = players.length - 1; i > 0; i -= 1) {
+                const j = Math.floor(Math.random() * (i + 1));
+                const tmp = players[i]; players[i] = players[j]; players[j] = tmp;
+            }
+            const crews = Array.from({ length: count }, (_, i) => ({
+                name: fmt("crewAuto", i + 1), color: COLORS[i], icon: ICONS[i],
+                score: 0, shield: 100, correct: 0, wrong: 0,
+                share: 0, points: 0, coef: 0, delta: 0, players: []
+            }));
+            players.forEach((p, i) => {
+                const entry = { id: p.id, name: p.name, ans: null, right: false, correct: 0, crew: i % count };
+                crews[entry.crew].players.push(entry);
+            });
+            this.state = {
+                phase: "ask",
+                phone: true,
+                rounds: Number(cfg.rounds) || 8,
+                round: 1,
+                index: 0,
+                pool: cfg.pool || [],
+                question: (cfg.pool || [])[0],
+                crews
+            };
+            if (this.room) this.room.broadcast({ t: "start", rounds: this.state.rounds });
+            this.renderQuestion();
+            if (typeof PQSound !== "undefined") PQSound.play("open");
+        },
+
+        sendPhoneQuestion() {
+            const s = this.state;
+            if (!s || !s.phone || !this.room || !s.question) return;
+            this.room.broadcast({
+                t: "q",
+                i: s.round,
+                total: s.rounds,
+                question: loc(s.question.question),
+                options: this.optionsOf(s.question),
+                seconds: SECONDS
+            });
+        },
+
+        answerFromPhone(id, opt) {
+            const s = this.state;
+            if (!s || !s.phone || s.phase !== "ask") return;
+            let player = null;
+            s.crews.forEach((c) => c.players.forEach((p) => { if (p.id === id) player = p; }));
+            if (!player || player.ans !== null) return;
+            if (!(opt >= 0)) return;
+            player.ans = opt;
+            if (typeof PQSound !== "undefined") PQSound.play("click");
+            this.updatePhoneProgress();
+            const answered = s.crews.reduce((n, c) => n + c.players.filter((p) => p.ans !== null).length, 0);
+            const total = s.crews.reduce((n, c) => n + c.players.length, 0);
+            if (answered >= total) this.resolve(false);
+        },
+
+        updatePhoneProgress() {
+            const s = this.state;
+            if (!s || !s.phone) return;
+            const answered = s.crews.reduce((n, c) => n + c.players.filter((p) => p.ans !== null).length, 0);
+            const total = s.crews.reduce((n, c) => n + c.players.length, 0);
+            const bar = document.getElementById("pq-battle-progress");
+            if (bar) bar.style.width = Math.round((answered / Math.max(1, total)) * 100) + "%";
+            const lab = document.getElementById("pq-battle-answered");
+            if (lab) lab.textContent = fmt("answeredPhone", answered, total);
+        },
+
         /* ---------- игра ---------- */
         start() {
             const root = document.getElementById("pq-battle");
             if (!root) return;
+            if (this.setupMode === "phones") return this.openRoom();
             const count = Number(root.querySelector("#pq-battle-count .active")?.dataset.count || 2);
             const players = Number(root.querySelector("#pq-battle-players .active")?.dataset.players || 4);
             const names = Array.from(root.querySelectorAll("#pq-battle-crew-inputs input")).map((i, idx) => i.value.trim() || `Crew ${idx + 1}`);
@@ -418,7 +790,7 @@
                     name, color: COLORS[i], icon: ICONS[i],
                     score: 0, shield: 100, correct: 0, wrong: 0,
                     share: 0, points: 0, coef: 0, delta: 0,
-                    players: Array.from({ length: players }, () => ({ ans: null }))
+                    players: Array.from({ length: players }, () => ({ ans: null, right: false, correct: 0 }))
                 }))
             };
             this.renderQuestion();
@@ -512,23 +884,36 @@
                                 <span>${esc(o)}</span>
                             </div>`).join("")}
                     </div>
-                    <div class="pq-battle-pads" id="pq-battle-pads">
-                        ${s.crews.map((c, i) => this.crewPadHtml(c, i, options)).join("")}
-                    </div>
+                    ${s.phone
+                        ? `<div class="pq-battle-phone-wait">
+                                <div class="pq-battle-phone-wait-icon">📱</div>
+                                <div class="pq-battle-phone-wait-text">${esc(t("phoneWait"))}</div>
+                                <div class="pq-battle-phone-wait-count" id="pq-battle-answered">${esc(fmt("answeredPhone", 0, s.crews.reduce((n, c) => n + c.players.length, 0)))}</div>
+                           </div>`
+                        : `<div class="pq-battle-pads" id="pq-battle-pads">
+                                ${s.crews.map((c, i) => this.crewPadHtml(c, i, options)).join("")}
+                           </div>`}
                 </div>
                 <div class="pq-battle-bottom">
                     <div class="pq-battle-timer"><i id="pq-battle-timer-bar" style="width:100%"></i></div>
                     <div class="pq-battle-time" id="pq-battle-time">${SECONDS} ${esc(t("time"))}</div>
-                    <div class="pq-battle-board-hint">${esc(t("boardHint"))}</div>
+                    <div class="pq-battle-board-hint">${esc(t(s.phone ? "phoneWait" : "boardHint"))}</div>
                 </div>
             `;
             root.querySelector("#pq-battle-close").addEventListener("click", () => this.close());
+            if (!s.phone) this.bindPads();
+            this.startTimer(SECONDS);
+            if (s.phone) this.sendPhoneQuestion();
+        },
+
+        bindPads() {
+            const root = document.getElementById("pq-battle");
+            if (!root) return;
             // onclick, а не addEventListener: панель перерисовывается после каждого
             // ответа, и повторная привязка не должна давать двойной клик.
             root.querySelectorAll("[data-pad-opt]").forEach((btn) => {
                 btn.onclick = () => this.answerMember(Number(btn.dataset.crew), Number(btn.dataset.padOpt));
             });
-            this.startTimer(SECONDS);
         },
 
         crewHudHtml(c, i) {
@@ -552,8 +937,12 @@
                     mark = p.ans >= 0 && LETTERS[p.ans] ? LETTERS[p.ans] : "—";
                 }
                 if (i === current) cls += " current";
+                if (this.state && this.state.phase === "reveal" && p.ans !== null) {
+                    cls += p.right ? " right" : " wrong";
+                }
                 return `<span class="${cls}" title="${esc(t("player"))} ${i + 1}">${mark}</span>`;
             }).join("");
+            const answered = c.players.filter((p) => p.ans !== null).length;
             const pad = done
                 ? `<div class="pq-battle-pad-done">✓ ${esc(t("teamDone"))}</div>`
                 : options.map((o, i) => `
@@ -566,6 +955,7 @@
                         <span class="pq-battle-pad-status">${done ? esc(t("answeredAll")) : esc(fmt("answerOf", current + 1, c.players.length))}</span>
                     </div>
                     <div class="pq-battle-players">${chips}</div>
+                    <div class="pq-battle-pad-sub">${esc(fmt("answeredCount", answered, c.players.length))}</div>
                     <div class="pq-battle-pad-buttons">${pad}</div>
                 </div>`;
         },
@@ -581,12 +971,9 @@
             if (typeof PQSound !== "undefined") PQSound.play("click");
 
             const panel = document.querySelector(`[data-crew-panel="${ci}"]`);
-            if (panel && s.question) panel.outerHTML = this.crewPadHtml(crew, ci, this.optionsOf(s.question));
-            const root = document.getElementById("pq-battle");
-            if (root) {
-                root.querySelectorAll("[data-pad-opt]").forEach((btn) => {
-                    btn.onclick = () => this.answerMember(Number(btn.dataset.crew), Number(btn.dataset.padOpt));
-                });
+            if (panel && s.question) {
+                panel.outerHTML = this.crewPadHtml(crew, ci, this.optionsOf(s.question));
+                this.bindPads();
             }
             const answered = s.crews.reduce((n, c) => n + c.players.filter((p) => p.ans !== null).length, 0);
             const total = s.crews.reduce((n, c) => n + c.players.length, 0);
@@ -622,29 +1009,31 @@
             const task = s.question;
             const correct = this.correctIndex(task);
             s.crews.forEach((c) => {
-                c.players.forEach((p) => { if (p.ans === null) p.ans = -1; });
-                const ok = c.players.filter((p) => p.ans === correct).length;
+                let solved = 0;
+                c.players.forEach((p) => {
+                    if (p.ans === null) p.ans = -1;
+                    p.right = p.ans === correct;
+                    if (p.right) { solved += 1; p.correct = (Number(p.correct) || 0) + 1; }
+                });
                 const total = c.players.length;
-                const share = total ? ok / total : 0;
+                const share = total ? solved / total : 0;
                 const coef = coefFor(share);
                 const points = coef ? Math.round(100 * coef) : 0;
                 c.share = share;
-                c.solved = ok;
+                c.solved = solved;
                 c.coef = coef;
                 c.points = points;
                 c.score += points;
-                c.correct += ok;
-                c.wrong += total - ok;
-                if (share > 0.5) {
-                    c.delta = 4;
-                    c.shield = Math.min(100, c.shield + 4);
-                } else if (Math.abs(share - 0.5) < 1e-9) {
-                    c.delta = 0;
-                } else {
-                    c.delta = -14;
-                    c.shield = Math.max(0, c.shield - 14);
-                }
+                c.correct += solved;
+                c.wrong += total - solved;
+                c.delta = shieldFor(share);
+                c.shield = Math.max(0, Math.min(100, c.shield + c.delta));
             });
+            if (s.phone && this.room) {
+                s.crews.forEach((c) => c.players.forEach((p) => {
+                    this.room.send(p.id, { t: "reveal", right: !!p.right, correct, ans: p.ans });
+                }));
+            }
             if (typeof PQSound !== "undefined") PQSound.play(s.crews.some((c) => c.share > 0.5) ? "correct" : "wrong");
             this.renderReveal(byTimeout);
         },
@@ -657,10 +1046,11 @@
             const options = this.optionsOf(task);
             const correct = this.correctIndex(task);
             const last = s.round >= s.rounds;
+            const hud = s.crews.map((c, i) => this.crewHudHtml(c, i)).join("");
             root.innerHTML = `
                 <div class="pq-battle-top">
                     <div class="pq-battle-brand">${esc(t("title"))}<span>${esc(t("kicker"))}</span></div>
-                    <div class="pq-battle-crews">${s.crews.map((c, i) => this.crewHudHtml(c, i)).join("")}</div>
+                    <div class="pq-battle-crews">${hud}</div>
                     <button type="button" class="pq-battle-close" id="pq-battle-close" aria-label="${esc(t("close"))}">×</button>
                 </div>
                 <div class="pq-battle-progress"><i style="width:100%"></i></div>
@@ -679,7 +1069,7 @@
                         ${s.crews.map((c) => `
                             <div class="pq-battle-reveal-row" style="--crew-color:${c.color}">
                                 <div class="pq-battle-reveal-name">${c.icon} ${esc(c.name)}</div>
-                                <div class="pq-battle-reveal-share">${fmt("shareLine", c.solved, c.players.length)} · ${Math.round(c.share * 100)}%</div>
+                                <div class="pq-battle-reveal-share">${esc(fmt("shareLine", c.solved, c.players.length))} · ${Math.round(c.share * 100)}%</div>
                                 <div class="pq-battle-reveal-points ${c.points ? "good" : "bad"}">
                                     ${c.points
                                         ? `${esc(fmt("gain", c.points))} <span class="pq-battle-reveal-coef">${esc(fmt("coefLine", fmtCoef(c.coef)))}</span>`
@@ -687,6 +1077,11 @@
                                 </div>
                                 <div class="pq-battle-reveal-shield ${c.delta > 0 ? "good" : c.delta < 0 ? "bad" : ""}">
                                     ${esc(t("shield"))} ${c.delta > 0 ? "+" : ""}${c.delta}%
+                                </div>
+                                <div class="pq-battle-reveal-players">
+                                    ${s.phone
+                                        ? `<span class="pq-battle-reveal-hidden">👥 ${esc(fmt("shareLine", c.solved, c.players.length))}</span>`
+                                        : c.players.map((p, i) => `<span class="pq-battle-player ${p.right ? "right" : "wrong"}" title="${esc(fmt("playerLine", i + 1))}">${i + 1}</span>`).join("")}
                                 </div>
                             </div>`).join("")}
                     </div>
@@ -708,7 +1103,7 @@
             s.index += 1;
             if (s.index >= s.pool.length) s.index = 0;
             s.question = s.pool[s.index];
-            s.crews.forEach((c) => c.players.forEach((p) => { p.ans = null; }));
+            s.crews.forEach((c) => c.players.forEach((p) => { p.ans = null; p.right = false; }));
             this.renderQuestion();
         },
 
@@ -721,11 +1116,28 @@
             const sorted = [...s.crews].sort((a, b) => b.score - a.score || b.shield - a.shield);
             const best = sorted[0];
             const tie = sorted.length > 1 && sorted[1].score === best.score && sorted[1].shield === best.shield;
+            if (s.phone && this.room) {
+                const table = sorted.map((c, i) => ({ name: c.name, score: c.score, place: i + 1 }));
+                s.crews.forEach((c) => {
+                    const place = sorted.indexOf(c) + 1;
+                    c.players.forEach((p) => {
+                        this.room.send(p.id, {
+                            t: "end",
+                            right: Number(p.correct) || 0,
+                            total: s.rounds,
+                            crew: c.name,
+                            place,
+                            crews: table
+                        });
+                    });
+                });
+            }
             if (typeof PQSound !== "undefined") PQSound.play("victory");
             root.innerHTML = `
                 <div class="pq-battle-results">
                     <div class="pq-battle-kicker">${esc(t("finish"))}</div>
                     <h1>${tie ? esc(t("tie")) : `${esc(t("winner"))}: ${esc(best.name)}`}</h1>
+                    <p class="pq-battle-results-hint">${esc(t(s.phone ? "resultsHintPhone" : "resultsHint"))}</p>
                     <div class="pq-battle-podium">
                         ${sorted.map((c, i) => `
                             <div class="pq-battle-place place-${i + 1}" style="--crew-color:${c.color}">
@@ -733,6 +1145,12 @@
                                 <div class="place-name">${c.icon} ${esc(c.name)}</div>
                                 <div class="place-score">${c.score} ${esc(t("score"))}</div>
                                 <div class="place-shield">${esc(t("shield"))}: ${Math.round(c.shield)}% · ✅ ${c.correct} / ❌ ${c.wrong}</div>
+                                <div class="place-players">
+                                    ${c.players.map((p, pi) => `<span class="place-player ${Number(p.correct) ? "right" : ""}">
+                                        <b>${esc(s.phone ? (p.name || fmt("playerLine", pi + 1)) : fmt("playerLine", pi + 1))}</b>
+                                        <i>${esc(fmt("personalScore", Number(p.correct) || 0, s.rounds))}</i>
+                                    </span>`).join("")}
+                                </div>
                             </div>`).join("")}
                     </div>
                     <div class="pq-battle-actions">

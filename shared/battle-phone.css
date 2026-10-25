@@ -1,0 +1,165 @@
+/* ============================================================
+   PQ BATTLE PHONE — экран телефона ученика для «Битвы экипажей».
+   Отдельная лёгкая страница: телефон не грузит игру целиком.
+   ============================================================ */
+:root {
+    --bp-bg: #0b1226;
+    --bp-card: rgba(255, 255, 255, 0.06);
+    --bp-line: rgba(140, 200, 255, 0.28);
+    --bp-ink: #eaf4ff;
+    --bp-dim: #9fb6d4;
+    --bp-accent: #35c7e6;
+    --bp-ok: #3ddc97;
+    --bp-bad: #ff7a8a;
+    --bp-ok-bg: rgba(61, 220, 151, 0.16);
+    --bp-bad-bg: rgba(255, 122, 138, 0.16);
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+    margin: 0;
+    min-height: 100%;
+    background:
+        radial-gradient(700px 420px at 15% 0%, rgba(53, 199, 230, 0.24), transparent 65%),
+        radial-gradient(600px 380px at 90% 100%, rgba(124, 92, 255, 0.22), transparent 60%),
+        var(--bp-bg);
+    color: var(--bp-ink);
+    font-family: "Trebuchet MS", "Segoe UI", system-ui, -apple-system, sans-serif;
+    -webkit-text-size-adjust: 100%;
+}
+
+body { padding: 14px 14px 22px; }
+
+.bp-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    margin-bottom: 16px;
+    font-size: 13px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--bp-dim);
+}
+.bp-head b { color: var(--bp-accent); letter-spacing: 0.12em; }
+.bp-room {
+    border: 1px solid var(--bp-line);
+    border-radius: 999px;
+    padding: 4px 10px;
+    font-weight: 800;
+    color: var(--bp-ink);
+}
+
+.bp-card {
+    background: var(--bp-card);
+    border: 1px solid var(--bp-line);
+    border-radius: 18px;
+    padding: 18px 16px;
+    margin-bottom: 14px;
+}
+
+h1 { font-size: 22px; margin: 0 0 8px; line-height: 1.2; }
+p { margin: 0 0 12px; line-height: 1.5; color: var(--bp-dim); font-size: 15px; }
+.bp-big { font-size: 17px; color: var(--bp-ink); line-height: 1.45; }
+
+label { display: block; font-size: 12px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--bp-dim); margin-bottom: 6px; }
+
+input[type="text"] {
+    width: 100%;
+    padding: 14px 14px;
+    font-size: 17px;
+    border-radius: 14px;
+    border: 1px solid var(--bp-line);
+    background: rgba(8, 16, 32, 0.75);
+    color: var(--bp-ink);
+    font-family: inherit;
+}
+input[type="text"]:focus { outline: 2px solid rgba(53, 199, 230, 0.6); outline-offset: 1px; }
+
+.bp-btn {
+    width: 100%;
+    padding: 16px;
+    font-size: 17px;
+    font-weight: 800;
+    font-family: inherit;
+    border: 0;
+    border-radius: 15px;
+    background: linear-gradient(135deg, #0a7d99, #1565c0);
+    color: #fff;
+    cursor: pointer;
+    box-shadow: 0 12px 26px rgba(10, 125, 153, 0.35);
+}
+.bp-btn:disabled { opacity: 0.55; box-shadow: none; }
+
+.bp-question { font-size: 19px; line-height: 1.4; margin: 0 0 14px; color: var(--bp-ink); font-weight: 700; }
+
+.bp-options { display: grid; gap: 10px; }
+.bp-opt {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    width: 100%;
+    text-align: left;
+    padding: 15px 14px;
+    font-size: 16px;
+    font-family: inherit;
+    color: var(--bp-ink);
+    background: rgba(255, 255, 255, 0.07);
+    border: 1.5px solid var(--bp-line);
+    border-radius: 15px;
+    cursor: pointer;
+}
+.bp-opt b {
+    flex: 0 0 30px;
+    height: 30px;
+    display: grid;
+    place-items: center;
+    border-radius: 9px;
+    background: rgba(53, 199, 230, 0.22);
+    color: #d9f6ff;
+    font-size: 15px;
+}
+.bp-opt:active { transform: scale(0.99); }
+.bp-opt.picked { border-color: var(--bp-accent); background: rgba(53, 199, 230, 0.16); }
+.bp-opt.good { border-color: var(--bp-ok); background: var(--bp-ok-bg); }
+.bp-opt.bad { border-color: var(--bp-bad); background: var(--bp-bad-bg); }
+.bp-opt[disabled] { cursor: default; }
+
+.bp-timer {
+    height: 8px;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.12);
+    overflow: hidden;
+    margin-bottom: 10px;
+}
+.bp-timer i { display: block; height: 100%; width: 100%; background: linear-gradient(90deg, #3ddc97, #ffd479 65%, #ff7a8a); transition: width 0.2s linear; }
+
+.bp-meta { display: flex; justify-content: space-between; font-size: 13px; color: var(--bp-dim); margin-bottom: 12px; }
+
+.bp-note { font-size: 14px; color: var(--bp-dim); }
+.bp-center { text-align: center; }
+.bp-emoji { font-size: 44px; line-height: 1; margin-bottom: 10px; }
+.bp-ok { color: var(--bp-ok); }
+.bp-bad { color: var(--bp-bad); }
+
+.bp-crew {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    padding: 10px 12px;
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid var(--bp-line);
+    font-size: 14px;
+    margin-bottom: 8px;
+}
+.bp-crew.mine { border-color: var(--bp-accent); background: rgba(53, 199, 230, 0.14); }
+.bp-crew b { font-size: 15px; }
+
+.bp-dots { display: flex; gap: 6px; justify-content: center; margin: 10px 0 0; }
+.bp-dots i { width: 9px; height: 9px; border-radius: 50%; background: rgba(255, 255, 255, 0.2); }
+.bp-dots i.on { background: var(--bp-accent); }
+
+.bp-pulse { animation: bp-pulse 1.6s ease-in-out infinite; }
+@keyframes bp-pulse { 0%, 100% { opacity: 0.45; } 50% { opacity: 1; } }
