@@ -851,6 +851,10 @@ body.pq-print-open { overflow: hidden; }
 .pq-cert-design .dot-light { background: linear-gradient(135deg, #ffffff, #e6ecf5); }
 .pq-cert-design .dot-paper { background: linear-gradient(135deg, #fbf5e6, #e6d3ac); }
 .pq-cert-design .dot-sky { background: linear-gradient(135deg, #eaf6ff, #b9dcf5); }
+.pq-cert-design .dot-classicSpace { background: linear-gradient(135deg, #070d20, #1a0f33); }
+.pq-cert-design .dot-classicLight { background: linear-gradient(135deg, #fbfdff, #e8f1fa); }
+.pq-cert-design .dot-classicPaper { background: linear-gradient(135deg, #fdf6e3, #efdfbe); }
+.pq-cert-design .dot-classicSky { background: linear-gradient(135deg, #f2fbff, #c9e6f7); }
 .pq-cert-design.active { border-color: #6cc6ff; background: rgba(56, 189, 248, 0.16); color: #ffffff; }
 .pq-cert-label { display: flex; flex-direction: column; gap: 4px; font-size: 11.5px; font-weight: 800; letter-spacing: .06em; text-transform: uppercase; color: #8fb2d8; }
 .pq-cert-label input {

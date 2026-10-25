@@ -802,10 +802,45 @@ Object.assign(RPG, {
             <div class="rpg-section-title">${escapeHtml(rpgT("titlesTitle"))}</div>
             <p class="rpg-section-note">${escapeHtml(rpgT("titlesHint"))}</p>
             <div class="rpg-title-wrap">${titles}</div>
+            ${this.renderBadges()}
             <div class="rpg-reset-row" style="margin-top:18px">
                 <button class="rpg-mini-btn" type="button" data-rpg-action="reset-rpg" style="opacity:.6">♻️ ${escapeHtml(rpgT("resetRpg"))}</button>
             </div>
         `;
+    },
+
+    /* Бейджи посещаемости: 10 вех за все дни в игре + 3 за игру подряд. */
+    renderBadges() {
+        const streak = this.streakState();
+        const days = [
+            [1, "attendanceBadge1"], [3, "attendanceBadge2"], [5, "attendanceBadge3"],
+            [7, "attendanceBadge4"], [10, "attendanceBadge5"], [14, "attendanceBadge6"],
+            [20, "attendanceBadge7"], [30, "attendanceBadge8"], [50, "attendanceBadge9"],
+            [100, "attendanceBadge10"]
+        ];
+        const runs = [[7, "streakBadge3"], [14, "streakBadge4"], [30, "streakBadge5"]];
+        const nextAttendance = days.find(([n]) => streak.count < n);
+        const nextRun = runs.find(([n]) => streak.run < n);
+        const render = (list, isRun) => list.map(([need, key]) => {
+            const current = isRun ? streak.run : streak.count;
+            const unlocked = current >= need;
+            const isNext = !unlocked && (isRun ? nextRun : nextAttendance) && (isRun ? nextRun : nextAttendance)[0] === need;
+            const left = Math.max(0, need - current);
+            return `<div class="rpg-badge ${unlocked ? "unlocked" : isNext ? "next" : "locked"}">
+                <div class="rpg-badge-medal">${unlocked ? "★" : need}</div>
+                <div class="rpg-badge-name">${escapeHtml(rpgT(key))}</div>
+                <div class="rpg-badge-meta">${unlocked
+                    ? escapeHtml(rpgT("badgeUnlocked"))
+                    : escapeHtml(rpgT(isRun ? "badgeLeftRun" : "badgeLeft", left))}</div>
+            </div>`;
+        }).join("");
+        return `
+            <div class="rpg-section-title">${escapeHtml(rpgT("badgesTitle"))}</div>
+            <p class="rpg-section-note">${escapeHtml(rpgT("badgesHint"))}</p>
+            <div class="rpg-badge-group">${escapeHtml(rpgT("badgesDaysGroup"))} · ${streak.count}</div>
+            <div class="rpg-badge-grid">${render(days, false)}</div>
+            <div class="rpg-badge-group">${escapeHtml(rpgT("badgesRunGroup"))} · ${streak.run}</div>
+            <div class="rpg-badge-grid">${render(runs, true)}</div>`;
     },
 
     renderSkills() {

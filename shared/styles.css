@@ -2550,6 +2550,39 @@ html, body {
     box-shadow: 0 5px 14px rgba(255,179,0,.3);
 }
 
+/* Бейджи посещаемости в штабе */
+.rpg-badge-group {
+    margin: 14px 0 8px;
+    font-size: 10.5px; font-weight: 900; letter-spacing: .06em; text-transform: uppercase;
+    color: var(--text-dim);
+}
+.rpg-badge-group:first-of-type { margin-top: 12px; }
+.rpg-badge-grid {
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(124px, 1fr)); gap: 8px;
+}
+.rpg-badge {
+    display: grid; gap: 3px; justify-items: center; text-align: center;
+    padding: 10px 8px 9px; border-radius: 12px;
+    border: 1.5px solid rgba(0,0,0,.08); background: #fff;
+}
+.rpg-badge-medal {
+    width: 34px; height: 34px; border-radius: 50%;
+    display: grid; place-items: center;
+    font-size: 13px; font-weight: 900;
+    background: rgba(15,39,64,.07); color: #65758b;
+}
+.rpg-badge-name { font-size: 11px; font-weight: 900; color: var(--ink); line-height: 1.25; }
+.rpg-badge-meta { font-size: 9.5px; font-weight: 700; color: var(--text-dim); }
+.rpg-badge.unlocked { border-color: rgba(255,179,0,.45); background: linear-gradient(160deg, #fffaf0, #fff); }
+.rpg-badge.unlocked .rpg-badge-medal {
+    background: linear-gradient(135deg, #ffb300, #ff8a00); color: #fff;
+    box-shadow: 0 4px 12px rgba(255,179,0,.32);
+}
+.rpg-badge.next { border-color: rgba(0,184,212,.5); background: linear-gradient(160deg, #f2fbff, #fff); }
+.rpg-badge.next .rpg-badge-medal { background: rgba(0,184,212,.14); color: #0288a8; }
+.rpg-badge.next .rpg-badge-meta { color: #0288a8; }
+.rpg-badge.locked { opacity: .62; }
+
 /* skills tab */
 .rpg-perk-headrow {
     display: flex; align-items: center; justify-content: space-between; gap: 10px;
@@ -3153,8 +3186,10 @@ html, body {
 .rpg-streak {
     display: grid; gap: 5px; padding: 8px 10px; border-radius: 12px;
     border: 1.5px dashed rgba(234, 88, 12, .32); background: rgba(251, 146, 60, .08);
-    min-width: 158px;
+    flex: 0 1 208px; min-width: 0; max-width: 208px;
 }
+.rpg-streak > * { min-width: 0; }
+.rpg-streak-top { flex-wrap: wrap; }
 .rpg-streak.on { border-style: solid; border-color: rgba(234, 88, 12, .45); }
 .rpg-streak-top { display: flex; align-items: baseline; gap: 5px; }
 .rpg-streak-flame { font-size: 14px; line-height: 1; }
@@ -3170,7 +3205,7 @@ html, body {
 }
 .rpg-streak-runbadge { color: #155e75; }
 html[data-theme="dark"] .rpg-streak-runbadge { color: #67e8f9; }
-.rpg-streak-week { display: flex; gap: 4px; }
+.rpg-streak-week { display: flex; flex-wrap: wrap; gap: 4px; }
 .rpg-streak-week span {
     width: 17px; height: 17px; border-radius: 5px; display: grid; place-items: center;
     font-size: 8.5px; font-weight: 800; color: var(--text-dim); background: rgba(15, 39, 64, .07);
@@ -5385,6 +5420,9 @@ html[data-theme="dark"] .rpg-hub-tab:hover { background-color: var(--bg-card); }
 html[data-theme="dark"] .rpg-stat { background-color: var(--bg-card); }
 html[data-theme="dark"] .rpg-title-chip { background-color: var(--bg-card); }
 html[data-theme="dark"] .rpg-title-chip.locked { background-color: var(--bg-card); }
+html[data-theme="dark"] .rpg-badge { background: var(--bg-card); border-color: rgba(255,255,255,.12); }
+html[data-theme="dark"] .rpg-badge.unlocked { background: linear-gradient(160deg, rgba(255,179,0,.14), rgba(255,255,255,.02)); }
+html[data-theme="dark"] .rpg-badge.next { background: linear-gradient(160deg, rgba(0,184,212,.16), rgba(255,255,255,.02)); }
 html[data-theme="dark"] .rpg-perk { background-color: var(--bg-card); }
 html[data-theme="dark"] .rpg-perk.maxed { background: var(--bg-card); }
 html[data-theme="dark"] .rpg-perk-icon { background: var(--bg-card); }

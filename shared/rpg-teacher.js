@@ -27,6 +27,8 @@ const RPG_HQ_KEYS = {
 
 const RPG_HQ_ALPH = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
 const RPG_HQ_DAY = 24 * 60 * 60 * 1000;
+/* Порог «нужна помощь»: тема попадает в список, если точность ниже 44%. */
+const RPG_HELP_ACCURACY = 44;
 const RPG_HQ_CODE_RE = /R[12]-[A-Z0-9]+-[A-Z0-9]+-[A-Z0-9]+-[VD]-\d{1,3}-\d{1,3}-\d{1,5}-\d{6}(?:-G[A-Z0-9]{5})?(?:-A[A-Z0-9]{3,8})?-[A-Z0-9]{4}/;
 
 /* ---------------- МЕЛКИЕ УТИЛИТЫ ---------------- */
@@ -1263,13 +1265,13 @@ const TeacherHQ = {
             });
         });
 
-        const weak = this.weakTopics(data.roster, 3).filter(t => t.accuracy < 60);
+        const weak = this.weakTopics(data.roster, 3).filter(t => t.accuracy < RPG_HELP_ACCURACY);
         const clsName = String(((this.classById(view.classId) || {}).name || "")).trim();
         const clsSuffix = clsName ? rpgT("hqWeakTopicClass", clsName) : "";
         weak.slice(0, 2).forEach(topic => {
             items.push({
                 type: "topic",
-                severity: topic.accuracy < 45 ? "danger" : "warning",
+                severity: topic.accuracy < RPG_HELP_ACCURACY - 14 ? "danger" : "warning",
                 icon: "📉",
                 text: rpgT("hqWeakTopic", topic.label, topic.accuracy, clsSuffix) + ` · ${topic.attempted} ${rpgT("hqAnswersShort")}`,
                 action: "topic",
@@ -1636,7 +1638,7 @@ const TeacherHQ = {
 
         const comments = this.getComments();
         const comment = comments[row.key] || { text: "" };
-        const weak = this.weakTopics([row], 1).filter(t => t.accuracy < 60);
+        const weak = this.weakTopics([row], 1).filter(t => t.accuracy < RPG_HELP_ACCURACY);
         const topics = weak.length
             ? weak.map(t => `
                 <div class="hq-topic-row">
@@ -2013,7 +2015,7 @@ const TeacherHQ = {
         const view = this.view();
         const data = this.summary(view.classId, view.days);
         const clsName = view.classId === "all" ? rpgT("hqAllClasses") : (this.classById(view.classId) || {}).name || "";
-        const weak = this.weakTopics(data.roster, 3).filter(t => t.accuracy < 70).slice(0, 6);
+        const weak = this.weakTopics(data.roster, 3).filter(t => t.accuracy < RPG_HELP_ACCURACY).slice(0, 6);
         const debtors = data.roster.filter(r => r.overdueCount > 0 || (r.assignments.some(a => a.status === "pending") && r.lastAt < Date.now() - 7 * RPG_HQ_DAY));
         const solved = data.results.reduce((sum, r) => sum + hqNum(r.solved), 0);
         const attempted = data.results.reduce((sum, r) => sum + hqNum(r.attempted), 0);
