@@ -674,28 +674,63 @@
 
         .hub-features {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+            grid-template-columns: repeat(4, minmax(0, 1fr));
             gap: 14px;
             margin: 26px 0 8px;
+            align-items: stretch;
         }
+        .hf-head { grid-column: 1 / -1; display: grid; gap: 5px; margin: 0 0 2px; }
+        .hf-kicker { font-size: 11px; font-weight: 900; letter-spacing: .16em; color: #38bdf8; }
+        .hf-head h3 { margin: 0; font-size: clamp(18px, 2.1vw, 23px); color: #eaf3ff; letter-spacing: .01em; }
         .hub-feature-link { text-decoration: none; color: inherit; border-color: rgba(56, 189, 248, .45); }
         .hub-feature-link:hover { transform: translateY(-2px); border-color: rgba(56, 189, 248, .8); }
         .hub-feature {
-            background: linear-gradient(160deg, rgba(17, 30, 58, 0.9), rgba(9, 18, 38, 0.94));
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            background: linear-gradient(165deg, rgba(17, 30, 58, 0.92), rgba(9, 18, 38, 0.96));
             border: 1px solid rgba(96, 165, 250, 0.22);
-            border-radius: 18px;
-            padding: 16px 18px;
+            border-radius: 20px;
+            padding: 16px 17px 15px;
             box-shadow: 0 16px 40px rgba(2, 8, 22, 0.35);
+            transition: transform .18s ease, border-color .18s ease, box-shadow .18s ease;
         }
-        .hf-icon { font-size: 26px; margin-bottom: 6px; }
-        .hf-title { font-weight: 800; font-size: 15px; color: #eaf3ff; margin-bottom: 4px; }
-        .hf-desc { font-size: 12.8px; line-height: 1.5; color: #9fb3cf; }
-        .hf-list { margin: 10px 0 0; padding: 0; list-style: none; display: grid; gap: 6px; }
+        .hub-feature::before {
+            content: ""; position: absolute; left: 0; right: 0; top: 0; height: 3px;
+            background: linear-gradient(90deg, var(--fc), transparent 92%);
+        }
+        .hub-feature::after {
+            content: ""; position: absolute; right: -52px; top: -62px; width: 164px; height: 164px;
+            border-radius: 50%; background: radial-gradient(circle at center, var(--fc-soft), transparent 68%);
+            pointer-events: none;
+        }
+        .hub-feature:hover {
+            transform: translateY(-3px);
+            border-color: var(--fc);
+            box-shadow: 0 22px 46px rgba(2, 8, 22, 0.45);
+        }
+        .hf-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 11px; }
+        .hf-icon {
+            width: 42px; height: 42px; border-radius: 13px; display: grid; place-items: center;
+            font-size: 20px; background: var(--fc-soft); border: 1px solid var(--fc-soft);
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1);
+        }
+        .hf-num { font-size: 11px; font-weight: 900; letter-spacing: .12em; color: rgba(148, 178, 214, 0.55); }
+        .hf-title { font-weight: 800; font-size: 15px; line-height: 1.25; color: #eaf3ff; margin-bottom: 5px; }
+        .hf-desc { font-size: 12.4px; line-height: 1.5; color: #9fb3cf; }
+        .hf-list { margin: auto 0 0; padding: 12px 0 0; list-style: none; display: grid; gap: 6px; }
         .hf-list li {
-            position: relative; padding-left: 18px; font-size: 12.2px; line-height: 1.45; color: #b8cbe4;
+            position: relative; padding-left: 18px; font-size: 12px; line-height: 1.42; color: #b8cbe4;
         }
         .hf-list li::before {
-            content: "✓"; position: absolute; left: 0; top: 0; color: #38bdf8; font-weight: 900; font-size: 11px;
+            content: "✓"; position: absolute; left: 0; top: 0; color: var(--fc); font-weight: 900; font-size: 11px;
+        }
+        @media (max-width: 1180px) {
+            .hub-features { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+        }
+        @media (max-width: 620px) {
+            .hub-features { grid-template-columns: 1fr; }
         }
         .hub-shots {
             display: flex; align-items: center; justify-content: space-between; gap: 18px; flex-wrap: wrap;
@@ -730,7 +765,7 @@
         html[data-theme="light"] .hub-shots h3 { color: #0b2545; }
         html[data-theme="light"] .hub-shots p { color: #41597a; }
         html[data-theme="light"] .hf-list li { color: #48607d; }
-        html[data-theme="light"] .hf-list li::before { color: #0284c7; }
+        html[data-theme="light"] .hf-list li::before { color: var(--fc); }
 
         /* ============================================================
            СВЕТЛАЯ ТЕМА ГЛАВНОЙ СТРАНИЦЫ (по умолчанию)
@@ -905,13 +940,20 @@
             border-color: rgba(2, 132, 199, 0.14);
         }
         html[data-theme="light"] .about-col p { color: #42566f; }
+        html[data-theme="light"] .hf-kicker { color: #0284c7; }
+        html[data-theme="light"] .hf-head h3 { color: #102a45; }
         html[data-theme="light"] .hub-feature {
             background: linear-gradient(160deg, #ffffff 0%, #f4faff 100%);
-            border-color: rgba(2, 132, 199, 0.18);
+            border-color: rgba(2, 132, 199, 0.16);
             box-shadow: 0 10px 28px rgba(15, 40, 80, 0.07);
+        }
+        html[data-theme="light"] .hub-feature:hover {
+            border-color: var(--fc);
+            box-shadow: 0 18px 38px rgba(15, 40, 80, 0.13);
         }
         html[data-theme="light"] .hub-feature-link { border-color: rgba(2, 132, 199, 0.42); }
         html[data-theme="light"] .hub-feature-link:hover { border-color: #0284c7; }
+        html[data-theme="light"] .hf-num { color: rgba(95, 125, 153, 0.55); }
         html[data-theme="light"] .hf-title { color: #102a45; }
         html[data-theme="light"] .hf-desc { color: #4b6079; }
     </style>
@@ -1022,6 +1064,8 @@
                 shotsBtn: "Посмотреть скриншоты",
                 shotsByGrade: "Смотреть по классам:",
                 shotsG7: "7 класс", shotsG8: "8 класс", shotsG9: "9 класс",
+                featKicker: "ВОЗМОЖНОСТИ · 8 БЛОКОВ",
+                featTitle: "Что получает ученик, класс и учитель",
                 ab1Title: "📚 Полное соответствие ГОСО РК",
                 ab1Text: "Структура миссий синхронизирована с параграфами и лабораторными работами школьных учебников физики 7–9 классов (Р. Башарулы, Ш. Б. Закирова и др.) на русском, казахском и английском языках.",
                 ab2Title: "🎮 Механики учебной мотивации",
@@ -1091,6 +1135,8 @@
                 shotsBtn: "Скриншоттарды қарау",
                 shotsByGrade: "Сынып бойынша:",
                 shotsG7: "7 сынып", shotsG8: "8 сынып", shotsG9: "9 сынып",
+                featKicker: "МҮМКІНДІКТЕР · 8 БЛОК",
+                featTitle: "Оқушы, сынып және мұғалім не алады",
                 ab1Title: "📚 ҚР МЖМБС толық сәйкестігі",
                 ab1Text: "Барлық миссиялар 7–9 сынып физика оқулықтарының (Р. Башарұлы, Ш. Б. Закирова және т.б.) параграфтары мен зертханалық жұмыстарына үш тілде (ҚАЗ / RU / EN) сәйкестендірілген.",
                 ab2Title: "🎮 Оқу мотивациясының механикасы",
@@ -1160,6 +1206,8 @@
                 shotsBtn: "View screenshots",
                 shotsByGrade: "Browse by grade:",
                 shotsG7: "Grade 7", shotsG8: "Grade 8", shotsG9: "Grade 9",
+                featKicker: "FEATURES · 8 BLOCKS",
+                featTitle: "What the student, the class and the teacher get",
                 ab1Title: "📚 Curriculum-Aligned (Grades 7–9)",
                 ab1Text: "Every mission maps directly to textbook chapters and laboratory works (R. Basharuly, Sh. B. Zakirova et al.) in Russian, Kazakh, and English.",
                 ab2Title: "🎮 Motivation & Flow Design",
@@ -1413,8 +1461,12 @@
                 </section>
 
                 <section class="hub-features" id="pq-hub-features">
+                    <div class="hf-head">
+                        <span class="hf-kicker">${esc(tr("featKicker"))}</span>
+                        <h3>${esc(tr("featTitle"))}</h3>
+                    </div>
                     ${[
-                        { icon: "🎮", t: { ru: "Игра и полные конспекты", kk: "Ойын және толық конспектілер", en: "The game and its guides" },
+                        { icon: "🎮", c: "#6366f1", cs: "rgba(99, 102, 241, .17)", t: { ru: "Игра и полные конспекты", kk: "Ойын және толық конспектілер", en: "The game and its guides" },
                           d: { ru: "153 миссии по параграфам 7–9 классов и полный конспект каждого класса (7 кл. — 69 стр., 8 кл. — 52–54 стр., 9 кл. — 56–58 стр.): краткая теория, карточки формул, образцы оформления. Методика: теория → разбор примера → задача с подсказкой → работа над ошибками.",
                                kk: "7–9 сынып параграфтары бойынша 153 миссия және әр сыныптың толық конспектісі (7-сын. — 69 бет, 8-сын. — 52–54 бет, 9-сын. — 56–58 бет): қысқаша теория, формула карточкалары, безендіру үлгілері. Әдістеме: теория → мысалды талдау → кеңесі бар есеп → қателермен жұмыс.",
                                en: "153 missions mapped to Grades 7–9 chapters plus a full study guide for every grade (G7 — 69 pp., G8 — 52–54 pp., G9 — 56–58 pp.): short theory, formula cards and worked-example templates. Method: theory → worked example → guided task → error review." },
@@ -1423,7 +1475,7 @@
                               kk: ["Деңгейге 20 кездейсоқ тапсырма, 7 тапсырма түрі", "Кеңестер мен әрекеттерді мұғалім реттейді", "5 және 10 балдық бағалау"],
                               en: ["20 random tasks per level, 7 task types", "Teacher tunes hints and attempts", "5- and 10-point marking"]
                           } },
-                        { icon: "📖", t: { ru: "Лор и комикс", kk: "Лор және комикс", en: "Story and comic" },
+                        { icon: "📖", c: "#d97706", cs: "rgba(217, 119, 6, .17)", t: { ru: "Лор и комикс", kk: "Лор және комикс", en: "Story and comic" },
                           d: { ru: "Герои серии, общий сюжет трилогии и комикс из 22 глав: каждая глава открывается по прогрессу и объясняет физический ключ опыта.",
                                kk: "Серия кейіпкерлері, трилогияның жалпы сюжеті және 22 тараудан тұратын комикс: әр тарау прогресс бойынша ашылып, тәжірибенің физикалық кілтін түсіндіреді.",
                                en: "The characters, the overarching story of the trilogy and a 22-chapter comic: every chapter unlocks with progress and explains the physics key of the experiment." },
@@ -1432,7 +1484,7 @@
                               kk: ["Лор мен комикс — бір лентада, тарау сайын", "Тек өз сыныбыңның тараулары көрсетіледі", "Тарау деңгей миссияларына байланған"],
                               en: ["Lore and comic as one strip, chapter by chapter", "Only your grade's chapters are shown", "Each chapter is tied to level missions"]
                           } },
-                        { icon: "🧪", t: { ru: "Симуляторы и лаборатории", kk: "Симуляторлар мен зертханалар", en: "Simulators and labs" },
+                        { icon: "🧪", c: "#0ea5e9", cs: "rgba(14, 165, 233, .17)", t: { ru: "Симуляторы и лаборатории", kk: "Симуляторлар мен зертханалар", en: "Simulators and labs" },
                           d: { ru: "35 canvas-лабораторий 8–9 классов, 15 опытов 7 класса и 15 мини-игр по темам: собирай цепь, лей воду, крути приборы, наводи линзу — и снимай показания сам.",
                                kk: "8–9 сыныптардың 35 canvas-зертханасы, 7-сыныптың 15 тәжірибесі және тақырып бойынша 15 мини-ойын: тізбек жина, су құй, аспаптарды бұра, линзаны бағытта — көрсеткіштерді өзің аласың.",
                                en: "35 canvas labs for Grades 8–9, 15 Grade 7 experiments and 15 topic mini-games: wire a circuit, pour water, turn knobs, aim a lens — and read the instruments yourself." },
@@ -1441,7 +1493,7 @@
                               kk: ["Тәжірибе «қолмен»: сүйре, бұра, қос", "Тірі аспаптар: термометр, амперметр, линза", "Әр зертхана — параграф бойынша"],
                               en: ["Hands-on experiments: drag, turn, connect", "Live instruments: thermometer, ammeter, lens", "Every lab maps to a paragraph"]
                           } },
-                        { icon: "🏟", t: { ru: "Битва команд", kk: "Командалық сайыс", en: "Team battle" },
+                        { icon: "🏟", c: "#10b981", cs: "rgba(16, 185, 129, .17)", t: { ru: "Битва команд", kk: "Командалық сайыс", en: "Team battle" },
                           d: { ru: "Режим интерактивной доски: 2–3 команды защищают щит города у проектора.",
                                kk: "Интерактивті тақта режимі: 2–3 команда проекторда қала қалқанын қорғайды.",
                                en: "Interactive whiteboard mode: 2–3 teams defend the city shield on the projector." },
@@ -1450,7 +1502,25 @@
                               kk: ["Бір экранда 2–3 команда", "Үш сынып бойынша сұрақтар", "Ұпай мен жеңімпаз — тақтада бірден"],
                               en: ["2–3 teams on one screen", "Questions from all three grades", "Score and winner on the board at once"]
                           } },
-                        { icon: "🎖", t: { ru: "Паспорт пилота", kk: "Пилот паспорты", en: "Pilot passport" },
+                        { icon: "🎯", c: "#ec4899", cs: "rgba(236, 72, 153, .17)", t: { ru: "Мотивация и прогресс", kk: "Мотивация және прогресс", en: "Motivation and progress" },
+                          d: { ru: "Опыт, ранги, достижения и звёзды за точность растут с каждой миссией: прогресс виден в профиле пилота, серия дней поддерживает привычку, а модули щита ученик улучшает за очки миссий.",
+                               kk: "Тәжірибе, рангілер, жетістіктер мен дәлдік жұлдыздары әр миссияда өседі: прогресс пилот профилінде көрінеді, күндер сериясы әдетті қолдайды, ал қалқан модульдерін оқушы миссия ұпайына жақсартады.",
+                               en: "XP, ranks, achievements and accuracy stars grow with every mission: progress shows in the pilot profile, day streaks build the habit, and shield modules are upgraded with mission points." },
+                          list: {
+                              ru: ["Опыт, ранги и достижения", "Звёзды за точность и серия дней", "Модули щита за очки миссий"],
+                              kk: ["Тәжірибе, рангілер және жетістіктер", "Дәлдік жұлдыздары мен күндер сериясы", "Миссия ұпайына қалқан модульдері"],
+                              en: ["XP, ranks and achievements", "Accuracy stars and day streaks", "Shield modules for mission points"]
+                          } },
+                        { icon: "🧑‍🏫", c: "#2563eb", cs: "rgba(37, 99, 235, .17)", t: { ru: "Кабинет учителя", kk: "Мұғалім кабинеті", en: "Teacher cabinet" },
+                          d: { ru: "Единый журнал 7–9 классов: назначения по короткому коду и QR-ссылке, результаты каждого ученика, оценка по 10-балльной шкале и отметка «нужна помощь».",
+                               kk: "7–9 сыныптарға бір журнал: қысқа код пен QR сілтемесі бойынша тағайындау, әр оқушының нәтижесі, 10 балдық баға және «көмек керек» белгісі.",
+                               en: "One journal for Grades 7–9: assigning by short code and QR link, every student's results, 10-point marking and a “needs help” flag." },
+                          list: {
+                              ru: ["Один журнал на 7, 8 и 9 класс", "Назначение по коду и QR-ссылке", "Отметка «нужна помощь» и экспорт"],
+                              kk: ["7, 8 және 9 сыныпқа бір журнал", "Код және QR сілтеме арқылы тағайындау", "«Көмек керек» белгісі және экспорт"],
+                              en: ["One journal for Grades 7, 8 and 9", "Assign by code and QR link", "“Needs help” flags and export"]
+                          } },
+                        { icon: "🎖", c: "#8b5cf6", cs: "rgba(139, 92, 246, .17)", t: { ru: "Паспорт пилота", kk: "Пилот паспорты", en: "Pilot passport" },
                           d: { ru: "Именной сертификат за свой класс и за всю трилогию: выбор из четырёх оформлений, круглая печать, PNG или PDF для портфолио.",
                                kk: "Өз сыныбың және бүкіл трилогия үшін атаулы сертификат: төрт безендіру, дөңгелек мөр, портфолио үшін PNG немесе PDF.",
                                en: "A personalised certificate for your grade and for the whole trilogy: four designs, a round seal, PNG or PDF for your portfolio." },
@@ -1459,7 +1529,7 @@
                               kk: ["4 безендіру: Ғарыш, Ашық, Пергамент, Аспан", "Сыныппен үлкен дөңгелек мөр", "Сынып сертификаты — тек сол сыныптан"],
                               en: ["4 designs: Space, Light, Parchment, Sky", "A large round seal with the grade", "A grade certificate only from that grade"]
                           } },
-                        { icon: "📥", t: { ru: "Офлайн-режим", kk: "Офлайн режим", en: "Offline mode" },
+                        { icon: "📥", c: "#0d9488", cs: "rgba(13, 148, 136, .17)", t: { ru: "Офлайн-режим", kk: "Офлайн режим", en: "Offline mode" },
                           d: { ru: "PWA-кэш и скачивание ZIP: игра работает даже без интернета в кабинете.",
                                kk: "PWA кэші және ZIP жүктеу: ойын кабинетте интернетсіз де жұмыс істейді.",
                                en: "PWA caching and ZIP download: the game works even without internet in the classroom." },
@@ -1468,9 +1538,12 @@
                               kk: ["Қолданба ретінде орнатылады", "Прогресс құрылғыда сақталады", "Мұғалім журналы жергілікті жұмыс істейді"],
                               en: ["Installs as an app", "Progress stays on the device", "The teacher journal works locally"]
                           } }
-                    ].map(f => `
-                        <article class="hub-feature">
-                            <div class="hf-icon">${f.icon}</div>
+                    ].map((f, i) => `
+                        <article class="hub-feature" style="--fc:${f.c};--fc-soft:${f.cs}">
+                            <div class="hf-top">
+                                <span class="hf-icon" aria-hidden="true">${f.icon}</span>
+                                <span class="hf-num">${String(i + 1).padStart(2, "0")}</span>
+                            </div>
                             <div class="hf-title">${esc(f.t[L] || f.t.ru)}</div>
                             <div class="hf-desc">${esc(f.d[L] || f.d.ru)}</div>
                             <ul class="hf-list">
