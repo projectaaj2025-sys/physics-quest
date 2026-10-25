@@ -1,160 +1,268 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="ru" data-theme="light">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Физика-Квест — скриншоты симуляторов</title>
-<meta name="theme-color" content="#050b18">
+<title>Физика-Квест — скриншоты игры: механики, классы, лаборатории</title>
+<meta name="theme-color" content="#eef4fb">
+<meta name="description" content="Скриншоты «Физика-Квест»: карта кампании, окно задания, полный конспект, лор с комиксом, босс, профиль, битва команд, журнал учителя, техобслуживание, HUD, 7 типов заданий, 50 симуляторов и 15 мини-игр — с разделением по классам 7, 8 и 9.">
 <link rel="icon" type="image/png" sizes="192x192" href="./assets/icons/icon-192.png">
+<script>
+    /* Тема применяется до первой отрисовки — без вспышки тёмного экрана.
+       Ключ тот же, что во всей игре: localStorage("pq-theme"). */
+    (function () {
+        var t = "light";
+        try { t = localStorage.getItem("pq-theme") === "dark" ? "dark" : "light"; } catch (e) {}
+        document.documentElement.setAttribute("data-theme", t);
+        var m = document.querySelector('meta[name="theme-color"]');
+        if (m) m.setAttribute("content", t === "dark" ? "#081121" : "#eef4fb");
+    })();
+</script>
 <style>
     :root {
+        --bg: #eef4fb;
+        --bg-glow: rgba(14, 165, 233, .16);
+        --panel: #ffffff;
+        --panel-2: #f7fbff;
+        --panel-3: #f2f8fd;
+        --line: #d9e7f3;
+        --line-strong: #bcd4e8;
+        --text: #0f2740;
+        --text-soft: #274b6b;
+        --muted: #5f7d99;
+        --faint: #8aa4bd;
+        --accent: #0284c7;
+        --accent-2: #0ea5e9;
+        --accent-soft: #e6f4ff;
+        --gold: #b45309;
+        --gold-soft: #fff5e0;
+        --green: #12833f;
+        --green-soft: #e7f7ec;
+        --violet: #6d28d9;
+        --violet-soft: #f1ebff;
+        --shadow: 0 14px 40px rgba(15, 42, 70, .09);
+        --shadow-lg: 0 26px 70px rgba(15, 42, 70, .14);
+        --logo-a: #0ea5e9;
+        --logo-b: #6d28d9;
+        --title-grad: linear-gradient(110deg, #0f2740, #0369a1 55%, #b45309);
+        --lightbox: rgba(15, 39, 64, .82);
+    }
+    html[data-theme="dark"] {
         --bg: #050b18;
-        --panel: #0a172c;
-        --panel-2: #0d1f3a;
+        --bg-glow: rgba(56, 189, 248, .18);
+        --panel: #0c1a30;
+        --panel-2: #0a172c;
+        --panel-3: #0f2340;
         --line: rgba(96, 165, 250, .22);
+        --line-strong: rgba(125, 211, 252, .4);
         --text: #eaf4ff;
+        --text-soft: #cbdff5;
         --muted: #93a9c7;
+        --faint: #7791b3;
         --accent: #38bdf8;
+        --accent-2: #38bdf8;
+        --accent-soft: rgba(56, 189, 248, .14);
         --gold: #ffd479;
+        --gold-soft: rgba(255, 212, 121, .12);
+        --green: #34d399;
+        --green-soft: rgba(52, 211, 153, .14);
+        --violet: #c4b5fd;
+        --violet-soft: rgba(196, 181, 253, .14);
+        --shadow: 0 18px 44px rgba(0, 0, 0, .45);
+        --shadow-lg: 0 30px 80px rgba(0, 0, 0, .6);
+        --title-grad: linear-gradient(110deg, #ffffff, #9fe8ff 45%, #ffd479);
+        --lightbox: rgba(2, 6, 14, .93);
     }
     * { box-sizing: border-box; }
     html, body { margin: 0; padding: 0; }
     body {
         font-family: "Trebuchet MS", "Segoe UI", system-ui, sans-serif;
         background:
-            radial-gradient(1200px 700px at 50% -10%, rgba(56, 189, 248, .18), transparent 60%),
-            radial-gradient(900px 600px at 90% 20%, rgba(179, 136, 255, .12), transparent 55%),
+            radial-gradient(1200px 700px at 50% -12%, var(--bg-glow), transparent 62%),
             var(--bg);
         color: var(--text);
         min-height: 100vh;
+        transition: background .2s ease, color .2s ease;
     }
     a { color: inherit; }
-    .wrap { max-width: 1240px; margin: 0 auto; padding: 26px 22px 60px; }
+    .wrap { max-width: 1280px; margin: 0 auto; padding: 22px 22px 64px; }
+
+    /* ---------- шапка ---------- */
     .topbar { display: flex; justify-content: space-between; align-items: center; gap: 14px; flex-wrap: wrap; }
-    .brand { display: flex; align-items: center; gap: 10px; font-weight: 900; letter-spacing: .04em; }
+    .brand { display: flex; align-items: center; gap: 10px; font-weight: 900; letter-spacing: .04em; text-decoration: none; }
     .brand .logo {
-        width: 38px; height: 38px; border-radius: 12px;
-        background: linear-gradient(135deg, #0ea5e9, #6d28d9);
+        width: 40px; height: 40px; border-radius: 13px;
+        background: linear-gradient(135deg, var(--logo-a), var(--logo-b));
         display: grid; place-items: center; font-size: 19px;
-        box-shadow: 0 8px 22px rgba(14, 165, 233, .35);
+        box-shadow: 0 10px 24px rgba(14, 165, 233, .32);
     }
+    .brand small { display: block; font-size: 10px; font-weight: 700; letter-spacing: .12em; color: var(--faint); }
     .topbar-actions { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
-    .langs { display: flex; gap: 4px; padding: 4px; border-radius: 12px; background: rgba(13, 31, 58, .8); border: 1px solid var(--line); }
+    .langs {
+        display: flex; gap: 4px; padding: 4px; border-radius: 12px;
+        background: var(--panel); border: 1px solid var(--line);
+    }
     .langs button {
         border: 0; background: transparent; color: var(--muted); font-weight: 800; font-size: 12px;
-        padding: 7px 10px; border-radius: 9px; cursor: pointer;
+        padding: 7px 10px; border-radius: 9px; cursor: pointer; font-family: inherit;
     }
-    .langs button.active { background: #16375c; color: #eaf6ff; }
+    .langs button.active { background: var(--accent); color: #fff; }
     .btn {
         display: inline-flex; align-items: center; gap: 8px; text-decoration: none;
         padding: 10px 16px; border-radius: 12px; font-weight: 800; font-size: 13px;
-        border: 1px solid var(--line); background: rgba(13, 31, 58, .8); color: var(--text);
-        cursor: pointer; transition: transform .15s ease, border-color .15s ease;
+        border: 1px solid var(--line); background: var(--panel); color: var(--text);
+        cursor: pointer; transition: transform .15s ease, border-color .15s ease, background .15s ease;
+        font-family: inherit;
     }
-    .btn:hover { transform: translateY(-1px); border-color: rgba(56, 189, 248, .6); }
+    .btn:hover { transform: translateY(-1px); border-color: var(--accent); }
     .btn.primary { background: linear-gradient(135deg, #0ea5e9, #2563eb); border-color: transparent; color: #fff; }
-    .hero { margin: 34px 0 22px; }
-    .kicker { font-size: 12px; letter-spacing: .18em; color: var(--accent); font-weight: 900; }
-    h1 {
-        font-size: clamp(30px, 4.6vw, 54px); line-height: 1.04; margin: 10px 0 12px;
-        background: linear-gradient(110deg, #fff, #9fe8ff 45%, var(--gold));
-        -webkit-background-clip: text; background-clip: text; color: transparent;
+
+    /* переключатель темы — тот же слайдер, что в игре */
+    .pq-theme-toggle {
+        display: inline-flex; align-items: center; gap: 8px; padding: 4px 10px 4px 6px;
+        border-radius: 999px; border: 1px solid var(--line); background: var(--panel);
+        color: var(--text); font: inherit; font-size: 12.5px; font-weight: 800; cursor: pointer;
+        white-space: nowrap;
     }
-    .lead { max-width: 860px; color: var(--muted); font-size: clamp(13.5px, 1.5vw, 17px); line-height: 1.6; }
-    .stats { display: flex; flex-wrap: wrap; gap: 10px; margin: 20px 0 6px; }
+    .pq-theme-toggle:hover { border-color: var(--accent); }
+    .pq-theme-track {
+        position: relative; display: inline-flex; align-items: center; justify-content: space-between;
+        width: 54px; height: 26px; padding: 0 5px; border-radius: 999px;
+        background: #dceaf6; box-shadow: inset 0 1px 3px rgba(15, 35, 70, .18);
+        transition: background .2s ease;
+    }
+    .pq-theme-opt { position: relative; z-index: 2; font-size: 11px; line-height: 1; opacity: .5; transition: opacity .2s; }
+    .pq-theme-knob {
+        position: absolute; z-index: 1; top: 3px; left: 3px; width: 20px; height: 20px; border-radius: 50%;
+        background: #fff; box-shadow: 0 1px 4px rgba(15, 35, 70, .35); transition: transform .22s ease;
+    }
+    html[data-theme="light"] .pq-theme-opt-light { opacity: 1; }
+    html[data-theme="dark"] .pq-theme-opt-dark { opacity: 1; }
+    html[data-theme="dark"] .pq-theme-track { background: #1d3556; }
+    html[data-theme="dark"] .pq-theme-knob { transform: translateX(28px); background: #e8f2ff; }
+    @media (max-width: 620px) { .pq-theme-txt { display: none; } }
+
+    /* ---------- герой ---------- */
+    .hero { margin: 30px 0 18px; }
+    .kicker { font-size: 11.5px; letter-spacing: .18em; color: var(--accent); font-weight: 900; }
+    h1 {
+        font-size: clamp(28px, 4.4vw, 50px); line-height: 1.06; margin: 10px 0 12px;
+        background: var(--title-grad); -webkit-background-clip: text; background-clip: text; color: transparent;
+    }
+    .lead { max-width: 900px; color: var(--muted); font-size: clamp(13.5px, 1.4vw, 16.5px); line-height: 1.6; margin: 0; }
+    .stats { display: flex; flex-wrap: wrap; gap: 10px; margin: 18px 0 4px; }
     .stat {
         padding: 10px 14px; border-radius: 14px; border: 1px solid var(--line);
-        background: rgba(13, 31, 58, .72); font-size: 12.5px; font-weight: 700; color: #cfe6ff;
+        background: var(--panel); font-size: 12.5px; font-weight: 700; color: var(--muted);
+        box-shadow: var(--shadow);
     }
-    .stat b { color: var(--gold); }
-    .worlds {
-        margin: 28px 0 6px; padding: 18px; border-radius: 22px;
-        border: 1px solid var(--line); background: rgba(10, 23, 44, .72);
+    .stat b { color: var(--accent); font-size: 15px; }
+
+    /* ---------- навигация ---------- */
+    .contents { display: flex; gap: 8px; flex-wrap: wrap; margin: 20px 0 4px; }
+    .contents a {
+        text-decoration: none; font-size: 12.5px; font-weight: 800; padding: 8px 13px;
+        border-radius: 999px; border: 1px solid var(--line); background: var(--panel); color: var(--text-soft);
     }
-    .worlds-head { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; }
-    .worlds h2 { margin: 8px 0 0; font-size: clamp(20px, 2.6vw, 30px); }
-    .worlds-count {
+    .contents a:hover { border-color: var(--accent); color: var(--accent); }
+
+    .gradebar {
+        position: sticky; top: 0; z-index: 40; margin: 18px 0 8px; padding: 10px 0;
+        background: linear-gradient(180deg, var(--bg) 72%, transparent);
+        display: flex; align-items: center; gap: 8px; flex-wrap: wrap;
+    }
+    .gradebar .gb-label { font-size: 12px; font-weight: 900; letter-spacing: .1em; color: var(--faint); margin-right: 4px; }
+    .gbtn {
+        font-family: inherit; cursor: pointer; font-size: 13px; font-weight: 800;
+        padding: 9px 16px; border-radius: 999px; border: 1px solid var(--line);
+        background: var(--panel); color: var(--text-soft); transition: all .15s ease;
+    }
+    .gbtn:hover { border-color: var(--accent-2); color: var(--accent); }
+    .gbtn.active {
+        background: linear-gradient(135deg, #0ea5e9, #0369a1); color: #fff; border-color: transparent;
+        box-shadow: 0 8px 20px rgba(3, 105, 161, .28);
+    }
+    .gbtn .n { opacity: .75; font-weight: 700; margin-left: 4px; }
+
+    /* ---------- секции ---------- */
+    .shot-sec { margin: 22px 0; padding: 20px; border-radius: 22px; border: 1px solid var(--line); background: var(--panel); box-shadow: var(--shadow); }
+    .sec-head { display: flex; justify-content: space-between; align-items: flex-start; gap: 14px; }
+    .sec-head h2 { margin: 8px 0 0; font-size: clamp(19px, 2.4vw, 27px); color: var(--text); }
+    .sec-count {
         min-width: 46px; height: 46px; border-radius: 50%; display: grid; place-items: center;
-        background: rgba(56,189,248,.14); border: 1px solid rgba(56,189,248,.4); color: #9fe8ff; font-weight: 900;
+        background: var(--accent-soft); border: 1px solid var(--line-strong); color: var(--accent);
+        font-weight: 900; font-size: 15px; flex: none;
     }
-    .worlds-lead { color: var(--muted); font-size: 13px; line-height: 1.55; margin: 8px 0 14px; max-width: 900px; }
-    .worlds-img { width: 100%; border-radius: 14px; display: block; border: 1px solid rgba(120,200,255,.2); }
-    .field7 { margin: 22px 0 6px; padding: 18px; border-radius: 22px; border: 1px solid var(--line); background: rgba(10, 23, 44, .62); }
-    .f7-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(214px, 1fr)); gap: 12px; margin-top: 10px; }
-    .f7-item {
-        display: block; padding: 0; overflow: hidden; text-align: left; cursor: zoom-in;
-        border-radius: 14px; border: 1px solid rgba(120, 200, 255, .18); background: rgba(13, 31, 58, .7);
-        font: inherit; color: #d7e8ff; transition: transform .16s, border-color .16s;
+    .sec-lead { color: var(--muted); font-size: 13px; line-height: 1.6; margin: 10px 0 16px; max-width: 980px; }
+
+    /* карточки-кадры */
+    .shots { display: grid; grid-template-columns: repeat(auto-fit, minmax(330px, 1fr)); gap: 16px; }
+    .shots.two { grid-template-columns: repeat(auto-fit, minmax(420px, 1fr)); }
+    .shots.small { grid-template-columns: repeat(auto-fit, minmax(270px, 1fr)); }
+    .shot-card {
+        display: flex; flex-direction: column; overflow: hidden; text-align: left; padding: 0;
+        border-radius: 16px; border: 1px solid var(--line); background: var(--panel-2);
+        font: inherit; color: var(--text); cursor: zoom-in; transition: transform .16s ease, border-color .16s ease, box-shadow .16s ease;
     }
-    .f7-item:hover { transform: translateY(-3px); border-color: rgba(56, 189, 248, .55); }
-    .f7-item img { display: block; width: 100%; aspect-ratio: 760 / 260; object-fit: cover; background: #eef3f9; }
-    .f7-cap { display: flex; align-items: center; gap: 9px; padding: 9px 11px; font-size: 12.5px; font-weight: 700; }
-    .f7-cap .ico { font-size: 17px; }
-    .f7-item small { display: block; font-weight: 600; color: #8ba2bf; font-size: 10.5px; }
-    .mg-grid { grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); }
-    .cert-grid { grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); }
-    .cert-grid .f7-item img { aspect-ratio: 1600 / 1120; object-fit: contain; background: #0b1626; }
-    .cert-ui-lead { margin-top: 18px; }
-    .mg-grid .f7-item img { aspect-ratio: 712 / 475; object-fit: contain; background: #0b1626; }
-    .mg-grid .f7-cap { align-items: flex-start; }
-    .mg-grid .f7-cap small { margin-top: 2px; }
-    .overview { margin: 22px 0 0; }
-    .overview img { width: 100%; border-radius: 16px; display: block; border: 1px solid rgba(120,200,255,.22); }
-    .overview figcaption { margin-top: 8px; font-size: 12.5px; color: var(--muted); }
-    .gal2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 14px; margin-top: 6px; }
-    .gal2 img { width: 100%; border-radius: 14px; display: block; border: 1px solid rgba(120, 200, 255, .2); background: #eef3f9; cursor: zoom-in; }
-    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 18px; margin-top: 26px; }
-    .card {
-        border-radius: 20px; overflow: hidden; border: 1px solid var(--line);
-        background: linear-gradient(180deg, rgba(15, 32, 60, .82), rgba(8, 18, 36, .95));
-        box-shadow: 0 24px 60px rgba(0, 0, 0, .38);
-        display: flex; flex-direction: column;
-        transition: transform .18s ease, border-color .18s ease;
+    .shot-card:hover { transform: translateY(-3px); border-color: var(--accent-2); box-shadow: var(--shadow); }
+    .shot-card img {
+        display: block; width: 100%; aspect-ratio: 1200 / 860; object-fit: cover;
+        background: var(--panel-3); border-bottom: 1px solid var(--line);
     }
-    .card:hover { transform: translateY(-3px); border-color: rgba(56, 189, 248, .5); }
-    .shot { position: relative; aspect-ratio: 1200 / 860; overflow: hidden; cursor: zoom-in; background: #050b18; }
-    .shot img { width: 100%; height: 100%; object-fit: cover; display: block; }
-    .badge {
-        position: absolute; top: 12px; right: 12px; padding: 6px 10px; border-radius: 999px;
-        font-size: 10.5px; font-weight: 900; letter-spacing: .08em; text-transform: uppercase;
-        background: rgba(34, 197, 94, .92); color: #052012;
+    .shot-card.wide img { aspect-ratio: 712 / 475; object-fit: contain; }
+    .shot-card.cert img { aspect-ratio: 1600 / 1120; object-fit: contain; background: #ffffff; }
+    .shot-card .cap { padding: 11px 13px 13px; display: grid; gap: 3px; }
+    .shot-card .cap .t { font-size: 13.5px; font-weight: 800; color: var(--text); display: flex; gap: 8px; align-items: baseline; }
+    .shot-card .cap .t .g {
+        font-size: 10px; font-weight: 900; letter-spacing: .06em; text-transform: uppercase;
+        color: var(--accent); background: var(--accent-soft); border-radius: 999px; padding: 2px 7px; flex: none;
     }
-    .badge.grade { left: 12px; right: auto; background: rgba(2, 132, 199, .9); color: #e0f6ff; }
-    .meta { padding: 15px 17px 17px; display: flex; flex-direction: column; gap: 6px; flex: 1; }
-    .meta-top { display: flex; justify-content: space-between; gap: 12px; align-items: baseline; }
-    .meta h3 { margin: 0; font-size: 16px; }
-    .para { font-size: 11.5px; color: var(--muted); font-weight: 800; white-space: nowrap; }
-    .formula {
-        display: inline-block; align-self: flex-start; margin-top: 2px;
-        font-family: "Cambria Math", Georgia, serif; font-size: 14px; color: var(--gold);
-        background: rgba(255, 212, 121, .08); border-left: 3px solid var(--gold);
-        padding: 5px 10px; border-radius: 8px;
+    .shot-card .cap .d { font-size: 11.5px; line-height: 1.45; color: var(--muted); }
+
+    .empty-note {
+        display: none; margin: 10px 0 0; padding: 14px 16px; border-radius: 14px;
+        background: var(--panel-3); border: 1px dashed var(--line-strong); color: var(--muted); font-size: 12.5px;
     }
-    .desc { color: var(--muted); font-size: 12.5px; line-height: 1.5; margin: 2px 0 0; }
-    .foot { margin-top: 46px; display: flex; justify-content: space-between; gap: 14px; flex-wrap: wrap; align-items: center; color: var(--muted); font-size: 12.5px; }
-    .lightbox {
-        position: fixed; inset: 0; background: rgba(2, 6, 14, .92); display: none;
-        align-items: center; justify-content: center; padding: 20px; z-index: 999;
-    }
+    .empty-note.on { display: block; }
+
+    .worlds-img { width: 100%; border-radius: 14px; display: block; border: 1px solid var(--line); background: var(--panel-3); }
+    .gal2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 14px; }
+    .gal2 img { width: 100%; border-radius: 14px; display: block; border: 1px solid var(--line); cursor: zoom-in; background: var(--panel-3); }
+
+    .foot { margin-top: 44px; display: flex; justify-content: space-between; gap: 14px; flex-wrap: wrap; align-items: center; color: var(--faint); font-size: 12.5px; }
+
+    .lightbox { position: fixed; inset: 0; background: var(--lightbox); display: none; align-items: center; justify-content: center; padding: 20px; z-index: 999; }
     .lightbox.open { display: flex; }
-    .lightbox img { max-width: 100%; max-height: 100%; border-radius: 16px; box-shadow: 0 30px 90px rgba(0,0,0,.7); }
+    .lightbox img { max-width: 100%; max-height: 100%; border-radius: 16px; box-shadow: var(--shadow-lg); background: #fff; }
     .lightbox .x {
         position: absolute; top: 18px; right: 22px; width: 42px; height: 42px; border-radius: 50%;
-        border: 1px solid rgba(255,255,255,.3); background: rgba(10,20,40,.8); color: #fff;
+        border: 1px solid rgba(255,255,255,.35); background: rgba(10,20,40,.7); color: #fff;
         font-size: 20px; cursor: pointer;
     }
+    .shot-card .cap .t .g.g7 { color: var(--green); background: var(--green-soft); }
+    .shot-card .cap .t .g.g8 { color: var(--accent); background: var(--accent-soft); }
+    .shot-card .cap .t .g.g9 { color: var(--violet); background: var(--violet-soft); }
+    .shot-card .cap .t .g.gall { color: var(--muted); background: var(--panel-3); }
+    .shot-card.banner img { aspect-ratio: 850 / 303; object-fit: contain; }
+    .shot-sec { scroll-margin-top: 86px; }
+    html { scroll-behavior: smooth; }
+    .gal2 img { max-height: 900px; object-fit: contain; background: var(--panel-3); }
+
     @media (max-width: 560px) {
-        .wrap { padding: 18px 14px 40px; }
-        .grid { grid-template-columns: 1fr; }
+        .wrap { padding: 16px 13px 44px; }
+        .shots, .shots.two, .shots.small { grid-template-columns: 1fr; }
+        .shot-sec { padding: 15px; border-radius: 18px; }
     }
 </style>
 </head>
 <body>
 <div class="wrap">
     <div class="topbar">
-        <a class="brand" href="./index.html" style="text-decoration:none">
+        <a class="brand" href="./index.html">
             <span class="logo">⚛️</span>
-            <span>ФИЗИКА-КВЕСТ</span>
+            <span>ФИЗИКА-КВЕСТ
+                <small data-i18n="brandSub">7–9 КЛАССЫ · ТРИЛОГИЯ</small>
+            </span>
         </a>
         <div class="topbar-actions">
             <div class="langs" role="group" aria-label="Language">
@@ -162,98 +270,46 @@
                 <button type="button" data-lang="kk">ҚАЗ</button>
                 <button type="button" data-lang="en">EN</button>
             </div>
+            <button type="button" class="pq-theme-toggle" id="theme-toggle" role="switch" aria-checked="false" aria-label="Тема оформления">
+                <span class="pq-theme-track" aria-hidden="true">
+                    <span class="pq-theme-opt pq-theme-opt-light">☀️</span>
+                    <span class="pq-theme-opt pq-theme-opt-dark">🌙</span>
+                    <span class="pq-theme-knob"></span>
+                </span>
+                <span class="pq-theme-txt" id="theme-txt">Светлая</span>
+            </button>
             <a class="btn" href="./play.html?grade=8">🎮 <span data-i18n="openGame">Открыть игру</span></a>
             <a class="btn primary" href="./index.html">🏠 <span data-i18n="toPortal">На портал</span></a>
         </div>
     </div>
 
     <header class="hero">
-        <div class="kicker" data-i18n="kicker">ИНТЕРАКТИВНЫЕ СИМУЛЯТОРЫ · 7–9 КЛАССЫ</div>
-        <h1 data-i18n="title">Скриншоты мини-игр «Физика-Квест»</h1>
-        <p class="lead" data-i18n="lead">50 симуляторов внутри игры: 15 полевых опытов для 7 класса и 35 canvas-лабораторий для 8 и 9 классов — каждая тема курса (§§ 1–43) получила свой опыт. Меняй параметры, следи за телеметрией, выводи установку в целевой режим и вводи расчётное значение. Ниже — все 50 кадров.</p>
+        <div class="kicker" data-i18n="kicker">СКРИНШОТЫ ИГРЫ · МЕХАНИКИ · 7–9 КЛАССЫ</div>
+        <h1 data-i18n="title">Как выглядит «Физика-Квест»</h1>
+        <p class="lead" data-i18n="lead">Не только мини-игры: карта кампании, окно задания, полный конспект, лор с комиксом, босс, профиль с рангами, битва команд, журнал учителя и работа над ошибками. Семь типов заданий и 50 симуляторов — и всё это разделено по классам: выбери 7, 8 или 9 и смотри только его экраны.</p>
         <div class="stats">
+            <div class="stat"><b>24</b> <span data-i18n="sScreens">экрана механик</span></div>
             <div class="stat"><b>50</b> <span data-i18n="sLabs">симуляторов и лабораторий</span></div>
-            <div class="stat"><b>17</b> <span data-i18n="sNew">новых опытов в этой версии</span></div>
-            <div class="stat"><b>3</b> <span data-i18n="sLangs">языка интерфейса</span></div>
-            <div class="stat"><b>+30 XP</b> <span data-i18n="sReward">за каждый подтверждённый опыт</span></div>
+            <div class="stat"><b>15</b> <span data-i18n="sMini">мини-игр уровней</span></div>
+            <div class="stat"><b>3</b> <span data-i18n="sGrades">класса в одной трилогии</span></div>
         </div>
     </header>
 
-    <section class="worlds">
-        <div class="worlds-head">
-            <div>
-                <div class="kicker" data-i18n="worldsKicker">ОФОРМЛЕНИЕ УРОВНЕЙ</div>
-                <h2 data-i18n="worldsTitle">14 разных миров внутри игры</h2>
-            </div>
-            <span class="worlds-count">14</span>
-        </div>
-        <p class="worlds-lead" data-i18n="worldsLead">Фон уровня больше не один и тот же: каждая глава получает свой мир — небо, силуэты, частицы и свечение. Ниже — реальные кадры фонов, которые рисует движок.</p>
-        <img class="worlds-img" src="./assets/screenshots/level-worlds.png" alt="Миры уровней" loading="lazy">
-    </section>
+    <nav class="contents" id="contents" aria-label="Разделы"></nav>
 
-    <figure class="overview">
-        <img src="./assets/screenshots/overview-simulators.png" alt="Все 35 canvas-лабораторий 8–9 классов" loading="lazy">
-        <figcaption data-i18n="overview">Все 50 симуляторов одним взглядом: 15 полевых опытов 7 класса и 35 canvas-лабораторий 8–9 классов по темам §§ 1–43 в светлом «реалистичном» стиле — приборы, жидкости, свет и тени рисует canvas, а не эмодзи.</figcaption>
-    </figure>
+    <div class="gradebar" id="gradebar">
+        <span class="gb-label" data-i18n="filterLabel">КЛАСС:</span>
+        <button type="button" class="gbtn active" data-grade="all"><span data-i18n="gAll">Все классы</span></button>
+        <button type="button" class="gbtn" data-grade="7">7 класс</button>
+        <button type="button" class="gbtn" data-grade="8">8 класс</button>
+        <button type="button" class="gbtn" data-grade="9">9 класс</button>
+        <span class="stat" id="filter-count" style="margin-left:auto;padding:8px 12px;font-size:12px"></span>
+    </div>
 
-
-    <section class="worlds">
-        <div class="worlds-head">
-            <div>
-                <div class="kicker" data-i18n="galKicker">8–9 КЛАССЫ · ГАЛЕРЕЯ ПО ТЕМАМ</div>
-                <h2 data-i18n="galTitle">Мини-игры 8 и 9 класса собраны по темам</h2>
-            </div>
-            <span class="worlds-count">35</span>
-        </div>
-        <p class="worlds-lead" data-i18n="galLead">Как и в 7 классе, лаборатории сгруппированы по темам курса: у каждой темы свой набор опытов и своя карточка с параграфом, целью и подсказкой. Ниже — реальные экраны галереи 8 и 9 класса.</p>
-        <div class="gal2">
-            <img class="zoom" data-img="./assets/screenshots/sim89-gallery-g8.png" src="./assets/screenshots/sim89-gallery-g8.png" data-i18n-alt="galG8" alt="Галерея 8 класса" loading="lazy">
-            <img class="zoom" data-img="./assets/screenshots/sim89-gallery-g9.png" src="./assets/screenshots/sim89-gallery-g9.png" data-i18n-alt="galG9" alt="Галерея 9 класса" loading="lazy">
-        </div>
-    </section>
-
-    <section class="field7" id="minigames">
-        <div class="worlds-head">
-            <div>
-                <div class="kicker" data-i18n="mgKicker">8–9 КЛАССЫ · МИНИ-ИГРЫ ЛАБОРАТОРНЫХ УРОВНЕЙ</div>
-                <h2 data-i18n="mgTitle">Все 15 мини-игр уровней: как в 7 классе, но по своей теме</h2>
-            </div>
-            <span class="worlds-count">15</span>
-        </div>
-        <p class="worlds-lead" data-i18n="mgLead">На каждом лабораторном уровне 8 и 9 класса открывается своя мини-игра. Ползунков нет: ученик берёт детали с полки, поворачивает ручки приборов, нажимает «Провести опыт» и сам снимает показания — или собирает электрическую цепь. Нужно вывести установку в целевой режим, увидеть зелёный результат и подтвердить расчёт — за это уровень даёт бонус. Ниже — реальные экраны всех 15 мини-игр: 11 в 8 классе (уровни 45–55) и 4 в 9 классе (уровни 45–48), каждая с формулой и целевым значением.</p>
-        <div class="f7-grid mg-grid" id="mg-grid"></div>
-    </section>
-
-    <section class="field7" id="certificates">
-        <div class="worlds-head">
-            <div>
-                <div class="kicker" data-i18n="certKicker">СЕРТИФИКАТЫ · 4 ОФОРМЛЕНИЯ</div>
-                <h2 data-i18n="certTitle">Сертификат пилота: на выбор, с печатью</h2>
-            </div>
-            <span class="worlds-count">4</span>
-        </div>
-        <p class="worlds-lead" data-i18n="certLead">Сертификат за любой класс и за всю трилогию: имя и фамилия вводятся отдельно, внизу — код пилота, дата и круглая печать с номером класса. Четыре оформления: «Космос» — тёмный сгенерированный фон, «Светлый», «Пергамент» и «Небо» — рисуются кодом на белом фоне и печатаются на обычной бумаге без тёмной заливки. Выбор оформления запоминается.</p>
-        <div class="f7-grid mg-grid cert-grid" id="cert-grid"></div>
-        <p class="worlds-lead cert-ui-lead" data-i18n="certUiLead">Так выглядит окно выбора: вкладки класса, плитки оформления, отдельные поля «Фамилия» и «Имя», скачивание в PNG и печать в PDF.</p>
-        <img class="worlds-img" src="./assets/screenshots/cert-ui.jpg" alt="Окно сертификата" loading="lazy">
-    </section>
-
-    <section class="field7">
-        <div class="worlds-head">
-            <div>
-                <div class="kicker" data-i18n="f7Kicker">7 КЛАСС · ПОЛЕВОЙ ЖУРНАЛ</div>
-                <h2 data-i18n="f7Title">15 полевых симуляторов · превью</h2>
-            </div>
-            <span class="worlds-count">15</span>
-        </div>
-        <p class="worlds-lead" data-i18n="f7Lead">Отдельный набор опытов для 7 класса: измерения, плотность, давление, Архимед, рычаг и энергия. Полностью на трёх языках.</p>
-        <div class="f7-grid" id="f7-grid"></div>
-    </section>
-
-    <section class="grid" id="grid"></section>
+    <main id="sections"></main>
 
     <div class="foot">
-        <span data-i18n="footNote">Все изображения получены автоматической отрисовкой реальных canvas-сцен игры: светлая «фотореалистичная» графика, предметы можно тянуть мышью.</span>
+        <span data-i18n="footNote">Все кадры получены автоматической отрисовкой реальных экранов игры: светлая тема включена по умолчанию, тёмная — этой же кнопкой в шапке.</span>
         <span>© Физика-Квест · 7–9</span>
     </div>
 </div>
@@ -1141,98 +1197,557 @@
         ["⚙️", "§35", "sim7-lab-lever.png", { ru: "Рычаг и момент", kk: "Иінтірек және момент", en: "Lever & moment" }]
     ];
 
+
+    /* =========================================================
+       СВЕТЛАЯ ГАЛЕРЕЯ: ЭКРАНЫ И МЕХАНИКИ ИГРЫ, 7 / 8 / 9 КЛАСС
+       ========================================================= */
+
+    /* Подписи новых кадров: RU / KK / EN */
+    const EXTRA = {
+        ru: {
+            brandSub: "7–9 КЛАССЫ · ТРИЛОГИЯ",
+            openGame: "Открыть игру",
+            toPortal: "На портал",
+            kicker: "СКРИНШОТЫ ИГРЫ · МЕХАНИКИ · 7–9 КЛАССЫ",
+            title: "Как выглядит «Физика-Квест»",
+            lead: "Не только мини-игры: карта кампании, окно задания, полный конспект, лор с комиксом, босс, профиль с рангами, битва команд, журнал учителя и работа над ошибками. Семь типов заданий и 50 симуляторов — и всё это разделено по классам: выбери 7, 8 или 9 и смотри только его экраны.",
+            sScreens: "экрана механик", sLabs: "симуляторов и лабораторий", sMini: "мини-игр уровней", sGrades: "класса в одной трилогии",
+            filterLabel: "КЛАСС:", gAll: "Все классы", gAllShort: "Все классы",
+            filterCount: (n) => `Экранов: ${n}`,
+            emptyNote: "Для этого класса кадров нет — выбери другой класс или «Все классы».",
+            footNote: "Все кадры получены автоматической отрисовкой реальных экранов игры: светлая тема включена по умолчанию, тёмная — этой же кнопкой в шапке.",
+            nav: "Разделы",
+            sections: {
+                hud: { kicker: "ИГРОВОЙ ЭКРАН", title: "Щит, астероиды и энергия", lead: "Основная петля игры: к городу летят астероиды с заданиями, верный ответ отражает удар и возвращает энергию, ошибка снимает щит. Полный конспект и формулы — до уровня, в самом задании их нет." },
+                map: { kicker: "КАМПАНИЯ", title: "Карта уровней своего класса", lead: "Главы кампании с прогрессом, звёздами за точность и метриками щита. Пройденные главы открыты, следующая подсвечена, чужие классы в карту не попадают." },
+                task: { kicker: "МЕХАНИКА ЗАДАНИЙ", title: "Окно задания и семь типов", lead: "Тест, множественный выбор, соответствие, краткий ответ, числовой ответ, верно/неверно и заполнение пропуска — один и тот же набор в 7, 8 и 9 классе. На уровень попадает 20 случайных заданий, подсказки и попытки настраиваются." },
+                theory: { kicker: "ПОЛНЫЙ КОНСПЕКТ", title: "Теория до уровня", lead: "Перед миссией ученик открывает полный конспект параграфа: ключевые идеи, определения, карточку формул и разбор примера с оформлением «Дано — Решение — Ответ»." },
+                lore: { kicker: "ЛОР И КОМИКС", title: "История и комикс одной лентой", lead: "Сначала герои и общий сюжет трилогии, затем главы лора: под текстом каждой главы стоит её комикс-страница. Показываются только главы своего класса." },
+                boss: { kicker: "ИСПЫТАНИЕ", title: "Босс блока", lead: "Финальный уровень блока в 9 классе: сложнее вопросы, сильнее урон по щиту и отдельная награда. В 7 и 8 классе таких экранов нет — там обычные волны." },
+                profile: { kicker: "ПРОГРЕСС ПИЛОТА", title: "Профиль, достижения и ранги", lead: "Имя, ранг, код пилота, статистика щита, достижения и настройка подсказок. Здесь же — модули щита, которые ученик улучшает за очки миссий." },
+                team: { kicker: "РАБОТА В КЛАССЕ", title: "Битва команд на проекторе", lead: "Режим интерактивной доски: 2–3 команды, вопросы по всем трём классам, счёт и победитель прямо на экране." },
+                teacher: { kicker: "КАБИНЕТ УЧИТЕЛЯ", title: "Журнал учителя", lead: "Один журнал на 7–9 классы: назначения, результаты, оценка по 10-балльной шкале и отметка «нужна помощь»." },
+                maintenance: { kicker: "РАБОТА НАД ОШИБКАМИ", title: "Техобслуживание", lead: "Архив вопросов, где ответ разошёлся с верным: правило, разбор и повторный ответ — без астероидов и таймера, с возвратом части очков." },
+                minigames: { kicker: "МИНИ-ИГРЫ УРОВНЕЙ", title: "Лабораторные мини-игры 8 и 9 класса", lead: "На каждом лабораторном уровне открывается своя мини-игра: полка деталей, ручки-верньеры, «Провести опыт» и съём показаний приборами — или сборка электрической цепи. Ползунков нет, всё делается руками." },
+                labs: { kicker: "CANVAS-СИМУЛЯТОРЫ", title: "35 лабораторий 8–9 классов", lead: "Отдельные canvas-симуляторы по темам параграфов: приборы, жидкости, свет и тени рисует движок. Телеметрия живая, опыты сгруппированы по темам курса." },
+                field7: { kicker: "7 КЛАСС · ПОЛЕВОЙ ЖУРНАЛ", title: "15 полевых опытов 7 класса", lead: "Измерения, плотность, давление, Архимед, рычаг и энергия — отдельный набор для 7 класса, полностью на трёх языках." },
+                galleries: { kicker: "ГАЛЕРЕИ ПО ТЕМАМ", title: "Лаборатории, собранные по темам", lead: "В 8 и 9 классе опыты сгруппированы по темам курса: у каждой темы своя карточка с параграфом, целью и подсказкой." },
+                worlds: { kicker: "ОФОРМЛЕНИЕ УРОВНЕЙ", title: "Миры внутри игры", lead: "Фон уровня не один и тот же: каждая глава получает свой мир — небо, силуэты, частицы и свечение." },
+                cert: { kicker: "СЕРТИФИКАТЫ", title: "Паспорт пилота: четыре оформления", lead: "Сертификат за свой класс и за всю трилогию: крупная круглая печать, код пилота и дата. «Космос» — тёмный фон, «Светлый», «Пергамент» и «Небо» — с иллюстрациями и печатью на обычной бумаге." }
+            },
+            items: {
+                "hud-g7": { t: "Щит Астерии: волна заданий", d: "7 класс · плотность, давление, Архимед · 20 заданий на уровень" },
+                "hud-g8": { t: "Щит Эквилибриума: сеть под нагрузкой", d: "8 класс · тепло и электричество · ошибка снимает щит" },
+                "hud-g9": { t: "Орбита-9: волна босса", d: "9 класс · импульс и динамика · босс бьёт сильнее" },
+                "map-g7": { t: "Карта кампании «Астерия»", d: "12 глав · звёзды за точность · щит города" },
+                "map-g8": { t: "Карта кампании «Эквилибриум»", d: "13 глав · тепло, электричество, оптика" },
+                "map-g9": { t: "Карта кампании «Орбита-9»", d: "10 глав полётной школы · боссы блоков" },
+                "task-g7": { t: "Задание 7 класса: тест", d: "§ 13 Плотность · 4 варианта · 1 попытка из 5" },
+                "task-g8": { t: "Задание 8 класса: числовой ответ", d: "§ 22–26 Закон Ома · только число" },
+                "task-g9": { t: "Задание 9 класса: краткий ответ", d: "§ 15–19 Орбита · формула на карточке теории" },
+                "task-types": { t: "Семь типов заданий", d: "Один набор в 7, 8 и 9 классе — содержание меняется по параграфам" },
+                "theory-g7": { t: "Конспект: плотность вещества", d: "7 класс · § 13 · формулы и разбор примера" },
+                "theory-g8": { t: "Конспект: тепловой баланс", d: "8 класс · § 7–9 · Q = cmΔt и уравнение баланса" },
+                "theory-g9": { t: "Конспект: маятник и колебания", d: "9 класс · § 24–29 · T = 2π√(l/g)" },
+                "lore-g7": { t: "Лор и комикс: силы хребта", d: "7 класс · акт III · реплики героев и физический ключ" },
+                "lore-g8": { t: "Лор и комикс: электрическая сеть", d: "8 класс · акт III · закон Ома в сюжете" },
+                "lore-g9": { t: "Лор и комикс: орбита «Беркут»", d: "9 класс · акт V · первая космическая" },
+                "boss-g9": { t: "Экран босса", d: "9 класс · усиленные вопросы · −12 к щиту за ошибку" },
+                "profile-g7": { t: "Профиль пилота 7 класса", d: "Кадет Астерии · достижения · подсказки и попытки" },
+                "profile-g8": { t: "Профиль пилота 8 класса", d: "Кадет Эквилибриума · серия дней · 10-балльная шкала" },
+                "profile-g9": { t: "Профиль пилота 9 класса", d: "Кадет Орбиты · щит 64% · ранги" },
+                "upgrades": { t: "Модули щита и ранги", d: "Перехват, регенерация, жизни, точность · от кадета до командора" },
+                "team-g8": { t: "Битва команд", d: "2–3 команды · вопросы по 7, 8 и 9 классу · счёт на доске" },
+                "teacher": { t: "Журнал учителя", d: "Один журнал на 7–9 классы · оценка по 10-балльной шкале" },
+                "maintenance-g8": { t: "Техобслуживание", d: "Архив ошибок · правило, разбор и повторный ответ" },
+                "cert-ui": { t: "Окно выбора сертификата", d: "Вкладки класса · плитки оформления · PNG и PDF" }
+            }
+        },
+        kk: {
+            brandSub: "7–9 СЫНЫПТАР · ТРИЛОГИЯ",
+            openGame: "Ойынды ашу",
+            toPortal: "Порталға",
+            kicker: "ОЙЫН СКРИНШОТТАРЫ · МЕХАНИКАЛАР · 7–9 СЫНЫПТАР",
+            title: "«Физика-Квест» қалай көрінеді",
+            lead: "Тек мини-ойындар емес: кампания картасы, тапсырма терезесі, толық конспект, комикспен лор, босс, рангілері бар профиль, командалық сайыс, мұғалім журналы және қателермен жұмыс. Жеті тапсырма түрі мен 50 симулятор — барлығы сынып бойынша бөлінген: 7, 8 немесе 9-ды таңдап, тек соның экрандарын көр.",
+            sScreens: "механика экраны", sLabs: "симулятор мен зертхана", sMini: "деңгей мини-ойыны", sGrades: "сынып бір трилогияда",
+            filterLabel: "СЫНЫП:", gAll: "Барлық сыныптар", gAllShort: "Барлығы",
+            filterCount: (n) => `Экрандар: ${n}`,
+            emptyNote: "Бұл сынып үшін кадрлар жоқ — басқа сыныпты немесе «Барлық сыныптар»-ды таңда.",
+            footNote: "Барлық кадрлар ойынның нақты экрандарын автоматты түрде салу арқылы алынған: ашық тақырып әдепкі, қараңғысы — сол батырмамен.",
+            nav: "Бөлімдер",
+            sections: {
+                hud: { kicker: "ОЙЫН ЭКРАНЫ", title: "Қалқан, астероидтар және энергия", lead: "Ойынның негізгі циклі: қалаға тапсырмасы бар астероидтар ұшады, дұрыс жауап соққыны қайтарады және энергияны қайтарады, қате қалқанды азайтады. Толық конспект пен формулалар деңгейге дейін — тапсырманың ішінде олар жоқ." },
+                map: { kicker: "КАМПАНИЯ", title: "Өз сыныбыңның деңгей картасы", lead: "Прогрессі, дәлдік жұлдыздары және қалқан көрсеткіштері бар кампания тараулары. Өтілген тараулар ашық, келесісі ерекшеленеді, басқа сыныптар картаға түспейді." },
+                task: { kicker: "ТАПСЫРМА МЕХАНИКАСЫ", title: "Тапсырма терезесі және жеті түрі", lead: "Тест, бірнеше жауап, сәйкестендіру, қысқа жауап, сандық жауап, дұрыс/бұрыс және бос орынды толтыру — 7, 8 және 9 сыныпта бірдей жиынтық. Деңгейге 20 кездейсоқ тапсырма түседі." },
+                theory: { kicker: "ТОЛЫҚ КОНСПЕКТ", title: "Деңгейге дейінгі теория", lead: "Миссия алдында оқушы параграфтың толық конспектісін ашады: негізгі идеялар, анықтамалар, формула карточкасы және мысалды талдау." },
+                lore: { kicker: "ЛОР ЖӘНЕ КОМИКС", title: "Тарих пен комикс бір лентада", lead: "Алдымен кейіпкерлер мен трилогияның жалпы сюжеті, содан кейін лор тараулары: әр тараудың мәтінінің астында оның комикс-беті тұрады. Тек өз сыныбыңның тараулары көрсетіледі." },
+                boss: { kicker: "СЫНАҚ", title: "Блок боссы", lead: "9 сыныптағы блоктың қорытынды деңгейі: күрделірек сұрақтар, қалқанға күштірек соққы және бөлек сыйақы." },
+                profile: { kicker: "ПИЛОТ ПРОГРЕСІ", title: "Профиль, жетістіктер және рангілер", lead: "Аты, рангісі, пилот коды, қалқан статистикасы, жетістіктер және кеңестерді реттеу. Мұнда оқушы миссия ұпайына қалқан модульдерін жақсартады." },
+                team: { kicker: "СЫНЫПТАҒЫ ЖҰМЫС", title: "Проектордағы командалық сайыс", lead: "Интерактивті тақта режимі: 2–3 команда, үш сынып бойынша сұрақтар, ұпай мен жеңімпаз экранда." },
+                teacher: { kicker: "МҰҒАЛІМ КАБИНЕТІ", title: "Мұғалім журналы", lead: "7–9 сыныптарға бір журнал: тағайындаулар, нәтижелер, 10 балдық баға және «көмек керек» белгісі." },
+                maintenance: { kicker: "ҚАТЕЛЕРМЕН ЖҰМЫС", title: "Техникалық қызмет", lead: "Жауабы дұрысқа сәйкес келмеген сұрақтар архиві: ереже, талдау және қайта жауап — астероидсыз және таймерсіз." },
+                minigames: { kicker: "ДЕҢГЕЙ МИНИ-ОЙЫНДАРЫ", title: "8 және 9 сыныптың зертханалық мини-ойындары", lead: "Әр зертханалық деңгейде өз мини-ойыны ашылады: бөлшектер сөресі, бұралатын тұтқалар, «Тәжірибе жасау» және аспаптардан көрсеткіш алу — немесе электр тізбегін жинау. Слайдер жоқ." },
+                labs: { kicker: "CANVAS-СИМУЛЯТОРЛАР", title: "8–9 сыныптың 35 зертханасы", lead: "Параграф тақырыптары бойынша жеке canvas-симуляторлар: аспаптар, сұйықтықтар, жарық пен көлеңкені қозғалтқыш салады. Тәжірибелер курс тақырыптары бойынша топтастырылған." },
+                field7: { kicker: "7 СЫНЫП · ДАЛА ЖУРНАЛЫ", title: "7 сыныптың 15 далалық тәжірибесі", lead: "Өлшеу, тығыздық, қысым, Архимед, иінтірек және энергия — 7 сыныпқа арналған жеке жиынтық, үш тілде." },
+                galleries: { kicker: "ТАҚЫРЫП ГАЛЕРЕЯЛАРЫ", title: "Тақырып бойынша жиналған зертханалар", lead: "8 және 9 сыныпта тәжірибелер курс тақырыптары бойынша топтастырылған: әр тақырыптың параграфы, мақсаты және кеңесі бар карточкасы бар." },
+                worlds: { kicker: "ДЕҢГЕЙ БЕЗЕНДІРУІ", title: "Ойын ішіндегі әлемдер", lead: "Деңгей фоны бірдей емес: әр тарау өз әлемін алады — аспан, силуэттер, бөлшектер мен жарық." },
+                cert: { kicker: "СЕРТИФИКАТТАР", title: "Пилот паспорты: төрт безендіру", lead: "Өз сыныбың және бүкіл трилогия үшін сертификат: үлкен дөңгелек мөр, пилот коды мен күні. «Ғарыш» — қараңғы фон, «Ашық», «Пергамент» және «Аспан» — суреттермен және қарапайым қағаздағы мөрмен." }
+            },
+            items: {
+                "hud-g7": { t: "Астерия қалқаны: тапсырма толқыны", d: "7 сынып · тығыздық, қысым, Архимед · деңгейге 20 тапсырма" },
+                "hud-g8": { t: "Эквилибриум қалқаны: желі жүктемеде", d: "8 сынып · жылу және электр · қате қалқанды азайтады" },
+                "hud-g9": { t: "Орбита-9: босс толқыны", d: "9 сынып · импульс және динамика · босс күштірек соғады" },
+                "map-g7": { t: "«Астерия» кампания картасы", d: "12 тарау · дәлдік жұлдыздары · қала қалқаны" },
+                "map-g8": { t: "«Эквилибриум» кампания картасы", d: "13 тарау · жылу, электр, оптика" },
+                "map-g9": { t: "«Орбита-9» кампания картасы", d: "10 тарау · ұшу мектебі · блок босстары" },
+                "task-g7": { t: "7 сынып тапсырмасы: тест", d: "§ 13 Тығыздық · 4 нұсқа · 5 әрекеттің 1-і" },
+                "task-g8": { t: "8 сынып тапсырмасы: сандық жауап", d: "§ 22–26 Ом заңы · тек сан" },
+                "task-g9": { t: "9 сынып тапсырмасы: қысқа жауап", d: "§ 15–19 Орбита · теория карточкасындағы формула" },
+                "task-types": { t: "Жеті тапсырма түрі", d: "7, 8 және 9 сыныпта бір жиынтық — мазмұны параграф бойынша өзгереді" },
+                "theory-g7": { t: "Конспект: зат тығыздығы", d: "7 сынып · § 13 · формулалар мен мысал" },
+                "theory-g8": { t: "Конспект: жылу балансы", d: "8 сынып · § 7–9 · Q = cmΔt" },
+                "theory-g9": { t: "Конспект: маятник және тербелістер", d: "9 сынып · § 24–29 · T = 2π√(l/g)" },
+                "lore-g7": { t: "Лор мен комикс: жота күштері", d: "7 сынып · III акт · кейіпкерлер репликалары" },
+                "lore-g8": { t: "Лор мен комикс: электр желісі", d: "8 сынып · III акт · сюжеттегі Ом заңы" },
+                "lore-g9": { t: "Лор мен комикс: «Бүркіт» орбитасы", d: "9 сынып · V акт · бірінші ғарыштық" },
+                "boss-g9": { t: "Босс экраны", d: "9 сынып · күшейтілген сұрақтар · қатеге −12" },
+                "profile-g7": { t: "7 сынып пилот профилі", d: "Астерия кадеті · жетістіктер · кеңестер" },
+                "profile-g8": { t: "8 сынып пилот профилі", d: "Эквилибриум кадеті · күндер сериясы" },
+                "profile-g9": { t: "9 сынып пилот профилі", d: "Орбита кадеті · қалқан 64% · рангілер" },
+                "upgrades": { t: "Қалқан модульдері мен рангілер", d: "Ұстап қалу, қалпына келу, өмір, дәлдік" },
+                "team-g8": { t: "Командалық сайыс", d: "2–3 команда · үш сынып бойынша сұрақтар · ұпай" },
+                "teacher": { t: "Мұғалім журналы", d: "7–9 сыныптарға бір журнал · 10 балдық баға" },
+                "maintenance-g8": { t: "Техникалық қызмет", d: "Қателер архиві · ереже, талдау және қайта жауап" },
+                "cert-ui": { t: "Сертификат таңдау терезесі", d: "Сынып қойындылары · безендіру плиткалары · PNG және PDF" }
+            }
+        },
+        en: {
+            brandSub: "GRADES 7–9 · TRILOGY",
+            openGame: "Open the game",
+            toPortal: "Portal",
+            kicker: "GAME SCREENSHOTS · MECHANICS · GRADES 7–9",
+            title: "What Physics Quest looks like",
+            lead: "More than mini-games: the campaign map, the task window, the full study guide, the story with its comic, the boss screen, the pilot profile with ranks, the team battle, the teacher journal and error review. Seven task types and 50 simulators — all split by grade: pick 7, 8 or 9 and see only its screens.",
+            sScreens: "mechanics screens", sLabs: "simulators and labs", sMini: "level mini-games", sGrades: "grades in one trilogy",
+            filterLabel: "GRADE:", gAll: "All grades", gAllShort: "All grades",
+            filterCount: (n) => `Screens: ${n}`,
+            emptyNote: "No frames for this grade — pick another grade or “All grades”.",
+            footNote: "Every frame is produced by automatically rendering the game's real screens: the light theme is on by default, the dark one is the same button in the header.",
+            nav: "Sections",
+            sections: {
+                hud: { kicker: "GAME SCREEN", title: "Shield, asteroids and energy", lead: "The core loop: asteroids with tasks fly at the city, a correct answer deflects the hit and restores energy, a mistake drains the shield. The full guide and formulas live before the level, never inside the task." },
+                map: { kicker: "CAMPAIGN", title: "Your grade's level map", lead: "Campaign chapters with progress, accuracy stars and shield metrics. Finished chapters are open, the next one is highlighted, other grades never appear." },
+                task: { kicker: "TASK MECHANICS", title: "Task window and seven types", lead: "Single choice, multiple choice, matching, short answer, numeric answer, true/false and fill-in-the-blank — the same set in Grades 7, 8 and 9. Each level draws 20 random tasks; hints and attempts are configurable." },
+                theory: { kicker: "FULL STUDY GUIDE", title: "Theory before the level", lead: "Before a mission the student opens the chapter guide: key ideas, definitions, a formula card and a worked example laid out as Given — Solution — Answer." },
+                lore: { kicker: "STORY AND COMIC", title: "Story and comic in one strip", lead: "First the characters and the trilogy plot, then the lore chapters: under every chapter text sits its comic page. Only your grade's chapters are shown." },
+                boss: { kicker: "CHALLENGE", title: "Block boss", lead: "The final level of a Grade 9 block: harder questions, heavier shield damage and a separate reward." },
+                profile: { kicker: "PILOT PROGRESS", title: "Profile, achievements and ranks", lead: "Name, rank, pilot code, shield stats, achievements and hint settings. Here the student also spends mission points on shield modules." },
+                team: { kicker: "CLASSROOM", title: "Team battle on the projector", lead: "Interactive whiteboard mode: 2–3 teams, questions from all three grades, score and winner right on screen." },
+                teacher: { kicker: "TEACHER CABINET", title: "Teacher journal", lead: "One journal for Grades 7–9: assignments, results, a 10-point mark and a “needs help” flag." },
+                maintenance: { kicker: "ERROR REVIEW", title: "Maintenance", lead: "An archive of questions where the answer went wrong: rule, explanation and a second attempt — no asteroids, no timer, partial points back." },
+                minigames: { kicker: "LEVEL MINI-GAMES", title: "Grade 8–9 lab mini-games", lead: "Every lab level opens its own mini-game: a parts shelf, turning knobs, “Run experiment” and reading the instruments — or assembling a circuit. No sliders, everything is done by hand." },
+                labs: { kicker: "CANVAS SIMULATORS", title: "35 labs for Grades 8–9", lead: "Separate canvas simulators for each chapter topic: instruments, fluids, light and shadows are drawn by the engine. Experiments are grouped by course topic." },
+                field7: { kicker: "GRADE 7 · FIELD LOG", title: "15 field experiments of Grade 7", lead: "Measurement, density, pressure, buoyancy, lever and energy — a dedicated Grade 7 set, fully trilingual." },
+                galleries: { kicker: "TOPIC GALLERIES", title: "Labs grouped by topic", lead: "In Grades 8 and 9 the experiments are grouped by course topic, each with its paragraph, goal and hint." },
+                worlds: { kicker: "LEVEL ART", title: "Worlds inside the game", lead: "The level background is never the same: every chapter gets its own world — sky, silhouettes, particles and glow." },
+                cert: { kicker: "CERTIFICATES", title: "Pilot passport: four designs", lead: "A certificate for your grade and for the whole trilogy: a large round seal, pilot code and date. “Space” is the dark background; “Light”, “Parchment” and “Sky” print on plain paper." }
+            },
+            items: {
+                "hud-g7": { t: "Asteria shield: a wave of tasks", d: "Grade 7 · density, pressure, buoyancy · 20 tasks per level" },
+                "hud-g8": { t: "Equilibrium shield: grid under load", d: "Grade 8 · heat and electricity · mistakes drain the shield" },
+                "hud-g9": { t: "Orbit-9: boss wave", d: "Grade 9 · momentum and dynamics · the boss hits harder" },
+                "map-g7": { t: "Asteria campaign map", d: "12 chapters · accuracy stars · city shield" },
+                "map-g8": { t: "Equilibrium campaign map", d: "13 chapters · heat, electricity, optics" },
+                "map-g9": { t: "Orbit-9 campaign map", d: "10 chapters · flight school · block bosses" },
+                "task-g7": { t: "Grade 7 task: single choice", d: "§ 13 Density · 4 options · attempt 1 of 5" },
+                "task-g8": { t: "Grade 8 task: numeric answer", d: "§ 22–26 Ohm's law · number only" },
+                "task-g9": { t: "Grade 9 task: short answer", d: "§ 15–19 Orbit · formula on the theory card" },
+                "task-types": { t: "Seven task types", d: "One set across Grades 7, 8 and 9 — the content follows the paragraph" },
+                "theory-g7": { t: "Guide: density of matter", d: "Grade 7 · § 13 · formulas and a worked example" },
+                "theory-g8": { t: "Guide: thermal balance", d: "Grade 8 · § 7–9 · Q = cmΔt and the balance equation" },
+                "theory-g9": { t: "Guide: pendulum and oscillations", d: "Grade 9 · § 24–29 · T = 2π√(l/g)" },
+                "lore-g7": { t: "Story and comic: forces of the ridge", d: "Grade 7 · Act III · hero lines and the physics key" },
+                "lore-g8": { t: "Story and comic: the electric grid", d: "Grade 8 · Act III · Ohm's law in the plot" },
+                "lore-g9": { t: "Story and comic: the Berkut orbit", d: "Grade 9 · Act V · orbital velocity" },
+                "boss-g9": { t: "Boss screen", d: "Grade 9 · harder questions · −12 shield per mistake" },
+                "profile-g7": { t: "Grade 7 pilot profile", d: "Asteria cadet · achievements · hints and attempts" },
+                "profile-g8": { t: "Grade 8 pilot profile", d: "Equilibrium cadet · day streak · 10-point scale" },
+                "profile-g9": { t: "Grade 9 pilot profile", d: "Orbit cadet · shield 64% · ranks" },
+                "upgrades": { t: "Shield modules and ranks", d: "Intercept, regeneration, lives, accuracy · cadet to commander" },
+                "team-g8": { t: "Team battle", d: "2–3 teams · questions from Grades 7, 8 and 9 · score on screen" },
+                "teacher": { t: "Teacher journal", d: "One journal for Grades 7–9 · 10-point marking" },
+                "maintenance-g8": { t: "Maintenance", d: "Error archive · rule, explanation and a second attempt" },
+                "cert-ui": { t: "Certificate picker", d: "Grade tabs · design tiles · PNG and PDF" }
+            }
+        }
+    };
+
+    /* Кадры экранов: файл, класс, ключ подписи */
+    const UI_ITEMS = [
+        { file: "ui-hud-g7.png", grade: 7, key: "hud-g7" },
+        { file: "ui-hud-g8.png", grade: 8, key: "hud-g8" },
+        { file: "ui-hud-g9.png", grade: 9, key: "hud-g9" },
+        { file: "ui-map-g7.png", grade: 7, key: "map-g7" },
+        { file: "ui-map-g8.png", grade: 8, key: "map-g8" },
+        { file: "ui-map-g9.png", grade: 9, key: "map-g9" },
+        { file: "ui-task-g7.png", grade: 7, key: "task-g7" },
+        { file: "ui-task-g8.png", grade: 8, key: "task-g8" },
+        { file: "ui-task-g9.png", grade: 9, key: "task-g9" },
+        { file: "ui-task-types.png", grade: "all", key: "task-types" },
+        { file: "ui-theory-g7.png", grade: 7, key: "theory-g7" },
+        { file: "ui-theory-g8.png", grade: 8, key: "theory-g8" },
+        { file: "ui-theory-g9.png", grade: 9, key: "theory-g9" },
+        { file: "ui-lore-g7.png", grade: 7, key: "lore-g7" },
+        { file: "ui-lore-g8.png", grade: 8, key: "lore-g8" },
+        { file: "ui-lore-g9.png", grade: 9, key: "lore-g9" },
+        { file: "ui-boss-g9.png", grade: 9, key: "boss-g9" },
+        { file: "ui-profile-g7.png", grade: 7, key: "profile-g7" },
+        { file: "ui-profile-g8.png", grade: 8, key: "profile-g8" },
+        { file: "ui-profile-g9.png", grade: 9, key: "profile-g9" },
+        { file: "ui-upgrades.png", grade: "all", key: "upgrades" },
+        { file: "ui-team-g8.png", grade: "all", key: "team-g8" },
+        { file: "ui-teacher.png", grade: "all", key: "teacher" },
+        { file: "ui-maintenance-g8.png", grade: "all", key: "maintenance-g8" }
+    ];
+
+    /* Разделы страницы: сначала механики, затем лаборатории */
+    const SECTION_META = [
+        { id: "hud", icon: "🛡", grades: [7, 8, 9], kind: "ui" },
+        { id: "map", icon: "🗺", grades: [7, 8, 9], kind: "ui" },
+        { id: "task", icon: "📝", grades: [7, 8, 9], kind: "ui" },
+        { id: "theory", icon: "📘", grades: [7, 8, 9], kind: "ui" },
+        { id: "lore", icon: "📖", grades: [7, 8, 9], kind: "ui" },
+        { id: "boss", icon: "👾", grades: [9], kind: "ui" },
+        { id: "profile", icon: "🎖", grades: [7, 8, 9], kind: "ui" },
+        { id: "team", icon: "🏟", grades: [7, 8, 9], kind: "ui" },
+        { id: "teacher", icon: "🧑‍🏫", grades: [7, 8, 9], kind: "ui" },
+        { id: "maintenance", icon: "🛠", grades: [7, 8, 9], kind: "ui" },
+        { id: "minigames", icon: "🧪", grades: [8, 9], kind: "minigames" },
+        { id: "labs", icon: "🔬", grades: [8, 9], kind: "labs" },
+        { id: "field7", icon: "📐", grades: [7], kind: "field7" },
+        { id: "galleries", icon: "🖼", grades: [8, 9], kind: "galleries" },
+        { id: "worlds", icon: "🌌", grades: [7, 8, 9], kind: "worlds" },
+        { id: "cert", icon: "🏅", grades: [7, 8, 9], kind: "cert" }
+    ];
+
     let lang = localStorage.getItem("pq_lang") || "ru";
     if (!I18N[lang]) lang = "ru";
+    let gradeFilter = "all";
 
-    function render() {
-        const dict = I18N[lang];
-        document.documentElement.lang = lang;
-        document.querySelectorAll("[data-i18n]").forEach((el) => {
-            const key = el.getAttribute("data-i18n");
-            if (dict[key]) el.textContent = dict[key];
+    /* Подмешиваем новые подписи в общий словарь страницы */
+    Object.keys(EXTRA).forEach((l) => {
+        if (!I18N[l]) return;
+        Object.keys(EXTRA[l]).forEach((k) => {
+            if (k !== "sections" && k !== "items") I18N[l][k] = EXTRA[l][k];
         });
-        document.querySelectorAll("[data-i18n-alt]").forEach((el) => {
-            const key = el.getAttribute("data-i18n-alt");
-            if (dict[key]) el.setAttribute("alt", dict[key]);
-        });
-        const mg = document.getElementById("mg-grid");
-        if (mg) {
-            const lvlWord = { ru: "уровень", kk: "деңгей", en: "level" };
-            const gradeWord = (g) => lang === "en" ? `Grade ${g}` : lang === "kk" ? `${g} сынып` : `${g} класс`;
-            mg.innerHTML = MINI_GAMES.map((g) => `
-                <button type="button" class="f7-item" data-img="./assets/screenshots/${g.file}">
-                    <img src="./assets/screenshots/${g.file}" alt="${g.t[lang] || g.t.ru}" loading="lazy">
-                    <span class="f7-cap"><span class="ico">${g.icon}</span><span>${g.t[lang] || g.t.ru}<small>${gradeWord(g.grade)} · ${lvlWord[lang] || lvlWord.ru} ${g.level} · ${g.goal[lang] || g.goal.ru}</small></span></span>
-                </button>`).join("");
-        }
-        const cg = document.getElementById("cert-grid");
-        if (cg) {
-            cg.innerHTML = CERT_CARDS.map(([icon, id, file, info]) => `
-                <button type="button" class="f7-item" data-img="./assets/screenshots/${file}">
-                    <img src="./assets/screenshots/${file}" alt="${info[lang] || info.ru}" loading="lazy">
-                    <span class="f7-cap"><span class="ico">${icon}</span><span>${info[lang] || info.ru}<small>${(info.d && (info.d[lang] || info.d.ru)) || ""}</small></span></span>
-                </button>`).join("");
-        }
-        const f7 = document.getElementById("f7-grid");
-        if (f7) {
-            f7.innerHTML = FIELD7.map(([icon, para, file, name]) => `
-                <button type="button" class="f7-item" data-img="./assets/screenshots/${file}">
-                    <img src="./assets/screenshots/${file}" alt="${name[lang] || name.ru}" loading="lazy">
-                    <span class="f7-cap"><span class="ico">${icon}</span><span>${name[lang] || name.ru}<small>${para}</small></span></span>
-                </button>`).join("");
-        }
-        document.getElementById("grid").innerHTML = CARDS.map((c) => {
-            const item = (LABS_I18N[lang] && LABS_I18N[lang][c.id]) || dict.items[c.id] || { t: c.id, d: "" };
-            return `
-                <article class="card">
-                    <div class="shot" data-img="./assets/screenshots/${c.file}">
-                        <img src="./assets/screenshots/${c.file}" alt="${item.t}" loading="lazy">
-                        ${c.isNew ? `<span class="badge">${dict.newBadge}</span>` : ""}
-                        <span class="badge grade">${c.grade} ${dict.grade}</span>
-                    </div>
-                    <div class="meta">
-                        <div class="meta-top">
-                            <h3>${item.t}</h3>
-                            <span class="para">${c.para}</span>
-                        </div>
-                        <span class="formula">${c.formula}</span>
-                        <p class="desc">${item.d}</p>
-                    </div>
-                </article>`;
-        }).join("");
-        bind();
+        I18N[l].sections = Object.assign({}, I18N[l].sections || {}, EXTRA[l].sections);
+        I18N[l].items = Object.assign({}, I18N[l].items || {}, EXTRA[l].items);
+    });
+
+    function esc(v) {
+        return String(v == null ? "" : v)
+            .replace(/&/g, "&amp;").replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+    }
+    function dict() { return I18N[lang] || I18N.ru; }
+    function gradeWord(g) {
+        return lang === "en" ? `Grade ${g}` : lang === "kk" ? `${g} сынып` : `${g} класс`;
+    }
+    function secText(id, field, fallback) {
+        const secs = dict().sections || {};
+        return (secs[id] && secs[id][field]) || fallback || "";
+    }
+    function itemText(key, field) {
+        const items = dict().items || {};
+        const it = items[key] || (I18N.ru.items || {})[key];
+        return it ? (it[field] || "") : "";
+    }
+    function shotSrc(file) { return "./assets/screenshots/" + file; }
+
+    /* Карточка-кадр */
+    function cardHtml(item, extraClass) {
+        const tag = item.grade === "all" ? (dict().gAllShort || "Все классы") : gradeWord(item.grade);
+        const gcls = item.grade === "all" ? "gall" : "g" + item.grade;
+        const cls = "shot-card" + (extraClass ? " " + extraClass : "");
+        return `<button type="button" class="${cls}" data-grade="${item.grade}" data-img="${esc(shotSrc(item.file))}">
+            <img src="${esc(shotSrc(item.file))}" alt="${esc(item.title)}" loading="lazy">
+            <span class="cap">
+                <span class="t"><span class="g ${gcls}">${esc(tag)}</span>${esc(item.title)}</span>
+                <span class="d">${esc(item.desc || "")}</span>
+            </span>
+        </button>`;
     }
 
-    function bind() {
-        document.querySelectorAll(".shot, .f7-item, .gal2 img").forEach((el) => {
+    function uiItems(rootKey) {
+        const keys = {
+            hud: ["hud-g7", "hud-g8", "hud-g9"],
+            map: ["map-g7", "map-g8", "map-g9"],
+            task: ["task-g7", "task-g8", "task-g9", "task-types"],
+            theory: ["theory-g7", "theory-g8", "theory-g9"],
+            lore: ["lore-g7", "lore-g8", "lore-g9"],
+            boss: ["boss-g9"],
+            profile: ["profile-g7", "profile-g8", "profile-g9", "upgrades"],
+            team: ["team-g8"],
+            teacher: ["teacher"],
+            maintenance: ["maintenance-g8"]
+        };
+        return UI_ITEMS.filter((it) => (keys[rootKey] || []).indexOf(it.key) >= 0).map((it) => ({
+            file: it.file, grade: it.grade,
+            title: itemText(it.key, "t") || it.key,
+            desc: itemText(it.key, "d")
+        }));
+    }
+
+    function buildSections() {
+        return SECTION_META.map((meta) => {
+            const sec = {
+                id: meta.id, icon: meta.icon, grades: meta.grades,
+                kicker: secText(meta.id, "kicker", ""),
+                title: secText(meta.id, "title", meta.id),
+                lead: secText(meta.id, "lead", "")
+            };
+            if (meta.kind === "ui") {
+                Object.assign(sec, { layout: "grid", items: uiItems(meta.id) });
+            } else if (meta.kind === "minigames") {
+                Object.assign(sec, {
+                    layout: "grid", cardClass: "wide",
+                    items: MINI_GAMES.map((g) => ({
+                        file: g.file, grade: g.grade,
+                        title: `${g.icon} ${g.t[lang] || g.t.ru}`,
+                        desc: `${lang === "en" ? "level" : lang === "kk" ? "деңгей" : "уровень"} ${g.level} · ${g.goal[lang] || g.goal.ru}`
+                    }))
+                });
+            } else if (meta.kind === "labs") {
+                Object.assign(sec, {
+                    layout: "grid", cardClass: "banner",
+                    hero: { file: "overview-simulators.png", grade: "all" },
+                    items: CARDS.map((c) => {
+                        const loc = (LABS_I18N[lang] && LABS_I18N[lang][c.id]) ||
+                            (LABS_I18N.ru && LABS_I18N.ru[c.id]) || null;
+                        const title = (loc && loc.t) || itemText(c.id, "t") || c.id;
+                        const about = (loc && loc.d) || itemText(c.id, "d") || "";
+                        return {
+                            file: c.file, grade: c.grade, title,
+                            desc: `${c.para} · ${about}`.replace(/ · $/, "")
+                        };
+                    })
+                });
+            } else if (meta.kind === "field7") {
+                Object.assign(sec, {
+                    layout: "grid", cardClass: "banner",
+                    items: FIELD7.map((row) => ({
+                        file: row[2], grade: 7,
+                        title: `${row[0]} ${row[3][lang] || row[3].ru}`,
+                        desc: lang === "en" ? `paragraph ${row[1]}` : lang === "kk" ? `${row[1]} параграф` : `параграф ${row[1]}`
+                    }))
+                });
+            } else if (meta.kind === "galleries") {
+                Object.assign(sec, {
+                    layout: "gallery",
+                    items: [
+                        { file: "sim89-gallery-g8.png", grade: 8, title: (I18N[lang] || I18N.ru).galG8 || "8 класс" },
+                        { file: "sim89-gallery-g9.png", grade: 9, title: (I18N[lang] || I18N.ru).galG9 || "9 класс" }
+                    ]
+                });
+            } else if (meta.kind === "worlds") {
+                Object.assign(sec, {
+                    layout: "single",
+                    items: [{ file: "level-worlds.png", grade: "all", title: sec.title }]
+                });
+            } else if (meta.kind === "cert") {
+                Object.assign(sec, {
+                    layout: "grid", cardClass: "cert",
+                    items: CERT_CARDS.map((row) => ({
+                        file: row[2], grade: "all",
+                        title: `${row[0]} ${row[3][lang] || row[3].ru}`,
+                        desc: (row[3].d && (row[3].d[lang] || row[3].d.ru)) || ""
+                    })).concat([{
+                        file: "cert-ui.jpg", grade: "all",
+                        title: itemText("cert-ui", "t") || "Окно выбора сертификата",
+                        desc: itemText("cert-ui", "d") || ""
+                    }])
+                });
+            }
+            return sec;
+        });
+    }
+
+    let SECTIONS = [];
+
+    function renderContents() {
+        const host = document.getElementById("contents");
+        if (!host) return;
+        host.innerHTML = SECTIONS.map((s) =>
+            `<a href="#sec-${s.id}">${s.icon} ${esc(s.title)}</a>`
+        ).join("");
+    }
+
+    function renderSections() {
+        const host = document.getElementById("sections");
+        if (!host) return;
+        host.innerHTML = SECTIONS.map((sec) => {
+            let body = "";
+            if (sec.layout === "gallery") {
+                body = `<div class="gal2">${sec.items.map((it) =>
+                    `<img class="zoom" data-grade="${it.grade}" data-img="${esc(shotSrc(it.file))}" src="${esc(shotSrc(it.file))}" alt="${esc(it.title)}" loading="lazy">`
+                ).join("")}</div>`;
+            } else if (sec.layout === "single") {
+                body = `<img class="worlds-img zoom" data-grade="${sec.items[0].grade}" data-img="${esc(shotSrc(sec.items[0].file))}" src="${esc(shotSrc(sec.items[0].file))}" alt="${esc(sec.title)}" loading="lazy">`;
+            } else {
+                body = `<div class="shots">${sec.items.map((it) => cardHtml(it, sec.cardClass)).join("")}</div>`;
+            }
+            return `<section class="shot-sec" id="sec-${sec.id}" data-sec="${sec.id}">
+                <div class="sec-head">
+                    <div>
+                        <div class="kicker">${sec.icon} ${esc(sec.kicker)}</div>
+                        <h2>${esc(sec.title)}</h2>
+                    </div>
+                    <span class="sec-count">${sec.items.length}</span>
+                </div>
+                <p class="sec-lead">${esc(sec.lead)}</p>
+                ${sec.hero ? `<img class="worlds-img zoom" data-img="${esc(shotSrc(sec.hero.file))}" src="${esc(shotSrc(sec.hero.file))}" alt="${esc(sec.title)}" loading="lazy">` : ""}
+                ${body}
+                <p class="empty-note">${esc(dict().emptyNote || "")}</p>
+            </section>`;
+        }).join("");
+        bindLightbox();
+    }
+
+    function applyFilter() {
+        let total = 0;
+        SECTIONS.forEach((sec) => {
+            const node = document.getElementById(`sec-${sec.id}`);
+            if (!node) return;
+            const secOk = gradeFilter === "all" || sec.grades.map(String).indexOf(gradeFilter) >= 0;
+            let visible = 0;
+            node.querySelectorAll("[data-grade]").forEach((el) => {
+                const g = el.getAttribute("data-grade");
+                const ok = gradeFilter === "all" || g === "all" || g === gradeFilter;
+                el.style.display = ok ? "" : "none";
+                if (ok) visible += 1;
+            });
+            node.style.display = secOk && visible > 0 ? "" : "none";
+            const note = node.querySelector(".empty-note");
+            if (note) note.classList.toggle("on", secOk && visible === 0);
+            const count = node.querySelector(".sec-count");
+            if (count) count.textContent = String(visible);
+            total += visible;
+        });
+
+        const badge = document.getElementById("filter-count");
+        if (badge) {
+            const f = dict().filterCount;
+            badge.textContent = typeof f === "function" ? f(total) : String(total);
+        }
+        const play = document.querySelector('a[href^="./play.html"]');
+        if (play) play.setAttribute("href", gradeFilter === "all" ? "./play.html?grade=8" : `./play.html?grade=${gradeFilter}`);
+
+        const nav = document.getElementById("contents");
+        if (nav) {
+            nav.querySelectorAll("a").forEach((a) => {
+                const id = a.getAttribute("href").slice(1);
+                const sec = document.getElementById(id);
+                a.style.display = sec && sec.style.display === "none" ? "none" : "";
+            });
+        }
+    }
+
+    function bindLightbox() {
+        document.querySelectorAll("[data-img]").forEach((el) => {
             el.addEventListener("click", () => {
-                const img = document.getElementById("lightbox-img");
-                img.src = el.getAttribute("data-img");
+                document.getElementById("lightbox-img").src = el.getAttribute("data-img");
                 document.getElementById("lightbox").classList.add("open");
             });
         });
     }
 
+    function render() {
+        const d = dict();
+        document.documentElement.lang = lang;
+        document.querySelectorAll("[data-i18n]").forEach((el) => {
+            const key = el.getAttribute("data-i18n");
+            if (typeof d[key] === "string") el.textContent = d[key];
+        });
+        document.querySelectorAll(".gbtn").forEach((btn) => {
+            const g = btn.getAttribute("data-grade");
+            if (g === "all") {
+                const span = btn.querySelector("[data-i18n]");
+                if (span) span.textContent = d.gAll;
+            } else {
+                btn.textContent = gradeWord(g);
+            }
+            btn.classList.toggle("active", btn.getAttribute("data-grade") === gradeFilter);
+        });
+        const navEl = document.getElementById("contents");
+        if (navEl) navEl.setAttribute("aria-label", d.nav || "");
+        document.querySelectorAll(".langs button").forEach((b) => b.classList.toggle("active", b.dataset.lang === lang));
+        SECTIONS = buildSections();
+        renderContents();
+        renderSections();
+        applyFilter();
+    }
+
+    /* ---------- тема: светлая по умолчанию, тёмная — вручную ---------- */
+    function syncTheme() {
+        const dark = document.documentElement.getAttribute("data-theme") === "dark";
+        const btn = document.getElementById("theme-toggle");
+        const txt = document.getElementById("theme-txt");
+        const meta = document.querySelector('meta[name="theme-color"]');
+        if (btn) {
+            btn.setAttribute("aria-checked", dark ? "true" : "false");
+            btn.setAttribute("aria-pressed", dark ? "true" : "false");
+            btn.setAttribute("title", lang === "en" ? "Theme: light or dark" : lang === "kk" ? "Тақырып: ашық немесе қараңғы" : "Тема: светлая или тёмная");
+        }
+        if (txt) {
+            txt.textContent = dark
+                ? (lang === "en" ? "Dark" : lang === "kk" ? "Қараңғы" : "Тёмная")
+                : (lang === "en" ? "Light" : lang === "kk" ? "Ашық" : "Светлая");
+        }
+        if (meta) meta.setAttribute("content", dark ? "#081121" : "#eef4fb");
+    }
+
+    const themeBtn = document.getElementById("theme-toggle");
+    if (themeBtn) {
+        themeBtn.addEventListener("click", () => {
+            const next = document.documentElement.getAttribute("data-theme") === "dark" ? "light" : "dark";
+            document.documentElement.setAttribute("data-theme", next);
+            try { localStorage.setItem("pq-theme", next); } catch (e) {}
+            syncTheme();
+        });
+    }
+
+    /* ---------- язык ---------- */
     document.querySelectorAll(".langs button").forEach((btn) => {
         btn.addEventListener("click", () => {
             lang = btn.dataset.lang;
-            try { localStorage.setItem("pq_lang", lang); } catch (_) {}
-            document.querySelectorAll(".langs button").forEach((b) => b.classList.toggle("active", b === btn));
+            if (!I18N[lang]) lang = "ru";
+            try { localStorage.setItem("pq_lang", lang); } catch (e) {}
             render();
+            syncTheme();
         });
     });
-    document.querySelector('.langs button[data-lang="' + lang + '"]')?.classList.add("active");
-    document.querySelectorAll(".langs button").forEach((b) => b.classList.toggle("active", b.dataset.lang === lang));
 
-    document.getElementById("lightbox-x").addEventListener("click", () => document.getElementById("lightbox").classList.remove("open"));
-    document.getElementById("lightbox").addEventListener("click", (e) => {
-        if (e.target.id === "lightbox") e.currentTarget.classList.remove("open");
+    /* ---------- фильтр по классам ---------- */
+    document.querySelectorAll(".gbtn").forEach((btn) => {
+        btn.addEventListener("click", () => {
+            gradeFilter = btn.getAttribute("data-grade");
+            document.querySelectorAll(".gbtn").forEach((b) => b.classList.toggle("active", b === btn));
+            applyFilter();
+        });
     });
+
+    /* ---------- лайтбокс ---------- */
+    const lb = document.getElementById("lightbox");
+    const lbx = document.getElementById("lightbox-x");
+    if (lbx) lbx.addEventListener("click", () => lb.classList.remove("open"));
+    if (lb) lb.addEventListener("click", (e) => { if (e.target === lb) lb.classList.remove("open"); });
     document.addEventListener("keydown", (e) => {
-        if (e.key === "Escape") document.getElementById("lightbox").classList.remove("open");
+        if (e.key === "Escape" && lb) lb.classList.remove("open");
     });
 
     render();
+    syncTheme();
 })();
 </script>
 </body>
