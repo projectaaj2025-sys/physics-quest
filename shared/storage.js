@@ -45,7 +45,7 @@ const Storage = {
                     const students = (c.students || []).map(st => ({
                         name: String(st.name || "").trim(),
                         playerId: String(st.playerId || "").trim(),
-                        studentCode: String(st.studentCode || st.playerCode || "").trim().toUpperCase() || this.makePlayerCode()
+                        studentCode: this.canonicalStudentCode(st.studentCode || st.playerCode || "") || this.makePlayerCode()
                     }));
                     merged.push({ ...c, grade: g, students });
                 }
@@ -107,6 +107,21 @@ const Storage = {
         let code = "";
         for (let i = 0; i < 4; i++) code += alphabet[Math.floor(Math.random() * alphabet.length)];
         return code;
+    },
+
+    // Код ученика всегда 4 символа. Старый формат 8 класса «P + 4 знака»
+    // приводим к 4 символам (P7X4K → 7X4K), чтобы совпадали старые журналы.
+    canonicalStudentCode(code) {
+        let c = String(code || "").toUpperCase().replace(/[^A-Z0-9]/g, "");
+        if (c.length === 5 && c.charAt(0) === "P") c = c.slice(1);
+        if (c.length > 4) c = c.slice(0, 4);
+        return c;
+    },
+
+    sameStudentCode(a, b) {
+        const x = this.canonicalStudentCode(a);
+        const y = this.canonicalStudentCode(b);
+        return !!x && !!y && x === y;
     },
 
     // Короткий код назначения: Q + двухсимвольный номер уровня + 3 символа.
@@ -301,7 +316,7 @@ const Storage = {
         const students = Array.isArray(classData.students) ? classData.students : [];
         const seen = new Set();
         const cleanStudents = students.map(student => {
-            const rawCode = String(student.studentCode || student.playerCode || "").trim().toUpperCase();
+            const rawCode = this.canonicalStudentCode(student.studentCode || student.playerCode || "");
             return {
                 name: String(student.name || "").trim(),
                 playerId: String(student.playerId || "").trim(),
@@ -418,10 +433,10 @@ const Storage = {
         const assignmentCode = String(assignment.studentCode || "").trim().toUpperCase();
         const name = this.normalizeName(player.name);
         const sameId = !!playerId && !!assignmentId && assignmentId === playerId;
-        const sameCode = !!playerCode && ((!!assignmentCode && assignmentCode === playerCode) || assignmentId === playerCode);
+        const sameCode = !!playerCode && ((!!assignmentCode && this.sameStudentCode(assignmentCode, playerCode)) || this.sameStudentCode(assignmentId, playerCode));
         const sameName = !!name && !!assignment.studentName && this.normalizeName(assignment.studentName) === name;
         const conflictingId = !!playerId && !!assignmentId && assignmentId !== playerId;
-        const conflictingCode = !!playerCode && !!assignmentCode && assignmentCode !== playerCode;
+        const conflictingCode = !!playerCode && !!assignmentCode && !this.sameStudentCode(assignmentCode, playerCode);
         return sameId || sameCode || (!conflictingId && !conflictingCode && sameName);
     },
 
@@ -785,6 +800,8 @@ const Storage = {
             if (acc.student.name) settings.playerName = acc.student.name;
             if (acc.language) settings.language = acc.language;
         }
+        // В настройках мог остаться старый 5-символьный код (P7X4K) — приводим к 4.
+        settings.playerCode = this.canonicalStudentCode(settings.playerCode) || settings.playerCode;
         if (!saved || !settings.playerId || !settings.playerCode) {
             this.save(this.KEYS.SETTINGS, settings);
         }
@@ -797,7 +814,7 @@ const Storage = {
             ...current,
             ...settings,
             playerId: settings.playerId || current.playerId,
-            playerCode: settings.playerCode || current.playerCode
+            playerCode: this.canonicalStudentCode(settings.playerCode || current.playerCode)
         };
         this.save(this.KEYS.SETTINGS, merged);
         if (window.PQAccount && settings.playerName !== undefined) {

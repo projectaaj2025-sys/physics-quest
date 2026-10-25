@@ -296,12 +296,13 @@ const AssignHQ = {
     },
 
     resultsForRow(row, all) {
-        const code = String(row.studentCode || row.playerId || "").toUpperCase();
+        const code = Storage.canonicalStudentCode(row.studentCode || row.playerId || "");
         const hash = hqNameHash(row.studentName || "");
+        const sameCode = value => !!code && !!value && Storage.sameStudentCode(value, code);
         return all.filter(r => {
-            if (code && r.studentCode && String(r.studentCode).toUpperCase() === code) return true;
+            if (code && r.studentCode && sameCode(r.studentCode)) return true;
             if (row.studentName && r.nameHash && r.nameHash === hash) {
-                if (code && r.studentCode && String(r.studentCode).toUpperCase() !== code) return false;
+                if (code && r.studentCode && !sameCode(r.studentCode)) return false;
                 return true;
             }
             return false;
@@ -779,7 +780,7 @@ const AssignHQ = {
             id: Storage.makeId("assignment"),
             studentName: String(student.name || "").trim(),
             playerId: String(student.playerId || "").trim(),
-            studentCode: String(student.studentCode || student.playerCode || student.playerId || "").trim().toUpperCase(),
+            studentCode: Storage.canonicalStudentCode(student.studentCode || student.playerCode || student.playerId || ""),
             levelId,
             assignmentCode,
             note: String(quick.note || "").trim(),
@@ -900,7 +901,7 @@ const AssignHQ = {
                     <input type="text" id="as-wiz-name" maxlength="80" value="${asAttr(w.name)}" placeholder="${escapeHtml(rpgT("asStudentNamePh"))}">
                 </label>
                 <label class="as-field"><span>${escapeHtml(rpgT("asStudentCode"))}</span>
-                    <input type="text" id="as-wiz-code" maxlength="12" value="${asAttr(w.code)}" placeholder="P1234">
+                    <input type="text" id="as-wiz-code" maxlength="6" value="${asAttr(w.code)}" placeholder="K7M2">
                 </label>
             `}`;
     },
@@ -1036,7 +1037,7 @@ const AssignHQ = {
                 id: Storage.makeId("assignment"),
                 studentName: payload.studentName || "",
                 playerId: payload.playerId || "",
-                studentCode: String(payload.studentCode || "").toUpperCase(),
+                studentCode: Storage.canonicalStudentCode(payload.studentCode || ""),
                 levelId,
                 assignmentCode: code,
                 note: String(w.note || "").trim(),
@@ -1347,7 +1348,7 @@ const AssignHQ = {
                 <input type="text" id="as-class-name" maxlength="40" value="${asAttr(cls ? cls.name : "")}" placeholder="8А">
             </label>
             <label class="as-field"><span>${escapeHtml(rpgT("asClassStudents"))}</span>
-                <textarea id="as-class-students" rows="6" spellcheck="false" placeholder="Айдана | P1234&#10;Данияр | P5678">${asEscape(studentsText)}</textarea>
+                <textarea id="as-class-students" rows="6" spellcheck="false" placeholder="Айдана | K7M2&#10;Данияр | LBA6">${asEscape(studentsText)}</textarea>
             </label>
             <p class="as-hint">${escapeHtml(rpgT("asClassStudentsHint"))}</p>
             <div class="as-wiz-foot">
@@ -1362,7 +1363,7 @@ const AssignHQ = {
         return String(text || "").split(/\n/).map(line => line.trim()).filter(Boolean).map(line => {
             const parts = line.split("|");
             const name = parts[0].trim();
-            const code = (parts[1] || "").trim().toUpperCase();
+            const code = Storage.canonicalStudentCode((parts[1] || "").trim());
             return { name, playerId: "", studentCode: code || "" };
         }).filter(st => st.name || st.studentCode);
     },
@@ -1379,7 +1380,7 @@ const AssignHQ = {
         }
         const studentsWithCodes = students.map(st => ({
             ...st,
-            studentCode: st.studentCode || Storage.makePlayerCode()
+            studentCode: Storage.canonicalStudentCode(st.studentCode) || Storage.makePlayerCode()
         }));
         const gm = name.match(/([789])/);
         const inferredGrade = gm ? Number(gm[1]) : Storage.grade();

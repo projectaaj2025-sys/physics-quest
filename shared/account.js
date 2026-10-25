@@ -30,7 +30,7 @@
             copiedBtn: "✓ Скопировано!",
             permCodeNote: "Запомни или передай эти 4 символа учителю — по ним твои результаты в 7, 8 и 9 классах всегда определяются точно, даже при одинаковых именах.",
             haveCodeLink: "У меня уже есть свой короткий код (ввести вручную)",
-            enterCodeLabel: "Введи свой существующий код ученика (4–6 символов):",
+            enterCodeLabel: "Введи свой существующий код ученика (4 символа):",
             enterCodePh: "Напр.: K7M2",
             applyCodeBtn: "Применить",
             studentSaveBtn: "Сохранить и продолжить →",
@@ -45,7 +45,7 @@
             teacherResetConfirm: "Сбросить сохранённый ПИН учителя на этом устройстве? Данные журнала и классов НЕ удалятся.",
             teacherSaveBtn: "Войти как учитель →",
             errStudentName: "Пожалуйста, укажи имя ученика.",
-            errBadCode: "Код ученика должен содержать 4–6 латинских букв или цифр (например, K7M2).",
+            errBadCode: "Код ученика — 4 латинские буквы или цифры (например, K7M2). Старый код вида P7X4K тоже подойдёт.",
             errTeacherName: "Пожалуйста, укажите имя учителя.",
             errPinShort: "ПИН должен содержать минимум 4 символа.",
             errPinWrong: "Неверный ПИН-код учителя. Проверьте ввод или сбросьте ПИН ниже.",
@@ -77,7 +77,7 @@
             copiedBtn: "✓ Көшірілді!",
             permCodeNote: "Осы 4 таңбаны сақтап ал немесе мұғалімге айт — есімдер бірдей болса да, 7, 8 және 9-сыныптағы барлық нәтижелерің дәл сәйкестендіріледі.",
             haveCodeLink: "Менде дайын қысқа код бар (қолмен енгізу)",
-            enterCodeLabel: "Бар оқушы кодын енгіз (4–6 таңба):",
+            enterCodeLabel: "Бар оқушы кодын енгіз (4 таңба):",
             enterCodePh: "Мыс.: K7M2",
             applyCodeBtn: "Қолдану",
             studentSaveBtn: "Сақтау және жалғастыру →",
@@ -92,7 +92,7 @@
             teacherResetConfirm: "Мұғалімнің сақталған ПИН-кодын өшіру керек пе? Журнал мен сынып деректері ӨШІРІЛМЕЙДІ.",
             teacherSaveBtn: "Мұғалім ретінде кіру →",
             errStudentName: "Оқушының атын көрсетіңіз.",
-            errBadCode: "Оқушы коды 4–6 латын әрпінен немесе цифрдан тұруы керек (мысалы, K7M2).",
+            errBadCode: "Оқушы коды — 4 латын әрпі немесе цифра (мысалы, K7M2). Ескі P7X4K коды да қабылданады.",
             errTeacherName: "Мұғалімнің аты-жөнін көрсетіңіз.",
             errPinShort: "ПИН кемінде 4 таңбадан тұруы керек.",
             errPinWrong: "ПИН-код қате. Қайта тексеріңіз немесе төменнен қалпына келтіріңіз.",
@@ -124,7 +124,7 @@
             copiedBtn: "✓ Copied!",
             permCodeNote: "Share these 4 characters with your teacher — all your results across Grades 7, 8, and 9 are matched accurately even if names repeat.",
             haveCodeLink: "I already have a short student code (enter manually)",
-            enterCodeLabel: "Enter your existing student code (4–6 chars):",
+            enterCodeLabel: "Enter your existing student code (4 characters):",
             enterCodePh: "e.g., K7M2",
             applyCodeBtn: "Apply",
             studentSaveBtn: "Save & continue →",
@@ -139,7 +139,7 @@
             teacherResetConfirm: "Reset saved Teacher PIN on this device? Class lists and results will NOT be deleted.",
             teacherSaveBtn: "Sign in as Teacher →",
             errStudentName: "Please enter the student's name.",
-            errBadCode: "Student code must be 4–6 Latin letters or digits (e.g., K7M2).",
+            errBadCode: "Student code is 4 Latin letters or digits (e.g., K7M2). An old P7X4K code also works.",
             errTeacherName: "Please enter the teacher's name.",
             errPinShort: "PIN must be at least 4 characters.",
             errPinWrong: "Incorrect Teacher PIN. Check your input or reset PIN below.",
@@ -180,6 +180,16 @@
         return String(raw || "").toUpperCase().replace(/[^A-Z0-9]/g, "").slice(0, 6);
     }
 
+    // Единый формат кода — РОВНО 4 символа. В старом 8 классе код был
+    // 5-символьным: «P» + 4 знака (P7X4K). Приводим такие коды к 4 символам,
+    // отбрасывая ведущую P, чтобы ученик узнал свой код и не терял историю.
+    function canonicalShortCode(raw) {
+        let code = normalizeShortCode(raw);
+        if (code.length === 5 && code.charAt(0) === "P") code = code.slice(1);
+        if (code.length > 4) code = code.slice(0, 4);
+        return code;
+    }
+
     function makePlayerId() {
         return "player_" + Date.now().toString(36) + "_" + Math.random().toString(36).slice(2, 8);
     }
@@ -198,10 +208,13 @@
         const saved = safeJsonLoad(ACCOUNT_KEY, null);
         const legacy = readLegacySettings() || {};
         const defaultLang = (saved && saved.language) || legacy.language || "ru";
-        // Если раньше был 5-символьный Pxxxx код — сохраняем совместимость, иначе генерируем сверхкороткий 4-символьный код!
-        const legacyCode = normalizeShortCode(legacy.playerCode);
-        const studentCode = normalizeShortCode(saved && saved.student && saved.student.studentCode)
-            || (legacyCode.length >= 4 ? legacyCode : generateShortCode(4));
+        // Код всегда 4 символа. Старый 5-символьный «Pxxxx» приводим к 4 (P7X4K → 7X4K),
+        // чтобы формат был единым, а журнал учителя продолжал узнавать ученика.
+        const legacyCode = canonicalShortCode(legacy.playerCode);
+        const savedCode = canonicalShortCode(saved && saved.student && saved.student.studentCode);
+        const studentCode = savedCode.length === 4
+            ? savedCode
+            : (legacyCode.length === 4 ? legacyCode : generateShortCode(4));
         const playerId = (saved && saved.student && saved.student.playerId) || legacy.playerId || makePlayerId();
         const studentName = String((saved && saved.student && saved.student.name) ?? legacy.playerName ?? "").trim();
 
@@ -233,8 +246,8 @@
                 linkCode = hashMatch[1];
                 linkName = decodeURIComponent(hashMatch[2] || "");
             }
-            linkCode = normalizeShortCode(linkCode);
-            if (linkCode.length >= 4 && !(saved && saved.onboarded)) {
+            linkCode = canonicalShortCode(linkCode);
+            if (linkCode.length === 4 && !(saved && saved.onboarded)) {
                 const gParam = Number(params.get("grade"));
                 acc.student.studentCode = linkCode;
                 if (linkName) acc.student.name = linkName.slice(0, 60);
@@ -283,6 +296,7 @@
         CODE_ALPHABET,
         generateShortCode,
         normalizeShortCode,
+        canonicalShortCode,
         get() {
             return ensureAccount();
         },
@@ -492,8 +506,8 @@
 
                 backdrop.querySelector("#pq-st-apply-code")?.addEventListener("click", () => {
                     const inp = backdrop.querySelector("#pq-st-custom-code");
-                    const cleaned = normalizeShortCode(inp ? inp.value : "");
-                    if (cleaned.length < 4 || cleaned.length > 6) {
+                    const cleaned = canonicalShortCode(inp ? inp.value : "");
+                    if (cleaned.length !== 4) {
                         state.error = this.t("errBadCode");
                         render();
                         return;
@@ -523,8 +537,8 @@
                     }
                     const cur = this.get();
                     if (customInp) {
-                        const cleaned = normalizeShortCode(customInp.value);
-                        if (cleaned.length < 4 || cleaned.length > 6) {
+                        const cleaned = canonicalShortCode(customInp.value);
+                        if (cleaned.length !== 4) {
                             state.error = this.t("errBadCode");
                             render();
                             return;
