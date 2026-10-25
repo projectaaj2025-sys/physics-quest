@@ -3149,6 +3149,37 @@ html, body {
 .rpg-profile-card small { font-size: 11px; color: var(--text-dim); font-weight: 700; }
 .rpg-profile-card .rpg-xpbar { margin-top: 6px; }
 
+/* Серия дней в профиле: счётчик, бейдж, полоска недели */
+.rpg-streak {
+    display: grid; gap: 5px; padding: 8px 10px; border-radius: 12px;
+    border: 1.5px dashed rgba(234, 88, 12, .32); background: rgba(251, 146, 60, .08);
+    min-width: 158px;
+}
+.rpg-streak.on { border-style: solid; border-color: rgba(234, 88, 12, .45); }
+.rpg-streak-top { display: flex; align-items: baseline; gap: 5px; }
+.rpg-streak-flame { font-size: 14px; line-height: 1; }
+.rpg-streak-top b { font-size: 18px; line-height: 1; color: #c2410c; }
+.rpg-streak-top small { font-size: 10px; font-weight: 800; color: var(--text-dim); }
+.rpg-streak-badge {
+    font-size: 9.5px; font-weight: 900; letter-spacing: .05em; text-transform: uppercase; color: #9a3412;
+}
+.rpg-streak-week { display: flex; gap: 4px; }
+.rpg-streak-week span {
+    width: 17px; height: 17px; border-radius: 5px; display: grid; place-items: center;
+    font-size: 8.5px; font-weight: 800; color: var(--text-dim); background: rgba(15, 39, 64, .07);
+}
+.rpg-streak-week span.on { background: linear-gradient(135deg, #fb923c, #ea580c); color: #fff; }
+.rpg-streak-week span.today { outline: 2px solid rgba(234, 88, 12, .45); outline-offset: 1px; }
+.rpg-streak-best { font-size: 9.5px; font-weight: 700; color: var(--text-dim); }
+html[data-theme="dark"] .rpg-streak { background: rgba(249, 115, 22, .13); border-color: rgba(251, 146, 60, .45); }
+html[data-theme="dark"] .rpg-streak-top b { color: #fdba74; }
+html[data-theme="dark"] .rpg-streak-badge { color: #fdba74; }
+html[data-theme="dark"] .rpg-streak-week span { background: rgba(255, 255, 255, .1); }
+@media (max-width: 640px) {
+    .rpg-profile-card { flex-wrap: wrap; }
+    .rpg-streak { width: 100%; order: 3; }
+}
+
 /* ---------------- RESPONSIVE ---------------- */
 @media (max-width: 1024px) {
     .rpg-mission-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
@@ -4829,6 +4860,50 @@ html[data-theme="dark"] .rpg-maint-pair select { background: rgba(255,255,255,.0
 }
 .as-limits .as-field { margin-bottom: 0; }
 .as-limits .as-hint { margin: 10px 0 0; }
+
+/* Метрики вовлечённости — необязательный блок в мастере назначения */
+.as-metrics {
+    margin-top: 10px;
+    padding: 11px 14px;
+    border-radius: 12px;
+    border: 1px solid rgba(34, 197, 94, .3);
+    background: rgba(34, 197, 94, .07);
+}
+.as-check {
+    display: flex;
+    align-items: flex-start;
+    gap: 9px;
+    font-size: 13px;
+    font-weight: 800;
+    color: var(--ink);
+    cursor: pointer;
+}
+.as-check input { width: 17px; height: 17px; margin-top: 1px; accent-color: #16a34a; cursor: pointer; }
+.as-metrics .as-hint { margin: 8px 0 0; }
+.as-meta-metrics {
+    font-weight: 800;
+    color: #15803d;
+    background: rgba(34, 197, 94, .12);
+    border: 1px solid rgba(34, 197, 94, .3);
+    border-radius: 999px;
+    padding: 1px 7px;
+}
+html[data-theme="dark"] .as-metrics { background: rgba(34, 197, 94, .12); border-color: rgba(74, 222, 128, .35); }
+html[data-theme="dark"] .as-meta-metrics { color: #86efac; }
+
+/* Явная награда за разобранную ошибку в техобслуживании */
+.rpg-maint-gain {
+    margin-top: 8px;
+    display: inline-block;
+    padding: 4px 10px;
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: 900;
+    color: #14532d;
+    background: rgba(34, 197, 94, .16);
+    border: 1px solid rgba(34, 197, 94, .38);
+}
+html[data-theme="dark"] .rpg-maint-gain { color: #86efac; background: rgba(34, 197, 94, .18); border-color: rgba(74, 222, 128, .4); }
 
 .as-levels {
     max-height: 240px;

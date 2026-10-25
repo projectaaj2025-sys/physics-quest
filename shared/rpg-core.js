@@ -78,6 +78,14 @@ const RPG = {
                 items: [],
                 counters: {}
             },
+            // Серия дней: сколько дней подряд ученик заходил и играл.
+            // days — последние отметки (YYYY-MM-DD), нужны для полоски недели.
+            streak: {
+                count: 0,
+                best: 0,
+                last: "",
+                days: []
+            },
             // «Чёрный ящик»: очередь ошибок для разбора и «Техобслуживания».
             review: {
                 queue: [],
@@ -128,6 +136,8 @@ const RPG = {
         state.missionRecords = Object.assign({}, raw.missionRecords || {});
         state.lastMission = Object.assign({}, raw.lastMission || {});
         state.daily = Object.assign({}, def.daily, raw.daily || {});
+        state.streak = Object.assign({}, def.streak, raw.streak || {});
+        state.streak.days = Array.isArray(raw.streak && raw.streak.days) ? raw.streak.days.slice(-30) : [];
         state.daily.items = Array.isArray(raw.daily && raw.daily.items) ? raw.daily.items.slice() : [];
         state.daily.counters = Object.assign({}, (raw.daily && raw.daily.counters) || {});
         state.review = Object.assign({}, def.review, raw.review || {});
@@ -210,6 +220,98 @@ const RPG = {
         this.saveSoon();
     },
 
+    /* ---------------- СЕРИЯ ДНЕЙ ---------------- */
+
+    /* Локальная дата в формате YYYY-MM-DD: сервер не нужен, часовой пояс — свой. */
+    /* Длительность суток с защитой от порядка загрузки скриптов. */
+    dayMs() {
+        return typeof RPG_DAY_MS === "number" ? RPG_DAY_MS : 86400000;
+    },
+
+    streakDayKey(ts) {
+        const d = new Date(Number.isFinite(ts) ? ts : Date.now());
+        return d.getFullYear() + "-" + String(d.getMonth() + 1).padStart(2, "0") + "-" + String(d.getDate()).padStart(2, "0");
+    },
+
+    streakState() {
+        if (!this.state.streak) this.state.streak = { count: 0, best: 0, last: "", days: [] };
+        const st = this.state.streak;
+        const today = this.streakDayKey();
+        const yesterday = this.streakDayKey(Date.now() - this.dayMs());
+        // Серия «жива», если отмечались сегодня или вчера; иначе она уже прервалась.
+        const alive = st.last === today || st.last === yesterday;
+        return {
+            count: alive ? Math.max(0, Number(st.count) || 0) : 0,
+            best: Math.max(0, Number(st.best) || 0),
+            last: st.last || "",
+            today: st.last === today,
+            days: Array.isArray(st.days) ? st.days.slice(-30) : []
+        };
+    },
+
+    /* Название бейджа по длине серии: 0 — нет, 1 — разминка … 5 — месяц в строю. */
+    streakBadgeKey(count) {
+        const n = Number(count) || 0;
+        if (n <= 0) return "streakBadge0";
+        if (n < 3) return "streakBadge1";
+        if (n < 7) return "streakBadge2";
+        if (n < 14) return "streakBadge3";
+        if (n < 30) return "streakBadge4";
+        return "streakBadge5";
+    },
+
+    /* Отметка «сегодня играл». Возвращает { count, bonus, continued, isNew }. */
+    touchStreak(opts = {}) {
+        if (!this.state) return { count: 0, bonus: 0, continued: false, isNew: false };
+        const st = this.state.streak = Object.assign({ count: 0, best: 0, last: "", days: [] }, this.state.streak || {});
+        const today = this.streakDayKey();
+        const yesterday = this.streakDayKey(Date.now() - this.dayMs());
+        if (st.last === today) {
+            const info = this.streakState();
+            return { count: info.count, bonus: 0, continued: false, isNew: false };
+        }
+        const continued = st.last === yesterday;
+        st.count = continued ? Math.min(3650, (Number(st.count) || 0) + 1) : 1;
+        st.best = Math.max(Number(st.best) || 0, st.count);
+        st.last = today;
+        const days = Array.isArray(st.days) ? st.days.filter(d => d !== today) : [];
+        days.push(today);
+        st.days = days.slice(-30);
+
+        // Бонус за регулярность: со второго дня подряд, 10 XP за день, максимум 50 XP.
+        const bonus = st.count >= 2 ? Math.min(50, 10 * (st.count - 1)) : 0;
+        if (bonus > 0) {
+            try { this.addXP(bonus, { silent: true, toast: false, noOverlay: true }); } catch (e) {}
+        }
+        this.saveSoon();
+        if (opts.toast !== false && bonus > 0) {
+            try { this.toast("🔥", rpgT("streakToast", st.count, bonus), rpgT(this.streakBadgeKey(st.count)), "tier-gold"); } catch (e) {}
+        }
+        if (opts.render !== false) {
+            try { this.renderMenuCard(); } catch (e) {}
+            try { this.renderLevelBar(); } catch (e) {}
+            if (this._hubOpen) { try { this.renderHub(); } catch (e) {} }
+        }
+        return { count: st.count, bonus, continued, isNew: true };
+    },
+
+    /* Последние 7 дней для полоски в профиле: [{key, letter, on, today}] */
+    streakWeek() {
+        const info = this.streakState();
+        const set = new Set(info.days || []);
+        const todayKey = this.streakDayKey();
+        const letters = rpgT("streakWeekdays").split(",");
+        const out = [];
+        for (let i = 6; i >= 0; i--) {
+            const ts = Date.now() - i * this.dayMs();
+            const key = this.streakDayKey(ts);
+            const dow = new Date(ts).getDay(); // 0 — воскресенье
+            const idx = (dow + 6) % 7;          // 0 — понедельник
+            out.push({ key, letter: (letters[idx] || "").trim(), on: set.has(key), today: key === todayKey });
+        }
+        return out;
+    },
+
     claimQuest(id) {
         this.ensureDaily();
         const item = this.state.daily.items.find(q => q.id === id);
@@ -222,6 +324,7 @@ const RPG = {
         this.addCrystals(def.crystals, { silent: true });
         this.toast("📜", rpgT("questRewardToast"), `${rpgLoc(def.name)} · ${rpgT("questReward", def.xp, def.crystals)}`, "tier-gold");
         this.awardAchievements();
+        try { this.touchStreak({ toast: true }); } catch (e) {}
         this.saveSoon();
         this.renderHub();
         this.renderMenuCard();
@@ -846,6 +949,10 @@ const RPG = {
         if (victory && mission.id === "blitz") st.blitzWins = (st.blitzWins || 0) + 1;
         if (victory && mission.id === "survival") st.survivalWins = (st.survivalWins || 0) + 1;
 
+        // Серия дней: отметка «сегодня играл» + бонус за регулярность.
+        let streakInfo = { count: 0, bonus: 0 };
+        try { streakInfo = this.touchStreak({ toast: false, render: false }); } catch (e) { console.warn("RPG streak", e); }
+
         // Дневные задания
         this.dailyTick("missions", 1);
         this.dailyTick("score", Math.max(0, Math.round(game.score)));
@@ -872,7 +979,8 @@ const RPG = {
         const achXp = Math.max(0, (Number(st.xpEarned) || 0) - achXpBefore);
         const achCr = Math.max(0, (Number(st.crystalsEarned) || 0) - achCrBefore);
 
-        const totalXp = (run.xpEarned || 0) + xpGain + achXp;
+        const streakBonus = Math.max(0, Number(streakInfo.bonus) || 0);
+        const totalXp = (run.xpEarned || 0) + xpGain + achXp + streakBonus;
         const totalCrystals = (run.crystalsEarned || 0) + crystals + achCr;
         const levelsGained = Math.max(0, this.state.level - levelBefore);
         const rankAfter = rpgRankForLevel(this.state.level);
@@ -931,6 +1039,7 @@ const RPG = {
             misses: (run.misses || []).slice(0, 6),
             reviewAdded,
             classGain,
+            streak: { count: streakInfo.count || 0, bonus: streakBonus },
             storyActive: this.state.story && this.state.story.active ? Object.assign({}, this.state.story.active) : null
         };
         this._lastRunSummary = summary;

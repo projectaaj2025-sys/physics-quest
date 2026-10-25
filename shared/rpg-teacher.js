@@ -1922,16 +1922,37 @@ const TeacherHQ = {
         const view = this.view();
         const data = this.summary(view.classId, view.days);
         if (kind === "results") {
-            const rows = [[
+            // Метрики вовлечённости пишет сама игра — только по назначениям,
+            // где учитель поставил галочку «Собирать метрики». Они лежат в
+            // локальной истории прогонов (по id прогона), поэтому колонки
+            // появляются лишь тогда, когда такие данные реально есть.
+            const engByRun = new Map();
+            try {
+                (Storage.getHistory() || []).forEach(h => {
+                    if (h && h.id && h.engagement && h.engagement.tasks) engByRun.set(String(h.id), h.engagement);
+                });
+            } catch (e) {}
+            const engagementOf = (r) => {
+                if (!r) return null;
+                if (r.engagement && r.engagement.tasks) return r.engagement;
+                return r.runId ? (engByRun.get(String(r.runId)) || null) : null;
+            };
+            const withMetrics = data.roster.some(student =>
+                this.inPeriod(student.results, view.days).some(r => !!engagementOf(r))
+            );
+            const header = [
                 rpgT("hqCsvDate"), rpgT("hqCsvClass"), rpgT("hqCsvStudent"), rpgT("hqCsvCode"),
                 rpgT("hqCsvLevel"), rpgT("hqCsvScore"), rpgT("hqCsvAccuracy"), rpgT("hqCsvSolved"),
                 rpgT("hqCsvAttempts"), rpgT("hqCsvMark10"), rpgT("hqCsvStatus")
-            ]];
+            ];
+            if (withMetrics) header.push(rpgT("hqCsvAvgTime"), rpgT("hqCsvHints"), rpgT("hqCsvPerTask"));
+            const rows = [header];
             data.roster.forEach(student => {
                 const list = this.inPeriod(student.results, view.days);
                 if (!list.length) return;
                 list.forEach(r => {
-                    rows.push([
+                    const eng = withMetrics ? engagementOf(r) : null;
+                    const row = [
                         this.shortDate(r.date) + "." + new Date(r.date).getFullYear(),
                         student.className,
                         student.name,
@@ -1943,7 +1964,11 @@ const TeacherHQ = {
                         hqNum(r.attempted),
                         window.PQMarks ? PQMarks.tenPointShort(r.accuracy) : "",
                         r.victory ? rpgT("hqDone") : "—"
-                    ]);
+                    ];
+                    if (withMetrics) {
+                        row.push(eng ? hqNum(eng.avgSec) : "", eng ? hqNum(eng.hints) : "", eng ? hqNum(eng.perTask) : "");
+                    }
+                    rows.push(row);
                 });
             });
             return this.toCsv(rows);
@@ -2071,7 +2096,8 @@ const TeacherHQ = {
             score: summary.score,
             date: (run && run.date) || new Date().toISOString(),
             runId: run && run.id || "",
-            assignmentCode: (run && run.assignmentCode) || activeAssignmentCode || ""
+            assignmentCode: (run && run.assignmentCode) || activeAssignmentCode || "",
+            engagement: (run && run.engagement) || null
         };
         let code = "";
         try { code = this.buildCode(entry); } catch (e) { return; }

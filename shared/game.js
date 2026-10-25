@@ -451,6 +451,13 @@ const Game = {
         this.asteroidsResolved = 0;   // сбитые щитом + упавшие: каждые 3 — вопрос
         this.completedTaskIds = [];
         this.failedTaskIds = [];
+        // Метрики вовлечённости: пишем только по назначению с флагом metrics.
+        this.metricsEnabled = typeof Storage.getAssignmentMetrics === "function"
+            ? !!Storage.getAssignmentMetrics(this.activeAssignmentCode)
+            : false;
+        this.metricItems = [];
+        this.taskStartedAt = Date.now();
+        this.taskHintsUsed = 0;
         // Победа = заданы ВСЕ вопросы темы уровня: считаем пул (темы уровня + задания учителя для этого урока)
         const cfgIdStr = String(levelId);
         const lessonKeyStr = cfgIdStr.indexOf("custom:") === 0 ? cfgIdStr : "lesson:" + cfgIdStr;
@@ -704,7 +711,8 @@ const Game = {
             accuracy,
             asteroidsDeflected: this.asteroidsDeflected,
             assignmentCode: this.activeAssignmentCode || "",
-            victory
+            victory,
+            engagement: this.engagementSummary()
         };
 
         // История должна знать и об успешных, и о неуспешных завершениях.
@@ -852,6 +860,8 @@ const Game = {
         this.taskAttempts = 0;
         this.taskHintsLeft = this.taskHintsLimit;
         this.taskResolved = false;
+        this.taskStartedAt = Date.now();
+        this.taskHintsUsed = 0;
 
         const modal = document.getElementById("task-modal");
         document.getElementById("task-title").textContent = I18n.t("task") + " #" + (this.completedTaskIds.length + 1);
@@ -1054,6 +1064,7 @@ const Game = {
     useHint() {
         if (this.taskHintsLeft <= 0 || !this.currentTask) return;
         this.taskHintsLeft--;
+        this.taskHintsUsed = (Number(this.taskHintsUsed) || 0) + 1;
         const hintText = I18n.getLocalized(this.currentTask, "hint");
         let hintHtml;
         if (hintText) {
@@ -1114,6 +1125,7 @@ const Game = {
             }
             this.tasksSolved++;
             this.taskResolved = true;
+            this.recordTaskMetric(true, this.currentTask);
             this.completedTaskIds.push(this.currentTask.id);
             Storage.updateStats(true, this.currentTask.topic, this.currentTask.type);
 
@@ -1155,6 +1167,7 @@ const Game = {
                     feedback.innerHTML += `<br><strong>${I18n.t("explanation")}</strong> ${formatFormula(I18n.getLocalized(this.currentTask, "explanation"))}`;
                 }
                 this.taskResolved = true;
+                this.recordTaskMetric(false, this.currentTask);
                 if (!this.failedTaskIds.includes(this.currentTask.id)) {
                     this.failedTaskIds.push(this.currentTask.id);
                 }
@@ -1187,6 +1200,35 @@ const Game = {
                 setTimeout(() => this.endLevel(false), 300);
             }
         }
+    },
+
+    /* Одно задание — одна запись метрик. Вызывается ровно один раз:
+       при верном ответе или когда попытки исчерпаны. */
+    recordTaskMetric(solved, task) {
+        if (!this.metricsEnabled || !task) return;
+        const sec = Math.max(0, Math.round((Date.now() - (this.taskStartedAt || Date.now())) / 1000));
+        this.metricItems = this.metricItems || [];
+        this.metricItems.push({
+            taskId: task.id,
+            topic: String(task.topic || ""),
+            type: String(task.type || ""),
+            sec,
+            hints: Math.max(0, Number(this.taskHintsUsed) || 0),
+            attempts: Math.max(1, Number(this.taskAttempts) || 1),
+            solved: !!solved
+        });
+    },
+
+    engagementSummary() {
+        if (!this.metricsEnabled || !this.metricItems || !this.metricItems.length) return null;
+        const items = this.metricItems;
+        return {
+            tasks: items.length,
+            sec: items.reduce((sum, it) => sum + it.sec, 0),
+            hints: items.reduce((sum, it) => sum + it.hints, 0),
+            attempts: items.reduce((sum, it) => sum + it.attempts, 0),
+            solved: items.filter(it => it.solved).length
+        };
     },
 
     // Человекочитаемый правильный ответ (для показа после 5 неудачных попыток)

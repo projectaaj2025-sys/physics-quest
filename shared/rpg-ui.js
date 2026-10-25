@@ -455,12 +455,27 @@ Object.assign(RPG, {
         const st = this.state;
         const rank = rpgRankForLevel(st.level);
         const title = this.currentTitle();
+        const streak = this.streakState();
+        const badge = rpgT(this.streakBadgeKey(streak.count));
+        const week = this.streakWeek();
         card.innerHTML = `
             <div class="rpg-hero-level" style="width:56px;height:56px;flex-basis:56px;border-radius:15px"><b>${st.level}</b><small>LVL</small></div>
             <div class="rpg-profile-main">
                 <b>${escapeHtml(rpgPlayerName())}</b>
                 <small>${escapeHtml(rpgLoc(title.name))} · ${escapeHtml(rpgLoc(rank.name))} · 💎 ${st.crystals} · 🏆 ${this.unlockedCount()}/${ACHIEVEMENTS.length}</small>
                 <div class="rpg-xpbar"><i style="width:${rpgXpPct(st)}%"></i></div>
+            </div>
+            <div class="rpg-streak ${streak.count > 0 ? "on" : ""}" title="${escapeHtml(rpgT("streakHint"))}">
+                <div class="rpg-streak-top">
+                    <span class="rpg-streak-flame">🔥</span>
+                    <b>${streak.count}</b>
+                    <small>${escapeHtml(rpgT("streakDays", streak.count))}</small>
+                </div>
+                <div class="rpg-streak-badge">${escapeHtml(badge)}</div>
+                <div class="rpg-streak-week">
+                    ${week.map(d => `<span class="${d.on ? "on" : ""} ${d.today ? "today" : ""}" title="${escapeHtml(d.key)}">${escapeHtml(d.letter)}</span>`).join("")}
+                </div>
+                <div class="rpg-streak-best">${escapeHtml(rpgT("streakBest", streak.best))}</div>
             </div>
             <button class="rpg-mini-btn" type="button" data-rpg-open="char">${escapeHtml(rpgT("openProfileHub"))}</button>
         `;
@@ -746,6 +761,7 @@ Object.assign(RPG, {
             [s.victories || 0, rpgT("statVictories")],
             [s.questionsCorrect || 0, rpgT("statCorrect")],
             [s.bestStreak || 0, rpgT("statBestStreak")],
+            [this.streakState().count, rpgT("statDayStreak")],
             [s.totalAsteroids || 0, rpgT("statAsteroids")],
             [s.totalOrbs || 0, rpgT("statOrbs")],
             [s.bossKills || 0, rpgT("statBoss")],

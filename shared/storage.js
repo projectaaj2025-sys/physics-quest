@@ -229,8 +229,27 @@ const Storage = {
             playerCode: String(record.playerCode || settings.playerCode || "").trim().toUpperCase(),
             assignmentCode: this.normalizeAssignmentCode(record.assignmentCode),
             victory: !!record.victory,
+            // Метрики вовлечённости пишутся только по назначениям с флагом metrics.
+            engagement: this.normalizeEngagement(record.engagement),
             language: record.language || I18n.currentLang || settings.language || "ru",
             date: record.date || new Date().toISOString()
+        };
+    },
+
+    /* Метрики вовлечённости: только числа, ничего лишнего.
+       tasks — сколько заданий, sec — суммарное время ответов, hints/attempts — суммы. */
+    normalizeEngagement(raw) {
+        if (!raw || typeof raw !== "object") return null;
+        const num = (v) => Math.max(0, Math.round(Number(v) || 0));
+        const tasks = num(raw.tasks);
+        if (!tasks) return null;
+        return {
+            tasks,
+            sec: num(raw.sec),
+            hints: num(raw.hints),
+            attempts: num(raw.attempts),
+            avgSec: Math.round(num(raw.sec) / tasks),
+            perTask: Math.round((num(raw.attempts) / tasks) * 10) / 10
         };
     },
 
@@ -382,6 +401,11 @@ const Storage = {
                 row.attempts = fixed.attempts;
             });
         }
+        // Метрики вовлечённости — по желанию: только если учитель включил их
+        // при назначении. Иначе игра не пишет время на задание.
+        if (limits && limits.metrics) {
+            added.forEach(row => { row.metrics = true; });
+        }
         assignments.push(...added);
         this.save(this.KEYS.ASSIGNMENTS, assignments);
         return added;
@@ -501,6 +525,7 @@ const Storage = {
             item.hints = limits.hints;
             item.attempts = limits.attempts;
         }
+        if (assignment.metrics) item.metrics = true;
         assignments.push(item);
         this.save(this.KEYS.ASSIGNMENTS, assignments);
         return item;
@@ -779,6 +804,16 @@ const Storage = {
         );
         if (!row) return null;
         return this.clampQuestLimits({ hints: row.hints, attempts: row.attempts });
+    },
+
+    // Включены ли метрики вовлечённости в назначении.
+    getAssignmentMetrics(code) {
+        const normalized = this.normalizeAssignmentCode(code);
+        if (!normalized) return false;
+        const row = this.getAssignments().find(item =>
+            this.normalizeAssignmentCode(item.assignmentCode) === normalized && item.metrics
+        );
+        return !!row;
     },
 
     // Итоговые лимиты для старта уровня: назначение важнее профиля.
