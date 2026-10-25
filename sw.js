@@ -47,6 +47,7 @@ const PQ_SHELL = [
     "./shared/story-cast.js",
     "./shared/trilogy-comics-extra.js",
     "./shared/trilogy-diary.js",
+    "./shared/lab-workbench.js",
     "./shared/lab-games.js",
     "./shared/sim-light.js",
     "./shared/sim-light-7.js",

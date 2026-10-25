@@ -2591,6 +2591,10 @@
             }
             .pq-s89-ctrl label { display: flex; justify-content: space-between; font-weight: 700; margin-bottom: 6px; color: #e2e8f0; }
             .pq-s89-ctrl input[type=range], .pq-s89-ctrl select { width: 100%; }
+            .pq-s89-ctrl-dial { display: flex; flex-direction: column; }
+            .pq-s89-dialrow { display: flex; align-items: center; gap: 12px; }
+            .pq-s89-dialrow .pqw-knob-dial { width: 54px; height: 54px; }
+            .pq-s89-dialhint { font-size: 11px; color: #94a3b8; line-height: 1.35; max-width: 120px; }
             .pq-s89-ctrl select {
                 padding: 6px 8px;
                 border-radius: 8px;
@@ -2849,9 +2853,16 @@
                                     </select>
                                 </div>`;
                             }
-                            return `<div class="pq-s89-ctrl">
+                            // Никаких ползунков: ученик сам поворачивает ручку прибора.
+                            return `<div class="pq-s89-ctrl pq-s89-ctrl-dial">
                                 <label><span>${loc(c.label)}</span><strong id="val-${c.id}">${this.params[c.id]} ${loc(c.unit)}</strong></label>
-                                <input type="range" data-ctrl="${c.id}" min="${c.min}" max="${c.max}" step="${c.step}" value="${this.params[c.id]}">
+                                <div class="pq-s89-dialrow">
+                                    ${window.PQWorkbench
+                                        ? window.PQWorkbench.dialHtml(c.id, { min: c.min, max: c.max, step: c.step, label: loc(c.label) }, this.params[c.id])
+                                        : `<div class="pqw-knob-dial" data-dial="${c.id}"></div>`}
+                                    <div class="pq-s89-dialhint">${tr("Поверни ручку прибора", "Аспап тұтқасын бұра", "Turn the dial")}</div>
+                                </div>
+                                <input type="hidden" data-ctrl="${c.id}" value="${this.params[c.id]}">
                             </div>`;
                         }).join("")}
                     </div>
@@ -2875,17 +2886,33 @@
             modal.classList.add("open");
             this.$("pq-s89-close").onclick = () => this.close();
 
-            modal.querySelectorAll("[data-ctrl]").forEach(el => {
+            // select остаются списками, а числовые параметры — вращающимися ручками
+            modal.querySelectorAll("select[data-ctrl]").forEach(el => {
                 const handler = () => {
                     const key = el.getAttribute("data-ctrl");
-                    const ctrlDef = lab.controls.find(c => c.id === key);
-                    this.params[key] = ctrlDef.type === "range" ? Number(el.value) : el.value;
-                    const vEl = this.$("val-" + key);
-                    if (vEl && ctrlDef.unit) vEl.textContent = `${this.params[key]} ${loc(ctrlDef.unit)}`;
+                    this.params[key] = el.value;
                     this.updateTelemetry();
                 };
                 el.addEventListener("input", handler);
                 el.addEventListener("change", handler);
+            });
+            modal.querySelectorAll("[data-dial]").forEach(dial => {
+                const key = dial.getAttribute("data-dial");
+                const ctrlDef = lab.controls.find(c => c.id === key);
+                if (!ctrlDef || !window.PQWorkbench) return;
+                const hidden = modal.querySelector(`input[data-ctrl="${key}"]`);
+                window.PQWorkbench.bindDial(
+                    dial,
+                    { min: ctrlDef.min, max: ctrlDef.max, step: ctrlDef.step, label: loc(ctrlDef.label) },
+                    () => this.params[key],
+                    (next) => {
+                        this.params[key] = next;
+                        if (hidden) hidden.value = String(next);
+                        const vEl = this.$("val-" + key);
+                        if (vEl && ctrlDef.unit) vEl.textContent = `${next} ${loc(ctrlDef.unit)}`;
+                        this.updateTelemetry();
+                    }
+                );
             });
 
             this.$("pq-s89-check").onclick = () => this.verify();

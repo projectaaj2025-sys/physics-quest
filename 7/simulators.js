@@ -646,8 +646,19 @@
   }
 
   function controls(m) {
+    // Ползунков нет: ученик сам поворачивает ручку прибора (верньер).
+    // Значение живёт в скрытом input с тем же id — логика модели не меняется.
     const range = (id, label, min, max, value, step = 1) =>
-      `<label>${label} <input id="${id}" type="range" min="${min}" max="${max}" step="${step}" value="${value}"></label><span class="range-readout" id="${id}-out"></span>`;
+      `<div class="sim-dial-ctrl" data-sim-dial="${id}">
+        <span class="sim-dial-label">${label}</span>
+        <div class="sim-dial-row">
+          ${window.PQWorkbench
+            ? window.PQWorkbench.dialHtml(id, { min, max, step, label }, value)
+            : `<div class="pqw-knob-dial" data-dial="${id}"></div>`}
+          <strong class="range-readout" id="${id}-out">—</strong>
+        </div>
+        <input id="${id}" data-dial-value="1" type="hidden" min="${min}" max="${max}" step="${step}" value="${value}">
+      </div>`;
 
     if (m.control === "lab_motion") return `<div class="sim-instrument">
       <p>${tr("Выбери скорость, маршрут и шаг времени; продвигай зонд к маяку.", "Жылдамдықты, маршрутты және уақыт қадамын таңдап, зондты маякқа жеткіз.", "Choose speed, route, and time step; advance the probe to the beacon.")}</p>
@@ -832,6 +843,26 @@
       el.addEventListener("input", refresh);
       el.addEventListener("change", refresh);
     });
+    // Верньеры приборов: поворот ручки мышью/пальцем/стрелками
+    if (window.PQWorkbench) {
+      document.querySelectorAll("#field-sim-lab [data-sim-dial]").forEach(cell => {
+        const id = cell.getAttribute("data-sim-dial");
+        const hidden = $(id);
+        const dial = cell.querySelector("[data-dial]");
+        if (!hidden || !dial) return;
+        window.PQWorkbench.bindDial(
+          dial,
+          { min: Number(hidden.min), max: Number(hidden.max), step: Number(hidden.step), label: cell.querySelector(".sim-dial-label")?.textContent || id },
+          () => Number(hidden.value),
+          (next) => {
+            hidden.value = String(next);
+            experimentReady = false;
+            $("field-sim-check").disabled = true;
+            hidden.dispatchEvent(new Event("input", { bubbles: true }));
+          }
+        );
+      });
+    }
     const conclusion = $("sim-conclusion");
     conclusion?.addEventListener("input", () => { apparatus.conclusion = conclusion.value; updateChallengeStatus(); });
     const lab = $("field-sim-lab");
@@ -1213,7 +1244,7 @@
   function updateReadouts() {
     if (!$("field-sim-lab")?.innerHTML || !active) return;
     const val = id => $(id) ? Number($(id).value) : null;
-    document.querySelectorAll("#field-sim-lab input[type=range]").forEach(input => {
+    document.querySelectorAll("#field-sim-lab input[data-dial-value]").forEach(input => {
       const out = $(input.id + "-out");
       if (out) out.textContent = `${input.value} ${unitLabel(input.id)}`;
     });
