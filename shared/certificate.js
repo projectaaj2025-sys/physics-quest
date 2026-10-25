@@ -20,7 +20,9 @@
             download: "💾 Скачать PNG",
             print: "🖨 Печать / PDF",
             design: "Оформление",
-            designs: { space: "Космос", light: "Светлый", paper: "Пергамент", sky: "Небо" },
+            designs: { space: "Космос", light: "Светлый", paper: "Пергамент", sky: "Небо",
+                classicSpace: "Космос · рисунок", classicLight: "Светлый · рисунок",
+                classicPaper: "Пергамент · рисунок", classicSky: "Небо · рисунок" },
             close: "Закрыть",
             errName: "Введите фамилию и имя — сертификат должен быть именным.",
             lockHint: "Сертификат за класс открывается только при входе через этот класс: зайди в игру нужного класса и открой паспорт там.",
@@ -61,7 +63,9 @@
             download: "💾 Download PNG",
             print: "🖨 Print / PDF",
             design: "Design",
-            designs: { space: "Space", light: "Light", paper: "Parchment", sky: "Sky" },
+            designs: { space: "Space", light: "Light", paper: "Parchment", sky: "Sky",
+                classicSpace: "Space · drawn", classicLight: "Light · drawn",
+                classicPaper: "Parchment · drawn", classicSky: "Sky · drawn" },
             close: "Close",
             errName: "Enter both first name and surname — the certificate is personalised.",
             lockHint: "A grade certificate unlocks only when you enter through that grade: open the game of that grade and issue the passport there.",
@@ -102,7 +106,9 @@
             download: "💾 PNG жүктеу",
             print: "🖨 Басып шығару / PDF",
             design: "Безендіру",
-            designs: { space: "Ғарыш", light: "Ашық", paper: "Пергамент", sky: "Аспан" },
+            designs: { space: "Ғарыш", light: "Ашық", paper: "Пергамент", sky: "Аспан",
+                classicSpace: "Ғарыш · сурет", classicLight: "Ашық · сурет",
+                classicPaper: "Пергамент · сурет", classicSky: "Аспан · сурет" },
             close: "Жабу",
             errName: "Тегі мен атын енгізіңіз — сертификат атаулы болуы керек.",
             lockHint: "Сынып сертификаты тек сол сынып арқылы кіргенде ашылады: қажет сыныптың ойынына кіріп, паспортты сонда аш.",
@@ -205,6 +211,47 @@
             sealBack: "rgba(253,246,228,0.6)",
             sealX: 0.40, sealY: 0.792, sealR: 118
         },
+        // Прежние оформления: рисовались кодом на canvas, без фотографий.
+        // Оставлены в выборе рядом с новыми, чтобы можно было вернуться к ним.
+        classicSpace: {
+            kind: "stars", tone: "dark",
+            text: "#ffffff", sub: "rgba(220,235,255,0.82)", accent: "#ffd479",
+            frame: "rgba(255,214,120,0.8)", frameSoft: "rgba(255,214,120,0.28)",
+            rule: "rgba(255,212,121,0.5)", bar: "rgba(255,255,255,0.16)",
+            seal: "rgba(255,229,168,0.95)", sealAlpha: 0.95, sealInk: "#ffe9b0",
+            sealBack: "rgba(7,12,26,0.7)",
+            sealX: 0.8125, sealY: 0.732, sealR: 112
+        },
+        classicLight: {
+            kind: "light", tone: "light",
+            bgTop: "#fbfdff", bgBottom: "#e8f1fa",
+            text: "#14213d", sub: "#4a5c7c", accent: "#a97a1c",
+            frame: "rgba(201,162,74,0.85)", frameSoft: "rgba(201,162,74,0.4)",
+            rule: "rgba(169,122,28,0.5)", bar: "rgba(20,33,61,0.12)",
+            seal: "rgba(168,58,46,0.88)", sealAlpha: 0.88, sealInk: "rgba(168,58,46,0.95)",
+            sealBack: "rgba(255,255,255,0.6)",
+            sealX: 0.40, sealY: 0.792, sealR: 118
+        },
+        classicPaper: {
+            kind: "paper", tone: "light",
+            bgTop: "#fdf6e3", bgBottom: "#efdfbe",
+            text: "#3a2a14", sub: "#6b5636", accent: "#8a5a1e",
+            frame: "rgba(156,122,68,0.9)", frameSoft: "rgba(156,122,68,0.5)",
+            rule: "rgba(138,90,30,0.55)", bar: "rgba(58,42,20,0.14)",
+            seal: "rgba(128,36,44,0.86)", sealAlpha: 0.86, sealInk: "rgba(128,36,44,0.92)",
+            sealBack: "rgba(253,246,228,0.6)",
+            sealX: 0.40, sealY: 0.792, sealR: 118
+        },
+        classicSky: {
+            kind: "sky", tone: "light",
+            bgTop: "#f2fbff", bgBottom: "#c9e6f7",
+            text: "#0b2545", sub: "#3f5f85", accent: "#1769aa",
+            frame: "rgba(43,108,176,0.85)", frameSoft: "rgba(43,108,176,0.35)",
+            rule: "rgba(23,105,170,0.45)", bar: "rgba(11,37,69,0.12)",
+            seal: "rgba(29,111,184,0.86)", sealAlpha: 0.86, sealInk: "rgba(24,92,152,0.92)",
+            sealBack: "rgba(255,255,255,0.6)",
+            sealX: 0.40, sealY: 0.792, sealR: 118
+        },
         sky: {
             kind: "image", tone: "light", bg: "./assets/certs/cert-sky.jpg",
             text: "#0b2545", sub: "#3f5f85", accent: "#1769aa",
@@ -216,7 +263,7 @@
         }
     };
 
-    const DESIGN_ORDER = ["space", "light", "paper", "sky"];
+    const DESIGN_ORDER = ["space", "light", "paper", "sky", "classicSpace", "classicLight", "classicPaper", "classicSky"];
 
     const MONTHS = {
         ru: ["января", "февраля", "марта", "апреля", "мая", "июня", "июля", "августа", "сентября", "октября", "ноября", "декабря"],
@@ -500,6 +547,16 @@
         // остальные три оформления целиком рисуются кодом, поэтому печатаются
         // на белой бумаге без расхода краски.
         paintBg(ctx, w, h, th, bg) {
+            if (th.kind === "stars") {
+                const g = ctx.createLinearGradient(0, 0, w, h);
+                g.addColorStop(0, "#070d20");
+                g.addColorStop(0.5, "#0d1c3d");
+                g.addColorStop(1, "#1a0f33");
+                ctx.fillStyle = g;
+                ctx.fillRect(0, 0, w, h);
+                this.stars(ctx, w, h);
+                return;
+            }
             if (th.kind === "image") {
                 if (bg) {
                     const ratio = Math.max(w / bg.width, h / bg.height);

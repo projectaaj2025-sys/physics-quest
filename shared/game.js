@@ -511,6 +511,9 @@ const Game = {
             maxShield: 60  // радиус максимального щита
         };
 
+        // Флот мира: корабли, которые идут по небу у этого уровня
+        this.ensureFleet();
+
         // Начальные заряды — больше и разнообразнее
         for (let i = 0; i < 5; i++) this.spawnEnergyOrb();
 
@@ -1732,6 +1735,10 @@ const Game = {
             });
         }
 
+        // Флот уровня: у каждого мира свои корабли — они медленно идут
+        // по небу за астероидами и делают кадр «живым».
+        this.drawFleet(ctx);
+
         // Город (внизу)
         this.drawCity(ctx);
 
@@ -1825,6 +1832,142 @@ const Game = {
 
         // Мини-карта
         this.renderMinimap();
+    },
+
+    /* ============ ФЛОТ УРОВНЯ ============ */
+
+    /* Наборы кораблей: у каждой темы свой почерк — разведка, транспорт,
+       тяжёлые крейсеры. Стили берутся из ROCKET_STYLES, поэтому силуэты
+       те же, что и в профиле пилота. */
+    fleetForLevel(levelId) {
+        const num = Number(levelId) || 1;
+        const themes = {
+            asteria: ["classic", "delta", "comet"],
+            aurora: ["comet", "ice", "scout"],
+            desert: ["berkut", "lunar", "fire"],
+            ocean: ["aral", "explorer", "ice"],
+            crystal: ["violet", "nebula", "pink"],
+            tundra: ["ice", "steel", "sunkar"],
+            reactor: ["sunkar", "fire", "steel"],
+            jungle: ["emerald", "dragon", "scout"],
+            solar: ["comet", "gold", "fire"],
+            grid: ["kvant", "delta", "steel"],
+            volcano: ["dragon", "fire", "sunkar"],
+            nebula: ["nebula", "violet", "orion"],
+            observatory: ["temirkazyk", "sumbile", "zheti"],
+            clouds: ["baiterek", "ice", "scout"]
+        };
+        const theme = this.currentTheme && this.currentTheme.theme;
+        const themeId = (theme && theme.id) || "asteria";
+        const set = (themes[themeId] || themes.asteria)
+            .filter(id => ROCKET_STYLES.some(st => st.id === id));
+        // сдвиг по номеру уровня: соседние уровни одной темы не повторяют строй
+        const shift = num % Math.max(1, set.length);
+        return set.slice(shift).concat(set.slice(0, shift));
+    },
+
+    ensureFleet() {
+        const ids = this.fleetForLevel(this.currentLevel);
+        const count = 3;
+        this.fleet = [];
+        for (let i = 0; i < count; i++) {
+            const st = getRocketStyle(ids[i % ids.length]);
+            this.fleet.push({
+                st,
+                x: (0.18 + i * 0.3) * this.width,
+                y: (0.14 + (i % 2) * 0.2) * this.height,
+                size: 13 + (i % 3) * 3,
+                speed: 12 + i * 5,          // px/с — медленный дрейф
+                drift: 0.6 + i * 0.23,
+                phase: i * 2.1,
+                alpha: 0.55 + i * 0.1
+            });
+        }
+    },
+
+    drawFleet(ctx) {
+        if (!Array.isArray(this.fleet) || !this.fleet.length) return;
+        const now = Date.now() / 1000;
+        const dt = this.paused ? 0 : 1 / 60;
+        this.fleet.forEach(ship => {
+            // Корабли идут справа налево и мягко покачиваются по высоте
+            ship.x -= ship.speed * dt;
+            if (ship.x < -80) {
+                ship.x = this.width + 80;
+                ship.y = (0.12 + Math.random() * 0.26) * this.height;
+            }
+            const y = ship.y + Math.sin(now * ship.drift + ship.phase) * 10;
+            ctx.save();
+            ctx.globalAlpha = ship.alpha;
+            ctx.translate(ship.x, y);
+            // нос влево — корабль идёт к городу
+            ctx.rotate(-Math.PI / 2 + Math.sin(now * ship.drift * 0.8 + ship.phase) * 0.08);
+            this.drawFleetShip(ctx, ship.st, ship.size);
+            ctx.restore();
+        });
+        ctx.globalAlpha = 1;
+    },
+
+    drawFleetShip(ctx, st, size) {
+        const shape = st.shape || "classic";
+        const roundedRect = (x, y, w, h, r) => {
+            if (typeof ctx.roundRect === "function") ctx.roundRect(x, y, w, h, r);
+            else ctx.rect(x, y, w, h);
+        };
+        // выхлоп
+        ctx.fillStyle = st.flame;
+        ctx.beginPath();
+        ctx.moveTo(-size * 0.35, size * 0.5);
+        ctx.lineTo(0, size * 0.5 + size * 1.1);
+        ctx.lineTo(size * 0.35, size * 0.5);
+        ctx.closePath();
+        ctx.fill();
+        // корпус
+        ctx.fillStyle = st.body;
+        ctx.strokeStyle = st.accent;
+        ctx.lineWidth = Math.max(1, size * 0.07);
+        ctx.beginPath();
+        if (shape === "delta") {
+            ctx.moveTo(0, -size * 1.2);
+            ctx.lineTo(size * 1.05, size * 0.7);
+            ctx.lineTo(0, size * 0.35);
+            ctx.lineTo(-size * 1.05, size * 0.7);
+            ctx.closePath();
+        } else if (shape === "explorer" || shape === "lunar") {
+            roundedRect(-size * 0.55, -size * 0.95, size * 1.1, size * 1.7, size * 0.4);
+        } else if (shape === "comet") {
+            ctx.ellipse(0, 0, size * 1.05, size * 0.6, -0.55, 0, Math.PI * 2);
+        } else if (shape === "nebula") {
+            ctx.ellipse(0, 0, size * 1.05, size * 0.7, 0, 0, Math.PI * 2);
+        } else if (shape === "scout") {
+            ctx.moveTo(0, -size * 1.15);
+            ctx.lineTo(size * 0.65, -size * 0.1);
+            ctx.lineTo(size * 0.65, size * 0.75);
+            ctx.lineTo(-size * 0.65, size * 0.75);
+            ctx.lineTo(-size * 0.65, -size * 0.1);
+            ctx.closePath();
+        } else if (shape === "dragon") {
+            ctx.moveTo(0, -size * 1.15);
+            ctx.lineTo(size * 0.9, -size * 0.2);
+            ctx.lineTo(size * 0.6, size * 0.7);
+            ctx.lineTo(0, size * 0.35);
+            ctx.lineTo(-size * 0.6, size * 0.7);
+            ctx.lineTo(-size * 0.9, -size * 0.2);
+            ctx.closePath();
+        } else {
+            ctx.moveTo(0, -size);
+            ctx.lineTo(size * 0.8, size * 0.6);
+            ctx.lineTo(0, size * 0.4);
+            ctx.lineTo(-size * 0.8, size * 0.6);
+            ctx.closePath();
+        }
+        ctx.fill();
+        ctx.stroke();
+        // кокпит
+        ctx.fillStyle = st.cockpit;
+        ctx.beginPath();
+        ctx.arc(0, shape === "scout" ? -size * 0.18 : 0, Math.max(1.6, size * 0.2), 0, Math.PI * 2);
+        ctx.fill();
     },
 
     drawCity(ctx) {

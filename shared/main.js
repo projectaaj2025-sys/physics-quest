@@ -641,7 +641,8 @@ function showLevelSelect() {
     function card(level) {
         const isUnlocked = true; // ВСЕ УРОВНИ ОТКРЫТЫ — можно играть в любом порядке
         const completed = progress.completedLevels[level.id];
-        const stars = completed?.stars || 0;
+        // Звёзд ровно 0–3: чужие/старые данные не должны ломать карточку.
+        const stars = Math.max(0, Math.min(3, Math.round(Number(completed?.stars) || 0)));
         const isCompleted = !!completed;
         const badge = badgeOf(level);
         const badgeLabel = badgeText[badge][L];
@@ -669,7 +670,7 @@ function showLevelSelect() {
     function customCard(lesson, num) {
         const cid = "custom:" + lesson.id;
         const completed = progress.completedLevels[cid];
-        const stars = completed?.stars || 0;
+        const stars = Math.max(0, Math.min(3, Math.round(Number(completed?.stars) || 0)));
         const nTasks = Teacher.getAllTasks().filter(t => t.topic === cid).length;
         const assigned = assignedIds.has(cid);
         return `

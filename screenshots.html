@@ -1176,6 +1176,29 @@
             d: { ru: "светло-голубой фон с бело-синим разведывательным кораблём",
                  kk: "ақ-көк зерттеу кемесі бар ашық көк фон",
                  en: "light-blue sky with a white-and-blue exploration ship" }
+        }],
+        ["🌠", "classicSpace", "cert-classic-space.jpg", {
+            ru: "Космос · рисунок", kk: "Ғарыш · сурет", en: "Space · drawn",
+            d: { ru: "прежнее оформление: звёздное небо и созвездие, нарисованные движком",
+                 kk: "бұрынғы безендіру: қозғалтқыш салған жұлдызды аспан мен шоқжұлдыз",
+                 en: "the earlier design: starfield and constellation drawn by the engine" }
+        }],
+        ["🌤", "classicLight", "cert-classic-light.jpg", {
+            ru: "Светлый · рисунок", kk: "Ашық · сурет", en: "Light · drawn",
+            d: { ru: "прежнее оформление: мягкое свечение и градиент без иллюстраций",
+                 kk: "бұрынғы безендіру: суретсіз жұмсақ жарық пен градиент",
+                 en: "the earlier design: soft glow and gradient with no illustration" }
+        }],
+        ["📜", "classicPaper", "cert-classic-paper.jpg", {
+            ru: "Пергамент · рисунок", kk: "Пергамент · сурет", en: "Parchment · drawn",
+            d: { ru: "прежнее оформление: фактура бумаги и виньетка по краям",
+                 kk: "бұрынғы безендіру: қағаз фактурасы мен шетіндегі виньетка",
+                 en: "the earlier design: paper texture and a soft vignette" }
+        }],
+        ["🛰️", "classicSky", "cert-classic-sky.jpg", {
+            ru: "Небо · рисунок", kk: "Аспан · сурет", en: "Sky · drawn",
+            d: { ru: "прежнее оформление: орбитальные дуги и солнце", kk: "бұрынғы безендіру: орбиталық доғалар мен күн",
+                 en: "the earlier design: orbital arcs and a sun" }
         }]
     ];
 
@@ -1218,6 +1241,7 @@
             footNote: "Все кадры получены автоматической отрисовкой реальных экранов игры: светлая тема включена по умолчанию, тёмная — этой же кнопкой в шапке.",
             nav: "Разделы",
             sections: {
+                start: { kicker: "ВХОД В ИГРУ", title: "Главное меню и «Как играть»", lead: "С главного экрана видно прогресс серии, свой класс и вход в кампанию; «Как играть» за минуту объясняет цель, управление и семь типов заданий." },
                 hud: { kicker: "ИГРОВОЙ ЭКРАН", title: "Щит, астероиды и энергия", lead: "Основная петля игры: к городу летят астероиды с заданиями, верный ответ отражает удар и возвращает энергию, ошибка снимает щит. Полный конспект и формулы — до уровня, в самом задании их нет." },
                 map: { kicker: "КАМПАНИЯ", title: "Карта уровней своего класса", lead: "Главы кампании с прогрессом, звёздами за точность и метриками щита. Пройденные главы открыты, следующая подсвечена, чужие классы в карту не попадают." },
                 task: { kicker: "МЕХАНИКА ЗАДАНИЙ", title: "Окно задания и семь типов", lead: "Тест, множественный выбор, соответствие, краткий ответ, числовой ответ, верно/неверно и заполнение пропуска — один и тот же набор в 7, 8 и 9 классе. На уровень попадает 20 случайных заданий, подсказки и попытки настраиваются." },
@@ -1225,7 +1249,7 @@
                 lore: { kicker: "ЛОР И КОМИКС", title: "История и комикс одной лентой", lead: "Сначала герои и общий сюжет трилогии, затем главы лора: под текстом каждой главы стоит её комикс-страница. Показываются только главы своего класса." },
                 boss: { kicker: "ИСПЫТАНИЕ", title: "Босс блока", lead: "Финальный уровень блока в 9 классе: сложнее вопросы, сильнее урон по щиту и отдельная награда. В 7 и 8 классе таких экранов нет — там обычные волны." },
                 profile: { kicker: "ПРОГРЕСС ПИЛОТА", title: "Профиль, достижения и задания", lead: "Имя, ранг и код пилота, 41 достижение и дни посещений с бонусом XP. Бейджи посещаемости считаются отдельно от бейджей за дни подряд; здесь же — настройки подсказок, девять навыков и три случайных задания недели." },
-                team: { kicker: "РАБОТА В КЛАССЕ", title: "Битва команд на проекторе", lead: "2–3 экипажа по очереди отвечают на вопросы выбранного класса: 5, 8 или 12 вопросов каждому, по 45 секунд на ход. Верный ответ даёт +100 очков и +4% щита; ошибка снимает 14%." },
+                team: { kicker: "РАБОТА В КЛАССЕ", title: "Битва команд на проекторе", lead: "2–3 экипажа по очереди отвечают на вопросы выбранного класса: 5, 8 или 12 вопросов каждому, по 45 секунд на ход. Верный ответ даёт +100 очков и +4% щита; ошибка снимает 14%. Это отдельный раунд для класса, а не РПГ-миссия: опыт и кристаллы он не начисляет." },
                 teacher: { kicker: "КАБИНЕТ УЧИТЕЛЯ", title: "Журнал учителя", lead: "Один журнал на 7–9 классы: назначения, результаты, 10-балльная оценка и автоматические сигналы о сроках, активности и сложных темах." },
                 maintenance: { kicker: "РАБОТА НАД ОШИБКАМИ", title: "Техобслуживание", lead: "Архив вопросов, где ответ разошёлся с верным: правило, разбор и повторный ответ — без астероидов и таймера, с возвратом части очков." },
                 minigames: { kicker: "МИНИ-ИГРЫ УРОВНЕЙ", title: "Лабораторные мини-игры 8 и 9 класса", lead: "На каждом лабораторном уровне открывается своя мини-игра: полка деталей, ручки-верньеры, «Провести опыт» и съём показаний приборами — или сборка электрической цепи. Ползунков нет, всё делается руками." },
@@ -1233,9 +1257,21 @@
                 field7: { kicker: "7 КЛАСС · ПОЛЕВОЙ ЖУРНАЛ", title: "15 полевых опытов 7 класса", lead: "Измерения, плотность, давление, Архимед, рычаг и энергия — отдельный набор для 7 класса, полностью на трёх языках." },
                 galleries: { kicker: "ГАЛЕРЕИ ПО ТЕМАМ", title: "Лаборатории, собранные по темам", lead: "В 8 и 9 классе опыты сгруппированы по темам курса: у каждой темы своя карточка с параграфом, целью и подсказкой." },
                 worlds: { kicker: "ОФОРМЛЕНИЕ УРОВНЕЙ", title: "Миры внутри игры", lead: "Фон уровня не один и тот же: каждая глава получает свой мир — небо, силуэты, частицы и свечение." },
-                cert: { kicker: "СЕРТИФИКАТЫ", title: "Паспорт пилота: четыре оформления", lead: "Сертификат за свой класс и за всю трилогию: крупная круглая печать, код пилота и дата. «Космос» — тёмный фон, «Светлый», «Пергамент» и «Небо» — с иллюстрациями и печатью на обычной бумаге." }
+                cert: { kicker: "СЕРТИФИКАТЫ", title: "Паспорт пилота: восемь оформлений", lead: "Сертификат за свой класс и за всю трилогию: крупная круглая печать, код пилота и дата. Четыре оформления с иллюстрациями — «Космос», «Светлый», «Пергамент», «Небо» — и четыре прежних, нарисованных движком: их тоже можно выбрать в окне сертификата." }
             },
             items: {
+                "menu-g8": { t: "Главное меню 8 класса", d: "Начать игру · битва команд · профиль пилота · прогресс" },
+                "howto": { t: "Как играть", d: "Цель, управление, суть заданий, подсказки и попытки" },
+                "ach": { t: "Достижения", d: "41 достижение · бронза/серебро/золото · очки достижений" },
+                "skills": { t: "Навыки пилота", d: "9 навыков по 3 ранга · щит, регенератор, аналитик" },
+                "shop": { t: "Артефакты", d: "Покупка за кристаллы · постоянные улучшения" },
+                "briefing-g7": { t: "Брифинг миссии 7 класса", d: "Астерия · выбор режима · цель миссии и награда" },
+                "briefing-g8": { t: "Брифинг миссии 8 класса", d: "Эквилибриум · 5 режимов забега · рекомендация уровня" },
+                "briefing-g9": { t: "Брифинг миссии 9 класса", d: "Орбита-9 · блоки и боссы · выбор режима" },
+                "badges": { t: "Бейджи посещаемости", d: "10 вех за дни в игре и 3 — за игру подряд" },
+                "hub-g8": { t: "Штаб пилота", d: "13 показателей, 6 рангов, титулы за очки достижений" },
+                "team-play-g8": { t: "Раунд «Битвы экипажей»", d: "Щиты экипажей · вопрос класса · 45 секунд на ответ" },
+                "mistakes-g8": { t: "Чёрный ящик: архив ошибок", d: "Разбор по одному или техобслуживание" },
                 "hud-g7": { t: "Щит Астерии: волна заданий", d: "7 класс · плотность, давление, Архимед · 20 заданий на уровень" },
                 "hud-g8": { t: "Щит Эквилибриума: сеть под нагрузкой", d: "8 класс · тепло и электричество · ошибка снимает щит" },
                 "hud-g9": { t: "Орбита-9: волна босса", d: "9 класс · импульс и динамика · босс бьёт сильнее" },
@@ -1278,6 +1314,7 @@
             footNote: "Барлық кадрлар ойынның нақты экрандарын автоматты түрде салу арқылы алынған: ашық тақырып әдепкі, қараңғысы — сол батырмамен.",
             nav: "Бөлімдер",
             sections: {
+                start: { kicker: "ОЙЫНҒА КІРУ", title: "Басты мәзір және «Қалай ойнау керек»", lead: "Басты экранда серия прогресі, өз сыныбың және кампанияға кіру көрінеді; «Қалай ойнау керек» бір минутта мақсатты, басқаруды және жеті тапсырма түрін түсіндіреді." },
                 hud: { kicker: "ОЙЫН ЭКРАНЫ", title: "Қалқан, астероидтар және энергия", lead: "Ойынның негізгі циклі: қалаға тапсырмасы бар астероидтар ұшады, дұрыс жауап соққыны қайтарады және энергияны қайтарады, қате қалқанды азайтады. Толық конспект пен формулалар деңгейге дейін — тапсырманың ішінде олар жоқ." },
                 map: { kicker: "КАМПАНИЯ", title: "Өз сыныбыңның деңгей картасы", lead: "Прогрессі, дәлдік жұлдыздары және қалқан көрсеткіштері бар кампания тараулары. Өтілген тараулар ашық, келесісі ерекшеленеді, басқа сыныптар картаға түспейді." },
                 task: { kicker: "ТАПСЫРМА МЕХАНИКАСЫ", title: "Тапсырма терезесі және жеті түрі", lead: "Тест, бірнеше жауап, сәйкестендіру, қысқа жауап, сандық жауап, дұрыс/бұрыс және бос орынды толтыру — 7, 8 және 9 сыныпта бірдей жиынтық. Деңгейге 20 кездейсоқ тапсырма түседі." },
@@ -1285,7 +1322,7 @@
                 lore: { kicker: "ЛОР ЖӘНЕ КОМИКС", title: "Тарих пен комикс бір лентада", lead: "Алдымен кейіпкерлер мен трилогияның жалпы сюжеті, содан кейін лор тараулары: әр тараудың мәтінінің астында оның комикс-беті тұрады. Тек өз сыныбыңның тараулары көрсетіледі." },
                 boss: { kicker: "СЫНАҚ", title: "Блок боссы", lead: "9 сыныптағы блоктың қорытынды деңгейі: күрделірек сұрақтар, қалқанға күштірек соққы және бөлек сыйақы." },
                 profile: { kicker: "ПИЛОТ ПРОГРЕСІ", title: "Профиль, жетістіктер және тапсырмалар", lead: "Пилоттың аты, рангі, коды, 41 жетістік және XP бонусы бар қатысу күндері. Қатысу белгілері қатарынан ойнау белгілерінен бөлек саналады; мұнда кеңестерді реттеу, тоғыз дағды және апта сайынғы үш тапсырма бар." },
-                team: { kicker: "СЫНЫПТАҒЫ ЖҰМЫС", title: "Проектордағы командалық сайыс", lead: "2–3 экипаж таңдалған сынып сұрақтарына кезекпен жауап береді: әрқайсысына 5, 8 немесе 12 сұрақ, әр кезекке 45 секунд. Дұрыс жауап +100 ұпай және осы экипаж қалқанына +4% береді; қате жауап −14%." },
+                team: { kicker: "СЫНЫПТАҒЫ ЖҰМЫС", title: "Проектордағы командалық сайыс", lead: "2–3 экипаж таңдалған сынып сұрақтарына кезекпен жауап береді: әрқайсысына 5, 8 немесе 12 сұрақ, әр кезекке 45 секунд. Дұрыс жауап +100 ұпай және осы экипаж қалқанына +4% береді; қате жауап −14%. Бұл сыныпқа арналған жеке раунд, РПГ-миссия емес: тәжірибе мен кристалл берілмейді." },
                 teacher: { kicker: "МҰҒАЛІМ КАБИНЕТІ", title: "Мұғалім журналы", lead: "7–9 сыныптарға ортақ журнал: тапсырмалар, нәтижелер, 10 балдық баға және мерзім, белсенділік пен қиын тақырыптар бойынша автоматты ескертулер." },
                 maintenance: { kicker: "ҚАТЕЛЕРМЕН ЖҰМЫС", title: "Техникалық қызмет", lead: "Жауабы дұрысқа сәйкес келмеген сұрақтар архиві: ереже, талдау және қайта жауап — астероидсыз және таймерсіз." },
                 minigames: { kicker: "ДЕҢГЕЙ МИНИ-ОЙЫНДАРЫ", title: "8 және 9 сыныптың зертханалық мини-ойындары", lead: "Әр зертханалық деңгейде өз мини-ойыны ашылады: бөлшектер сөресі, бұралатын тұтқалар, «Тәжірибе жасау» және аспаптардан көрсеткіш алу — немесе электр тізбегін жинау. Слайдер жоқ." },
@@ -1293,9 +1330,21 @@
                 field7: { kicker: "7 СЫНЫП · ДАЛА ЖУРНАЛЫ", title: "7 сыныптың 15 далалық тәжірибесі", lead: "Өлшеу, тығыздық, қысым, Архимед, иінтірек және энергия — 7 сыныпқа арналған жеке жиынтық, үш тілде." },
                 galleries: { kicker: "ТАҚЫРЫП ГАЛЕРЕЯЛАРЫ", title: "Тақырып бойынша жиналған зертханалар", lead: "8 және 9 сыныпта тәжірибелер курс тақырыптары бойынша топтастырылған: әр тақырыптың параграфы, мақсаты және кеңесі бар карточкасы бар." },
                 worlds: { kicker: "ДЕҢГЕЙ БЕЗЕНДІРУІ", title: "Ойын ішіндегі әлемдер", lead: "Деңгей фоны бірдей емес: әр тарау өз әлемін алады — аспан, силуэттер, бөлшектер мен жарық." },
-                cert: { kicker: "СЕРТИФИКАТТАР", title: "Пилот паспорты: төрт безендіру", lead: "Өз сыныбың және бүкіл трилогия үшін сертификат: үлкен дөңгелек мөр, пилот коды мен күні. «Ғарыш» — қараңғы фон, «Ашық», «Пергамент» және «Аспан» — суреттермен және қарапайым қағаздағы мөрмен." }
+                cert: { kicker: "СЕРТИФИКАТТАР", title: "Пилот паспорты: сегіз безендіру", lead: "Өз сыныбың және бүкіл трилогия үшін сертификат: үлкен дөңгелек мөр, пилот коды мен күні. Суреттері бар төрт безендіру — «Ғарыш», «Ашық», «Пергамент», «Аспан» — және қозғалтқыш салған төрт бұрынғы безендіру; оларды да сертификат терезесінде таңдауға болады." }
             },
             items: {
+                "menu-g8": { t: "8 сыныптың басты мәзірі", d: "Ойынды бастау · экипаж сайысы · пилот профилі · прогресс" },
+                "howto": { t: "Қалай ойнау керек", d: "Мақсат, басқару, тапсырма мәні, кеңестер мен әрекеттер" },
+                "ach": { t: "Жетістіктер", d: "41 жетістік · қола/күміс/алтын · жетістік ұпайлары" },
+                "skills": { t: "Пилот дағдылары", d: "3 рангтен 9 дағды · қалқан, регенератор, аналитик" },
+                "shop": { t: "Артефактілер", d: "Кристалдарға сатып алу · тұрақты жақсартулар" },
+                "briefing-g7": { t: "7 сынып миссиясының брифингі", d: "Астерия · режим таңдау · миссия мақсаты мен сыйлық" },
+                "briefing-g8": { t: "8 сынып миссиясының брифингі", d: "Эквилибриум · 5 шапшаң режим · деңгей ұсынысы" },
+                "briefing-g9": { t: "9 сынып миссиясының брифингі", d: "Орбита-9 · блоктар мен босстар · режим таңдау" },
+                "badges": { t: "Қатысу бейдждері", d: "Ойын күндері үшін 10 белес және қатарынан ойнау үшін 3" },
+                "hub-g8": { t: "Пилот штабы", d: "13 көрсеткіш, 6 рангі, жетістік ұпайына титулдар" },
+                "team-play-g8": { t: "«Экипаж сайысы» раунды", d: "Экипаж қалқандары · сынып сұрағы · жауапқа 45 секунд" },
+                "mistakes-g8": { t: "Қара жәшік: қателер мұрағаты", d: "Бір-бірлеп талдау немесе техникалық қызмет" },
                 "hud-g7": { t: "Астерия қалқаны: тапсырма толқыны", d: "7 сынып · тығыздық, қысым, Архимед · деңгейге 20 тапсырма" },
                 "hud-g8": { t: "Эквилибриум қалқаны: желі жүктемеде", d: "8 сынып · жылу және электр · қате қалқанды азайтады" },
                 "hud-g9": { t: "Орбита-9: босс толқыны", d: "9 сынып · импульс және динамика · босс күштірек соғады" },
@@ -1338,6 +1387,7 @@
             footNote: "Every frame is produced by automatically rendering the game's real screens: the light theme is on by default, the dark one is the same button in the header.",
             nav: "Sections",
             sections: {
+                start: { kicker: "GETTING IN", title: "Main menu and “How to play”", lead: "The main screen shows series progress, your grade and the way into the campaign; “How to play” explains the goal, the controls and the seven task types in a minute." },
                 hud: { kicker: "GAME SCREEN", title: "Shield, asteroids and energy", lead: "The core loop: asteroids with tasks fly at the city, a correct answer deflects the hit and restores energy, a mistake drains the shield. The full guide and formulas live before the level, never inside the task." },
                 map: { kicker: "CAMPAIGN", title: "Your grade's level map", lead: "Campaign chapters with progress, accuracy stars and shield metrics. Finished chapters are open, the next one is highlighted, other grades never appear." },
                 task: { kicker: "TASK MECHANICS", title: "Task window and seven types", lead: "Single choice, multiple choice, matching, short answer, numeric answer, true/false and fill-in-the-blank — the same set in Grades 7, 8 and 9. Each level draws 20 random tasks; hints and attempts are configurable." },
@@ -1345,7 +1395,7 @@
                 lore: { kicker: "STORY AND COMIC", title: "Story and comic in one strip", lead: "First the characters and the trilogy plot, then the lore chapters: under every chapter text sits its comic page. Only your grade's chapters are shown." },
                 boss: { kicker: "CHALLENGE", title: "Block boss", lead: "The final level of a Grade 9 block: harder questions, heavier shield damage and a separate reward." },
                 profile: { kicker: "PILOT PROGRESS", title: "Profile, achievements and quests", lead: "Pilot name, rank, code, 41 achievements and attendance days with bonus XP. Attendance badges are tracked separately from consecutive-day badges; the profile also has hint settings, nine skills and three random weekly quests." },
-                team: { kicker: "CLASSROOM", title: "Team battle on the projector", lead: "2–3 crews take turns on questions from the selected grade: 5, 8 or 12 questions each, 45 seconds per turn. Correct answers earn 100 points and +4% of that crew’s shield; a miss costs 14%." },
+                team: { kicker: "CLASSROOM", title: "Team battle on the projector", lead: "2–3 crews take turns on questions from the selected grade: 5, 8 or 12 questions each, 45 seconds per turn. Correct answers earn 100 points and +4% of that crew’s shield; a miss costs 14%. It is a separate classroom round, not an RPG mission: it awards no XP or crystals." },
                 teacher: { kicker: "TEACHER CABINET", title: "Teacher journal", lead: "One journal for Grades 7–9: assignments, results, 10-point marks and automatic alerts about deadlines, activity and challenging topics." },
                 maintenance: { kicker: "ERROR REVIEW", title: "Maintenance", lead: "An archive of questions where the answer went wrong: rule, explanation and a second attempt — no asteroids, no timer, partial points back." },
                 minigames: { kicker: "LEVEL MINI-GAMES", title: "Grade 8–9 lab mini-games", lead: "Every lab level opens its own mini-game: a parts shelf, turning knobs, “Run experiment” and reading the instruments — or assembling a circuit. No sliders, everything is done by hand." },
@@ -1353,9 +1403,21 @@
                 field7: { kicker: "GRADE 7 · FIELD LOG", title: "15 field experiments of Grade 7", lead: "Measurement, density, pressure, buoyancy, lever and energy — a dedicated Grade 7 set, fully trilingual." },
                 galleries: { kicker: "TOPIC GALLERIES", title: "Labs grouped by topic", lead: "In Grades 8 and 9 the experiments are grouped by course topic, each with its paragraph, goal and hint." },
                 worlds: { kicker: "LEVEL ART", title: "Worlds inside the game", lead: "The level background is never the same: every chapter gets its own world — sky, silhouettes, particles and glow." },
-                cert: { kicker: "CERTIFICATES", title: "Pilot passport: four designs", lead: "A certificate for your grade and for the whole trilogy: a large round seal, pilot code and date. “Space” is the dark background; “Light”, “Parchment” and “Sky” print on plain paper." }
+                cert: { kicker: "CERTIFICATES", title: "Pilot passport: eight designs", lead: "A certificate for your grade and for the whole trilogy: a large round seal, pilot code and date. Four illustrated designs — “Space”, “Light”, “Parchment”, “Sky” — plus four earlier engine-drawn ones, all selectable in the certificate window." }
             },
             items: {
+                "menu-g8": { t: "Grade 8 main menu", d: "Start the game · team battle · pilot profile · progress" },
+                "howto": { t: "How to play", d: "Goal, controls, the point of tasks, hints and attempts" },
+                "ach": { t: "Achievements", d: "41 achievements · bronze/silver/gold · achievement points" },
+                "skills": { t: "Pilot skills", d: "9 skills with 3 ranks · shield, regenerator, analyst" },
+                "shop": { t: "Artifacts", d: "Buy with crystals · permanent upgrades" },
+                "briefing-g7": { t: "Grade 7 mission briefing", d: "Asteria · mode choice · mission goal and reward" },
+                "briefing-g8": { t: "Grade 8 mission briefing", d: "Equilibrium · 5 run modes · recommended level" },
+                "briefing-g9": { t: "Grade 9 mission briefing", d: "Orbit-9 · blocks and bosses · mode choice" },
+                "badges": { t: "Attendance badges", d: "10 milestones for days in game and 3 for consecutive play" },
+                "hub-g8": { t: "Pilot HQ", d: "13 stats, 6 ranks, titles for achievement points" },
+                "team-play-g8": { t: "Crew battle round", d: "Crew shields · a grade question · 45 seconds per answer" },
+                "mistakes-g8": { t: "Black box: error archive", d: "Review one by one or start maintenance" },
                 "hud-g7": { t: "Asteria shield: a wave of tasks", d: "Grade 7 · density, pressure, buoyancy · 20 tasks per level" },
                 "hud-g8": { t: "Equilibrium shield: grid under load", d: "Grade 8 · heat and electricity · mistakes drain the shield" },
                 "hud-g9": { t: "Orbit-9: boss wave", d: "Grade 9 · momentum and dynamics · the boss hits harder" },
@@ -1388,6 +1450,11 @@
 
     /* Кадры экранов: файл, класс, ключ подписи */
     const UI_ITEMS = [
+        { file: "ui-menu-g8.png", grade: 8, key: "menu-g8" },
+        { file: "ui-howto.png", grade: "all", key: "howto" },
+        { file: "ui-briefing-g7.png", grade: 7, key: "briefing-g7" },
+        { file: "ui-briefing-g8.png", grade: 8, key: "briefing-g8" },
+        { file: "ui-briefing-g9.png", grade: 9, key: "briefing-g9" },
         { file: "ui-hud-g7.png", grade: 7, key: "hud-g7" },
         { file: "ui-hud-g8.png", grade: 8, key: "hud-g8" },
         { file: "ui-hud-g9.png", grade: 9, key: "hud-g9" },
@@ -1409,14 +1476,23 @@
         { file: "ui-profile-g8.png", grade: 8, key: "profile-g8" },
         { file: "ui-profile-g9.png", grade: 9, key: "profile-g9" },
         { file: "ui-upgrades.png", grade: "all", key: "upgrades" },
+        { file: "ui-ach.png", grade: "all", key: "ach" },
+        { file: "ui-skills.png", grade: "all", key: "skills" },
+        { file: "ui-shop.png", grade: "all", key: "shop" },
         { file: "ui-quests.png", grade: "all", key: "quests" },
+        { file: "ui-badges.png", grade: "all", key: "badges" },
+        { file: "ui-hub-g8.png", grade: 8, key: "hub-g8" },
         { file: "ui-team-g8.png", grade: "all", key: "team-g8" },
+        { file: "ui-team-play-g8.png", grade: "all", key: "team-play-g8" },
         { file: "ui-teacher.png", grade: "all", key: "teacher" },
-        { file: "ui-maintenance-g8.png", grade: "all", key: "maintenance-g8" }
+        { file: "ui-mistakes-g8.png", grade: "all", key: "mistakes-g8" },
+        { file: "ui-maintenance-g8.png", grade: "all", key: "maintenance-g8" },
+        { file: "ui-cert-picker.png", grade: "all", key: "cert-ui" }
     ];
 
     /* Разделы страницы: сначала механики, затем лаборатории */
     const SECTION_META = [
+        { id: "start", icon: "🚀", grades: [7, 8, 9], kind: "ui" },
         { id: "hud", icon: "🛡", grades: [7, 8, 9], kind: "ui" },
         { id: "map", icon: "🗺", grades: [7, 8, 9], kind: "ui" },
         { id: "task", icon: "📝", grades: [7, 8, 9], kind: "ui" },
@@ -1500,16 +1576,17 @@
 
     function uiItems(rootKey) {
         const keys = {
-            hud: ["hud-g7", "hud-g8", "hud-g9"],
+            start: ["menu-g8", "howto"],
+            hud: ["briefing-g7", "briefing-g8", "briefing-g9", "hud-g7", "hud-g8", "hud-g9"],
             map: ["map-g7", "map-g8", "map-g9"],
             task: ["task-g7", "task-g8", "task-g9", "task-types"],
             theory: ["theory-g7", "theory-g8", "theory-g9"],
             lore: ["lore-g7", "lore-g8", "lore-g9"],
             boss: ["boss-g9"],
-            profile: ["profile-g7", "profile-g8", "profile-g9", "upgrades", "quests"],
-            team: ["team-g8"],
+            profile: ["profile-g7", "profile-g8", "profile-g9", "upgrades", "skills", "ach", "shop", "quests", "badges", "hub-g8"],
+            team: ["team-g8", "team-play-g8"],
             teacher: ["teacher"],
-            maintenance: ["maintenance-g8"]
+            maintenance: ["mistakes-g8", "maintenance-g8"]
         };
         return UI_ITEMS.filter((it) => (keys[rootKey] || []).indexOf(it.key) >= 0).map((it) => ({
             file: it.file, grade: it.grade,
@@ -1550,7 +1627,23 @@
                             file: c.file, grade: c.grade, title,
                             desc: `${c.para} · ${about}`.replace(/ · $/, "")
                         };
-                    })
+                    }).concat([
+                        {
+                            file: "sim-ui-g8-ohm.png", grade: 8,
+                            title: lang === "en" ? "Setup window: Ohm's law" : lang === "kk" ? "Қондырғы терезесі: Ом заңы" : "Окно установки: закон Ома",
+                            desc: "§ 22–26 · " + (lang === "en" ? "turn the dials, verify the experiment" : lang === "kk" ? "тұтқаларды бұра, тәжірибені раста" : "крути ручки приборов, подтверди опыт")
+                        },
+                        {
+                            file: "sim-ui-g8-calorimeter.png", grade: 8,
+                            title: lang === "en" ? "Setup window: calorimeter" : lang === "kk" ? "Қондырғы терезесі: калориметр" : "Окно установки: калориметр",
+                            desc: "§ 7–9 · " + (lang === "en" ? "heat balance Q = cmΔt on the screen" : lang === "kk" ? "экрандағы жылу балансы Q = cmΔt" : "тепловой баланс Q = cmΔt на экране")
+                        },
+                        {
+                            file: "sim-ui-g8-optics.png", grade: 8,
+                            title: lang === "en" ? "Setup window: optics" : lang === "kk" ? "Қондырғы терезесі: оптика" : "Окно установки: оптика",
+                            desc: "§ 37–43 · " + (lang === "en" ? "lens, screen and a real image" : lang === "kk" ? "линза, экран және нақты кескін" : "линза, экран и действительное изображение")
+                        }
+                    ])
                 });
             } else if (meta.kind === "field7") {
                 Object.assign(sec, {
@@ -1582,7 +1675,7 @@
                         title: `${row[0]} ${row[3][lang] || row[3].ru}`,
                         desc: (row[3].d && (row[3].d[lang] || row[3].d.ru)) || ""
                     })).concat([{
-                        file: "cert-ui.jpg", grade: "all",
+                        file: "ui-cert-picker.png", grade: "all",
                         title: itemText("cert-ui", "t") || "Окно выбора сертификата",
                         desc: itemText("cert-ui", "d") || ""
                     }])
