@@ -559,12 +559,16 @@ function renderStudentAssignments() {
             <button type="button" class="btn btn-primary" data-student-assignment-start="${escapeHtml(rawId)}" data-student-assignment-code="${escapeHtml(assignment.assignmentCode || "")}">${I18n.t("openAssignment")}</button>
         </article>`;
     }).join("");
-    list.querySelectorAll(".student-assignment-play").forEach(btn => {
+    // Кнопка «Открыть» в карточке назначения: атрибуты те же, что в разметке выше
+    // (data-student-assignment-start / -code). Раньше селектор и dataset не совпадали
+    // с разметкой, и назначение нельзя было начать — исправлено.
+    list.querySelectorAll("[data-student-assignment-start]").forEach(btn => {
         btn.addEventListener("click", () => {
-            const raw = btn.dataset.level;
+            const raw = btn.getAttribute("data-student-assignment-start");
+            const code = btn.getAttribute("data-student-assignment-code") || "";
             const parsed = parseLevelRef(raw, Storage.grade());
             if (!parsed.isCustom && parsed.grade !== Storage.grade()) {
-                const codeParam = btn.dataset.code ? `&assign=${encodeURIComponent(btn.dataset.code)}` : "";
+                const codeParam = code ? `&assign=${encodeURIComponent(code)}` : "";
                 window.location.href = `./play.html?grade=${parsed.grade}&autostart=${parsed.levelId}${codeParam}`;
                 return;
             }
@@ -572,7 +576,7 @@ function renderStudentAssignments() {
                 showNotification(I18n.t("assignmentLessonMissing"), "warning");
                 return;
             }
-            Game.startLevel(parsed.levelId, btn.dataset.code || "");
+            Game.startLevel(parsed.levelId, code);
         });
     });
 }

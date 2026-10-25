@@ -712,6 +712,17 @@
             box-shadow: 0 10px 24px rgba(14, 165, 233, 0.35);
         }
         .hub-shots-btn:hover { transform: translateY(-1px); }
+        .hub-shots-grades { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; margin-top: 11px; }
+        .hub-shots-grades span { font-size: 11.5px; font-weight: 800; letter-spacing: .05em; color: #8fb0d4; }
+        .hub-shots-grades a {
+            font-size: 12px; font-weight: 800; text-decoration: none; padding: 5px 11px; border-radius: 999px;
+            color: #d7ecff; background: rgba(56, 189, 248, 0.16); border: 1px solid rgba(56, 189, 248, 0.42);
+            transition: background .15s ease, border-color .15s ease, transform .15s ease;
+        }
+        .hub-shots-grades a:hover { background: rgba(56, 189, 248, 0.3); border-color: #7dd3fc; transform: translateY(-1px); }
+        html[data-theme="light"] .hub-shots-grades span { color: #51708f; }
+        html[data-theme="light"] .hub-shots-grades a { color: #0b4a6f; background: rgba(2, 132, 199, 0.08); border-color: rgba(2, 132, 199, 0.34); }
+        html[data-theme="light"] .hub-shots-grades a:hover { background: rgba(2, 132, 199, 0.17); border-color: #0284c7; }
         html[data-theme="light"] .hub-shots {
             background: linear-gradient(135deg, #eaf6ff, #e6f1ff);
             border-color: rgba(2, 132, 199, 0.35);
@@ -1007,8 +1018,10 @@
                 aboutTitle: "О серии «Физика-Квест» и научно-методической концепции",
                 aboutLead: "Образовательная веб-платформа разработана в рамках дипломного исследования «Разработка и применение серии RPG-игр «Физика-Квест» как средства повышения учебной мотивации обучающихся 7–9 классов».",
                 shotsTitle: "Скриншоты игры",
-                shotsLead: "35 canvas-лабораторий, 15 опытов 7 класса, 15 мини-игр по темам и четыре оформления сертификата — всё в одном каталоге, с подписями по каждому классу.",
+                shotsLead: "97 кадров всей игры: экран боя и щит, карта кампании, окно задания и 7 типов, полный конспект, лор с комиксом, босс, профиль и ранги, журнал учителя, битва команд, техобслуживание — плюс 50 лабораторий и 15 мини-игр. Светлая тема, три языка и фильтр по классам.",
                 shotsBtn: "Посмотреть скриншоты",
+                shotsByGrade: "Смотреть по классам:",
+                shotsG7: "7 класс", shotsG8: "8 класс", shotsG9: "9 класс",
                 ab1Title: "📚 Полное соответствие ГОСО РК",
                 ab1Text: "Структура миссий синхронизирована с параграфами и лабораторными работами школьных учебников физики 7–9 классов (Р. Башарулы, Ш. Б. Закирова и др.) на русском, казахском и английском языках.",
                 ab2Title: "🎮 Механики учебной мотивации",
@@ -1074,8 +1087,10 @@
                 aboutTitle: "«Физика-Квест» сериясы және ғылыми-әдістемелік тұжырымдама",
                 aboutLead: "Веб-платформа «7–9 сынып білім алушыларының оқу мотивациясын арттыру құралы ретінде «Физика-Квест» RPG-ойындар сериясын әзірлеу және қолдану» дипломдық зерттеуі аясында жасалған.",
                 shotsTitle: "Ойын скриншоттары",
-                shotsLead: "35 canvas-зертхана, 7-сыныптың 15 тәжірибесі, тақырып бойынша 15 мини-ойын және сертификаттың төрт безендіруі — барлығы бір каталогта.",
+                shotsLead: "Бүкіл ойынның 97 кадры: шайқас экраны мен қалқан, кампания картасы, тапсырма терезесі және 7 түрі, толық конспект, комикспен лор, босс, профиль мен рангілер, мұғалім журналы, командалық сайыс, техникалық қызмет — қоса 50 зертхана мен 15 мини-ойын. Ашық тақырып, үш тіл және сынып бойынша сүзгі.",
                 shotsBtn: "Скриншоттарды қарау",
+                shotsByGrade: "Сынып бойынша:",
+                shotsG7: "7 сынып", shotsG8: "8 сынып", shotsG9: "9 сынып",
                 ab1Title: "📚 ҚР МЖМБС толық сәйкестігі",
                 ab1Text: "Барлық миссиялар 7–9 сынып физика оқулықтарының (Р. Башарұлы, Ш. Б. Закирова және т.б.) параграфтары мен зертханалық жұмыстарына үш тілде (ҚАЗ / RU / EN) сәйкестендірілген.",
                 ab2Title: "🎮 Оқу мотивациясының механикасы",
@@ -1141,8 +1156,10 @@
                 aboutTitle: "About the Physics Quest Series & Thesis Research",
                 aboutLead: "Developed within the diploma thesis “Development and Application of the ‘Physics-Quest’ RPG Game Series as a Means of Increasing Learning Motivation of Grade 7–9 Students”.",
                 shotsTitle: "Game screenshots",
-                shotsLead: "35 canvas labs, 15 Grade 7 experiments, 15 topic mini-games and four certificate designs — all in one catalogue with captions for every grade.",
+                shotsLead: "97 frames of the whole game: the battle screen and shield, the campaign map, the task window and its 7 types, the full study guide, the story with its comic, the boss, the profile and ranks, the teacher journal, the team battle, error review — plus 50 labs and 15 mini-games. Light theme, three languages and a grade filter.",
                 shotsBtn: "View screenshots",
+                shotsByGrade: "Browse by grade:",
+                shotsG7: "Grade 7", shotsG8: "Grade 8", shotsG9: "Grade 9",
                 ab1Title: "📚 Curriculum-Aligned (Grades 7–9)",
                 ab1Text: "Every mission maps directly to textbook chapters and laboratory works (R. Basharuly, Sh. B. Zakirova et al.) in Russian, Kazakh, and English.",
                 ab2Title: "🎮 Motivation & Flow Design",
@@ -1466,6 +1483,12 @@
                     <div class="hub-shots-text">
                         <h3>${esc(tr("shotsTitle"))}</h3>
                         <p>${esc(tr("shotsLead"))}</p>
+                        <div class="hub-shots-grades">
+                            <span>${esc(tr("shotsByGrade"))}</span>
+                            <a href="./screenshots.html#grade=7">${esc(tr("shotsG7"))}</a>
+                            <a href="./screenshots.html#grade=8">${esc(tr("shotsG8"))}</a>
+                            <a href="./screenshots.html#grade=9">${esc(tr("shotsG9"))}</a>
+                        </div>
                     </div>
                     <a class="hub-shots-btn" href="./screenshots.html">🖼 ${esc(tr("shotsBtn"))}</a>
                 </section>
@@ -1512,13 +1535,14 @@
                     return;
                 }
                 const outcome = Storage.attachAssignmentCode(raw);
-                if (outcome.notFound || !outcome.assignment) {
+                const attached = outcome.assignment || (outcome.added && outcome.added[0]) || outcome.existing || null;
+                if (outcome.notFound || !attached) {
                     status.style.color = "#fca5a5";
                     status.textContent = tr("codeErrNotFound");
                     return;
                 }
-                const parsed = parseLevelRef(outcome.assignment.levelId, outcome.assignment.grade || 8);
-                window.location.href = `./play.html?grade=${parsed.grade}&autostart=${encodeURIComponent(parsed.levelId)}&assign=${encodeURIComponent(outcome.assignment.assignmentCode || raw)}`;
+                const parsed = parseLevelRef(attached.levelId, attached.grade || 8);
+                window.location.href = `./play.html?grade=${parsed.grade}&autostart=${encodeURIComponent(parsed.levelId)}&assign=${encodeURIComponent(attached.assignmentCode || raw)}`;
             });
         }
 

@@ -1433,7 +1433,22 @@
 
     let lang = localStorage.getItem("pq_lang") || "ru";
     if (!I18N[lang]) lang = "ru";
-    let gradeFilter = "all";
+
+    /* Класс можно открыть сразу ссылкой: screenshots.html#grade=7 */
+    function hashGrade() {
+        const raw = String(location.hash || "").replace(/^#/, "");
+        if (!raw) return null;
+        const m = raw.match(/(?:^|&)grade=(all|7|8|9)(?:&|$)/);
+        return m ? m[1] : null;
+    }
+    let gradeFilter = hashGrade() || "all";
+
+    function syncHash() {
+        try {
+            const target = gradeFilter === "all" ? "" : "#grade=" + gradeFilter;
+            history.replaceState(null, "", location.pathname + location.search + target);
+        } catch (e) {}
+    }
 
     /* Подмешиваем новые подписи в общий словарь страницы */
     Object.keys(EXTRA).forEach((l) => {
@@ -1640,6 +1655,8 @@
             const f = dict().filterCount;
             badge.textContent = typeof f === "function" ? f(total) : String(total);
         }
+        syncHash();
+
         const play = document.querySelector('a[href^="./play.html"]');
         if (play) play.setAttribute("href", gradeFilter === "all" ? "./play.html?grade=8" : `./play.html?grade=${gradeFilter}`);
 
@@ -1735,6 +1752,15 @@
             document.querySelectorAll(".gbtn").forEach((b) => b.classList.toggle("active", b === btn));
             applyFilter();
         });
+    });
+
+    /* ---------- класс из адресной строки ---------- */
+    window.addEventListener("hashchange", () => {
+        const g = hashGrade() || "all";
+        if (g === gradeFilter) return;
+        gradeFilter = g;
+        document.querySelectorAll(".gbtn").forEach((b) => b.classList.toggle("active", b.getAttribute("data-grade") === g));
+        applyFilter();
     });
 
     /* ---------- лайтбокс ---------- */

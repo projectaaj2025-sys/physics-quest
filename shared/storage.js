@@ -442,19 +442,19 @@ const Storage = {
 
     attachAssignmentCode(code) {
         const normalized = this.normalizeAssignmentCode(code);
-        if (!normalized) return { added: [], existing: null, notFound: true };
+        if (!normalized) return { added: [], existing: null, assignment: null, notFound: true };
         const current = this.getCurrentPlayer();
         const assignments = this.getAssignments();
         const byCode = assignments.filter(item => this.normalizeAssignmentCode(item.assignmentCode) === normalized);
         const existing = byCode.find(item => this.assignmentMatchesPlayer(item, current));
-        if (existing) return { added: [], existing, notFound: false };
+        if (existing) return { added: [], existing, assignment: existing, notFound: false };
 
         // On the teacher's device use the matching assignment as a template.
         // The class code is shared, but only one row is copied for the current student.
         let template = byCode[0] || null;
         if (!template) {
             const decoded = this.decodeAssignmentCode(normalized);
-            if (!decoded) return { added: [], existing: null, notFound: true };
+            if (!decoded) return { added: [], existing: null, assignment: null, notFound: true };
             template = { grade: decoded.grade, levelId: decoded.levelId, note: "", classId: "", className: "" };
         }
         const parsedTpl = parseLevelRef(template.levelId, template.grade || this.grade());
@@ -474,7 +474,10 @@ const Storage = {
         };
         assignments.push(item);
         this.save(this.KEYS.ASSIGNMENTS, assignments);
-        return { added: [item], existing: null, notFound: false };
+        // assignment — та запись, которую только что подключили: по ней портал
+        // открывает нужный класс и параграф. Раньше поля не было, и вход по коду
+        // с главной страницы всегда отвечал «код не распознан».
+        return { added: [item], existing: null, assignment: item, notFound: false };
     },
 
     addAssignment(assignment = {}) {
