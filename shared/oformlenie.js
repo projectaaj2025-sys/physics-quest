@@ -19,6 +19,7 @@
             si: "СИ",
             solution: "Решение",
             answer: "Ответ",
+            find: "Найти", formulaLabel: "Формула", substitution: "Подстановка и вычисление",
             blank: "Пустой шаблон для тетради",
             blankHint: "Перепиши столбики в тетрадь и заполняй их по шагам — так проверяющий увидит ход мысли, а не только число.",
             steps: "Порядок действий",
@@ -39,6 +40,7 @@
             si: "ХБЖ",
             solution: "Шешуі",
             answer: "Жауабы",
+            find: "Табу керек", formulaLabel: "Формула", substitution: "Мәндерді қою және есептеу",
             blank: "Дәптерге арналған бос үлгі",
             blankHint: "Бағандарды дәптерге көшіріп, қадам бойынша толтыр — сонда тек сан емес, ой жүгірту жолы көрінеді.",
             steps: "Әрекет тәртібі",
@@ -59,6 +61,7 @@
             si: "SI",
             solution: "Solution",
             answer: "Answer",
+            find: "Find", formulaLabel: "Formula", substitution: "Substitution and calculation",
             blank: "Blank notebook template",
             blankHint: "Copy these columns into your notebook and fill them step by step — then the reader sees your reasoning, not just a number.",
             steps: "Order of steps",
@@ -370,10 +373,16 @@
                 background: rgba(226, 240, 252, 0.5);
             }
             .pq-of-blank b { display: block; margin-bottom: 6px; font-size: 12.5px; color: #1f5f8c; }
-            .pq-of-blank pre {
-                margin: 0; font-family: ui-monospace, Menlo, Consolas, monospace;
-                font-size: 12px; line-height: 1.75; color: #33546f; white-space: pre-wrap;
-            }
+            .pq-of-template-wrap { overflow-x:auto; }
+            .pq-of-template { width:100%; min-width:360px; border-collapse:collapse; table-layout:fixed; background:#fff; color:#17324d; font-size:13px; }
+            .pq-of-template th, .pq-of-template td { border:1px solid #789bac; padding:8px; vertical-align:top; text-align:left; overflow-wrap:anywhere; }
+            .pq-of-template th { background:#e6f1f7; color:#173f56; font-weight:800; }
+            .pq-of-template th:nth-child(1) { width:25%; }
+            .pq-of-template th:nth-child(2) { width:22%; }
+            .pq-of-template th:nth-child(3) { width:53%; }
+            .pq-of-template .pq-of-line { display:block; border-bottom:1px solid #9db5c4; height:1.6em; margin-bottom:3px; }
+            .pq-of-template small { display:block; margin:4px 0 2px; font-weight:700; color:#355d73; }
+            .pq-of-template .pq-of-find { font-weight:800; white-space:normal; }
             .pq-of-note { margin: 10px 0 0; font-size: 11.5px; color: #7d95ae; }
         `;
         document.head.appendChild(st);
@@ -390,13 +399,6 @@
             ...s.solution.map((line) => `<div class="pq-of-row-eq">${esc(line)}</div>`),
             `<div class="pq-of-answer">${esc(t.answer)}: ${esc(s.answer)}</div>`
         ].join("");
-        const blanks = [
-            t.given + ": " + s.given.map(([sym]) => sym + " = ").join("; "),
-            t.si + ": " + s.si.slice(0, 1).map(([sym]) => sym + " = ").join("; "),
-            t.solution + ": " + s.formula,
-            "____________________ = ______",
-            t.answer + ": ____________"
-        ].join("\n");
         return `<section class="pq-of-card" data-sample="${esc(s.id)}">
             <div class="pq-of-kicker">📓 ${esc(t.kicker)}</div>
             <h3>${esc(t.title)}</h3>
@@ -405,14 +407,23 @@
                 <div class="pq-of-head">${esc(t.given)}</div>
                 <div class="pq-of-head">${esc(t.si)}</div>
                 <div class="pq-of-head pq-of-main" style="grid-row:span 1;border-left:1px solid rgba(120,152,186,0.28);">${esc(t.solution)} — ${esc(pick(s.title))}</div>
-                <div>${givens}</div>
+                <div>${givens}<div style="margin-top:10px;border-top:1px solid #a8c4d6;padding-top:5px"><strong>${esc(t.find)}:</strong> ${esc((s.answer.split(/[=≈]/)[0] || "").trim())} — ?</div></div>
                 <div>${sis}</div>
                 <div class="pq-of-main">${sol}</div>
             </div>
             <ol class="pq-of-steps">${t.stepList.map((x) => `<li>${esc(x)}</li>`).join("")}</ol>
             <div class="pq-of-blank">
                 <b>${esc(t.blank)}</b>
-                <pre>${esc(blanks)}</pre>
+                <div class="pq-of-template-wrap"><table class="pq-of-template" aria-label="${esc(t.blank)}">
+                    <thead><tr><th scope="col">${esc(t.given)}</th><th scope="col">${esc(t.si)}</th><th scope="col">${esc(t.solution)}</th></tr></thead>
+                    <tbody>
+                        <tr><td><span class="pq-of-line"></span></td><td><span class="pq-of-line"></span></td><td rowspan="4"><small>${esc(t.formulaLabel)}</small><span class="pq-of-line"></span><small>${esc(t.substitution)}</small><span class="pq-of-line"></span><span class="pq-of-line"></span><span class="pq-of-line"></span></td></tr>
+                        <tr><td><span class="pq-of-line"></span></td><td><span class="pq-of-line"></span></td></tr>
+                        <tr><td><span class="pq-of-line"></span></td><td><span class="pq-of-line"></span></td></tr>
+                        <tr><td class="pq-of-find">${esc(t.find)}: <span class="pq-of-line"></span></td><td></td></tr>
+                        <tr><td colspan="3"><strong>${esc(t.answer)}:</strong><span class="pq-of-line"></span></td></tr>
+                    </tbody>
+                </table></div>
             </div>
         </section>`;
     }

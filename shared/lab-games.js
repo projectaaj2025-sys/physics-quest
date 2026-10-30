@@ -48,7 +48,7 @@ const LabGames = {
         });
         // В 8–9 классах кнопкой «🔬 Лаб» управляет роутер Simulators89
         // (он открывает мини-игру уровня либо галерею симуляторов) — второй обработчик не нужен.
-        if (typeof window.Simulators89 === "undefined") {
+        if (Number(window.CURRENT_GRADE) !== 7 && typeof window.Simulators89 === "undefined") {
             document.getElementById("btn-lab")?.addEventListener("click", () => {
                 if (typeof Game !== "undefined" && this.configs[Game.currentLevel]) {
                     this.show(this.configs[Game.currentLevel], Game);
@@ -101,7 +101,11 @@ const LabGames = {
         if (resultEl) resultEl.style.display = "none";
         if (circuitEl) circuitEl.style.display = "none";
         if (content) content.innerHTML = "";
-        if (cfg.type === "slider" && content && resultEl) {
+        if (cfg.type === "home-experiment" && content && resultEl && window.PQHomeExperiments) {
+            resultEl.style.display = "block";
+            resultEl._ok = false;
+            window.PQHomeExperiments.render(content, cfg, resultEl, L);
+        } else if (cfg.type === "slider" && content && resultEl) {
             // Ползунки убраны: ученик работает руками (полка деталей, ручки-верньеры,
             // «Провести опыт» и приборы со стрелками) — см. shared/lab-workbench.js.
             const update = () => {

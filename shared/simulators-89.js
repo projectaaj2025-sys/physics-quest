@@ -2744,9 +2744,9 @@
                 : tr(`🛰️ Испытательный полигон «Орбита-9» (${countRu})`, `🛰️ «Орбита-9» сынақ полигоны (${labs.length} симулятор)`, `🛰️ Orbita-9 Proving Grounds (${labs.length} Simulators)`);
             const topicCount = (TOPICS_BY_GRADE[grade] || []).length;
             if (s) s.textContent = tr(
-                `${labs.length} лабораторий по ${topicCount} темам курса: у каждой темы свои опыты — управляй приборами, выводи установку в целевой режим и подтверждай расчёт (+30 XP и +5 💎).`,
-                `${labs.length} зертхана курстың ${topicCount} тақырыбы бойынша: әр тақырыптың өз тәжірибелері бар — аспаптарды басқарып, есепті дәлелде (+30 XP және +5 💎).`,
-                `${labs.length} labs across ${topicCount} course topics: each topic has its own trials — adjust the apparatus, reach the target regime, and verify your calculation (+30 XP & +5 💎).`
+                `${labs.length} лабораторий по ${topicCount} темам курса и дополнительный домашний опыт: управляй приборами, выводи установку в целевой режим и подтверждай расчёт (+30 XP и +5 💎 за лабораторные испытания).`,
+                `${labs.length} зертхана курстың ${topicCount} тақырыбы бойынша және қосымша үй тәжірибесі: аспаптарды басқарып, есепті дәлелде (зертханалық сынақтар үшін +30 XP және +5 💎).`,
+                `${labs.length} labs across ${topicCount} course topics plus an extra home experiment: adjust the apparatus and verify your calculation (+30 XP & +5 💎 for lab trials).`
             );
             if (p) p.textContent = tr(
                 `🔑 Фрагменты ключа: ${doneCount} / ${labs.length}`,
@@ -2807,6 +2807,9 @@
             grid.querySelectorAll("[data-s89]").forEach(btn => {
                 btn.onclick = () => this.openLab(btn.getAttribute("data-s89"));
             });
+            if (window.PQHomeExperiments) window.PQHomeExperiments.mountGallery();
+            if (window.PQDiagramGames) window.PQDiagramGames.mountGallery();
+            if (window.PQVisionExercise) window.PQVisionExercise.mountGallery();
         },
 
         ensureModal() {

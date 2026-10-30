@@ -28,6 +28,7 @@
         ambientNodes: [],
         enabled: true,
         ambientEnabled: true,
+        musicVolume: 0.2,
         ambientPlaying: false,
         _hooked: false,
         _unlocked: false,
@@ -40,6 +41,7 @@
             try { s = (typeof Storage !== "undefined" && Storage.getSettings) ? Storage.getSettings() : {}; } catch (_) {}
             this.enabled = s.soundEnabled !== false;
             this.ambientEnabled = s.ambientEnabled !== false;
+            this.musicVolume = Number.isFinite(s.musicVolume) ? Math.max(0, Math.min(1, s.musicVolume)) : 0.2;
             return s;
         },
         saveSettings(patch) {
@@ -62,7 +64,7 @@
             try {
                 this.ctx = new AC();
                 this.master = this.ctx.createGain();
-                this.master.gain.value = this.enabled ? 0.55 : 0;
+                this.master.gain.value = this.enabled ? 0.55 * this.musicVolume : 0;
                 this.master.connect(this.ctx.destination);
 
                 this.sfxBus = this.ctx.createGain();
@@ -155,7 +157,7 @@
 
         // ---------- эффекты ----------
         play(name) {
-            if (!this.enabled) return;
+            if (!this.enabled || this.musicVolume === 0) return;
             if (!this.ensureCtx()) return;
             this.resume();
             const now = Date.now();
@@ -228,86 +230,59 @@
 
         // ---------- эмбиент ----------
         startAmbient() {
-            if (!this.ambientEnabled || !this.enabled) return;
-            if (this.ambientPlaying) return;
+            if (!this.ambientEnabled || !this.enabled || this.musicVolume === 0 || document.hidden || this.ambientPlaying || document.querySelector("#game-screen.active")) return;
             if (!this.ensureCtx()) return;
             this.resume();
             const ctx = this.ctx;
             const bus = this.ambientBus;
-            const nodes = [];
-
-            // Глубокий дрон (две расстроенные волны)
-            [55, 55.6, 82.5].forEach((freq, idx) => {
-                const osc = ctx.createOscillator();
-                const gain = ctx.createGain();
-                const filter = ctx.createBiquadFilter();
-                osc.type = idx === 2 ? "triangle" : "sine";
-                osc.frequency.value = freq;
-                filter.type = "lowpass";
-                filter.frequency.value = 420;
-                filter.Q.value = 0.6;
-                gain.gain.value = idx === 2 ? 0.06 : 0.1;
-
-                // медленное дыхание
-                const lfo = ctx.createOscillator();
-                const lfoGain = ctx.createGain();
-                lfo.frequency.value = 0.035 + idx * 0.012;
-                lfoGain.gain.value = idx === 2 ? 0.03 : 0.05;
-                lfo.connect(lfoGain);
-                lfoGain.connect(gain.gain);
-                lfo.start();
-
-                osc.connect(filter); filter.connect(gain); gain.connect(bus);
-                osc.start();
-                nodes.push(osc, lfo);
-            });
-
-            // «Космический ветер»
-            if (this._noiseBuffer) {
-                const src = ctx.createBufferSource();
-                src.buffer = this._noiseBuffer;
-                src.loop = true;
-                const filter = ctx.createBiquadFilter();
-                filter.type = "bandpass";
-                filter.frequency.value = 820;
-                filter.Q.value = 0.7;
-                const gain = ctx.createGain();
-                gain.gain.value = 0.035;
-                const lfo = ctx.createOscillator();
-                const lfoGain = ctx.createGain();
-                lfo.frequency.value = 0.02;
-                lfoGain.gain.value = 420;
-                lfo.connect(lfoGain);
-                lfoGain.connect(filter.frequency);
-                lfo.start();
-                src.connect(filter); filter.connect(gain); gain.connect(bus);
-                src.start();
-                nodes.push(src, lfo);
-            }
-
-            // редкие «звёздные» блики
-            const sparkle = () => {
-                if (!this.ambientPlaying || !this.enabled) return;
-                const notes = [1318.5, 1567.98, 1760, 2093];
-                this.tone({
-                    type: "sine",
-                    from: notes[Math.floor(Math.random() * notes.length)],
-                    dur: 1.4,
-                    gain: 0.012,
-                    attack: 0.4,
-                    bus: this.ambientBus
-                });
-            };
-            this._sparkleTimer = setInterval(sparkle, 9000);
-
-            this.ambientNodes = nodes;
+            this.ambientNodes = [];
             this.ambientPlaying = true;
             bus.gain.cancelScheduledValues(ctx.currentTime);
             bus.gain.setValueAtTime(0.0001, ctx.currentTime);
-            bus.gain.exponentialRampToValueAtTime(0.5, ctx.currentTime + 1.6);
+            bus.gain.linearRampToValueAtTime(0.38, ctx.currentTime + 2);
+
+            // Мягкая космическая тема: воздушные аккорды и редкое арпеджио,
+            // без низкого гула и шума. Все звуки синтезируются локально.
+            const phrases = [
+                { chord: [261.63, 329.63, 392], notes: [523.25, 659.25, 783.99, 659.25, 587.33, 523.25, 392, 0] },
+                { chord: [220, 261.63, 329.63], notes: [440, 523.25, 659.25, 783.99, 659.25, 523.25, 440, 0] },
+                { chord: [174.61, 220, 261.63], notes: [349.23, 440, 523.25, 659.25, 523.25, 440, 392, 0] },
+                { chord: [196, 246.94, 293.66], notes: [392, 493.88, 587.33, 783.99, 587.33, 493.88, 523.25, 0] }
+            ];
+            const note = (frequency, volume, duration, attack, delay) => {
+                const now = ctx.currentTime + (delay || 0);
+                const osc = ctx.createOscillator();
+                const gain = ctx.createGain();
+                osc.type = "sine";
+                osc.frequency.value = frequency;
+                gain.gain.setValueAtTime(0.0001, now);
+                gain.gain.exponentialRampToValueAtTime(volume, now + attack);
+                gain.gain.exponentialRampToValueAtTime(0.0001, now + duration);
+                osc.connect(gain);
+                gain.connect(bus);
+                osc.onended = () => { osc.disconnect(); gain.disconnect(); };
+                osc.start(now);
+                osc.stop(now + duration + 0.05);
+            };
+            let step = 0;
+            const playBeat = () => {
+                if (!this.ambientPlaying || !this.enabled) return;
+                const phrase = phrases[Math.floor(step / 8) % phrases.length];
+                if (step % 8 === 0) {
+                    phrase.chord.forEach(frequency => note(frequency, 0.022, 7.5, 1.4, 0));
+                }
+                const frequency = phrase.notes[step % 8];
+                if (frequency) {
+                    note(frequency, 0.095, 2.6, 0.18, 0);
+                    note(frequency, 0.025, 2.1, 0.2, 0.38);
+                }
+                step++;
+            };
+            playBeat();
+            this._sparkleTimer = setInterval(playBeat, 1050);
         },
 
-        stopAmbient() {
+        stopAmbient(immediate) {
             if (!this.ambientPlaying) return;
             this.ambientPlaying = false;
             if (this._sparkleTimer) { clearInterval(this._sparkleTimer); this._sparkleTimer = null; }
@@ -316,7 +291,8 @@
                 try {
                     this.ambientBus.gain.cancelScheduledValues(ctx.currentTime);
                     this.ambientBus.gain.setValueAtTime(this.ambientBus.gain.value || 0.0001, ctx.currentTime);
-                    this.ambientBus.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + 0.8);
+                    if (immediate) this.ambientBus.gain.setValueAtTime(0, ctx.currentTime);
+                    else this.ambientBus.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + 0.8);
                 } catch (_) {}
             }
             const nodes = this.ambientNodes;
@@ -336,7 +312,7 @@
             } else {
                 if (this.ensureCtx() && this.master) {
                     this.resume();
-                    this.master.gain.value = 0.55;
+                    this.master.gain.value = 0.55 * this.musicVolume;
                     this.startAmbient();
                     this.play("coin");
                 }
@@ -357,6 +333,76 @@
             this.syncButtons();
         },
 
+        mountVolume() {
+            if (document.getElementById("pq-music-volume-panel")) return;
+            const style = document.createElement("style");
+            style.textContent = "body.pq-in-gameplay #pq-music-volume-panel { display: none !important; }";
+            document.head.appendChild(style);
+            const panel = document.createElement("label");
+            panel.id = "pq-music-volume-panel";
+            panel.style.cssText = "position:fixed;right:16px;bottom:68px;z-index:9499;display:flex;align-items:center;gap:7px;padding:8px 12px;border-radius:14px;background:#fff;color:#193b58;border:1px solid #b8dbe8;box-shadow:0 8px 24px #183b5d22;font:700 12px system-ui,sans-serif";
+            const caption = document.createElement("span");
+            const labels = {ru:"Громкость", kk:"Дыбыс", en:"Volume"};
+            caption.textContent = labels[lang()] || labels.ru;
+            const slider = document.createElement("input");
+            slider.type = "range"; slider.min = "0"; slider.max = "100";
+            slider.value = this.enabled ? Math.round(this.musicVolume * 100) : 0;
+            slider.style.cssText = "width:90px;accent-color:#078bb3";
+            slider.setAttribute("aria-label", caption.textContent);
+            slider.addEventListener("input", () => {
+                this.musicVolume = Number(slider.value) / 100;
+                // Движение ползунка также возвращает звук, если он был выключен ранее.
+                this.enabled = true;
+                this.saveSettings({ musicVolume: this.musicVolume, soundEnabled: true });
+                if (this.musicVolume > 0) this.ensureCtx();
+                if (this.ctx && this.master) {
+                    this.master.gain.cancelScheduledValues(this.ctx.currentTime);
+                    this.master.gain.setValueAtTime(0.55 * this.musicVolume, this.ctx.currentTime);
+                }
+                if (this.musicVolume === 0) this.stopAmbient(true);
+                else if (this._unlocked) this.startAmbient();
+                this.syncButtons();
+            });
+            panel.append(caption, slider);
+            panel.style.display = "none";
+            document.body.appendChild(panel);
+            document.addEventListener("click", (event) => {
+                if (!panel.contains(event.target) && !event.target.closest("[data-pq-sound-toggle]")) this.hideVolume();
+            });
+            document.addEventListener("keydown", (event) => {
+                if (event.key === "Escape" && panel.style.display !== "none") {
+                    this.hideVolume();
+                    if (this._volumeButton) this._volumeButton.focus();
+                }
+            });
+            document.addEventListener("pq:lang-changed", () => { caption.textContent = labels[lang()] || labels.ru; slider.setAttribute("aria-label", caption.textContent); });
+        },
+
+        hideVolume() {
+            const panel = document.getElementById("pq-music-volume-panel");
+            if (panel) panel.style.display = "none";
+            document.querySelectorAll("[data-pq-sound-toggle]").forEach(btn => btn.setAttribute("aria-expanded", "false"));
+        },
+
+        toggleVolume(button) {
+            this.mountVolume();
+            const panel = document.getElementById("pq-music-volume-panel");
+            if (panel.style.display !== "none" && this._volumeButton === button) { this.hideVolume(); return; }
+            this.hideVolume();
+            this._volumeButton = button;
+            panel.style.display = "flex";
+            const rect = button.getBoundingClientRect();
+            const width = panel.offsetWidth;
+            const height = panel.offsetHeight;
+            const left = Math.max(8, Math.min(window.innerWidth - width - 8, rect.right - width));
+            const below = rect.bottom + 8;
+            panel.style.left = left + "px";
+            panel.style.right = "auto";
+            panel.style.top = (below + height <= window.innerHeight - 8 ? below : Math.max(8, rect.top - height - 8)) + "px";
+            panel.style.bottom = "auto";
+            button.setAttribute("aria-expanded", "true");
+        },
+
         toast(text) {
             if (typeof showNotification === "function") {
                 try { showNotification(text, "info"); return; } catch (_) {}
@@ -370,10 +416,15 @@
 
         syncButtons() {
             document.querySelectorAll("[data-pq-sound-toggle]").forEach((btn) => {
-                btn.textContent = this.enabled ? "🔊" : "🔇";
-                btn.classList.toggle("is-muted", !this.enabled);
-                btn.setAttribute("aria-pressed", this.enabled ? "true" : "false");
-                btn.setAttribute("title", t("toggle"));
+                const audible = this.enabled && this.musicVolume > 0;
+                btn.textContent = audible ? "🔊" : "🔇";
+                btn.classList.toggle("is-muted", !audible);
+                btn.removeAttribute("aria-pressed");
+                if (!btn.hasAttribute("aria-expanded")) btn.setAttribute("aria-expanded", "false");
+                btn.setAttribute("aria-controls", "pq-music-volume-panel");
+                const label = ({ ru: "Настроить громкость", kk: "Дыбыс деңгейін реттеу", en: "Adjust volume" })[lang()] || "Настроить громкость";
+                btn.setAttribute("title", label);
+                btn.setAttribute("aria-label", label + ": " + (audible ? Math.round(this.musicVolume * 100) + "%" : "0%"));
             });
             const amb = document.getElementById("pq-ambient-toggle");
             if (amb) {
@@ -387,7 +438,7 @@
             el.dataset.pqSoundBound = "1";
             el.addEventListener("click", (e) => {
                 e.preventDefault();
-                this.toggle();
+                this.toggleVolume(el);
             });
         },
 
@@ -486,11 +537,22 @@
         },
 
         init() {
+            if (this._inited) return;
+            this._inited = true;
             this.readSettings();
             this.injectTopbarButton();
             this.injectFloatingButton();
+            this.mountVolume();
             this.hookDocument();
             this.hookGame();
+            // Внутри уровня фоновой музыки нет; при выходе возвращаем её в меню.
+            const gameScreen = document.getElementById("game-screen");
+            if (gameScreen && typeof MutationObserver !== "undefined") {
+                new MutationObserver(() => {
+                    if (gameScreen.classList.contains("active")) { this.hideVolume(); this.stopAmbient(true); }
+                    else if (this._unlocked && this.enabled && !document.hidden) this.startAmbient();
+                }).observe(gameScreen, { attributes: true, attributeFilter: ["class"] });
+            }
             // Шапка перерисовывается при смене класса — возвращаем кнопку.
             // Важно: не вызываем syncButtons из наблюдателя, иначе запись
             // textContent каждый раз порождает новую мутацию (бесконечный цикл).
