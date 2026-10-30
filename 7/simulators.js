@@ -504,9 +504,9 @@
     if ($("field-sim-kicker")) $("field-sim-kicker").textContent = tr("СЮЖЕТНЫЕ ПОЛЕВЫЕ ИСПЫТАНИЯ", "СЮЖЕТТІК ДАЛАЛЫҚ СЫНАҚТАР", "STORY FIELD TRIALS");
     if ($("field-sim-title")) $("field-sim-title").textContent = tr("🧪 Симуляторы экспедиции", "🧪 Экспедиция симуляторлары", "🧪 Expedition Simulators");
     if ($("field-sim-sub")) $("field-sim-sub").textContent = tr(
-      "15 интерактивных лабораторий по темам §3–§35 — открыты в любом порядке: меняй параметры, сравнивай результаты и собирай журнал экспедиции.",
-      "§3–§35 тақырыптары бойынша 15 интерактивті зертхана — кез келген ретпен ашық: параметрлерді өзгерт, нәтижелерді салыстыр және экспедиция журналын жина.",
-      "15 interactive laboratories across §3–§35 — open in any order: adjust parameters, compare trials, and build your expedition log."
+      "15 интерактивных лабораторий и дополнительный домашний опыт по темам §3–§35 — открыты в любом порядке: меняй параметры, сравнивай результаты и собирай журнал экспедиции.",
+      "§3–§35 тақырыптары бойынша 15 интерактивті зертхана және қосымша үй тәжірибесі — кез келген ретпен ашық: параметрлерді өзгерт, нәтижелерді салыстыр және экспедиция журналын жина.",
+      "15 interactive laboratories and an extra home experiment across §3–§35 — open in any order: adjust parameters, compare trials, and build your expedition log."
     );
     if ($("field-sim-modal-kicker")) $("field-sim-modal-kicker").textContent = tr("ПОЛЕВОЙ ЖУРНАЛ · ФИЗИКА В ДЕЙСТВИИ", "ДАЛАЛЫҚ ЖУРНАЛ · ФИЗИКА ІС ҮСТІНДЕ", "FIELD LOG · PHYSICS IN ACTION");
     if ($("field-sim-run")) $("field-sim-run").textContent = tr("▶ Провести эксперимент", "▶ Тәжірибе жүргізу", "▶ Run Experiment");
@@ -536,6 +536,8 @@
       </button>`;
     }).join("");
     host.querySelectorAll("[data-sim]").forEach(b => b.onclick = () => openMission(b.dataset.sim));
+    if (window.PQHomeExperiments) window.PQHomeExperiments.mountGallery();
+    if (window.PQDiagramGames) window.PQDiagramGames.mountGallery();
     const count = missions.filter(m => state[m.id]).length;
     if ($("sim-key-progress")) $("sim-key-progress").textContent = tr(
       `🔑 Фрагменты ключа: ${count} / ${missions.length}`,

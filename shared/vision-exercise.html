@@ -1,0 +1,1282 @@
+<!doctype html>
+<html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Зрение и линзы</title>
+<style>
+    :root {
+      --ink: #202b3c;
+      --muted: #6b7789;
+      --paper: #ffffff;
+      --canvas: #f4f7fb;
+      --line: #e3e9f1;
+      --blue: #4678f5;
+      --blue-dark: #2459d8;
+      --blue-soft: #edf3ff;
+      --violet: #7558df;
+      --teal: #1aa49b;
+      --green: #1e9b70;
+      --green-soft: #eaf9f2;
+      --red: #d95f65;
+      --red-soft: #fff0f0;
+      --amber: #ba771c;
+      --amber-soft: #fff6e8;
+      --shadow: 0 18px 55px rgba(39, 61, 97, .10), 0 2px 7px rgba(39, 61, 97, .05);
+      --radius-xl: 26px;
+      --radius-lg: 20px;
+      --radius-md: 14px;
+      --radius-sm: 10px;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at 8% 0%, rgba(109, 153, 255, .15), transparent 28rem),
+        radial-gradient(circle at 93% 12%, rgba(176, 145, 255, .12), transparent 24rem),
+        var(--canvas);
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      font-size: 16px;
+      line-height: 1.45;
+    }
+
+    button, input { font: inherit; }
+    button { cursor: pointer; }
+    button:focus-visible, input:focus-visible, summary:focus-visible {
+      outline: 3px solid rgba(70, 120, 245, .35);
+      outline-offset: 3px;
+    }
+
+    .app-shell { min-height: 100vh; }
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      border-bottom: 1px solid rgba(226, 233, 241, .86);
+      background: rgba(255,255,255,.82);
+      backdrop-filter: blur(18px);
+    }
+    .topbar-inner, .page {
+      width: min(1160px, calc(100% - 34px));
+      margin: 0 auto;
+    }
+    .topbar-inner {
+      min-height: 70px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+    }
+    .brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      color: var(--ink);
+      text-decoration: none;
+      font-weight: 800;
+      letter-spacing: -.02em;
+    }
+    .brand-mark {
+      width: 38px;
+      height: 38px;
+      display: grid;
+      place-items: center;
+      color: white;
+      border-radius: 12px;
+      background: linear-gradient(135deg, #5f89ff, #6c54db);
+      box-shadow: 0 7px 16px rgba(74, 105, 229, .23);
+    }
+    .brand-mark svg { width: 23px; height: 23px; }
+    .brand small {
+      display: block;
+      color: var(--muted);
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: .06em;
+      text-transform: uppercase;
+    }
+    .topbar-meta {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: var(--muted);
+      font-size: 13px;
+      font-weight: 700;
+    }
+    .meta-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      padding: 7px 11px;
+      background: white;
+    }
+    .meta-pill svg { width: 15px; height: 15px; color: var(--blue); }
+
+    .page { padding: 42px 0 70px; }
+    .hero {
+      position: relative;
+      overflow: hidden;
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 32px;
+      align-items: end;
+      margin-bottom: 23px;
+      padding: 38px 42px 34px;
+      border: 1px solid rgba(255,255,255,.8);
+      border-radius: var(--radius-xl);
+      color: white;
+      background: linear-gradient(125deg, #263a70 0%, #375eaf 54%, #6354ba 100%);
+      box-shadow: 0 18px 40px rgba(45, 75, 153, .22);
+    }
+    .hero::before, .hero::after {
+      position: absolute;
+      content: "";
+      pointer-events: none;
+      border: 1px solid rgba(255,255,255,.12);
+      border-radius: 50%;
+    }
+    .hero::before { width: 380px; height: 380px; right: -115px; top: -225px; }
+    .hero::after { width: 260px; height: 260px; right: 55px; bottom: -205px; }
+    .eyebrow {
+      position: relative;
+      z-index: 1;
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      margin-bottom: 13px;
+      color: #cbd8ff;
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+    }
+    .eyebrow-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: #8cddca;
+      box-shadow: 0 0 0 5px rgba(140, 221, 202, .14);
+    }
+    .hero h1 {
+      position: relative;
+      z-index: 1;
+      max-width: 700px;
+      margin: 0;
+      font-size: clamp(30px, 4.3vw, 52px);
+      line-height: 1.04;
+      letter-spacing: -.045em;
+    }
+    .hero p {
+      position: relative;
+      z-index: 1;
+      max-width: 680px;
+      margin: 16px 0 0;
+      color: #dbe4ff;
+      font-size: 17px;
+    }
+    .hero-score {
+      position: relative;
+      z-index: 1;
+      display: grid;
+      min-width: 136px;
+      padding: 17px 18px;
+      border: 1px solid rgba(255,255,255,.22);
+      border-radius: 18px;
+      background: rgba(255,255,255,.12);
+      text-align: center;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,.14);
+    }
+    .hero-score strong { font-size: 32px; line-height: 1; letter-spacing: -.04em; }
+    .hero-score span { margin-top: 6px; color: #dce5ff; font-size: 12px; font-weight: 700; }
+
+    .progress-card {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      margin-bottom: 22px;
+      padding: 14px 18px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius-md);
+      background: rgba(255,255,255,.86);
+      box-shadow: 0 4px 15px rgba(59, 77, 112, .04);
+    }
+    .progress-label {
+      min-width: 146px;
+      color: var(--muted);
+      font-size: 13px;
+      font-weight: 800;
+    }
+    .progress-track {
+      flex: 1;
+      height: 9px;
+      overflow: hidden;
+      border-radius: 99px;
+      background: #e9eef7;
+    }
+    .progress-fill {
+      width: 0%;
+      height: 100%;
+      border-radius: inherit;
+      background: linear-gradient(90deg, #6a91ff, #715bdc);
+      transition: width .35s ease;
+    }
+    .progress-count {
+      min-width: 72px;
+      color: var(--blue-dark);
+      font-size: 13px;
+      font-weight: 800;
+      text-align: right;
+    }
+
+    .task-grid { display: grid; gap: 18px; }
+    .task-card {
+      overflow: hidden;
+      border: 1px solid var(--line);
+      border-radius: var(--radius-xl);
+      background: var(--paper);
+      box-shadow: var(--shadow);
+    }
+    .task-head {
+      display: flex;
+      align-items: flex-start;
+      gap: 15px;
+      padding: 27px 30px 20px;
+    }
+    .task-number {
+      flex: 0 0 auto;
+      display: grid;
+      place-items: center;
+      width: 38px;
+      height: 38px;
+      border-radius: 12px;
+      color: #fff;
+      background: linear-gradient(140deg, #5f86f4, #7357df);
+      box-shadow: 0 8px 15px rgba(89, 112, 224, .20);
+      font-size: 18px;
+      font-weight: 900;
+    }
+    .task-head h2 { margin: 0; font-size: 21px; letter-spacing: -.025em; }
+    .task-head p { margin: 5px 0 0; color: var(--muted); font-size: 14px; }
+    .points {
+      flex: 0 0 auto;
+      margin-left: auto;
+      padding: 6px 10px;
+      border-radius: 999px;
+      color: #5d59b9;
+      background: #f0efff;
+      font-size: 12px;
+      font-weight: 800;
+      white-space: nowrap;
+    }
+    .task-body { padding: 0 30px 30px; }
+
+    .figure-wrap {
+      overflow: hidden;
+      border: 1px solid #e4eaf4;
+      border-radius: 18px;
+      background: linear-gradient(180deg, #fbfdff, #f5f8fd);
+    }
+    .figure-wrap svg { display: block; width: 100%; height: auto; }
+    .figure-caption {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 14px;
+      border-top: 1px solid #e7edf5;
+      color: var(--muted);
+      font-size: 12px;
+    }
+    .figure-caption svg { flex: 0 0 auto; width: 15px; height: 15px; color: var(--blue); }
+
+    .choice-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      margin-top: 18px;
+    }
+    .choice, .statement, .lens-option {
+      position: relative;
+      border: 1.5px solid var(--line);
+      border-radius: 16px;
+      background: #fff;
+      color: var(--ink);
+      text-align: left;
+      transition: transform .18s ease, border-color .18s ease, background .18s ease, box-shadow .18s ease;
+    }
+    .choice:hover, .statement:hover, .lens-option:hover { transform: translateY(-2px); border-color: #aebff1; box-shadow: 0 8px 20px rgba(45, 76, 146, .08); }
+    .choice {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      min-height: 74px;
+      padding: 14px 16px;
+    }
+    .choice.selected, .statement.selected, .lens-option.selected { border-color: var(--blue); background: var(--blue-soft); box-shadow: 0 0 0 3px rgba(70,120,245,.08); }
+    .choice-mark, .statement-mark {
+      flex: 0 0 auto;
+      display: grid;
+      place-items: center;
+      width: 29px;
+      height: 29px;
+      border: 1px solid #cbd5e4;
+      border-radius: 9px;
+      color: #768399;
+      background: #f9fbfd;
+      font-size: 12px;
+      font-weight: 900;
+    }
+    .choice.selected .choice-mark { border-color: var(--blue); color: #fff; background: var(--blue); }
+    .choice-text strong { display: block; font-size: 15px; }
+    .choice-text small { display: block; margin-top: 2px; color: var(--muted); font-size: 12px; }
+    .choice input, .statement input { position: absolute; opacity: 0; pointer-events: none; }
+
+    .feedback {
+      display: flex;
+      align-items: flex-start;
+      gap: 9px;
+      margin-top: 15px;
+      padding: 12px 14px;
+      border-radius: 12px;
+      font-size: 13px;
+      font-weight: 700;
+    }
+    .feedback:before { content: ""; flex: 0 0 auto; width: 18px; height: 18px; margin-top: 1px; background-repeat: no-repeat; background-position: center; background-size: contain; }
+    .feedback.correct { color: #167052; background: var(--green-soft); }
+    .feedback.correct:before { content: "✓"; display: grid; place-items: center; border-radius: 50%; color: #fff; background: var(--green); font-size: 12px; }
+    .feedback.incorrect { color: #a14349; background: var(--red-soft); }
+    .feedback.incorrect:before { content: "!"; display: grid; place-items: center; border-radius: 50%; color: #fff; background: var(--red); font-size: 12px; }
+    .feedback.partial { color: #94601c; background: var(--amber-soft); }
+    .feedback.partial:before { content: "i"; display: grid; place-items: center; border-radius: 50%; color: #fff; background: var(--amber); font-size: 12px; }
+    .feedback[hidden] { display: none; }
+
+    .statements-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 12px; }
+    .helper { color: var(--muted); font-size: 13px; }
+    .selection-counter { color: var(--blue-dark); font-size: 13px; font-weight: 800; }
+    .statement-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
+    .statement {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      min-height: 72px;
+      padding: 15px 16px;
+    }
+    .statement-mark { border-radius: 8px; }
+    .statement.selected .statement-mark { border-color: var(--blue); color: #fff; background: var(--blue); }
+    .statement-copy { font-size: 14px; line-height: 1.4; }
+    .statement-copy strong { display: block; margin-bottom: 3px; font-size: 12px; color: var(--muted); text-transform: uppercase; letter-spacing: .06em; }
+
+    .correction-layout { display: grid; grid-template-columns: 260px minmax(0, 1fr); gap: 17px; align-items: stretch; }
+    .lens-palette {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      padding: 16px;
+      border: 1px solid #e5eaf3;
+      border-radius: 18px;
+      background: #f9fbfe;
+    }
+    .palette-title { margin: 0 0 2px; color: var(--muted); font-size: 12px; font-weight: 800; letter-spacing: .07em; text-transform: uppercase; }
+    .lens-option {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      min-height: 74px;
+      padding: 9px 11px;
+    }
+    .lens-option svg { flex: 0 0 auto; width: 56px; height: 54px; }
+    .lens-option strong { display: block; font-size: 13px; }
+    .lens-option small { display: block; margin-top: 2px; color: var(--muted); font-size: 11px; }
+    .lens-option.selected .lens-radio { border-color: var(--blue); background: var(--blue); box-shadow: inset 0 0 0 3px #fff; }
+    .lens-radio { flex: 0 0 auto; width: 16px; height: 16px; border: 2px solid #bfcbdb; border-radius: 50%; }
+    .palette-note { margin: auto 2px 0; color: var(--muted); font-size: 11px; line-height: 1.45; }
+    .reset-mini {
+      border: 0;
+      border-radius: 9px;
+      padding: 8px 10px;
+      color: #5e6e84;
+      background: #edf1f7;
+      font-size: 12px;
+      font-weight: 800;
+    }
+    .reset-mini:hover { background: #e3e9f2; }
+
+    .drawing-board {
+      position: relative;
+      overflow: hidden;
+      min-height: 286px;
+      border: 1px solid #dfe7f2;
+      border-radius: 18px;
+      background: linear-gradient(180deg, #fcfdff, #f5f8fc);
+    }
+    .drawing-board svg { display: block; width: 100%; height: 100%; min-height: 286px; }
+    .board-label {
+      position: absolute;
+      left: 16px;
+      top: 14px;
+      padding: 5px 9px;
+      border: 1px solid #e6ebf4;
+      border-radius: 99px;
+      color: var(--muted);
+      background: rgba(255,255,255,.82);
+      font-size: 11px;
+      font-weight: 800;
+    }
+    .board-hint {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      display: grid;
+      place-items: center;
+      width: 104px;
+      height: 104px;
+      transform: translate(-50%, -50%);
+      border: 1.5px dashed #b9c8e0;
+      border-radius: 16px;
+      color: #7b8da8;
+      background: rgba(255,255,255,.60);
+      font-size: 11px;
+      font-weight: 800;
+      line-height: 1.25;
+      text-align: center;
+      pointer-events: none;
+      transition: opacity .2s ease;
+    }
+    .board-hint.is-hidden { opacity: 0; }
+    .svg-lens { filter: drop-shadow(0 7px 5px rgba(80, 110, 161, .16)); }
+    .board-instruction { margin: 10px 0 0; color: var(--muted); font-size: 12px; }
+
+    .bottom-actions {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-top: 18px;
+    }
+    .autosave { display: inline-flex; align-items: center; gap: 7px; color: var(--muted); font-size: 12px; }
+    .autosave-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--green); box-shadow: 0 0 0 4px rgba(30,155,112,.11); }
+    .primary-btn, .secondary-btn {
+      border-radius: 12px;
+      padding: 12px 16px;
+      font-weight: 800;
+      transition: transform .18s ease, box-shadow .18s ease, background .18s ease;
+    }
+    .primary-btn { border: 1px solid var(--blue); color: white; background: var(--blue); box-shadow: 0 7px 15px rgba(70,120,245,.22); }
+    .primary-btn:hover { transform: translateY(-1px); background: var(--blue-dark); box-shadow: 0 9px 18px rgba(70,120,245,.26); }
+    .secondary-btn { border: 1px solid var(--line); color: #53647b; background: white; }
+    .secondary-btn:hover { background: #f7f9fc; }
+
+    .result-card {
+      display: grid;
+      grid-template-columns: auto 1fr auto;
+      gap: 22px;
+      align-items: center;
+      margin-top: 18px;
+      padding: 25px 30px;
+      border: 1px solid #dce5f4;
+      border-radius: var(--radius-xl);
+      background: linear-gradient(110deg, #f7faff, #fff);
+      box-shadow: 0 10px 35px rgba(67, 91, 146, .08);
+    }
+    .result-card.complete { border-color: #bfe7d5; background: linear-gradient(110deg, #f3fcf8, #fff); }
+    .result-orb {
+      display: grid;
+      place-items: center;
+      width: 86px;
+      height: 86px;
+      border-radius: 50%;
+      color: white;
+      background: linear-gradient(140deg, #597ff0, #795bdc);
+      box-shadow: 0 12px 25px rgba(91, 103, 221, .22);
+      text-align: center;
+    }
+    .result-orb strong { display: block; font-size: 26px; line-height: 1; letter-spacing: -.05em; }
+    .result-orb span { display: block; margin-top: 4px; color: #e6eaff; font-size: 10px; font-weight: 800; }
+    .result-copy h2 { margin: 0; font-size: 22px; letter-spacing: -.025em; }
+    .result-copy p { margin: 6px 0 0; color: var(--muted); font-size: 14px; }
+    .result-actions { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 9px; }
+    .answer-key { grid-column: 1 / -1; margin-top: 2px; padding-top: 20px; border-top: 1px solid #e3eaf3; }
+    .answer-key[hidden] { display: none; }
+    .answer-key h3 { margin: 0 0 12px; font-size: 16px; }
+    .answer-key-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 11px; }
+    .key-item { padding: 12px 13px; border-radius: 13px; background: #f7f9fd; font-size: 13px; }
+    .key-item strong { display: block; margin-bottom: 4px; color: var(--blue-dark); font-size: 11px; letter-spacing: .06em; text-transform: uppercase; }
+    .source-details { margin-top: 18px; color: var(--muted); font-size: 12px; }
+    .source-details summary { cursor: pointer; color: #5e6e84; font-weight: 800; }
+    .source-details img { display: block; width: min(100%, 720px); margin-top: 10px; border: 1px solid var(--line); border-radius: 14px; }
+
+    .footer-note { margin-top: 20px; color: #8995a6; font-size: 12px; text-align: center; }
+    .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
+
+    @media (max-width: 820px) {
+      .hero { grid-template-columns: 1fr; padding: 30px 25px; }
+      .hero-score { width: 142px; }
+      .choice-grid { grid-template-columns: 1fr; }
+      .correction-layout { grid-template-columns: 1fr; }
+      .lens-palette { display: grid; grid-template-columns: repeat(2, 1fr); }
+      .palette-title, .palette-note, .reset-mini { grid-column: 1 / -1; }
+      .palette-note { margin-top: 1px; }
+      .answer-key-grid { grid-template-columns: 1fr; }
+      .result-card { grid-template-columns: auto 1fr; }
+      .result-actions { grid-column: 1 / -1; justify-content: flex-start; }
+    }
+    @media (max-width: 560px) {
+      .topbar-meta { display: none; }
+      .page { width: min(100% - 20px, 1160px); padding-top: 25px; }
+      .hero { padding: 26px 20px; border-radius: 20px; }
+      .hero p { font-size: 15px; }
+      .progress-card { gap: 10px; padding: 12px; }
+      .progress-label { min-width: 90px; font-size: 11px; }
+      .progress-count { min-width: 54px; font-size: 11px; }
+      .task-head { padding: 21px 18px 15px; }
+      .task-head h2 { font-size: 18px; }
+      .task-head p { font-size: 13px; }
+      .task-body { padding: 0 18px 20px; }
+      .points { display: none; }
+      .statement-grid, .lens-palette { grid-template-columns: 1fr; }
+      .palette-title, .palette-note, .reset-mini { grid-column: auto; }
+      .drawing-board, .drawing-board svg { min-height: 230px; }
+      .result-card { padding: 20px; gap: 14px; }
+      .result-orb { width: 70px; height: 70px; }
+      .result-orb strong { font-size: 21px; }
+      .result-copy h2 { font-size: 18px; }
+      .bottom-actions { align-items: flex-start; flex-direction: column; }
+      .bottom-actions .primary-btn { width: 100%; }
+    }
+  
+
+    /* Поля для самостоятельного ответа и свободного рисунка */
+    .typed-answer {
+      margin-top: 18px;
+      padding: 17px;
+      border: 1px solid #e4eaf3;
+      border-radius: 16px;
+      background: #fbfcfe;
+    }
+    .field-label {
+      display: block;
+      margin-bottom: 8px;
+      color: #52637b;
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: .06em;
+      text-transform: uppercase;
+    }
+    .answer-row { display: flex; gap: 10px; align-items: stretch; }
+    .answer-input, .answer-textarea {
+      width: 100%;
+      border: 1.5px solid #ccd6e5;
+      border-radius: 12px;
+      color: var(--ink);
+      background: white;
+      box-shadow: inset 0 1px 2px rgba(34, 57, 96, .03);
+      transition: border-color .18s ease, box-shadow .18s ease;
+    }
+    .answer-input { min-height: 48px; padding: 0 14px; }
+    .answer-textarea { display: block; min-height: 106px; resize: vertical; padding: 12px 14px; line-height: 1.5; }
+    .answer-input::placeholder, .answer-textarea::placeholder { color: #a5b0c0; }
+    .answer-input:focus, .answer-textarea:focus { border-color: var(--blue); outline: none; box-shadow: 0 0 0 4px rgba(70,120,245,.11); }
+    .check-btn { flex: 0 0 auto; min-height: 48px; padding: 10px 15px; white-space: nowrap; }
+    .text-check-btn { margin-top: 12px; }
+    .field-hint { margin: 8px 0 0; color: var(--muted); font-size: 12px; }
+    .field-bottom { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+    .character-count { flex: 0 0 auto; color: #94a0b1; font-size: 11px; }
+
+    .draw-intro {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 14px;
+      padding: 12px 14px;
+      border: 1px solid #e4eaf3;
+      border-radius: 13px;
+      color: #68788e;
+      background: #f8faff;
+      font-size: 12px;
+    }
+    .draw-intro-title { color: #3d5798; font-weight: 900; letter-spacing: .05em; text-transform: uppercase; }
+    .draw-intro-points b { color: var(--blue-dark); }
+    .draw-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
+    .draw-part { min-width: 0; padding: 15px; border: 1px solid #e2e8f2; border-radius: 18px; background: #fbfcff; }
+    .draw-part-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 9px; min-height: 63px; }
+    .draw-part h3 { margin: 0; font-size: 15px; letter-spacing: -.015em; }
+    .draw-part-head p { margin: 4px 0 0; color: var(--muted); font-size: 12px; line-height: 1.4; }
+    .draw-score { flex: 0 0 auto; padding: 5px 8px; border-radius: 8px; color: #5d59b9; background: #f0efff; font-size: 12px; font-weight: 900; white-space: nowrap; }
+    .freehand-stage { position: relative; overflow: hidden; border: 1px solid #dce5f0; border-radius: 14px; background: linear-gradient(180deg, #fcfdff, #f5f8fc); }
+    .freehand-stage svg { display: block; width: 100%; height: auto; }
+    .freehand-stage canvas { position: absolute; inset: 0; display: block; width: 100%; height: 100%; touch-action: none; cursor: crosshair; }
+    .stage-label { position: absolute; z-index: 1; top: 9px; left: 10px; padding: 4px 7px; border: 1px solid #e5ebf4; border-radius: 99px; color: #8391a5; background: rgba(255,255,255,.83); font-size: 10px; font-weight: 800; pointer-events: none; }
+    .draw-toolbar { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-top: 9px; }
+    .stroke-count { color: #8b98aa; font-size: 11px; }
+    .draw-actions { display: flex; gap: 7px; }
+    .tool-btn { border: 1px solid #dce4ef; border-radius: 8px; padding: 6px 9px; color: #5f7189; background: white; font-size: 11px; font-weight: 800; }
+    .tool-btn:hover { border-color: #b9c8e3; background: #f5f8fd; }
+    .draw-feedback { margin-top: 10px; padding: 9px 10px; font-size: 11px; }
+    .draw-feedback:before { width: 16px; height: 16px; }
+    .answer-key-four { grid-template-columns: repeat(4, 1fr); }
+
+    @media (max-width: 940px) {
+      .draw-grid { grid-template-columns: 1fr; }
+      .answer-key-four { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 560px) {
+      .answer-row { flex-direction: column; }
+      .check-btn { width: 100%; }
+      .draw-intro { align-items: flex-start; flex-direction: column; }
+      .draw-part-head { min-height: auto; margin-bottom: 11px; }
+      .field-bottom { align-items: flex-start; flex-direction: column; gap: 2px; }
+      .answer-key-four { grid-template-columns: 1fr; }
+    }
+</style>
+<style>.page{padding:16px 0 32px}.draw-intro,.points{display:none}</style></head><body><main class="page">
+  <div class="task-grid">
+    <section class="task-card" id="task1" aria-labelledby="task1-title">
+      <div class="task-head">
+        <div class="task-number">1</div>
+        <div>
+          <h2 id="task1-title">Назови недостаток зрения</h2>
+          <p>Посмотри на схему и напиши свой ответ.</p>
+        </div>
+        <span class="points">2 балла</span>
+      </div>
+      <div class="task-body">
+        <div class="figure-wrap">
+          <svg viewBox="0 0 900 270" role="img" aria-labelledby="eyeDiagramTitle eyeDiagramDesc">
+  <title id="eyeDiagramTitle">Круглый глаз с фокусом перед сетчаткой</title>
+  <desc id="eyeDiagramDesc">Параллельные лучи проходят через роговицу и хрусталик, а затем сходятся перед задней стенкой глаза.</desc>
+  <defs>
+    <linearGradient id="eyeFill" x1="0" x2="1" y1="0" y2="1"><stop offset="0" stop-color="#fbfdff"/><stop offset="1" stop-color="#edf3fb"/></linearGradient>
+    <linearGradient id="rayGrad" x1="0" x2="1"><stop offset="0" stop-color="#7d8df4"/><stop offset="1" stop-color="#4559ca"/></linearGradient>
+    <marker id="arrowBlue" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0 0L8 4L0 8Z" fill="#6376e1"/></marker>
+  </defs>
+  <circle cx="650" cy="135" r="120" fill="url(#eyeFill)" stroke="#7f8b9f" stroke-width="2.3"/>
+  <path d="M548 85 C525 100 520 118 520 135 C520 152 525 170 548 185" fill="#f4f8fd" stroke="#7f8b9f" stroke-width="2.1"/>
+  <path d="M748 50 C763 76 770 105 770 135 C770 165 763 194 748 220" fill="none" stroke="#c0cad8" stroke-width="1.5"/>
+  <ellipse cx="558" cy="135" rx="9" ry="45" fill="#b9cbe2" stroke="#72839d" stroke-width="1.5"/>
+  <ellipse cx="555" cy="135" rx="3" ry="20" fill="#5f7089"/>
+  <ellipse cx="600" cy="135" rx="30" ry="61" fill="#eaf1fb" stroke="#77859b" stroke-width="2.2"/>
+  <path d="M569 82 C560 98 557 117 557 135 C557 153 560 172 569 188" fill="none" stroke="#a5b1c2" stroke-width="1.4"/>
+  <path d="M631 87 C645 106 650 119 650 135 C650 151 645 165 631 183" fill="none" stroke="#bbc5d4" stroke-width="1.5"/>
+  <path d="M56 87 H510" fill="none" stroke="url(#rayGrad)" stroke-width="2.5" marker-end="url(#arrowBlue)"/>
+  <path d="M56 135 H510" fill="none" stroke="url(#rayGrad)" stroke-width="2.5"/>
+  <path d="M56 183 H510" fill="none" stroke="url(#rayGrad)" stroke-width="2.5" marker-end="url(#arrowBlue)"/>
+  <path d="M510 87 C555 87 620 95 685 135" fill="none" stroke="#586ad7" stroke-width="2.5"/>
+  <path d="M510 135 H685" fill="none" stroke="#586ad7" stroke-width="2.5"/>
+  <path d="M510 183 C555 183 620 175 685 135" fill="none" stroke="#586ad7" stroke-width="2.5"/>
+  <path d="M685 135 C710 123 735 111 765 101" fill="none" stroke="#9caaee" stroke-width="2" stroke-dasharray="6 6"/>
+  <path d="M685 135 C710 147 735 159 765 169" fill="none" stroke="#9caaee" stroke-width="2" stroke-dasharray="6 6"/>
+  <circle cx="685" cy="135" r="6" fill="#576bdf"/>
+  <line x1="685" y1="135" x2="685" y2="65" stroke="#a5b4cf" stroke-width="1.4" stroke-dasharray="4 5"/>
+  <rect x="632" y="42" width="107" height="25" rx="12.5" fill="#eef2ff" stroke="#d7def8"/>
+  <text x="685" y="58" text-anchor="middle" fill="#5364bd" font-size="12" font-weight="700">фокус</text>
+  <text x="774" y="221" text-anchor="end" fill="#7b8799" font-size="12" font-weight="700">сетчатка</text>
+  <text x="538" y="224" text-anchor="middle" fill="#8996a9" font-size="10" font-weight="700">роговица</text>
+  <text x="600" y="224" text-anchor="middle" fill="#8996a9" font-size="10" font-weight="700">хрусталик</text>
+</svg>
+          <div class="figure-caption">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 10v6M12 7.5h.01"/></svg>
+            Схема глаза и ход лучей.
+          </div>
+        </div>
+
+        <div class="typed-answer">
+          <label class="field-label" for="answer1">Ответ ученика</label>
+          <div class="answer-row">
+            <input class="answer-input" id="answer1" type="text" autocomplete="off" placeholder="Введите свой ответ" >
+            <button class="primary-btn check-btn" id="check1" type="button">Проверить</button>
+          </div>
+          
+        </div>
+        <div class="feedback" id="feedback1" role="status" aria-live="polite" hidden></div>
+      </div>
+    </section>
+
+    <section class="task-card" id="task2" aria-labelledby="task2-title">
+      <div class="task-head">
+        <div class="task-number">2</div>
+        <div>
+          <h2 id="task2-title">Объясни, чем он характеризуется</h2>
+          <p>Сформулируй ответ самостоятельно.</p>
+        </div>
+        <span class="points">2 балла</span>
+      </div>
+      <div class="task-body">
+        <div class="typed-answer">
+          <label class="field-label" for="answer2">Ответ ученика</label>
+          <textarea class="answer-textarea" id="answer2" rows="4" placeholder="Введите свой ответ" ></textarea>
+          <div class="field-bottom">
+            
+            <span class="character-count" id="answer2Count">0 знаков</span>
+          </div>
+          <button class="primary-btn check-btn text-check-btn" id="check2" type="button">Проверить текст</button>
+        </div>
+        <div class="feedback" id="feedback2" role="status" aria-live="polite" hidden></div>
+      </div>
+    </section>
+
+    <section class="task-card" id="task3" aria-labelledby="task3-title">
+      <div class="task-head">
+        <div class="task-number">3</div>
+        <div>
+          <h2 id="task3-title">Нарисуй коррекцию сам</h2>
+          <p>Нарисуй вогнутую линзу и ход лучей после неё. Готового рисунка среди вариантов нет.</p>
+        </div>
+        <span class="points">6 баллов</span>
+      </div>
+      <div class="task-body">
+        <div class="draw-intro">
+          <span class="draw-intro-title">Свободное рисование</span>
+          <span class="draw-intro-points"><b>3 балла</b> за линзу&nbsp; + &nbsp;<b>3 балла</b> за лучи</span>
+        </div>
+
+        <div class="draw-grid">
+          <article class="draw-part" aria-labelledby="lensDrawTitle">
+            <div class="draw-part-head">
+              <div>
+                <h3 id="lensDrawTitle">3а. Корректирующая линза</h3>
+                <p>Обведи контур рассеивающей линзы в пунктирной зоне.</p>
+              </div>
+              <span class="draw-score" id="lensScore">0/3</span>
+            </div>
+            <div class="freehand-stage" id="lensStage">
+              
+              <svg viewBox="0 0 720 286" role="img" aria-label="Круглый глаз и пунктирная зона для рисунка линзы">
+  <defs>
+    <linearGradient id="lensEyeFill" x1="0" x2="1" y1="0" y2="1"><stop offset="0" stop-color="#fbfdff"/><stop offset="1" stop-color="#edf3fb"/></linearGradient>
+  </defs>
+  <circle cx="500" cy="143" r="118" fill="url(#lensEyeFill)" stroke="#7f8b9f" stroke-width="2.2"/>
+  <path d="M397 93 C377 106 370 124 370 143 C370 162 377 180 397 193" fill="#f4f8fd" stroke="#7f8b9f" stroke-width="2"/>
+  <path d="M445 30 C461 56 468 91 468 143 C468 195 461 230 445 256" fill="none" stroke="#c0cad8" stroke-width="1.5"/>
+  <ellipse cx="410" cy="143" rx="8" ry="42" fill="#b9cbe2" stroke="#72839d" stroke-width="1.4"/>
+  <ellipse cx="407" cy="143" rx="3" ry="18" fill="#5f7089"/>
+  <ellipse cx="458" cy="143" rx="26" ry="57" fill="#eaf1fb" stroke="#77859b" stroke-width="2.1"/>
+  <path d="M430 91 C422 108 420 126 420 143 C420 160 422 178 430 195" fill="none" stroke="#a5b1c2" stroke-width="1.3"/>
+  <path d="M485 96 C497 114 501 127 501 143 C501 159 497 173 485 190" fill="none" stroke="#bbc5d4" stroke-width="1.4"/>
+  <rect x="170" y="69" width="100" height="148" rx="15" fill="rgba(255,255,255,.28)" stroke="#a9bada" stroke-width="2" stroke-dasharray="7 6"/>
+  <text x="220" y="237" text-anchor="middle" fill="#8292aa" font-size="11" font-weight="700">зона линзы</text>
+  <path d="M34 112 H160 M34 143 H160 M34 174 H160" fill="none" stroke="#b7c1d1" stroke-width="1.8" stroke-dasharray="5 6"/>
+</svg>
+              <canvas id="lensCanvas" width="720" height="286" aria-label="Поле для свободного рисунка линзы"></canvas>
+            </div>
+            <div class="draw-toolbar">
+              <span class="stroke-count" id="lensStrokeCount">0 штрихов</span>
+              <div class="draw-actions">
+                <button class="tool-btn" id="undoLens" type="button">Отменить</button>
+                <button class="tool-btn" id="clearLens" type="button">Очистить</button>
+              </div>
+            </div>
+            <div class="feedback draw-feedback" id="feedbackLens" role="status" aria-live="polite" hidden></div>
+          </article>
+
+          <article class="draw-part" aria-labelledby="raysDrawTitle">
+            <div class="draw-part-head">
+              <div>
+                <h3 id="raysDrawTitle">3б. Ход лучей после коррекции</h3>
+                <p>Покажи ход лучей при исправлении зрения. Каждый луч рисуй одним непрерывным штрихом до сетчатки.</p>
+              </div>
+              <span class="draw-score" id="raysScore">0/3</span>
+            </div>
+            <div class="freehand-stage" id="raysStage">
+              
+              <svg viewBox="0 0 720 286" role="img" aria-label="Круглый глаз и поле для рисунка хода лучей">
+  <defs>
+    <linearGradient id="rayEyeFill" x1="0" x2="1" y1="0" y2="1"><stop offset="0" stop-color="#fbfdff"/><stop offset="1" stop-color="#edf3fb"/></linearGradient>
+    <marker id="softArrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0 0L8 4L0 8Z" fill="#aebacc"/></marker>
+  </defs>
+  <circle cx="500" cy="143" r="118" fill="url(#rayEyeFill)" stroke="#7f8b9f" stroke-width="2.2"/>
+  <path d="M397 93 C377 106 370 124 370 143 C370 162 377 180 397 193" fill="#f4f8fd" stroke="#7f8b9f" stroke-width="2"/>
+  <path d="M445 30 C461 56 468 91 468 143 C468 195 461 230 445 256" fill="none" stroke="#c0cad8" stroke-width="1.5"/>
+  <ellipse cx="410" cy="143" rx="8" ry="42" fill="#b9cbe2" stroke="#72839d" stroke-width="1.4"/>
+  <ellipse cx="407" cy="143" rx="3" ry="18" fill="#5f7089"/>
+  <ellipse cx="458" cy="143" rx="26" ry="57" fill="#eaf1fb" stroke="#77859b" stroke-width="2.1"/>
+  <path d="M430 91 C422 108 420 126 420 143 C420 160 422 178 430 195" fill="none" stroke="#a5b1c2" stroke-width="1.3"/>
+  <path d="M485 96 C497 114 501 127 501 143 C501 159 497 173 485 190" fill="none" stroke="#bbc5d4" stroke-width="1.4"/>
+  <rect x="170" y="69" width="100" height="148" rx="15" fill="rgba(255,255,255,.22)" stroke="#a9bada" stroke-width="2" stroke-dasharray="7 6"/>
+  <path d="M34 95 H160 M34 143 H160 M34 191 H160" fill="none" stroke="#adb8c9" stroke-width="2" stroke-dasharray="6 6" marker-end="url(#softArrow)"/>
+  <line x1="604" y1="63" x2="604" y2="223" stroke="#b4c0d1" stroke-width="1.5" stroke-dasharray="4 5"/>
+  <text x="636" y="239" text-anchor="end" fill="#7b8799" font-size="11" font-weight="700">сетчатка</text>
+  <text x="220" y="237" text-anchor="middle" fill="#8292aa" font-size="11" font-weight="700">линза</text>
+</svg>
+              <canvas id="raysCanvas" width="720" height="286" aria-label="Поле для свободного рисунка лучей"></canvas>
+            </div>
+            <div class="draw-toolbar">
+              <span class="stroke-count" id="raysStrokeCount">0 штрихов</span>
+              <div class="draw-actions">
+                <button class="tool-btn" id="undoRays" type="button">Отменить</button>
+                <button class="tool-btn" id="clearRays" type="button">Очистить</button>
+              </div>
+            </div>
+            <div class="feedback draw-feedback" id="feedbackRays" role="status" aria-live="polite" hidden></div>
+          </article>
+        </div>
+
+        <div class="feedback" id="feedback3" role="status" aria-live="polite" hidden></div>
+        <div class="bottom-actions">
+          <span class="autosave"><span class="autosave-dot"></span>Автопроверка рисунка приблизительная: рисуй линии чётко и непрерывно.</span>
+          <button class="primary-btn" id="finishButton" type="button">Завершить попытку</button>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <section class="result-card" id="resultCard" aria-labelledby="resultTitle">
+    <div class="result-orb"><div><strong id="resultScore">0/10</strong><span>БАЛЛОВ</span></div></div>
+    <div class="result-copy">
+      <h2 id="resultTitle">Начни с первого вопроса</h2>
+      <p id="resultText">Напиши ответы и выполни рисунок — результат обновится автоматически.</p>
+    </div>
+    <div class="result-actions">
+      <button class="secondary-btn" id="answerButton" type="button">Показать разбор</button>
+      <button class="secondary-btn" id="resetAll" type="button">Начать заново</button>
+    </div>
+    <div class="answer-key" id="answerKey" hidden>
+      <h3>Ключ и критерии автопроверки</h3>
+      <div class="answer-key-grid answer-key-four">
+        <div class="key-item"><strong>1 · 2 балла</strong><b>Близорукость, или миопия.</b> При ней фокус находится перед сетчаткой.</div>
+        <div class="key-item"><strong>2 · 2 балла</strong><b>В тексте должны быть признаки:</b> далёкие предметы видны нечётко; фокус расположен перед сетчаткой.</div>
+        <div class="key-item"><strong>3а · 3 балла</strong><b>Рассеивающая линза:</b> вогнутый контур, середина каждой боковой грани смещена внутрь.</div>
+        <div class="key-item"><strong>3б · 3 балла</strong><b>Ход лучей:</b> после рассеивающей линзы верхний и нижний лучи расходятся, затем хрусталик глаза собирает их на сетчатке.</div>
+      </div>
+    </div>
+  </section>
+
+</main>
+  <script src="./vision-i18n.js"></script>
+  <script>
+  (() => {
+    const tr = window.visionTranslate;
+    const lang = window.visionLanguage;
+    const maxScore = 10;
+    const state = {
+      q1: { done: false, score: 0 },
+      q2: { done: false, score: 0 },
+      lens: { done: false, score: 0 },
+      rays: { done: false, score: 0 }
+    };
+
+    const $ = (selector, root = document) => root.querySelector(selector);
+    const $$ = (selector, root = document) => Array.from(root.querySelectorAll(selector));
+
+    function setFeedback(id, kind, text) {
+      const box = $('#' + id);
+      if (!box) return;
+      box.className = box.id.startsWith('feedbackLens') || box.id.startsWith('feedbackRays')
+        ? `feedback draw-feedback ${kind}`
+        : `feedback ${kind}`;
+      box.textContent = text;
+      box.hidden = false;
+    }
+
+    function resetFeedback(id) {
+      const box = $('#' + id);
+      if (!box) return;
+      box.hidden = true;
+      box.textContent = '';
+      box.className = box.id.startsWith('feedbackLens') || box.id.startsWith('feedbackRays')
+        ? 'feedback draw-feedback'
+        : 'feedback';
+    }
+
+    function totalScore() {
+      return state.q1.score + state.q2.score + state.lens.score + state.rays.score;
+    }
+
+    function updateScore() {
+      const total = totalScore();
+      const steps = [state.q1.done, state.q2.done, state.lens.done, state.rays.done];
+      const completed = steps.filter(Boolean).length;
+      const percent = Math.round((completed / steps.length) * 100);
+
+      $('#resultScore').textContent = `${total}/${maxScore}`;
+      $('#lensScore').textContent = `${state.lens.score}/3`;
+      $('#raysScore').textContent = `${state.rays.score}/3`;
+
+      const resultCard = $('#resultCard');
+      resultCard.classList.remove('complete');
+      if (completed === 0) {
+        $('#resultTitle').textContent = tr("Начни с первого вопроса");
+        $('#resultText').textContent = tr("Напиши ответы и выполни рисунок — результат обновится автоматически.");
+      } else if (completed < steps.length) {
+        $('#resultTitle').textContent = tr("Работа начата");
+        $('#resultText').textContent = lang === 'kk' ? `Тексерілген бөлімдер: ${completed} / ${steps.length}. Жауаптар мен суреттерді өзгертуге болады.` : lang === 'en' ? `Parts checked: ${completed} of ${steps.length}. You can revise your answers and drawings.` : `Проверено частей: ${completed} из ${steps.length}. Можно изменять ответы и перерисовывать элементы.`;
+      } else if (total === maxScore) {
+        resultCard.classList.add('complete');
+        $('#resultTitle').textContent = tr("Отлично! Работа выполнена");
+        $('#resultText').textContent = tr("Все ответы и оба рисунка соответствуют критериям задания.");
+      } else {
+        $('#resultTitle').textContent = tr("Попытка завершена");
+        $('#resultText').textContent = tr("Проверь результат и при необходимости исправь текст или рисунок.");
+      }
+    }
+
+    function normalize(value) {
+      return value.toLowerCase()
+        .replace(/ё/g, 'е')
+        .replace(/[^a-zа-яәғқңөұүһі0-9\s-]/gi, ' ')
+        .replace(/\s+/g, ' ')
+        .trim();
+    }
+
+    function checkQ1() {
+      const raw = $('#answer1').value.trim();
+      if (!raw) {
+        state.q1.done = false;
+        state.q1.score = 0;
+        resetFeedback('feedback1');
+        updateScore();
+        return;
+      }
+      const text = normalize(raw);
+      const correct = text.includes('близорук') || text.includes('миоп') || /жақыннан көр|жақын көр|nearsighted|near sighted|short sighted|shortsighted|myopi/.test(text);
+      state.q1.done = true;
+      state.q1.score = correct ? 2 : 0;
+      if (correct) {
+        setFeedback('feedback1', 'correct', tr("Верно! Это близорукость, или миопия."));
+      } else {
+        setFeedback('feedback1', 'incorrect', tr("Ответ не засчитан: 0 из 2 баллов."));
+      }
+      updateScore();
+    }
+
+    function checkQ2() {
+      const raw = $('#answer2').value.trim();
+      if (!raw) {
+        state.q2.done = false;
+        state.q2.score = 0;
+        resetFeedback('feedback2');
+        updateScore();
+        return;
+      }
+      const text = normalize(raw);
+      const mentionsDistance = /(дальн|далек|вдал|расстоян|отдал|алыс|қашық|distan|far|faraway)/.test(text);
+      const mentionsPoorVision = /(плох|нечет|не различ|не вид|размы|расплыв|туман|анық емес|анық көрінб|анық көрм|нашар|бұлдыр|бұлыңғыр|бұлыңгыр|айқын емес|көрінбейді|көрмейді|blurr|unclear|poor|not clear|cannot see|can t see|hard to see|out of focus)/.test(text);
+      const farObjects = mentionsDistance && mentionsPoorVision;
+      const focusBeforeRetina = /(?:перед|до).{0,24}сетчат|сетчат.{0,24}(?:перед|до)|(?:тор қабық|торлы қабық).{0,35}(?:алдын|дейін)|(?:алдын|дейін).{0,35}(?:тор қабық|торлы қабық)|(?:in front of|before).{0,35}retina|retina.{0,35}(?:in front|before)/.test(text);
+      const points = Number(farObjects) + Number(focusBeforeRetina);
+
+      state.q2.done = true;
+      state.q2.score = points;
+      if (points === 2) {
+        setFeedback('feedback2', 'correct', tr("Верно! В тексте названы оба признака: нечёткое зрение вдаль и фокус перед сетчаткой."));
+      } else if (points === 1) {
+        setFeedback('feedback2', 'partial', tr("1 из 2 баллов."));
+      } else {
+        setFeedback('feedback2', 'incorrect', tr("Ответ не засчитан: 0 из 2 баллов."));
+      }
+      updateScore();
+    }
+
+    function debounce(fn, delay) {
+      let timer;
+      return (...args) => {
+        window.clearTimeout(timer);
+        timer = window.setTimeout(() => fn(...args), delay);
+      };
+    }
+
+    const autoCheckQ1 = debounce(() => {
+      checkQ1();
+    }, 650);
+    const autoCheckQ2 = debounce(() => {
+      checkQ2();
+    }, 800);
+
+    $('#answer1').addEventListener('input', autoCheckQ1);
+    $('#answer1').addEventListener('blur', checkQ1);
+    $('#answer1').addEventListener('keydown', event => {
+      if (event.key === 'Enter') {
+        event.preventDefault();
+        checkQ1();
+      }
+    });
+    $('#check1').addEventListener('click', checkQ1);
+
+    $('#answer2').addEventListener('input', () => {
+      const count = $('#answer2').value.length;
+      $('#answer2Count').textContent = lang === 'kk' ? `${count} таңба` : lang === 'en' ? `${count} ${count === 1 ? 'character' : 'characters'}` : `${count} ${count === 1 ? 'знак' : count < 5 ? 'знака' : 'знаков'}`;
+      autoCheckQ2();
+    });
+    $('#answer2').addEventListener('blur', checkQ2);
+    $('#check2').addEventListener('click', checkQ2);
+
+    function formatStrokeCount(count) {
+      if (lang === 'kk') return `${count} штрих`;
+      if (lang === 'en') return `${count} ${count === 1 ? 'stroke' : 'strokes'}`;
+      if (count === 1) return '1 штрих';
+      if (count >= 2 && count <= 4) return `${count} штриха`;
+      return `${count} штрихов`;
+    }
+
+    function setupCanvas(canvasId, countId, undoId, clearId, onChange) {
+      const canvas = $('#' + canvasId);
+      const ctx = canvas.getContext('2d');
+      const strokes = [];
+      let activeStroke = null;
+
+      function pointFromEvent(event) {
+        const rect = canvas.getBoundingClientRect();
+        return {
+          x: (event.clientX - rect.left) * (canvas.width / rect.width),
+          y: (event.clientY - rect.top) * (canvas.height / rect.height)
+        };
+      }
+
+      function draw() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        ctx.lineCap = 'round';
+        ctx.lineJoin = 'round';
+        ctx.strokeStyle = '#2f67e8';
+        ctx.fillStyle = '#2f67e8';
+        ctx.lineWidth = 4.2;
+        strokes.forEach(stroke => {
+          if (!stroke.length) return;
+          if (stroke.length === 1) {
+            ctx.beginPath();
+            ctx.arc(stroke[0].x, stroke[0].y, 2.6, 0, Math.PI * 2);
+            ctx.fill();
+            return;
+          }
+          ctx.beginPath();
+          ctx.moveTo(stroke[0].x, stroke[0].y);
+          for (let i = 1; i < stroke.length; i += 1) ctx.lineTo(stroke[i].x, stroke[i].y);
+          ctx.stroke();
+        });
+      }
+
+      function refresh() {
+        draw();
+        $('#' + countId).textContent = formatStrokeCount(strokes.length);
+        onChange(strokes);
+      }
+
+      canvas.addEventListener('pointerdown', event => {
+        if (event.pointerType === 'mouse' && event.button !== 0) return;
+        event.preventDefault();
+        canvas.setPointerCapture(event.pointerId);
+        activeStroke = [pointFromEvent(event)];
+        strokes.push(activeStroke);
+        draw();
+      });
+      canvas.addEventListener('pointermove', event => {
+        if (!activeStroke) return;
+        event.preventDefault();
+        activeStroke.push(pointFromEvent(event));
+        draw();
+      });
+      const finishStroke = event => {
+        if (!activeStroke) return;
+        event.preventDefault();
+        activeStroke = null;
+        refresh();
+      };
+      canvas.addEventListener('pointerup', finishStroke);
+      canvas.addEventListener('pointercancel', finishStroke);
+      canvas.addEventListener('pointerleave', event => {
+        if (event.pointerType === 'mouse' && activeStroke && event.buttons === 0) finishStroke(event);
+      });
+
+      $('#' + undoId).addEventListener('click', () => {
+        strokes.pop();
+        refresh();
+      });
+      $('#' + clearId).addEventListener('click', () => {
+        strokes.length = 0;
+        refresh();
+      });
+
+      return {
+        getStrokes: () => strokes,
+        clear: () => {
+          strokes.length = 0;
+          refresh();
+        }
+      };
+    }
+
+    function flatten(strokes) {
+      return strokes.reduce((all, stroke) => all.concat(stroke), []);
+    }
+
+    function checkLensDrawing(strokes) {
+      const points = flatten(strokes);
+      if (!points.length) {
+        state.lens.done = false;
+        state.lens.score = 0;
+        resetFeedback('feedbackLens');
+        updateScore();
+        updateDrawingSummary();
+        return;
+      }
+
+      state.lens.done = true;
+      const zone = points.filter(point => point.x >= 152 && point.x <= 288 && point.y >= 50 && point.y <= 235);
+      let score = 0;
+      if (zone.length >= 10) {
+        const minY = Math.min(...zone.map(point => point.y));
+        const maxY = Math.max(...zone.map(point => point.y));
+        const minX = Math.min(...zone.map(point => point.x));
+        const maxX = Math.max(...zone.map(point => point.x));
+        const height = maxY - minY;
+        const width = maxX - minX;
+        if (height >= 45 && width >= 20) {
+          const top = zone.filter(point => point.y <= minY + height * .28);
+          const middle = zone.filter(point => point.y >= minY + height * .36 && point.y <= minY + height * .64);
+          const bottom = zone.filter(point => point.y >= minY + height * .72);
+          if (top.length && middle.length && bottom.length) {
+            const leftTop = Math.min(...top.map(point => point.x));
+            const leftMiddle = Math.min(...middle.map(point => point.x));
+            const leftBottom = Math.min(...bottom.map(point => point.x));
+            const rightTop = Math.max(...top.map(point => point.x));
+            const rightMiddle = Math.max(...middle.map(point => point.x));
+            const rightBottom = Math.max(...bottom.map(point => point.x));
+            const leftConcave = leftMiddle > leftTop + 5 && leftMiddle > leftBottom + 5;
+            const rightConcave = rightMiddle < rightTop - 5 && rightMiddle < rightBottom - 5;
+            if (leftConcave && rightConcave) score = 3;
+            else if (leftConcave || rightConcave) score = 1;
+          }
+        }
+      }
+      state.lens.score = score;
+      if (score === 3) {
+        setFeedback('feedbackLens', 'correct', tr("Линза распознана: контур вогнутый, то есть рассеивающий. 3 из 3 баллов."));
+      } else if (score === 1) {
+        setFeedback('feedbackLens', 'partial', tr("Рисунок проверен: 1 из 3 баллов."));
+      } else {
+        setFeedback('feedbackLens', 'incorrect', tr("Рисунок не засчитан: 0 из 3 баллов."));
+      }
+      updateScore();
+      updateDrawingSummary();
+    }
+
+    function averageY(points) {
+      if (!points.length) return 0;
+      return points.reduce((sum, point) => sum + point.y, 0) / points.length;
+    }
+
+    function averageYInRange(stroke, fromX, toX) {
+      const points = stroke.filter(point => point.x >= fromX && point.x <= toX);
+      if (points.length) return averageY(points);
+      const nearest = stroke
+        .slice()
+        .sort((a, b) => Math.abs(((fromX + toX) / 2) - a.x) - Math.abs(((fromX + toX) / 2) - b.x))
+        .slice(0, Math.min(5, stroke.length));
+      return averageY(nearest);
+    }
+
+    function analyzeRayStroke(stroke) {
+      if (stroke.length < 8) return null;
+      const xs = stroke.map(point => point.x);
+      const minX = Math.min(...xs);
+      const maxX = Math.max(...xs);
+      const span = maxX - minX;
+      if (span < 180 || maxX < 580 || maxX > 630) return null;
+
+      const leftBand = stroke.filter(point => point.x <= minX + Math.max(18, span * .13));
+      const startY = averageY(leftBand);
+      const afterLensY = averageYInRange(stroke, 275, 390);
+      const endY = averageYInRange(stroke, maxX - Math.max(18, span * .13), maxX);
+      const convergesOnRetina = endY >= 125 && endY <= 161;
+      if (!convergesOnRetina) return null;
+
+      let band = null;
+      if (startY < 120 && afterLensY < startY - 2) band = 'top';
+      if (startY > 166 && afterLensY > startY + 2) band = 'bottom';
+      if (startY >= 120 && startY <= 166 && Math.abs(afterLensY - startY) <= 22) band = 'middle';
+      if (!band) return null;
+      return { band, startY, afterLensY, endY };
+    }
+
+    function checkRaysDrawing(strokes) {
+      const points = flatten(strokes);
+      if (!points.length) {
+        state.rays.done = false;
+        state.rays.score = 0;
+        resetFeedback('feedbackRays');
+        updateScore();
+        updateDrawingSummary();
+        return;
+      }
+
+      state.rays.done = true;
+      const rays = strokes.map(analyzeRayStroke).filter(Boolean);
+      const hasTop = rays.some(ray => ray.band === 'top');
+      const hasMiddle = rays.some(ray => ray.band === 'middle');
+      const hasBottom = rays.some(ray => ray.band === 'bottom');
+      state.rays.score = Number(hasTop) + Number(hasMiddle) + Number(hasBottom);
+
+      if (state.rays.score === 3) {
+        setFeedback('feedbackRays', 'correct', tr("Ход лучей распознан: после линзы верхний и нижний лучи расходятся, затем три луча сходятся на сетчатке. 3 из 3 баллов."));
+      } else if (state.rays.score > 0) {
+        setFeedback('feedbackRays', 'partial', lang === 'kk' ? `3 баллдан ${state.rays.score}.` : lang === 'en' ? `${state.rays.score} out of 3 points.` : `${state.rays.score} из 3 баллов.`);
+      } else {
+        setFeedback('feedbackRays', 'incorrect', tr("Рисунок не засчитан: 0 из 3 баллов."));
+      }
+      updateScore();
+      updateDrawingSummary();
+    }
+
+    function updateDrawingSummary() {
+      const hasAttempt = state.lens.done || state.rays.done;
+      if (!hasAttempt) {
+        resetFeedback('feedback3');
+        return;
+      }
+      const points = state.lens.score + state.rays.score;
+      if (state.lens.done && state.rays.done && points === 6) {
+        setFeedback('feedback3', 'correct', tr("Рисунок проверен: 6 из 6 баллов. Линза и ход лучей подходят для коррекции миопии."));
+      } else if (state.lens.done && state.rays.done) {
+        setFeedback('feedback3', 'partial', lang === 'kk' ? `Сурет тексерілді: 6 баллдан ${points}.` : lang === 'en' ? `Drawing checked: ${points} out of 6 points.` : `Рисунок проверен: ${points} из 6 баллов.`);
+      } else {
+        setFeedback('feedback3', 'partial', lang === 'kk' ? `Сурет әлі толық емес: 6 баллдан ${points}. Екі аймақты да толтыр.` : lang === 'en' ? `The drawing is incomplete: ${points} out of 6 points. Complete both areas.` : `Рисунок пока выполнен не полностью: ${points} из 6 баллов. Заполни обе области.`);
+      }
+    }
+
+    const lensCanvas = setupCanvas('lensCanvas', 'lensStrokeCount', 'undoLens', 'clearLens', checkLensDrawing);
+    const raysCanvas = setupCanvas('raysCanvas', 'raysStrokeCount', 'undoRays', 'clearRays', checkRaysDrawing);
+
+    $('#finishButton').addEventListener('click', () => {
+      let target = null;
+      let feedbackId = null;
+      if (!state.q1.done) { target = '#task1'; feedbackId = 'feedback1'; }
+      else if (!state.q2.done) { target = '#task2'; feedbackId = 'feedback2'; }
+      else if (!state.lens.done) { target = '#task3'; feedbackId = 'feedbackLens'; }
+      else if (!state.rays.done) { target = '#task3'; feedbackId = 'feedbackRays'; }
+
+      if (target) {
+        $(target).scrollIntoView({ behavior: 'smooth', block: 'center' });
+        setFeedback(feedbackId, 'partial', tr("Сначала выполни этот пункт, чтобы система могла его проверить."));
+      } else {
+        $('#answerKey').hidden = false;
+        $('#answerButton').textContent = tr("Скрыть разбор");
+        $('#resultCard').scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }
+    });
+
+    $('#answerButton').addEventListener('click', () => {
+      const key = $('#answerKey');
+      key.hidden = !key.hidden;
+      $('#answerButton').textContent = key.hidden ? tr("Показать разбор") : tr("Скрыть разбор");
+    });
+
+    $('#resetAll').addEventListener('click', () => {
+      $('#answer1').value = '';
+      $('#answer2').value = '';
+      $('#answer2Count').textContent = tr("0 знаков");
+      lensCanvas.clear();
+      raysCanvas.clear();
+      state.q1 = { done: false, score: 0 };
+      state.q2 = { done: false, score: 0 };
+      state.lens = { done: false, score: 0 };
+      state.rays = { done: false, score: 0 };
+      ['feedback1', 'feedback2', 'feedback3', 'feedbackLens', 'feedbackRays'].forEach(resetFeedback);
+      $('#answerKey').hidden = true;
+      $('#answerButton').textContent = tr("Показать разбор");
+      updateScore();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+
+    updateScore();
+  })();
+</script>
+</body></html>

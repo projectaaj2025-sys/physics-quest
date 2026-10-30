@@ -956,6 +956,149 @@
         html[data-theme="light"] .hf-num { color: rgba(95, 125, 153, 0.55); }
         html[data-theme="light"] .hf-title { color: #102a45; }
         html[data-theme="light"] .hf-desc { color: #4b6079; }
+
+        /* Главная: обложка приключения и кампании */
+        html { scroll-behavior: smooth; }
+        .hub-wrap { max-width: 1320px; padding: 28px 28px 70px; }
+        .hub-nav { padding: 12px 28px; }
+        .hub-hero { grid-template-columns: minmax(0, 2.1fr) minmax(260px, .72fr); gap: 18px; margin-bottom: 48px; }
+        .hero-main, html[data-theme="light"] .hero-main {
+            min-height: 450px; padding: 48px; display: flex; flex-direction: column; align-items: flex-start;
+            justify-content: center; border: 0; border-radius: 24px; color: white;
+            background: linear-gradient(90deg, rgba(5,14,35,.96) 0%, rgba(7,19,42,.88) 39%, rgba(9,20,44,.22) 100%), url('./assets/comics/g7-ep6.jpg') center/cover;
+            box-shadow: 0 24px 60px rgba(7,24,52,.2);
+        }
+        .hero-kicker, html[data-theme="light"] .hero-kicker { background: rgba(82,211,248,.13); border: 1px solid rgba(140,229,255,.32); color: #a9eaff; font-size: 11px; letter-spacing: .13em; }
+        .hero-title, html[data-theme="light"] .hero-title { max-width: 600px; font-size: clamp(38px, 4.3vw, 62px); line-height: 1.04; letter-spacing: -.045em; color: #fff; background: none; -webkit-text-fill-color: #fff; margin: 8px 0 18px; }
+        .hero-lead, html[data-theme="light"] .hero-lead { max-width: 495px; color: #d0dfed; font-size: 16px; line-height: 1.6; margin-bottom: 24px; }
+        .hero-action { display: inline-flex; align-items: center; gap: 28px; padding: 14px 19px; border-radius: 12px; background: #75e5f5; color: #08233a; font-size: 14px; font-weight: 850; box-shadow: 0 8px 28px rgba(40,211,237,.25); transition: transform .2s, background .2s; }
+        .hero-action:hover { background: #a7f4ff; transform: translateY(-2px); }
+        .hero-action span { font-size: 20px; line-height: 1; }
+        .hero-metrics { margin-top: 30px; gap: 9px; }
+        .hero-metric, html[data-theme="light"] .hero-metric { padding: 0 12px 0 0; margin-right: 3px; border: 0; border-right: 1px solid rgba(255,255,255,.24); border-radius: 0; background: none; box-shadow: none; color: #d9e6f1; font-size: 11px; }
+        .hero-metric:last-child { border-right: 0; }
+        .hero-metric b, html[data-theme="light"] .hero-metric b { color: #87ebfa; }
+        .hero-side, html[data-theme="light"] .hero-side { padding: 22px; border-radius: 24px; gap: 18px; justify-content: center; }
+        .id-box, .series-progress-box { padding: 18px; }
+        .id-box-top { align-items: flex-start; flex-direction: column; gap: 12px; }
+        .id-code-row { margin-top: 15px; }
+        .section-heading { scroll-margin-top: 90px; margin-bottom: 20px; align-items: end; }
+        .section-heading h2 { font-size: clamp(24px, 2.5vw, 32px); line-height: 1.15; letter-spacing: -.03em; }
+        .section-heading > span { max-width: 430px; line-height: 1.5; }
+        .section-kicker { margin-bottom: 8px; color: #0783a6; font-size: 10px; font-weight: 900; letter-spacing: .16em; }
+        .grades-grid { gap: 18px; margin-bottom: 38px; }
+        .grade-card, html[data-theme="light"] .grade-card { padding: 0; gap: 0; border-radius: 20px; }
+        .grade-card::before { display: none; }
+        .gc-cover { height: 160px; position: relative; background-size: cover; background-position: center; }
+        .gc-cover::after { content: ""; position: absolute; inset: 0; background: linear-gradient(0deg, rgba(4,14,30,.62), transparent 70%); }
+        .grade-card-7 .gc-cover { background-image: url('./assets/comics/g7-ep1.jpg'); }
+        .grade-card-8 .gc-cover { background-image: url('./assets/comics/g8-ep1.jpg'); }
+        .grade-card-9 .gc-cover { background-image: url('./assets/comics/g9-ch02.jpg'); }
+        .gc-cover-number, .gc-cover-mark { position: absolute; z-index: 1; color: white; }
+        .gc-cover-number { bottom: 12px; left: 22px; font-size: 38px; line-height: 1; font-weight: 900; letter-spacing: -.05em; opacity: .9; }
+        .gc-cover-mark { right: 20px; top: 16px; font-size: 19px; }
+        .gc-body { padding: 20px 22px 0; flex: 1; }
+        .gc-bottom { padding: 16px 22px 22px; }
+        .gc-title { margin-top: 14px; font-size: 20px; letter-spacing: -.02em; }
+        .gc-desc { line-height: 1.55; }
+        .gc-tags { margin-top: 14px; }
+        .btn-play { min-height: 46px; }
+        .hub-nav button:focus-visible, .hub-wrap a:focus-visible, .hub-wrap button:focus-visible, .hub-wrap input:focus-visible { outline: 3px solid #19a9d2; outline-offset: 3px; }
+        @media (max-width: 960px) {
+            .hub-hero { grid-template-columns: 1fr; }
+            .hero-side, html[data-theme="light"] .hero-side { display: grid; grid-template-columns: 1fr 1fr; }
+            .grades-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+            .gc-cover { height: 130px; }
+        }
+        @media (max-width: 700px) {
+            .hub-nav { position: relative; flex-wrap: wrap; gap: 12px; padding: 12px 16px; }
+            .hub-nav-right { width: 100%; gap: 6px; }
+            .hub-acc-pill { max-width: 100%; }
+            .hub-wrap { padding: 16px 16px 50px; }
+            .hero-main, html[data-theme="light"] .hero-main { min-height: 440px; padding: 30px 24px; background-position: 59% center; }
+            .hero-title, html[data-theme="light"] .hero-title { font-size: clamp(36px, 9vw, 50px); }
+            .hero-side, html[data-theme="light"] .hero-side { grid-template-columns: 1fr; padding: 16px; }
+            .hub-hero { margin-bottom: 35px; }
+            .grades-grid { grid-template-columns: 1fr; }
+            .gc-cover { height: 190px; }
+            .section-heading > span { font-size: 12px; }
+            .code-form { flex-wrap: wrap; }
+            .code-form input { min-width: 0; }
+        }
+
+        /* Более выразительные карточки возможностей и действия */
+        .hub-features { gap: 16px; margin: 42px 0 32px; }
+        .hf-head { margin-bottom: 8px; gap: 7px; }
+        .hf-head h3 { font-size: clamp(24px, 2.5vw, 32px); letter-spacing: -.035em; }
+        .hf-kicker { letter-spacing: .16em; }
+        .hub-feature, html[data-theme="light"] .hub-feature {
+            padding: 22px; border-radius: 20px; border: 1px solid rgba(110, 157, 192, .22);
+            background: linear-gradient(155deg, #fff, #f5faff);
+            box-shadow: 0 8px 28px rgba(29, 67, 104, .07);
+        }
+        .hub-feature::before { height: 4px; background: linear-gradient(90deg, var(--fc), transparent); }
+        .hub-feature::after { opacity: .8; }
+        .hf-top { margin-bottom: 18px; }
+        .hf-icon { width: 48px; height: 48px; border-radius: 15px; font-size: 23px; }
+        .hf-num { font-size: 11px; }
+        .hf-title, html[data-theme="light"] .hf-title { font-size: 17px; letter-spacing: -.02em; color: #132c48; margin-bottom: 9px; }
+        .hf-desc, html[data-theme="light"] .hf-desc { color: #526983; font-size: 13px; line-height: 1.6; }
+        .hf-list { padding-top: 17px; gap: 9px; }
+        .hf-list li, html[data-theme="light"] .hf-list li { font-size: 12px; line-height: 1.5; color: #405a76; }
+        html[data-theme="dark"] .hub-feature { background: linear-gradient(155deg, #142641, #0b192e); border-color: rgba(125, 185, 230, .2); box-shadow: 0 10px 30px rgba(0,0,0,.2); }
+        html[data-theme="dark"] .hf-title { color: #f0f7ff; }
+        html[data-theme="dark"] .hf-desc { color: #b4c7da; }
+        html[data-theme="dark"] .hf-list li { color: #c0d2e3; }
+        .hub-feature:hover, html[data-theme="light"] .hub-feature:hover { transform: translateY(-4px); border-color: var(--fc); box-shadow: 0 18px 35px rgba(29,67,104,.13); }
+        .btn-play, .btn-ghost, .btn-teacher-main, .btn-teacher-sec, .code-form button, .hub-shots-btn { transition: transform .18s ease, box-shadow .18s ease, filter .18s ease; }
+        .btn-play:hover, .btn-ghost:hover, .btn-teacher-main:hover, .btn-teacher-sec:hover, .code-form button:hover, .hub-shots-btn:hover { transform: translateY(-2px); filter: brightness(1.05); }
+        .btn-play:active, .btn-ghost:active, .btn-teacher-main:active, .btn-teacher-sec:active, .code-form button:active, .hub-shots-btn:active { transform: translateY(0); }
+        .hub-panel, .about-series { border-radius: 20px; }
+        .hub-shots { padding: 24px 28px; border-radius: 20px; }
+        @media (max-width: 620px) { .hub-features { grid-template-columns: 1fr; } .hub-feature { padding: 20px; } .hub-shots { padding: 20px; } .hub-shots-btn { white-space: normal; text-align: center; } }
+
+        /* Крупная, читабельная типографика портала без внешних шрифтов. */
+        body { font-family: "Trebuchet MS", "Segoe UI", Arial, sans-serif; font-size: 16px; line-height: 1.6; }
+        .hub-brand, .hero-title, .section-heading h2, .gc-title, .hub-panel h3,
+        .hf-head h3, .hf-title, .about-series h3, .hub-shots h3 {
+            font-family: "Trebuchet MS", "Segoe UI", Arial, sans-serif;
+            letter-spacing: -.025em;
+        }
+        .hub-brand { font-size: 20px; line-height: 1.2; }
+        .hub-brand-sub { font-size: 12px; line-height: 1.4; }
+        .hub-langs button, .hub-acc-pill, .pq-theme-toggle { font-size: 13px; }
+        .hero-title, html[data-theme="light"] .hero-title { font-size: clamp(42px, 4.8vw, 66px); line-height: 1.08; letter-spacing: -.035em; }
+        .hero-kicker, html[data-theme="light"] .hero-kicker { font-size: 12px; line-height: 1.4; }
+        .hero-lead, html[data-theme="light"] .hero-lead { font-size: 18px; line-height: 1.6; }
+        .hero-action { font-size: 16px; }
+        .hero-metric, html[data-theme="light"] .hero-metric { font-size: 13px; line-height: 1.45; }
+        .id-box-label { font-size: 13px; }
+        .btn-mini { font-size: 13px; }
+        .sp-head, .gc-prog-row { font-size: 14px; }
+        .sp-sub { font-size: 13px; line-height: 1.5; }
+        .section-kicker, .hf-kicker { font-size: 12px; }
+        .section-heading h2, .hf-head h3 { font-size: clamp(27px, 2.7vw, 34px); }
+        .section-heading > span { font-size: 15px; max-width: 480px; }
+        .gc-title { font-size: 23px; line-height: 1.22; }
+        .gc-world, .gc-desc { font-size: 15px; line-height: 1.55; }
+        .gc-badge, .gc-tag, .gc-part { font-size: 13px; }
+        .gc-subactions { flex-wrap: wrap; }
+        .btn-play { font-size: 16px; }
+        .btn-ghost { font-size: 13px; min-width: 125px; }
+        .hub-panel h3, .about-series h3, .hub-shots h3 { font-size: 21px; }
+        .hub-panel p, .about-col p, .hub-shots p { font-size: 15px; line-height: 1.6; }
+        .about-col h4 { font-size: 16px; }
+        .hf-title, html[data-theme="light"] .hf-title { font-size: 19px; }
+        .hf-desc, html[data-theme="light"] .hf-desc { font-size: 15px; line-height: 1.6; }
+        .hf-list li, html[data-theme="light"] .hf-list li { font-size: 14px; line-height: 1.5; }
+        .hub-footer { font-size: 13px; }
+        @media (max-width: 700px) {
+            .hero-title, html[data-theme="light"] .hero-title { font-size: clamp(36px, 9vw, 48px); }
+            .hero-lead, html[data-theme="light"] .hero-lead { font-size: 17px; }
+            .section-heading > span { font-size: 15px; }
+            .hub-brand { font-size: 18px; }
+        }
+        @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
     </style>
 </head>
 <body>
@@ -985,7 +1128,7 @@
     <script src="./shared/levels.js"></script>
     <script src="./shared/storage.js"></script>
     <script src="./shared/offline-manifest.js"></script>
-    <script src="./shared/sound.js"></script>
+    <script src="./shared/sound.js?v=9"></script>
     <script src="./shared/offline.js"></script>
     <script>
     (function () {
@@ -1006,9 +1149,10 @@
             ru: {
                 brandTitle: "ФИЗИКА-КВЕСТ",
                 brandSub: "ОБРАЗОВАТЕЛЬНАЯ RPG-СЕРИЯ · 7–9 КЛАССЫ",
-                heroKicker: "🚀 ЕДИНАЯ ПЛАТФОРМА ТРИЛОГИИ · RU / ҚАЗ / EN",
-                heroTitle: "Серия RPG-игр «Физика-Квест» для 7–9 классов",
-                heroLead: "Защищай научно-технические города и орбитальные станции с помощью законов физики! Три сюжетные кампании по школьной программе 7, 8 и 9 классов в единой игровой экосистеме с общим профилем ученика и сквозным журналом учителя.",
+                heroKicker: "✦ ТВОЁ ПРИКЛЮЧЕНИЕ НАЧИНАЕТСЯ ЗДЕСЬ",
+                heroAction: "Выбрать свою миссию", heroEyebrow: "ТРИ МИРА · ОДНА МИССИЯ", chooseKicker: "01 / ВЫБЕРИ СВОЮ ИСТОРИЮ",
+                heroTitle: "Твои знания — сила, которая спасёт мир.",
+                heroLead: "Стань пилотом защитного щита, исследуй три удивительных мира и открой силу физики в каждой миссии.",
                 mLevels: "<b>153</b> игровых уровня",
                 mTasks: "<b>3 675</b> задач по программе",
                 mLabs: "<b>58</b> лаб. работ и интерактивных симуляторов",
@@ -1077,9 +1221,10 @@
             kk: {
                 brandTitle: "ФИЗИКА-КВЕСТ",
                 brandSub: "БІЛІМ БЕРУ RPG-СЕРИЯСЫ · 7–9 СЫНЫПТАР",
-                heroKicker: "🚀 ТРИЛОГИЯНЫҢ БІРЫҢҒАЙ ПЛАТФОРМАСЫ · RU / ҚАЗ / EN",
-                heroTitle: "7–9 сыныптарға арналған «Физика-Квест» RPG-ойындар сериясы",
-                heroLead: "Физика заңдарының көмегімен ғылыми қалалар мен орбиталық станцияларды қорға! 7, 8 және 9-сынып бағдарламасы бойынша үш сюжеттік кампания бірыңғай оқушы профилімен және ортақ мұғалім журналымен біріктірілген.",
+                heroKicker: "✦ СЕНІҢ ШЫТЫРМАН ОҚИҒАҢ ОСЫ ЖЕРДЕН БАСТАЛАДЫ",
+                heroAction: "Миссияңды таңда", heroEyebrow: "ҮШ ӘЛЕМ · БІР МИССИЯ", chooseKicker: "01 / ӨЗ ОҚИҒАҢДЫ ТАҢДА",
+                heroTitle: "Білімің — әлемді құтқаратын күш.",
+                heroLead: "Қорғаныс қалқанының ұшқышы бол, үш ғажайып әлемді зертте және әр миссияда физиканың күшін аш.",
                 mLevels: "<b>153</b> ойын деңгейі",
                 mTasks: "<b>3 675</b> оқу есебі",
                 mLabs: "<b>58</b> зертханалық жұмыс пен интерактивті симулятор",
@@ -1148,9 +1293,10 @@
             en: {
                 brandTitle: "PHYSICS QUEST",
                 brandSub: "EDUCATIONAL RPG SERIES · GRADES 7–9",
-                heroKicker: "🚀 UNIFIED TRILOGY PLATFORM · RU / ҚАЗ / EN",
-                heroTitle: "Physics Quest RPG Series for Grades 7–9",
-                heroLead: "Defend scientific cities and orbital stations using the laws of physics! Three story-driven campaigns covering the full Grade 7, 8, and 9 curriculum inside one unified platform with a permanent student ID and cross-grade teacher journal.",
+                heroKicker: "✦ YOUR ADVENTURE STARTS HERE",
+                heroAction: "Choose your mission", heroEyebrow: "THREE WORLDS · ONE MISSION", chooseKicker: "01 / CHOOSE YOUR STORY",
+                heroTitle: "Your knowledge is the power to save the world.",
+                heroLead: "Become a shield pilot, explore three incredible worlds and discover the power of physics in every mission.",
                 mLevels: "<b>153</b> playable missions",
                 mTasks: "<b>3,675</b> physics problems",
                 mLabs: "<b>58</b> lab works & interactive simulators",
@@ -1315,11 +1461,12 @@
 
             const app = document.getElementById("hub-app");
             app.innerHTML = `
-                <section class="hub-hero">
+                <section class="hub-hero" aria-label="${esc(tr("heroEyebrow"))}">
                     <div class="hero-main">
-                        <div class="hero-kicker">${tr("heroKicker")}</div>
+                        <div class="hero-kicker">${esc(tr("heroKicker"))}</div>
                         <h1 class="hero-title">${esc(tr("heroTitle"))}</h1>
                         <p class="hero-lead">${esc(tr("heroLead"))}</p>
+                        <a class="hero-action" href="#campaigns">${esc(tr("heroAction"))} <span aria-hidden="true">↗</span></a>
                         <div class="hero-metrics">
                             <div class="hero-metric">${tr("mLevels")}</div>
                             <div class="hero-metric">${tr("mTasks")}</div>
@@ -1349,8 +1496,8 @@
                     </aside>
                 </section>
 
-                <div class="section-heading">
-                    <h2>${esc(tr("chooseHeading"))}</h2>
+                <div class="section-heading" id="campaigns">
+                    <div><div class="section-kicker">${esc(tr("chooseKicker"))}</div><h2>${esc(tr("chooseHeading"))}</h2></div>
                     <span>${esc(tr("chooseSub"))}</span>
                 </div>
 
@@ -1365,8 +1512,9 @@
                             ? tr("playContinue", c.prog.nextLvl)
                             : tr("playStart");
                         return `
-                        <article class="grade-card" style="--card-accent:${c.accent};--card-accent-ink:${c.accentInk || c.accent}">
-                            <div>
+                        <article class="grade-card grade-card-${c.g}" style="--card-accent:${c.accent};--card-accent-ink:${c.accentInk || c.accent}">
+                            <div class="gc-cover" aria-hidden="true"><span class="gc-cover-number">0${c.g - 6}</span><span class="gc-cover-mark">✦</span></div>
+                            <div class="gc-body">
                                 <div class="gc-top">
                                     <span class="gc-badge">⚛️ ${esc(c.part)}</span>
                                     <span class="gc-part">${pct}%</span>
@@ -1378,7 +1526,7 @@
                                     ${c.tags.map(t => `<span class="gc-tag">${esc(t)}</span>`).join("")}
                                 </div>
                             </div>
-                            <div>
+                            <div class="gc-bottom">
                                 <div class="gc-prog" style="margin-bottom:12px;">
                                     <div class="gc-prog-row">
                                         <span>${esc(tr("completedLabel"))}</span>
@@ -1389,7 +1537,7 @@
                                 <div class="gc-actions">
                                     <a class="btn-play" href="${playHref}">${esc(playText)}</a>
                                     <div class="gc-subactions">
-                                        <a class="btn-ghost" href="./play.html?grade=${c.g}">${esc(tr("levelsListBtn"))}</a>
+                                        <a class="btn-ghost" href="./play.html?grade=${c.g}#levels">${esc(tr("levelsListBtn"))}</a>
                                         ${c.pdfUrl
                                             ? `<a class="btn-ghost" href="${c.pdfUrl}" download="${esc(c.pdfName)}">${esc(tr("pdfBtn"))}</a>`
                                             : `<a class="btn-ghost" href="./play.html?grade=8">${esc(tr("conspektBtn"))}</a>`
@@ -1437,25 +1585,6 @@
                         <div class="teacher-btns">
                             <a class="btn-teacher-main" href="./play.html?grade=${acc.student.grade || 8}#teacher">${esc(tr("openJournalBtn"))}</a>
                             <button type="button" class="btn-teacher-sec" id="btn-portal-teacher-login">${esc(tr("teacherLoginBtn"))}</button>
-                        </div>
-                    </div>
-                </section>
-
-                <section class="about-series">
-                    <h3>${esc(tr("aboutTitle"))}</h3>
-                    <p style="font-size:14px;color:var(--text-muted);">${esc(tr("aboutLead"))}</p>
-                    <div class="about-cols">
-                        <div class="about-col">
-                            <h4>${esc(tr("ab1Title"))}</h4>
-                            <p>${esc(tr("ab1Text"))}</p>
-                        </div>
-                        <div class="about-col">
-                            <h4>${esc(tr("ab2Title"))}</h4>
-                            <p>${esc(tr("ab2Text"))}</p>
-                        </div>
-                        <div class="about-col">
-                            <h4>${esc(tr("ab3Title"))}</h4>
-                            <p>${esc(tr("ab3Text"))}</p>
                         </div>
                     </div>
                 </section>
@@ -1550,6 +1679,25 @@
                                 ${(f.list[L] || f.list.ru).map(item => `<li>${esc(item)}</li>`).join("")}
                             </ul>
                         </article>`).join("")}
+                </section>
+
+                <section class="about-series">
+                    <h3>${esc(tr("aboutTitle"))}</h3>
+                    <p style="font-size:14px;color:var(--text-muted);">${esc(tr("aboutLead"))}</p>
+                    <div class="about-cols">
+                        <div class="about-col">
+                            <h4>${esc(tr("ab1Title"))}</h4>
+                            <p>${esc(tr("ab1Text"))}</p>
+                        </div>
+                        <div class="about-col">
+                            <h4>${esc(tr("ab2Title"))}</h4>
+                            <p>${esc(tr("ab2Text"))}</p>
+                        </div>
+                        <div class="about-col">
+                            <h4>${esc(tr("ab3Title"))}</h4>
+                            <p>${esc(tr("ab3Text"))}</p>
+                        </div>
+                    </div>
                 </section>
 
                 <section class="hub-shots">

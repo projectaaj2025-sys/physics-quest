@@ -281,6 +281,11 @@ function initApp() {
         return;
     }
 
+    if (hash === "#levels") {
+        showLevelSelect();
+        return;
+    }
+
     if (hash === "#continue") {
         const progress = Storage.getProgress();
         const last = Math.max(1, Number(progress.unlockedLevel) || 1);
@@ -851,7 +856,7 @@ function openTheory(levelId) {
     const solutionTab = tabs.querySelector('[data-tab="solution"]');
     const formulasTab = tabs.querySelector('[data-tab="formulas"]');
     const hasConspekt = !!CONSPECT[currentTheoryKey];
-    const hasExperiment = !!getExperimentResource(currentTheoryKey);
+    const hasExperiment = !!getExperimentResource(currentTheoryKey) || !!(window.PQHomeExperiments && PQHomeExperiments.theoryHtml(levelId, I18n.currentLang));
     // «Разбор задачи» и «Формулы §» переехали из окна задания в теорию перед уровнем.
     const hasSolver = !!(window.PQProblemSolver && typeof PQProblemSolver.renderTheory === "function");
     if (conspektTab) conspektTab.style.display = hasConspekt ? "inline-flex" : "none";
@@ -959,9 +964,10 @@ function renderTheoryContent(tab) {
     }
     if (tab === "experiment") {
         const resource = getExperimentResource(key);
-        box.innerHTML = resource
+        const homeTheory = window.PQHomeExperiments ? PQHomeExperiments.theoryHtml(pendingLevelId, I18n.currentLang) : "";
+        box.innerHTML = (resource
             ? (resource.__markdown ? renderTheoryText(resource.__markdown) : renderResourceBox(resource, String(key).indexOf("lab") === 0))
-            : `<p class="experiment-empty">${I18n.t("experimentUnavailable")}</p>`;
+            : (homeTheory ? "" : `<p class="experiment-empty">${I18n.t("experimentUnavailable")}</p>`)) + homeTheory;
     } else if (tab === "conspekt" && CONSPECT[key]) {
         const c = CONSPECT[key];
         const ofCard = (window.PQOformlenie && PQOformlenie.render) ? PQOformlenie.render(key) : "";

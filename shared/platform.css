@@ -1938,3 +1938,16 @@ html[data-theme="dark"] .pq-lobby-qr-cap { color: #9fb6d4; }
     .pq-lobby { grid-template-columns: 1fr; gap: 16px; }
     .pq-lobby-qr-wrap { max-width: 260px; margin: 0 auto; }
 }
+
+/* Контраст формул и быстрый доступ к опытам на экране выбора уровня. */
+html[data-theme="light"] :is(#task-modal, #theory-modal) .pq-fc-f { color: #673c00; }
+html[data-theme="light"] :is(#task-modal, #theory-modal) .pq-fc-legend { color: #294f65; }
+html[data-theme="light"] :is(#task-modal, #theory-modal) .pq-fc-count { color: #07516b; background: #def2fa; border-color: #86b9cb; }
+html[data-theme="light"] :is(#task-modal, #theory-modal) .pq-solver-hint { color: #3b5b70; }
+html[data-theme="light"] #task-modal .task-body .formula { color: #663b00; background: #fff4d8; border-color: #ac7300; }
+html[data-theme="light"] #theory-modal .theory-content .t-formula { color: #104a61; background: #e4f4fa; border-color: #5e98ab; }
+html[data-theme="dark"] :is(#task-modal, #theory-modal) .pq-fc-f { color: #ffe6a3; }
+html[data-theme="dark"] :is(#task-modal, #theory-modal) .pq-fc-legend { color: #bfd6e8; }
+html[data-theme="dark"] :is(#task-modal, #theory-modal) .pq-fc-count { color: #d9f6ff; }
+html[data-theme="dark"] #task-modal .task-body .formula { color: #ffe6a3; background: #332716; border-color: #b98830; }
+html[data-theme="dark"] #theory-modal .theory-content .t-formula { color: #e2f8ff; background: #14384a; border-color: #5b99b0; }

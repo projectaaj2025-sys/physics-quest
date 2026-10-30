@@ -22,7 +22,7 @@
             if (m) m.setAttribute("content", t === "dark" ? "#081121" : "#eef4fb");
         })();
     </script>
-    <link rel="stylesheet" href="./shared/platform.css">
+    <link rel="stylesheet" href="./shared/platform.css?v=3">
 </head>
 <body>
 <!-- Экран загрузки -->
@@ -833,7 +833,7 @@
             "./shared/teacher.js",
             "./shared/game.js",
             "./shared/i18n.js",
-            "./shared/main.js",
+            "./shared/main.js?v=3",
             "./shared/qrcode.js",
             "./shared/rpg-data.js",
             "./shared/rpg-core.js",
@@ -844,8 +844,8 @@
             "./shared/conspect-examples.js",
             "./shared/level-themes.js",
             "./shared/problem-solver.js",
-            "./shared/oformlenie.js",
-            "./shared/sound.js",
+            "./shared/oformlenie.js?v=3",
+            "./shared/sound.js?v=9",
             "./shared/battle-room.js",
             "./shared/team-battle.js",
             "./shared/print-cards.js",
@@ -855,13 +855,14 @@
             "./shared/rpg-boot.js"
         ];
         if (grade === 7) {
-            scripts.push("./shared/lab-workbench.js", "./shared/sim-light-7.js", "./7/simulators.js");
+            scripts.push("./shared/lab-workbench.js", "./shared/lab-games.js?v=2", "./shared/sim-light-7.js", "./7/simulators.js?v=3");
         } else if (grade === 8) {
             // Лабораторные мини-игры уровней 45–55 (конфиги — в 8/content.js)
-            scripts.push("./shared/lab-workbench.js", "./shared/lab-games.js");
+            scripts.push("./shared/lab-workbench.js", "./shared/lab-games.js?v=2");
         } else if (grade === 9) {
-            scripts.push("./shared/lab-workbench.js", "./shared/lab-games.js", "./9/extras.js");
+            scripts.push("./shared/lab-workbench.js", "./shared/lab-games.js?v=2", "./9/extras.js");
         }
+        scripts.push("./shared/extra-lab-games.js", "./shared/home-experiments.js?v=3");
         // Знакомство с героями и общий сюжет — показывается в «Лор и сюжет» перед комиксом
         scripts.push("./shared/story-cast.js");
         // Единый визуальный комикс-дневник трилогии (7 → 8 → 9) для всех параллелей
@@ -870,8 +871,10 @@
         // Визуальные canvas-симуляторы для 8 и 9 классов:
         // сначала светлый фотореалистичный движок, затем сами лаборатории
         if (grade === 8 || grade === 9) {
-            scripts.push("./shared/sim-light.js", "./shared/simulators-89.js");
+            scripts.push("./shared/sim-light.js", "./shared/simulators-89.js?v=4");
         }
+
+        scripts.push("./shared/diagram-games.js", "./shared/vision-exercise.js?v=2");
 
         const fill = document.getElementById("loading-fill");
         let loaded = 0;
