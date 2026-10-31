@@ -349,7 +349,9 @@
             btn.className = "btn btn-secondary pq-cert-open";
             btn.innerHTML = `<span>🎖</span><span>${esc(t("open"))}</span>`;
             btn.addEventListener("click", () => this.open());
-            if (back && back.parentNode) back.parentNode.insertBefore(btn, back);
+            const quickActions = document.getElementById("profile-quick-actions");
+            if (quickActions) quickActions.insertBefore(btn, quickActions.firstChild);
+            else if (back && back.parentNode) back.parentNode.insertBefore(btn, back);
             else profile.appendChild(btn);
         },
 

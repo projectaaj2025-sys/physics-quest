@@ -1057,23 +1057,12 @@ const PROFILE_NOTES_LANG_NAMES = {
     en: "English",
     kk: "Қазақша"
 };
-const PROFILE_NOTES_V2_FILES = {
-    ru: "assets/pdf/grade8-ru.pdf",
-    en: "assets/pdf/grade8-en.pdf",
-    kk: "assets/pdf/grade8-kk.pdf"
-};
-
 function updateProfileNotesDownload() {
     const link = document.getElementById("btn-download-notes-pdf");
     const language = document.getElementById("profile-notes-language");
-    const linkV2 = document.getElementById("btn-download-notes-v2-pdf");
-    const languageV2 = document.getElementById("profile-notes-v2-language");
     const lang = I18n.currentLang || "ru";
     const languageName = PROFILE_NOTES_LANG_NAMES[lang] || PROFILE_NOTES_LANG_NAMES.ru;
     const pdfMap = window.GRADE_META && window.GRADE_META.pdfFiles;
-
-    if (linkV2) linkV2.style.display = "none";
-    if (languageV2) languageV2.style.display = "none";
 
     if (link) {
         if (pdfMap && (pdfMap[lang] || pdfMap.ru)) {

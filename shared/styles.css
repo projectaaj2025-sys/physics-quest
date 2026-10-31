@@ -712,14 +712,14 @@ html, body {
 }
 .rocket-preview { margin: 4px auto 6px; display: block; }
 .rocket-name { font-weight: 700; font-size: 13px; color: var(--text-bright); }
-.profile-danger-zone {
-    padding: 16px;
-    border: 1px solid rgba(229, 57, 53, .42);
-    border-radius: 12px;
-    background: rgba(229, 57, 53, .055);
+.profile-quick-actions {
+    display: flex; justify-content: center; align-items: center; flex-wrap: wrap; gap: 10px;
+    margin: 0 0 24px; padding: 14px; border: 1px solid var(--border); border-radius: 12px;
+    background: var(--bg-darker);
 }
-.profile-danger-zone > label { color: var(--danger); }
-.profile-danger-zone .profile-sub { margin: 0 0 14px; text-align: left; line-height: 1.5; }
+.profile-quick-actions .btn { margin: 0; }
+.profile-reset-button { color: var(--danger); border-color: rgba(229, 57, 53, .55); }
+.profile-reset-button:hover { color: #fff; background: var(--danger); border-color: var(--danger); }
 .btn-danger { background: var(--danger); border-color: var(--danger); color: #fff; }
 .btn-danger:hover:not(:disabled) { background: #c62828; border-color: #c62828; box-shadow: 0 5px 18px rgba(198, 40, 40, .25); }
 .btn-danger:disabled { opacity: .45; cursor: not-allowed; box-shadow: none; }
@@ -936,6 +936,8 @@ html, body {
     border: 1px dashed rgba(56, 189, 248, 0.35);
     line-height: 1.45;
 }
+.profile-conspekt-card .profile-sub { margin: 0 0 12px; text-align: left; line-height: 1.5; }
+.profile-conspekt-card .profile-notes-language { margin-top: 10px; }
 .profile-conspekt-actions {
     display: flex;
     gap: 10px;
@@ -1999,6 +2001,9 @@ html, body {
     .mobile-control-down { grid-column: 2; grid-row: 3; }
     .minimap { right: 8px; bottom: 8px; transform: scale(.72); transform-origin: bottom right; }
     .profile-wrap { padding: 18px 14px; }
+    .profile-quick-actions { flex-direction: column; align-items: stretch; }
+    .profile-quick-actions .btn { width: 100%; }
+    .profile-conspekt-actions .btn { flex: 1 1 150px; }
     .rocket-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
     .rocket-option { padding: 8px 4px 7px; }
     .rocket-preview { transform: scale(.82); margin: -4px auto -3px; }
