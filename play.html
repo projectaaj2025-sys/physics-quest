@@ -221,6 +221,11 @@
                     <span class="profile-notes-language" id="profile-notes-v2-language"></span>
                 </div>
             </div>
+            <div class="profile-field profile-danger-zone">
+                <label data-i18n="resetProgressTitle">⚠ Сброс игрового прогресса</label>
+                <p class="profile-sub" data-i18n="resetProgressNote">Удалить пройденные уровни, очки, рекорды, достижения и результаты мини-игр для 7–9 классов на этом устройстве.</p>
+                <button class="btn btn-danger" id="btn-reset-progress" type="button" data-i18n="resetProgressButton">🗑 Сбросить весь прогресс</button>
+            </div>
             <button class="btn btn-back" id="btn-profile-back">
                 <span data-i18n="back">← Назад</span>
             </button>
@@ -621,6 +626,30 @@
         </div>
     </div>
 
+    <!-- Подтверждение полного сброса игрового прогресса -->
+    <div id="reset-progress-modal" class="modal reset-progress-modal" role="dialog" aria-modal="true"
+         aria-labelledby="reset-progress-dialog-title" aria-describedby="reset-progress-warning" aria-hidden="true">
+        <div class="modal-content reset-progress-content">
+            <h2 id="reset-progress-dialog-title" data-i18n="resetProgressDialogTitle">Сбросить весь прогресс?</h2>
+            <p id="reset-progress-warning" class="reset-progress-warning" data-i18n="resetProgressWarning">Это действие необратимо. Будут удалены пройденные уровни, очки, рекорды, статистика, RPG-прогресс и результаты мини-игр во всех классах.</p>
+            <p class="reset-progress-keep" data-i18n="resetProgressKeep">Имя и код ученика, язык, тема, а также классы, назначения и материалы учителя сохранятся.</p>
+            <form id="reset-progress-form" class="reset-progress-form" novalidate>
+                <label for="reset-progress-confirmation">
+                    <span data-i18n="resetProgressTypeLabel">Для подтверждения введите слово:</span>
+                    <strong id="reset-progress-word">СБРОСИТЬ</strong>
+                </label>
+                <input type="text" id="reset-progress-confirmation" maxlength="24" autocomplete="off"
+                       autocapitalize="characters" spellcheck="false"
+                       data-i18n-placeholder="resetProgressPlaceholder" placeholder="Введите слово подтверждения">
+                <p id="reset-progress-error" class="reset-progress-error" role="alert" hidden></p>
+                <div class="reset-progress-actions">
+                    <button class="btn btn-secondary" id="btn-reset-progress-cancel" type="button" data-i18n="resetProgressCancel">Отмена</button>
+                    <button class="btn btn-danger" id="btn-reset-progress-confirm" type="submit" data-i18n="resetProgressConfirm" disabled>Да, удалить прогресс</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
     <!-- Модальное окно сюжетного журнала и брифинга миссии -->
     <div id="story-modal" class="modal">
         <div class="modal-content story-modal-content">
@@ -744,8 +773,11 @@
 
     <!-- Интерактивная мини-игра лаборатории -->
     <div id="lab-overlay" class="lab-overlay">
-        <div class="lab-panel">
-            <h3 id="lab-title">🔬 Лабораторный эксперимент</h3>
+        <div class="lab-panel" role="dialog" aria-modal="true" aria-labelledby="lab-title">
+            <div class="lab-head">
+                <h3 id="lab-title">🔬 Лабораторный эксперимент</h3>
+                <button type="button" id="lab-fullscreen" data-i18n="fullscreenEnter">⛶ На весь экран</button>
+            </div>
             <p id="lab-desc" class="lab-desc">Проведи эксперимент — подбери параметры и получи результат!</p>
             <div id="lab-content"></div>
             <div id="lab-formula" class="lab-formula" style="display:none"></div>
@@ -833,6 +865,7 @@
             "./shared/teacher.js",
             "./shared/game.js",
             "./shared/i18n.js",
+            "./shared/fullscreen.js",
             "./shared/main.js?v=3",
             "./shared/qrcode.js",
             "./shared/rpg-data.js",

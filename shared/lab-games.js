@@ -25,6 +25,14 @@ const LabGames = {
             }
         });
         document.getElementById("lab-close")?.addEventListener("click", () => this.hide(false));
+        if (window.PQFullscreen) {
+            const overlay = document.getElementById("lab-overlay");
+            window.PQFullscreen.bind(
+                overlay,
+                document.getElementById("lab-fullscreen"),
+                overlay?.querySelector(".lab-panel")
+            );
+        }
         // Смена языка не должна оставлять открытую мини-игру на прежнем языке.
         const rerender = () => {
             const overlay = document.getElementById("lab-overlay");
@@ -190,6 +198,7 @@ const LabGames = {
     hide(success) {
         if (window.PQWorkbench) window.PQWorkbench.reset();
         const overlay = document.getElementById("lab-overlay");
+        if (window.PQFullscreen) window.PQFullscreen.exit(overlay);
         if (overlay) overlay.classList.remove("active");
         if (this.activeGame) {
             this.activeGame.paused = false;

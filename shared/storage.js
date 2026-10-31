@@ -708,6 +708,54 @@ const Storage = {
         });
     },
 
+    // Полный сброс только игрового прогресса на этом устройстве.
+    // Аккаунт, код ученика, настройки, классы, назначения, журнал учителя,
+    // пользовательские уроки и оформление сертификатов намеренно сохраняются.
+    resetAllProgress() {
+        const keys = new Set([
+            "pq7_field_trials_v1",
+            "pq7_sim_badge",
+            "physicsquest9_diarySeen",
+            "physicsquest_rpg_v1"
+        ]);
+        const suffixes = ["progress", "stats", "records", "playthrough_history", "rpg_v1"];
+        for (const g of [7, 8, 9]) {
+            suffixes.forEach((suffix) => keys.add(`physicsquest${g}_${suffix}`));
+            keys.add(`pq_canvas_sims_g${g}`);
+            // Старые ключи 7 класса без номера параллели тоже удаляем,
+            // иначе миграция восстановит часть прогресса после перезагрузки.
+            if (g === 7) {
+                ["progress", "stats", "records", "playthrough_history"].forEach((suffix) => {
+                    keys.add(`physicsquest_${suffix}`);
+                });
+            }
+        }
+
+        let success = true;
+        try {
+            // Пройденные симуляторы и прочитанные главы комикса имеют
+            // составные ключи, поэтому собираем их из самого хранилища.
+            for (let i = 0; i < localStorage.length; i++) {
+                const key = localStorage.key(i);
+                if (!key) continue;
+                if (/^pq_trilogy_seen_g[789]_ep\d+$/.test(key) || /(?:^|_)pq_canvas_sims_g[789]$/.test(key)) {
+                    keys.add(key);
+                }
+            }
+        } catch (e) {
+            console.error("Progress reset scan error:", e);
+            success = false;
+        }
+        keys.forEach((key) => {
+            try { localStorage.removeItem(key); }
+            catch (e) {
+                console.error("Progress reset error:", key, e);
+                success = false;
+            }
+        });
+        return success;
+    },
+
     // === ЗАДАНИЯ УЧИТЕЛЯ ===
     getCustomTasks(allGrades = false) {
         this.ensureMigrated();
