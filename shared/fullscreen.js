@@ -57,36 +57,65 @@
         delete target._pqPreviousBodyOverflow;
     }
 
+    function activateFallback(target) {
+        if (target._pqPreviousBodyOverflow === undefined) {
+            target._pqPreviousBodyOverflow = document.body.style.overflow;
+        }
+        document.body.style.overflow = "hidden";
+        target.classList.add(FALLBACK_CLASS, ACTIVE_CLASS);
+    }
+
+    async function exitNative(target) {
+        if (nativeElement() !== target) return;
+        try {
+            const close = document.exitFullscreen || document.webkitExitFullscreen;
+            if (close) await Promise.resolve(close.call(document));
+        } catch (_) {}
+    }
+
     async function enter(target, button) {
         if (!target) return;
-        restoreFallbackScroll(target);
-        target.classList.remove(FALLBACK_CLASS);
+        const operation = (target._pqFullscreenOperation || 0) + 1;
+        target._pqFullscreenOperation = operation;
+
+        // Сначала раскрываем игру средствами CSS. Некоторые WebView оставляют
+        // Promise requestFullscreen() навсегда в ожидании: даже тогда кнопка
+        // обязана немедленно развернуть окно, а не ждать ответа браузера.
+        activateFallback(target);
+        syncButton(button, target);
+
         try {
             const request = target.requestFullscreen || target.webkitRequestFullscreen;
-            if (!request) throw new Error("Fullscreen API is unavailable");
+            if (!request) return;
             await Promise.resolve(request.call(target));
+            if (target._pqFullscreenOperation !== operation) {
+                // Пользователь успел выйти или закрыть игру до ответа браузера.
+                // Не даём позднему ответу снова захватить экран. Если уже началась
+                // новая попытка входа для этого же окна, её состояние не трогаем.
+                if (!isActive(target)) await exitNative(target);
+                return;
+            }
+            if (nativeElement() === target) {
+                target.classList.remove(FALLBACK_CLASS);
+                restoreFallbackScroll(target);
+            }
             target.classList.add(ACTIVE_CLASS);
         } catch (_) {
-            // iPhone Safari и некоторые встроенные браузеры не дают элементам
-            // requestFullscreen(). Визуальный режим всё равно остаётся полезным.
-            target._pqPreviousBodyOverflow = document.body.style.overflow;
-            document.body.style.overflow = "hidden";
-            target.classList.add(FALLBACK_CLASS, ACTIVE_CLASS);
+            // iPhone Safari и некоторые встроенные браузеры запрещают
+            // requestFullscreen(). Немедленный CSS-режим в этом случае остаётся.
+            if (target._pqFullscreenOperation !== operation) return;
+            activateFallback(target);
         }
         syncButton(button, target);
     }
 
     async function exit(target) {
         if (!target) return;
-        const wasNative = nativeElement() === target;
+        target._pqFullscreenOperation = (target._pqFullscreenOperation || 0) + 1;
         target.classList.remove(FALLBACK_CLASS, ACTIVE_CLASS);
         restoreFallbackScroll(target);
-        if (wasNative) {
-            try {
-                const close = document.exitFullscreen || document.webkitExitFullscreen;
-                if (close) await Promise.resolve(close.call(document));
-            } catch (_) {}
-        }
+        syncAll();
+        await exitNative(target);
         syncAll();
     }
 
@@ -113,7 +142,12 @@
     function onFullscreenChange() {
         const current = nativeElement();
         document.querySelectorAll("." + ACTIVE_CLASS).forEach((target) => {
-            if (!target.classList.contains(FALLBACK_CLASS) && current !== target) {
+            if (current === target) {
+                // Нативный режим мог завершиться позже CSS-раскрытия.
+                // Убираем fallback и возвращаем странице исходную прокрутку.
+                target.classList.remove(FALLBACK_CLASS);
+                restoreFallbackScroll(target);
+            } else if (!target.classList.contains(FALLBACK_CLASS)) {
                 target.classList.remove(ACTIVE_CLASS);
             }
         });

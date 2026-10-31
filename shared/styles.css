@@ -5288,7 +5288,7 @@ html[data-theme="dark"] .rpg-maint-gain { color: #86efac; background: rgba(34, 1
 }
 .pq-fullscreen-btn:hover, .pq-fullscreen-btn[aria-pressed="true"] { background: #d4edf7; border-color: #1683a5; }
 .pq-fullscreen-btn:focus-visible { outline: 3px solid #d18a16; outline-offset: 2px; }
-.pq-fullscreen-fallback { z-index: 10000 !important; }
+.pq-fullscreen-fallback { position: fixed !important; inset: 0 !important; z-index: 10000 !important; }
 .pq-is-fullscreen {
     box-sizing: border-box; width: 100vw !important; height: 100vh !important; height: 100dvh !important;
     max-width: none !important; max-height: none !important; margin: 0 !important; padding: 0 !important; border-radius: 0 !important;
