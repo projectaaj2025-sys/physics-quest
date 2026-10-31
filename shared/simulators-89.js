@@ -2555,6 +2555,8 @@
                 color: #f8fafc;
                 box-shadow: 0 28px 70px rgba(0, 0, 0, 0.72);
             }
+            .pq-s89-head-actions { display: flex; align-items: center; justify-content: flex-end; gap: 8px; flex-wrap: wrap; flex: none; }
+            @media (max-width: 600px) { .pq-s89-head { flex-wrap: wrap; } .pq-s89-head-actions { width: 100%; justify-content: flex-start; } }
             .pq-s89-canvas {
                 width: 100%;
                 height: auto;
@@ -2834,13 +2836,16 @@
 
             modal.innerHTML = `
                 <div class="pq-s89-dialog">
-                    <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:12px;">
+                    <div class="pq-s89-head" style="display:flex;justify-content:space-between;align-items:flex-start;gap:12px;">
                         <div>
                             <div class="pq-sim89-kicker">${lab.icon} ${lab.para} · ${loc(lab.chapter)}</div>
                             <h2 style="margin:4px 0 6px;font-size:21px;">${loc(lab.title)}</h2>
                             <p style="margin:0;font-size:13.5px;color:#cbd5e1;line-height:1.45;">${loc(lab.story)}</p>
                         </div>
-                        <button type="button" class="pq-td-x" id="pq-s89-close" style="width:34px;height:34px;border-radius:50%;background:rgba(255,255,255,0.08);border:1px solid rgba(148,163,184,0.3);color:#fff;cursor:pointer;">✕</button>
+                        <div class="pq-s89-head-actions">
+                            <button type="button" id="pq-s89-fullscreen"></button>
+                            <button type="button" class="pq-td-x" id="pq-s89-close" style="width:34px;height:34px;border-radius:50%;background:rgba(255,255,255,0.08);border:1px solid rgba(148,163,184,0.3);color:#fff;cursor:pointer;">✕</button>
+                        </div>
                     </div>
 
                     <canvas id="pq-s89-canvas" class="pq-s89-canvas" width="760" height="270"></canvas>
@@ -2888,6 +2893,9 @@
 
             modal.classList.add("open");
             this.$("pq-s89-close").onclick = () => this.close();
+            if (window.PQFullscreen) {
+                window.PQFullscreen.bind(modal, this.$("pq-s89-fullscreen"), modal.querySelector(".pq-s89-dialog"));
+            }
 
             // select остаются списками, а числовые параметры — вращающимися ручками
             modal.querySelectorAll("select[data-ctrl]").forEach(el => {
@@ -2992,6 +3000,7 @@
             this.rafId = null;
             this.activeLab = null;
             const m = this.$("pq-sim89-modal");
+            if (window.PQFullscreen) window.PQFullscreen.exit(m);
             if (m) m.classList.remove("open");
         }
     };

@@ -54,7 +54,10 @@
       modal.setAttribute("aria-hidden", "true");
       modal.innerHTML = `
         <div class="field-sim-panel">
-          <button id="field-sim-close" class="field-sim-close" type="button" aria-label="Close">✕</button>
+          <div class="field-sim-tools">
+            <button id="field-sim-fullscreen" type="button"></button>
+            <button id="field-sim-close" class="field-sim-close" type="button" aria-label="Close">✕</button>
+          </div>
           <div class="sim-kicker" id="field-sim-modal-kicker"></div>
           <h2 id="field-sim-title-modal"></h2>
           <p id="field-sim-story"></p>
@@ -68,6 +71,13 @@
         </div>
       `;
       document.body.appendChild(modal);
+    }
+    if (window.PQFullscreen) {
+      window.PQFullscreen.bind(
+        document.getElementById("field-sim-modal"),
+        document.getElementById("field-sim-fullscreen"),
+        document.querySelector("#field-sim-modal .field-sim-panel")
+      );
     }
     const sec = document.getElementById("field-simulations-section");
     if (sec) sec.style.display = "";
@@ -1421,6 +1431,7 @@
   function closeModal() {
     stopLightLoop();
     const modal = $("field-sim-modal");
+    if (window.PQFullscreen) window.PQFullscreen.exit(modal);
     if (modal) {
       modal.classList.remove("open");
       modal.setAttribute("aria-hidden", "true");
@@ -1430,7 +1441,11 @@
 
   $("field-sim-close").onclick = closeModal;
   $("field-sim-modal").addEventListener("click", e => { if (e.target === $("field-sim-modal")) closeModal(); });
-  document.addEventListener("keydown", e => { if (e.key === "Escape" && $("field-sim-modal")?.classList.contains("open")) closeModal(); });
+  document.addEventListener("keydown", e => {
+    if (e.key !== "Escape" || !$("field-sim-modal")?.classList.contains("open")) return;
+    if (window.PQFullscreen?.isActive($("field-sim-modal"))) window.PQFullscreen.exit($("field-sim-modal"));
+    else closeModal();
+  });
 
   const btnLab = document.getElementById("btn-lab");
   if (btnLab && Number(window.CURRENT_GRADE) === 7) {

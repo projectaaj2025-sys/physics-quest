@@ -21,13 +21,16 @@
         const head = document.createElement('div'); head.className = 'pqvision-head';
         const title = document.createElement('b'); title.textContent = t.title;
         const closeButton = document.createElement('button'); closeButton.type = 'button'; closeButton.textContent = '✕ ' + t.close;
+        const fullscreenButton = document.createElement('button'); fullscreenButton.type = 'button';
+        const controls = document.createElement('div'); controls.className = 'pqvision-actions'; controls.append(fullscreenButton, closeButton);
         const iframe = document.createElement('iframe'); iframe.src = './shared/vision-exercise.html?lang=' + encodeURIComponent(lang()); iframe.title = t.title;
-        function onKey(e) { if (e.key === 'Escape') close(); }
-        function close() { document.removeEventListener('keydown', onKey); overlay.remove(); if (previous && previous.focus) previous.focus(); }
+        function onKey(e) { if (e.key === 'Escape') { if (window.PQFullscreen?.isActive(overlay)) window.PQFullscreen.exit(overlay); else close(); } }
+        function close() { if (window.PQFullscreen) window.PQFullscreen.exit(overlay); document.removeEventListener('keydown', onKey); overlay.remove(); if (previous && previous.focus) previous.focus(); }
         closeButton.addEventListener('click', close);
         overlay.addEventListener('click', e => { if (e.target === overlay) close(); });
         iframe.addEventListener('load', () => { try { iframe.contentDocument.addEventListener('keydown', onKey); } catch (_) {} });
-        head.append(title, closeButton); dialog.append(head, iframe); overlay.appendChild(dialog); document.body.appendChild(overlay);
+        head.append(title, controls); dialog.append(head, iframe); overlay.appendChild(dialog); document.body.appendChild(overlay);
+        if (window.PQFullscreen) window.PQFullscreen.bind(overlay, fullscreenButton, dialog);
         document.addEventListener('keydown', onKey); closeButton.focus();
     }
     function mountGallery() {
@@ -46,7 +49,7 @@
         anchor.parentNode.insertBefore(card, anchor.nextSibling);
     }
     const style = document.createElement('style');
-    style.textContent = '.pqvision-overlay{position:fixed;inset:0;z-index:9900;background:#061020cc;display:flex;align-items:center;justify-content:center;padding:12px}.pqvision-dialog{width:min(1180px,100%);height:min(92vh,1000px);background:#f4f7fb;border-radius:16px;overflow:hidden;display:flex;flex-direction:column}.pqvision-head{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:10px 16px;color:#202b3c;font:700 18px system-ui}.pqvision-head button{font:600 14px system-ui;cursor:pointer;padding:8px 12px;border:1px solid #9aaec4;border-radius:8px;background:white;color:#202b3c}.pqvision-head button:focus-visible{outline:3px solid #4678f5}.pqvision-dialog iframe{display:block;border:0;width:100%;flex:1;min-height:0;background:#f4f7fb}';
+    style.textContent = '.pqvision-overlay{position:fixed;inset:0;z-index:9900;background:#061020cc;display:flex;align-items:center;justify-content:center;padding:12px}.pqvision-dialog{width:min(1180px,100%);height:min(92vh,1000px);background:#f4f7fb;border-radius:16px;overflow:hidden;display:flex;flex-direction:column}.pqvision-head{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:10px 16px;color:#202b3c;font:700 18px system-ui}.pqvision-actions{display:flex;align-items:center;justify-content:flex-end;gap:8px;flex-wrap:wrap}.pqvision-head button{font:600 14px system-ui;cursor:pointer;padding:8px 12px;border:1px solid #9aaec4;border-radius:8px;background:white;color:#202b3c}.pqvision-head button:focus-visible{outline:3px solid #4678f5}.pqvision-dialog iframe{display:block;border:0;width:100%;flex:1;min-height:0;background:#f4f7fb}';
     document.head.appendChild(style);
     window.PQVisionExercise = { mountGallery };
     mountGallery();

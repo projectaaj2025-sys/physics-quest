@@ -1057,23 +1057,12 @@ const PROFILE_NOTES_LANG_NAMES = {
     en: "English",
     kk: "Қазақша"
 };
-const PROFILE_NOTES_V2_FILES = {
-    ru: "assets/pdf/grade8-ru.pdf",
-    en: "assets/pdf/grade8-en.pdf",
-    kk: "assets/pdf/grade8-kk.pdf"
-};
-
 function updateProfileNotesDownload() {
     const link = document.getElementById("btn-download-notes-pdf");
     const language = document.getElementById("profile-notes-language");
-    const linkV2 = document.getElementById("btn-download-notes-v2-pdf");
-    const languageV2 = document.getElementById("profile-notes-v2-language");
     const lang = I18n.currentLang || "ru";
     const languageName = PROFILE_NOTES_LANG_NAMES[lang] || PROFILE_NOTES_LANG_NAMES.ru;
     const pdfMap = window.GRADE_META && window.GRADE_META.pdfFiles;
-
-    if (linkV2) linkV2.style.display = "none";
-    if (languageV2) languageV2.style.display = "none";
 
     if (link) {
         if (pdfMap && (pdfMap[lang] || pdfMap.ru)) {
@@ -1128,8 +1117,113 @@ function renderRocketGrid() {
     });
 }
 
+// ============ ЗАЩИЩЁННЫЙ СБРОС ПРОГРЕССА ============
+let resetProgressReturnFocus = null;
+
+function normalizedResetWord(value) {
+    return String(value || "").trim().toLocaleUpperCase();
+}
+
+function syncResetProgressDialog(clearInput = false) {
+    const input = document.getElementById("reset-progress-confirmation");
+    const confirmButton = document.getElementById("btn-reset-progress-confirm");
+    const word = document.getElementById("reset-progress-word");
+    const error = document.getElementById("reset-progress-error");
+    if (!input || !confirmButton || !word) return;
+    if (clearInput) input.value = "";
+    word.textContent = I18n.t("resetProgressWord");
+    confirmButton.disabled = normalizedResetWord(input.value) !== normalizedResetWord(word.textContent);
+    if (error) {
+        error.hidden = true;
+        error.textContent = "";
+    }
+}
+
+function showResetProgressError(key) {
+    const error = document.getElementById("reset-progress-error");
+    if (!error) return;
+    error.textContent = I18n.t(key);
+    error.hidden = false;
+}
+
+function openResetProgressDialog() {
+    const modal = document.getElementById("reset-progress-modal");
+    if (!modal) return;
+    resetProgressReturnFocus = document.activeElement;
+    syncResetProgressDialog(true);
+    modal.classList.add("active");
+    modal.setAttribute("aria-hidden", "false");
+    window.setTimeout(() => document.getElementById("reset-progress-confirmation")?.focus(), 0);
+}
+
+function closeResetProgressDialog(restoreFocus = true) {
+    const modal = document.getElementById("reset-progress-modal");
+    if (!modal) return;
+    modal.classList.remove("active");
+    modal.setAttribute("aria-hidden", "true");
+    syncResetProgressDialog(true);
+    if (restoreFocus && resetProgressReturnFocus && typeof resetProgressReturnFocus.focus === "function") {
+        resetProgressReturnFocus.focus();
+    }
+    resetProgressReturnFocus = null;
+}
+
+function confirmResetAllProgress() {
+    const input = document.getElementById("reset-progress-confirmation");
+    const confirmButton = document.getElementById("btn-reset-progress-confirm");
+    if (!input || !confirmButton) return;
+    if (normalizedResetWord(input.value) !== normalizedResetWord(I18n.t("resetProgressWord"))) {
+        syncResetProgressDialog(false);
+        showResetProgressError("resetProgressMismatch");
+        input.focus();
+        return;
+    }
+
+    confirmButton.disabled = true;
+    if (!Storage.resetAllProgress()) {
+        syncResetProgressDialog(false);
+        showResetProgressError("resetProgressError");
+        return;
+    }
+
+    // Не даём отложенному RPG-сохранению вернуть старое состояние между
+    // удалением ключей и перезагрузкой страницы.
+    if (typeof RPG !== "undefined" && RPG.state) {
+        if (RPG._saveTimer) window.clearTimeout(RPG._saveTimer);
+        RPG._saveTimer = null;
+        RPG.state = RPG.defaultState();
+        RPG.run = null;
+    }
+    closeResetProgressDialog(false);
+    const continueButton = document.getElementById("btn-continue");
+    if (continueButton) continueButton.style.display = "none";
+    showNotification(I18n.t("resetProgressDone"), "success");
+    window.setTimeout(() => window.location.reload(), 450);
+}
+
 // ============ МОДАЛКИ ============
 function setupModals() {
+    document.getElementById("btn-reset-progress")?.addEventListener("click", openResetProgressDialog);
+    document.getElementById("btn-reset-progress-cancel")?.addEventListener("click", () => closeResetProgressDialog());
+    document.getElementById("reset-progress-confirmation")?.addEventListener("input", () => syncResetProgressDialog(false));
+    document.getElementById("reset-progress-form")?.addEventListener("submit", (event) => {
+        event.preventDefault();
+        confirmResetAllProgress();
+    });
+    const resetModal = document.getElementById("reset-progress-modal");
+    resetModal?.addEventListener("click", (event) => {
+        if (event.target === resetModal) closeResetProgressDialog();
+    });
+    document.addEventListener("keydown", (event) => {
+        if (event.key === "Escape" && resetModal?.classList.contains("active")) {
+            event.preventDefault();
+            closeResetProgressDialog();
+        }
+    });
+    window.addEventListener("pq:lang-changed", () => {
+        if (resetModal?.classList.contains("active")) syncResetProgressDialog(true);
+    });
+
     document.getElementById("btn-clear-records").addEventListener("click", () => {
         if (confirm(I18n.t("clearRecordsConfirm"))) {
             Storage.clearRecords();

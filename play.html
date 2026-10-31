@@ -137,6 +137,9 @@
         <div class="profile-wrap">
             <h2 data-i18n="profileTitle">👤 Профиль пилота</h2>
             <p class="profile-sub" data-i18n="profileSub">Настрой имя и дизайн ракеты — как в РПГ</p>
+            <div class="profile-quick-actions" id="profile-quick-actions">
+                <button class="btn btn-secondary profile-reset-button" id="btn-reset-progress" type="button" data-i18n="resetProgressButton">🗑 Сбросить весь прогресс</button>
+            </div>
             <div class="profile-field">
                 <label data-i18n="pilotName">Имя пилота</label>
                 <input type="text" id="profile-name" maxlength="24" autocomplete="off"
@@ -190,36 +193,19 @@
                 <small class="profile-sub quest-limits-note" data-i18n="questLimitsTeacherNote">Если учитель назначил работу, действуют его настройки из назначения.</small>
                 <small class="profile-sub quest-limits-note quest-marks-note" data-i18n="mark10Note">Дополнительно к процентам: 95–100% — 10, 85–94% — 9, 75–84% — 8, 65–74% — 7, 55–64% — 6, 45–54% — 5, 35–44% — 4, 25–34% — 3, 15–24% — 2, ниже 15% — 1.</small>
             </div>
-            <div class="profile-field">
+            <div class="profile-field profile-conspekt-card">
                 <label data-i18n="profileConspektTitle">📘 Полный конспект</label>
-                <p class="profile-sub" style="margin:0 0 10px" data-i18n="profileConspektNote">Полный конспект всех 43 параграфов — открой в окне</p>
+                <p class="profile-sub" data-i18n="profileConspektActionsNote">Открой полный конспект в окне или скачай PDF на текущем языке приложения.</p>
                 <div class="profile-conspekt-actions">
-                    <button class="btn btn-primary" id="btn-download-conspekt">
-                        ⬇ <span data-i18n="profileConspektDownload">Открыть конспект</span>
+                    <button class="btn btn-secondary" id="btn-download-conspekt" type="button">
+                        📖 <span data-i18n="profileConspektOpen">Открыть</span>
                     </button>
-                </div>
-            </div>
-            <div class="profile-field">
-                <label data-i18n="profileNotesTitle">📥 Полный конспект всех тем</label>
-                <p class="profile-sub" style="margin:0 0 10px" data-i18n="profileNotesNote">Скачай полный конспект по §1–§43 на текущем языке приложения</p>
-                <div class="profile-conspekt-actions">
                     <a class="btn btn-primary profile-notes-download" id="btn-download-notes-pdf"
                        href="assets/pdf/grade8-ru.pdf" download>
-                        ⬇ <span data-i18n="profileNotesDownload">Скачать полный конспект</span>
+                        ⬇ <span data-i18n="profileNotesDownload">Скачать PDF</span>
                     </a>
-                    <span class="profile-notes-language" id="profile-notes-language"></span>
                 </div>
-            </div>
-            <div class="profile-field">
-                <label data-i18n="profileAdditionalNotesTitle">📚 Полный конспект — версия 2</label>
-                <p class="profile-sub" style="margin:0 0 10px" data-i18n="profileAdditionalNotesNote">Версия 2 будет скачана на текущем языке интерфейса.</p>
-                <div class="profile-conspekt-actions">
-                    <a class="btn btn-secondary profile-notes-download" id="btn-download-notes-v2-pdf"
-                       href="assets/pdf/grade8-ru.pdf" download>
-                        ⬇ <span data-i18n="profileAdditionalNotesDownload">Скачать полный конспект (версия 2)</span>
-                    </a>
-                    <span class="profile-notes-language" id="profile-notes-v2-language"></span>
-                </div>
+                <small class="profile-notes-language" id="profile-notes-language"></small>
             </div>
             <button class="btn btn-back" id="btn-profile-back">
                 <span data-i18n="back">← Назад</span>
@@ -621,6 +607,30 @@
         </div>
     </div>
 
+    <!-- Подтверждение полного сброса игрового прогресса -->
+    <div id="reset-progress-modal" class="modal reset-progress-modal" role="dialog" aria-modal="true"
+         aria-labelledby="reset-progress-dialog-title" aria-describedby="reset-progress-warning" aria-hidden="true">
+        <div class="modal-content reset-progress-content">
+            <h2 id="reset-progress-dialog-title" data-i18n="resetProgressDialogTitle">Сбросить весь прогресс?</h2>
+            <p id="reset-progress-warning" class="reset-progress-warning" data-i18n="resetProgressWarning">Это действие необратимо. Будут удалены пройденные уровни, очки, рекорды, статистика, RPG-прогресс и результаты мини-игр во всех классах.</p>
+            <p class="reset-progress-keep" data-i18n="resetProgressKeep">Имя и код ученика, язык, тема, а также классы, назначения и материалы учителя сохранятся.</p>
+            <form id="reset-progress-form" class="reset-progress-form" novalidate>
+                <label for="reset-progress-confirmation">
+                    <span data-i18n="resetProgressTypeLabel">Для подтверждения введите слово:</span>
+                    <strong id="reset-progress-word">СБРОСИТЬ</strong>
+                </label>
+                <input type="text" id="reset-progress-confirmation" maxlength="24" autocomplete="off"
+                       autocapitalize="characters" spellcheck="false"
+                       data-i18n-placeholder="resetProgressPlaceholder" placeholder="Введите слово подтверждения">
+                <p id="reset-progress-error" class="reset-progress-error" role="alert" hidden></p>
+                <div class="reset-progress-actions">
+                    <button class="btn btn-secondary" id="btn-reset-progress-cancel" type="button" data-i18n="resetProgressCancel">Отмена</button>
+                    <button class="btn btn-danger" id="btn-reset-progress-confirm" type="submit" data-i18n="resetProgressConfirm" disabled>Да, удалить прогресс</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
     <!-- Модальное окно сюжетного журнала и брифинга миссии -->
     <div id="story-modal" class="modal">
         <div class="modal-content story-modal-content">
@@ -744,8 +754,11 @@
 
     <!-- Интерактивная мини-игра лаборатории -->
     <div id="lab-overlay" class="lab-overlay">
-        <div class="lab-panel">
-            <h3 id="lab-title">🔬 Лабораторный эксперимент</h3>
+        <div class="lab-panel" role="dialog" aria-modal="true" aria-labelledby="lab-title">
+            <div class="lab-head">
+                <h3 id="lab-title">🔬 Лабораторный эксперимент</h3>
+                <button type="button" id="lab-fullscreen" data-i18n="fullscreenEnter">⛶ На весь экран</button>
+            </div>
             <p id="lab-desc" class="lab-desc">Проведи эксперимент — подбери параметры и получи результат!</p>
             <div id="lab-content"></div>
             <div id="lab-formula" class="lab-formula" style="display:none"></div>
@@ -833,6 +846,7 @@
             "./shared/teacher.js",
             "./shared/game.js",
             "./shared/i18n.js",
+            "./shared/fullscreen.js",
             "./shared/main.js?v=3",
             "./shared/qrcode.js",
             "./shared/rpg-data.js",
