@@ -55,6 +55,7 @@
       modal.innerHTML = `
         <div class="field-sim-panel">
           <div class="field-sim-tools">
+            <button id="field-sim-phet" class="pq-phet-btn" type="button">🌐 PhET</button>
             <button id="field-sim-fullscreen" type="button"></button>
             <button id="field-sim-close" class="field-sim-close" type="button" aria-label="Close">✕</button>
           </div>
@@ -1442,6 +1443,9 @@
   }
 
   $("field-sim-close").onclick = closeModal;
+  $("field-sim-phet").onclick = (event) => {
+    if (window.PQPhETLabs) window.PQPhETLabs.open(7, event.currentTarget);
+  };
   $("field-sim-modal").addEventListener("click", e => { if (e.target === $("field-sim-modal")) closeModal(); });
   document.addEventListener("keydown", e => {
     if (e.key !== "Escape" || !$("field-sim-modal")?.classList.contains("open")) return;

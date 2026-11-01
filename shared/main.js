@@ -171,11 +171,13 @@ function closeStoryModal() {
     if (typeof Game !== "undefined" && Game.storyOpen) {
         const pausedForStory = Game.pauseStartedAt ? Date.now() - Game.pauseStartedAt : 0;
         Game.pausedTotal += pausedForStory;
-        Game.pauseStartedAt = 0;
-        Game.paused = false;
         Game.storyOpen = false;
+        // Интро босса может быть открыто одновременно с брифингом.
+        // В этом случае пауза продолжается до кнопки запуска босса.
+        Game.paused = !!Game.bossIntroOpen;
+        Game.pauseStartedAt = Game.paused ? Date.now() : 0;
         Game.lastTime = performance.now();
-        if (Game.running && Game.canvas) Game.canvas.focus();
+        if (Game.running && !Game.paused && Game.canvas) Game.canvas.focus();
     }
     storyBriefingLevel = null;
     modal.classList.remove("active");

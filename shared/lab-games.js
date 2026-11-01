@@ -131,11 +131,26 @@ const LabGames = {
         if (this.shownThisLevel && this.activeLevel === levelId) return;
         const cfg = this.configs[levelId];
         if (!cfg) return;
+        // Не открываем лабораторию поверх сюжетного брифинга или интро босса.
+        // Иначе закрытие верхнего окна могло снять паузу, пока второе ещё открыто.
+        if (game && (game.storyOpen || game.bossIntroOpen)) {
+            if (this._pendingTimer) clearTimeout(this._pendingTimer);
+            const session = game.sessionId;
+            this._pendingTimer = setTimeout(() => {
+                this._pendingTimer = null;
+                if (game.running && game.currentLevel === levelId && game.sessionId === session) {
+                    this.tryShow(levelId, game);
+                }
+            }, 400);
+            return;
+        }
         this.activeLevel = levelId;
         this.shownThisLevel = true;
         this.show(cfg, game);
     },
     reset() {
+        if (this._pendingTimer) clearTimeout(this._pendingTimer);
+        this._pendingTimer = null;
         this.shownThisLevel = false;
         this.activeLevel = null;
     },
@@ -177,6 +192,12 @@ const LabGames = {
     show(baseCfg, game, values, stageIndex) {
         this.init();
         if (!baseCfg) return;
+        const overlay = document.getElementById("lab-overlay");
+        if (!overlay) return;
+        if (this._pendingTimer) clearTimeout(this._pendingTimer);
+        this._pendingTimer = null;
+        const sameGameSession = overlay.classList.contains("active") && this.activeGame === game;
+        if (!sameGameSession) this._pausedByLab = false;
         if (this.interactiveLab) {
             this.interactiveLab.destroy();
             this.interactiveLab = null;
@@ -191,10 +212,14 @@ const LabGames = {
         const cfg = Object.assign({}, baseCfg, stage || {});
         delete cfg.stages;
         this.runtimeCfg = cfg;
-        if (game) game.paused = true;
+        if (game) {
+            if (!sameGameSession && !game.paused) {
+                this._pausedByLab = true;
+                game.pauseStartedAt = Date.now();
+            }
+            game.paused = true;
+        }
 
-        const overlay = document.getElementById("lab-overlay");
-        if (!overlay) return;
         this.resetCompletion();
         const title = document.getElementById("lab-title");
         const desc = document.getElementById("lab-desc");
@@ -354,8 +379,12 @@ const LabGames = {
         this.resetCompletion();
 
         if (game) {
-            game.paused = false;
-            game.lastTime = performance.now();
+            if (this._pausedByLab) {
+                if (game.pauseStartedAt) game.pausedTotal += Date.now() - game.pauseStartedAt;
+                game.pauseStartedAt = 0;
+                game.paused = false;
+                game.lastTime = performance.now();
+            }
             if (success) {
                 const alreadyRewarded = !!(completedCfg && this.rewardedConfigs.has(completedCfg));
                 if (!alreadyRewarded) {
@@ -374,8 +403,9 @@ const LabGames = {
                     showNotification(this.t("labAlreadyRewarded"), "info");
                 }
             }
-            game.canvas?.focus();
+            if (!game.paused) game.canvas?.focus();
         }
+        this._pausedByLab = false;
         this.activeGame = null;
         this.activeCfg = null;
         this.runtimeCfg = null;

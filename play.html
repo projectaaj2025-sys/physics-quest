@@ -12,6 +12,7 @@
     <link rel="icon" type="image/png" sizes="192x192" href="./assets/icons/icon-192.png">
     <link rel="apple-touch-icon" sizes="180x180" href="./assets/icons/icon-180.png">
     <link rel="stylesheet" href="./shared/styles.css">
+    <link rel="stylesheet" href="./shared/phet-labs.css">
     <script>
         // Тема применяется до отрисовки: светлая по умолчанию, тёмная — по выбору ученика
         (function () {
@@ -89,6 +90,7 @@
     <!-- Экран выбора уровня -->
     <div id="level-screen" class="screen">
         <div class="level-topbar">
+            <button class="pq-phet-btn" id="btn-phet-level" type="button">🌐 PhET</button>
             <button class="btn btn-secondary level-story-top" id="btn-level-story" type="button">
                 📜 <span data-i18n="storyLoreButton">Лор и сюжет</span>
             </button>
@@ -250,6 +252,7 @@
                     <span class="hud-value" id="time-value">00:00</span>
                 </div>
                 <button id="btn-lab" class="btn-pause" type="button" data-i18n="labBtnShort" style="display:none; background:#6d4c41; color:#fff; border-color:#6d4c41">🔬 Лаб</button>
+                <button id="btn-phet" class="btn-pause pq-phet-btn" type="button">🌐 PhET</button>
                 <button id="btn-pause" class="btn-pause" type="button">⏸ <span data-i18n="pause">Пауза</span></button>
                 <button id="btn-exit-level" class="btn-exit-level" type="button">✕ <span data-i18n="exitLevel">Выход</span></button>
             </div>
@@ -767,7 +770,10 @@
         <div class="lab-panel" role="dialog" aria-modal="true" aria-labelledby="lab-title">
             <div class="lab-head">
                 <h3 id="lab-title">🔬 Лабораторный эксперимент</h3>
-                <button type="button" id="lab-fullscreen" data-i18n="fullscreenEnter">⛶ На весь экран</button>
+                <div class="lab-head-actions">
+                    <button type="button" id="lab-phet" class="pq-phet-btn">🌐 PhET</button>
+                    <button type="button" id="lab-fullscreen" data-i18n="fullscreenEnter">⛶ На весь экран</button>
+                </div>
             </div>
             <p id="lab-desc" class="lab-desc">Проведи эксперимент — подбери параметры и получи результат!</p>
             <div id="lab-stage" class="lab-stage" style="display:none" aria-live="polite"></div>
@@ -912,6 +918,9 @@
         if (grade === 8 || grade === 9) {
             scripts.push("./shared/sim-light.js", "./shared/simulators-89.js?v=6");
         }
+        // Настоящие официальные PhET-симуляторы текущего класса.
+        // Загружается только локальный модуль интеграции; внешний PhET — по кнопке.
+        scripts.push("./shared/phet-labs.js");
 
         scripts.push("./shared/diagram-games.js", "./shared/vision-exercise.js?v=2");
 
@@ -938,7 +947,7 @@
                 }
                 // Новые модули трилогии: миры уровней, разбор задач, звук, битва команд,
                 // карточки класса, сертификаты и офлайн-режим.
-                ["LevelThemes", "PQProblemSolver", "PQSound", "PQTeamBattle", "PQPrintCards", "PQCertificate", "PQOffline"].forEach((name) => {
+                ["LevelThemes", "PQProblemSolver", "PQSound", "PQTeamBattle", "PQPrintCards", "PQCertificate", "PQOffline", "PQPhETLabs"].forEach((name) => {
                     const mod = window[name];
                     if (mod && typeof mod.init === "function") {
                         try { mod.init(); } catch (e) { console.error(name, e); }

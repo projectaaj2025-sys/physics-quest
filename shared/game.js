@@ -548,7 +548,9 @@ const Game = {
                 this.bossIntroOpen = true;
                 BossIntro.show(this.currentLevel, this, () => {
                     this.bossIntroOpen = false;
-                    if (this.paused) this.resumeGame();
+                    // Если за интро ещё открыт сюжетный брифинг, его закрытие
+                    // само снимет паузу. Не запускаем мир между двумя окнами.
+                    if (this.paused && !this.storyOpen) this.resumeGame();
                 });
             } catch (e) {
                 this.bossIntroOpen = false;

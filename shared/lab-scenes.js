@@ -104,9 +104,9 @@
                 <circle cx="510" cy="76" r="4" class="pqs-electron pqs-anim"/><circle cx="222" cy="105" r="4" class="pqs-electron pqs-anim"/>
             </g>
             <g transform="translate(235 81)">
-                <rect width="168" height="43" rx="10" class="pqs-instrument"/>
+                <rect width="168" height="52" rx="10" class="pqs-instrument"/>
                 <text x="84" y="18" text-anchor="middle" class="pqs-svg-label">I = U / R</text>
-                <text x="84" y="35" text-anchor="middle" class="pqs-svg-value" data-pqs-result>—</text>
+                <text x="84" y="41" text-anchor="middle" class="pqs-svg-value" data-pqs-result>—</text>
             </g>`,
         series: `
             <path d="M55 106V38h505v68H55" class="pqs-wire"/>
@@ -117,7 +117,7 @@
                 <g transform="translate(389 20)"><rect width="86" height="36" rx="7" class="pqs-resistor-body"/><text x="43" y="24" text-anchor="middle" class="pqs-svg-label">R₃</text></g>
             </g>
             <path d="M96 38h49M231 38h36M353 38h36M475 38h85" class="pqs-current-line pqs-anim"/>
-            <g transform="translate(224 81)"><rect width="190" height="43" rx="10" class="pqs-instrument"/><text x="95" y="18" text-anchor="middle" class="pqs-svg-label">R = R₁ + R₂ + R₃</text><text x="95" y="35" text-anchor="middle" class="pqs-svg-value" data-pqs-result>—</text></g>`,
+            <g transform="translate(224 81)"><rect width="190" height="52" rx="10" class="pqs-instrument"/><text x="95" y="18" text-anchor="middle" class="pqs-svg-label">R = R₁ + R₂ + R₃</text><text x="95" y="41" text-anchor="middle" class="pqs-svg-value" data-pqs-result>—</text></g>`,
         parallel: `
             <path d="M66 119V25h480v94H66M66 73h480" class="pqs-wire"/>
             <g class="pqs-battery" transform="translate(42 52)"><rect width="46" height="45" rx="7"/><path d="M14 12v21M5 22h20M33 15v14M26 22h14"/></g>
@@ -125,7 +125,7 @@
             <g transform="translate(260 55)"><rect width="115" height="36" rx="7" class="pqs-resistor-body"/><text x="57" y="24" text-anchor="middle" class="pqs-svg-label">R₂</text></g>
             <path d="M96 25h164M375 25h141M96 73h164M375 73h141" class="pqs-current-line pqs-anim"/>
             <g class="pqs-junctions"><circle cx="190" cy="25" r="5"/><circle cx="450" cy="25" r="5"/><circle cx="190" cy="73" r="5"/><circle cx="450" cy="73" r="5"/></g>
-            <g transform="translate(225 101)"><rect width="195" height="36" rx="10" class="pqs-instrument"/><text x="62" y="24" class="pqs-svg-label">R = R₁R₂/(R₁+R₂)</text><text x="174" y="24" text-anchor="middle" class="pqs-svg-value" data-pqs-result>—</text></g>`,
+            <g transform="translate(205 92)"><rect width="235" height="52" rx="10" class="pqs-instrument"/><text x="117.5" y="17" text-anchor="middle" class="pqs-svg-label">R = R₁R₂/(R₁+R₂)</text><text x="117.5" y="41" text-anchor="middle" class="pqs-svg-value" data-pqs-result>—</text></g>`,
         power: `
             <path d="M55 110V83h105M390 83h165v27H55" class="pqs-wire"/>
             <g class="pqs-battery" transform="translate(31 64)"><rect width="46" height="45" rx="7"/><path d="M14 12v21M5 22h20M33 15v14M26 22h14"/></g>
@@ -178,7 +178,7 @@
             <g class="pqs-object"><path d="M105 78V28M105 28l-9 15M105 28l9 15" class="pqs-object-arrow"/><rect x="87" y="78" width="36" height="8" rx="3" class="pqs-metal"/></g>
             <g class="pqs-image"><path d="M485 78v40M485 118l-9-15M485 118l9-15" class="pqs-image-arrow"/></g>
             <g class="pqs-light-rays"><path d="M105 28l200 38 180 52M105 28h200l180 90M105 28l200 50"/></g>
-            <g transform="translate(454 9)"><rect width="127" height="43" rx="10" class="pqs-instrument"/><text x="63" y="17" text-anchor="middle" class="pqs-svg-label">1/F = 1/d + 1/o</text><text x="63" y="35" text-anchor="middle" class="pqs-svg-value" data-pqs-result>—</text></g>`,
+            <g transform="translate(454 9)"><rect width="127" height="52" rx="10" class="pqs-instrument"/><text x="63" y="17" text-anchor="middle" class="pqs-svg-label">1/F = 1/d + 1/o</text><text x="63" y="41" text-anchor="middle" class="pqs-svg-value" data-pqs-result>—</text></g>`,
         ramp: `
             <path d="M25 125H595" class="pqs-bench"/>
             <g class="pqs-ramp-track"><path d="M70 29l300 86H70z" class="pqs-ramp-body"/><path d="M70 29l300 86" class="pqs-ramp-edge"/></g>
@@ -201,9 +201,9 @@
             <g class="pqs-stand"><path d="M93 124V18h240M77 124h50M317 18h32" class="pqs-metal-line"/><circle cx="317" cy="20" r="6" class="pqs-junctions"/></g>
             <path d="M206 107a119 119 0 0 1 222 0" class="pqs-angle-arc"/>
             <path d="M317 20v105" class="pqs-normal"/>
-            <g class="pqs-pendulum pqs-anim"><path d="M317 20l-54 88" class="pqs-pendulum-string"/><circle cx="263" cy="108" r="18" class="pqs-ball"/><circle cx="257" cy="102" r="5" class="pqs-ball-highlight"/></g>
+            <g class="pqs-pendulum-bob pqs-anim"><path d="M317 20l-54 88" class="pqs-pendulum-string"/><circle cx="263" cy="108" r="18" class="pqs-ball"/><circle cx="257" cy="102" r="5" class="pqs-ball-highlight"/></g>
             <g transform="translate(435 25)"><circle cx="49" cy="40" r="36" class="pqs-instrument"/><path d="M49 40V18M49 40l18 8" class="pqs-stopwatch-hand"/><rect x="39" y="-2" width="20" height="9" rx="3" class="pqs-metal"/><text x="49" y="94" text-anchor="middle" class="pqs-svg-value" data-pqs-result>—</text></g>
-            <text x="385" y="119" class="pqs-svg-label">T = 2π√(L/g)</text>`,
+            <text x="185" y="140" text-anchor="middle" class="pqs-svg-label">T = 2π√(L/g)</text>`,
         waves: `
             <path d="M25 126H595" class="pqs-bench"/>
             <g class="pqs-wave-tank"><path d="M69 25h412v93H69z" class="pqs-glass"/><path d="M74 52h402v61H74z" class="pqs-wave-water"/></g>
@@ -307,7 +307,7 @@
 .pqs-trajectory { stroke:#7c3aed; stroke-width:3; }
 .pqs-projectile-ball { transition:transform .75s cubic-bezier(.25,.7,.35,1); }
 .pqs-projectile.measured .pqs-projectile-ball { transform:translate(calc(80px + var(--p1)*190px),calc(18px + var(--p2)*42px)); }
-.pqs-pendulum { transform-origin:317px 20px; transform-box:view-box; animation:pqs-swing 1.8s ease-in-out infinite alternate; animation-duration:calc(2.5s - var(--p1)*.7s); }
+.pqs-pendulum-bob { transform-origin:317px 20px; transform-box:view-box; animation:pqs-swing 1.8s ease-in-out infinite alternate; animation-duration:calc(2.5s - var(--p1)*.7s); }
 .pqs-pendulum-string { fill:none; stroke:#4f677b; stroke-width:3; }
 .pqs-wave-water { fill:rgba(56,189,248,.2); }
 .pqs-wave-lines { fill:none; stroke:#0284c7; stroke-width:3; stroke-linecap:round; animation:pqs-wave 1.6s linear infinite; animation-duration:calc(2.6s - var(--p2)*1.5s); transform-origin:110px 80px; transform-box:view-box; }

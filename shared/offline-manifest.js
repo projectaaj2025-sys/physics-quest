@@ -237,6 +237,8 @@ window.PQ_OFFLINE_FILES = [
     "shared/offline-manifest.js",
     "shared/offline.js",
     "shared/oformlenie.js",
+    "shared/phet-labs.css",
+    "shared/phet-labs.js",
     "shared/platform.css",
     "shared/print-cards.js",
     "shared/problem-solver.js",
