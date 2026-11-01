@@ -1429,19 +1429,25 @@
             .pq-td-navbtn {
                 padding: 9px 15px;
                 border-radius: 11px;
-                border: 1px solid rgba(148, 163, 184, 0.3);
-                background: rgba(255, 255, 255, 0.07);
-                color: #f8fafc;
+                border: 1.5px solid #7ea6c7;
+                background: #1e3a5f;
+                color: #ffffff;
                 font-weight: 800;
                 font-size: 13px;
                 cursor: pointer;
+                transition: background .16s, border-color .16s, transform .16s;
             }
+            .pq-td-navbtn:hover { background: #2b537f; border-color: #bae6fd; transform: translateY(-1px); }
+            .pq-td-navbtn:focus-visible { outline: 3px solid #fde047; outline-offset: 2px; }
             .pq-td-ep.locked {
-                opacity: 0.62;
+                opacity: 1;
                 border-style: dashed;
-                filter: grayscale(0.5);
+                border-color: #94a3b8;
+                background: #1e293b;
+                color: #f1f5f9;
+                filter: none;
             }
-            .pq-td-ep.locked:hover { transform: none; border-color: rgba(148, 163, 184, 0.35); }
+            .pq-td-ep.locked:hover { transform: none; border-color: #e2e8f0; }
             .pq-td-ep.shake { animation: pq-td-shake 0.4s ease; }
             @keyframes pq-td-shake {
                 0%, 100% { transform: translateX(0); }
@@ -1463,18 +1469,19 @@
                 display: flex; gap: 14px; align-items: center;
                 margin: 14px 18px; padding: 26px 20px;
                 border-radius: 16px;
-                border: 1.5px dashed rgba(148, 163, 184, 0.45);
-                background: rgba(15, 23, 42, 0.55);
-                color: #cbd5e1;
+                border: 2px dashed #7ea6c7;
+                background: #13233d;
+                color: #f1f5f9;
+                box-shadow: inset 0 0 0 1px rgba(255,255,255,.04);
             }
             .pq-td-locked-icon {
                 font-size: 30px; width: 58px; height: 58px; flex: 0 0 58px;
                 display: flex; align-items: center; justify-content: center;
-                border-radius: 50%; background: rgba(56, 189, 248, 0.14);
-                border: 1px solid rgba(56, 189, 248, 0.3);
+                border-radius: 50%; background: #1e3a5f;
+                border: 1.5px solid #7dd3fc;
             }
-            .pq-td-locked strong { display: block; font-size: 15px; color: #e2e8f0; margin-bottom: 4px; }
-            .pq-td-locked p { margin: 0; font-size: 13px; line-height: 1.5; color: #94a3b8; }
+            .pq-td-locked strong { display: block; font-size: 15px; color: #ffffff; margin-bottom: 5px; }
+            .pq-td-locked p { margin: 0; font-size: 13px; line-height: 1.55; color: #d7e5f2; }
             .pq-td-navbtn.primary {
                 background: linear-gradient(135deg, #0ea5e9, #2563eb);
                 border-color: transparent;
@@ -1488,7 +1495,9 @@
             .pq-f-sep { margin: 0 7px; color: #38bdf8; font-weight: 900; }
             .pq-td-inline {
                 margin: 14px 0 4px; padding: 14px; border-radius: 16px;
-                background: rgba(9, 20, 40, 0.55); border: 1px solid rgba(56, 189, 248, 0.24);
+                background: linear-gradient(160deg, #102444 0%, #081426 100%);
+                border: 1.5px solid #4b83ae; color: #f8fafc;
+                box-shadow: 0 8px 22px rgba(15, 35, 70, .14);
             }
             .pq-td-inline-head {
                 display: flex; justify-content: space-between; align-items: center; gap: 10px; margin-bottom: 10px;
