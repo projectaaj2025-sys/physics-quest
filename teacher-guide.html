@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="ru" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="theme-color" content="#eef4fb">
+    <meta name="description" content="Physics Quest teacher guide">
+    <title>Physics Quest — Teacher Guide</title>
+    <link rel="icon" type="image/png" sizes="192x192" href="./assets/icons/icon-192.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="./assets/icons/icon-180.png">
+    <link rel="stylesheet" href="./shared/teacher-guide.css">
+    <script>
+        (function () {
+            var theme = "light";
+            try { theme = localStorage.getItem("pq-theme") === "dark" ? "dark" : "light"; } catch (e) {}
+            document.documentElement.setAttribute("data-theme", theme);
+            var meta = document.querySelector('meta[name="theme-color"]');
+            if (meta) meta.setAttribute("content", theme === "dark" ? "#081121" : "#eef4fb");
+        })();
+    </script>
+    <script defer src="./shared/teacher-guide.js"></script>
+</head>
+<body>
+    <div id="teacher-guide-app"></div>
+</body>
+</html>
