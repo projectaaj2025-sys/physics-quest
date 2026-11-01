@@ -6,6 +6,8 @@ const LabGames = {
     },
     activeLevel: null,
     activeGame: null,
+    interactiveLab: null,
+    circuitState: null,
     shownThisLevel: false,
     init() {
         if (this._bound) return;
@@ -44,7 +46,8 @@ const LabGames = {
             });
             if (window.PQWorkbench) window.PQWorkbench.reset();
             if (this.activeCfg.type === "circuit") {
-                values.on = [...document.querySelectorAll("#lab-circuit .circuit-cell.on")].map(c => Number(c.getAttribute("data-idx")));
+                if (this.circuitState) values.interactive = this.circuitState;
+                else values.on = [...document.querySelectorAll("#lab-circuit .circuit-cell.on")].map(c => Number(c.getAttribute("data-idx")));
             }
             const game = this.activeGame;
             this.activeGame = null;
@@ -78,6 +81,11 @@ const LabGames = {
     },
     show(cfg, game, values) {
         this.init();
+        if (this.interactiveLab) {
+            this.interactiveLab.destroy();
+            this.interactiveLab = null;
+        }
+        this.circuitState = null;
         this.activeGame = game;
         this.activeCfg = cfg;
         if (game) game.paused = true;
@@ -156,47 +164,37 @@ const LabGames = {
                 resultEl.style.display = "";
                 update();
             }
-        } else if (cfg.type === "circuit" && circuitEl && resultEl) {
-            const items = [
-                { i: "🔋", name: L === "kk" ? "Батарея" : L === "en" ? "Battery" : "Батарея" },
-                { i: "🔑", name: L === "kk" ? "Кілт" : L === "en" ? "Switch" : "Ключ" },
-                { i: "🧱", name: L === "kk" ? "Резистор" : L === "en" ? "Resistor" : "Резистор" },
-                { i: "💡", name: L === "kk" ? "Шам" : L === "en" ? "Lamp" : "Лампа" }
-            ];
-            circuitEl.style.display = "grid";
-            circuitEl.innerHTML = items.map((it, idx) => `<div class="circuit-cell" data-idx="${idx}" title="${it.name}">${it.i}<small>${it.name}</small></div>`).join("");
+        } else if (cfg.type === "circuit" && content && resultEl) {
             resultEl.style.display = "";
-            // Состояние цепи живёт в разметке; при смене языка перерисовываем и возвращаем его.
-            const paintResult = () => {
-                const onCount = circuitEl.querySelectorAll(".circuit-cell.on").length;
-                if (onCount === 4) {
-                    circuitEl.querySelectorAll(".circuit-cell").forEach(c => c.classList.add("done"));
-                    resultEl.textContent = L === "kk" ? "⚡ Тізбек жиналды!" : L === "en" ? "⚡ Circuit complete!" : "⚡ Цепь собрана!";
-                    resultEl.className = "lab-result ok";
-                    resultEl._ok = true;
-                } else {
-                    resultEl.textContent = onCount
-                        ? (L === "kk" ? "Қосылды " : L === "en" ? "Enabled " : "Включено ") + onCount + "/4"
-                        : (L === "kk" ? "Барлық элементтерді қос (0/4)" : L === "en" ? "Enable all elements (0/4)" : "Включи все элементы цепи (0/4)");
-                    resultEl.className = "lab-result bad";
-                    resultEl._ok = false;
-                }
-            };
-            (values && Array.isArray(values.on) ? values.on : []).forEach((idx) => {
-                circuitEl.querySelector(`.circuit-cell[data-idx="${idx}"]`)?.classList.add("on");
-            });
-            paintResult();
-            circuitEl.querySelectorAll(".circuit-cell").forEach(cell => {
-                cell.addEventListener("click", () => {
-                    cell.classList.toggle("on");
-                    paintResult();
+            resultEl._ok = false;
+            if (window.PQInteractiveLabs) {
+                this.interactiveLab = window.PQInteractiveLabs.mount("circuit", content, {
+                    simple: true,
+                    state: (values && values.interactive) || {},
+                    onChange: (next, metrics) => {
+                        if (this.activeCfg !== cfg) return;
+                        this.circuitState = next;
+                        resultEl._ok = !!metrics.success;
+                        resultEl.className = "lab-result " + (metrics.success ? "ok" : "bad");
+                        resultEl.textContent = metrics.message;
+                    }
                 });
-            });
+            } else {
+                resultEl.className = "lab-result bad";
+                resultEl.textContent = L === "kk"
+                    ? "Интерактивті модуль жүктелмеді. Парақшаны жаңарт."
+                    : L === "en" ? "The interactive module did not load. Refresh the page." : "Интерактивный модуль не загрузился. Обнови страницу.";
+            }
         }
         overlay.classList.add("active");
     },
     hide(success) {
         if (window.PQWorkbench) window.PQWorkbench.reset();
+        if (this.interactiveLab) {
+            this.interactiveLab.destroy();
+            this.interactiveLab = null;
+        }
+        this.circuitState = null;
         const overlay = document.getElementById("lab-overlay");
         if (window.PQFullscreen) window.PQFullscreen.exit(overlay);
         if (overlay) overlay.classList.remove("active");

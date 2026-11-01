@@ -130,20 +130,21 @@
             },
             {
                 id: "g8_ohm",
+                interactive: "circuit",
                 topic: "electro",
                 icon: "💡",
                 para: "§ 22–26",
                 title: { ru: "Цепь постоянного тока и реостат", kk: "Тұрақты ток тізбегі және реостат", en: "DC Circuit & Sliding Rheostat" },
                 chapter: { ru: "Закон Ома · I = U / (R₁ + R₂)", kk: "Ом заңы · I = U / (R₁ + R₂)", en: "Ohm's Law · I = U / (R₁ + R₂)" },
                 story: {
-                    ru: "Настрой напряжение источника и ползунок реостата, чтобы лампа маяка горела в номинальном режиме (сила тока 1,5–2,5 А). Осторожно: при I > 3,5 А перегорает предохранитель!",
-                    kk: "Маяк шамы номиналды режимде (ток күші 1,5–2,5 А) жануы үшін кернеу мен реостат сырғымасын ретте. І > 3,5 А болса, сақтандырғыш күйеді!",
-                    en: "Adjust source voltage and rheostat slider so the beacon lamp runs at nominal current (1.5–2.5 A). Above 3.5 A the fuse blows!"
+                    ru: "Собери цепь из батареи, ключа, лампы и реостата, соединив клеммы проводами. Затем замкни ключ и настрой номинальный ток лампы (1,5–2,5 А). Осторожно: при I > 3,5 А перегорает предохранитель!",
+                    kk: "Қысқыштарды сымдармен қосып, батареядан, кілттен, шамнан және реостаттан тізбек құрастыр. Сосын кілтті тұйықтап, шамның номиналды тогын (1,5–2,5 А) ретте. І > 3,5 А болса, сақтандырғыш күйеді!",
+                    en: "Build a circuit from a battery, switch, lamp and rheostat by connecting their terminals with wires. Close the switch and tune the lamp's nominal current (1.5–2.5 A). Above 3.5 A the fuse blows!"
                 },
                 goal: {
-                    ru: "Выстави ток 1,5–2,5 А и введи силу тока I (А).",
-                    kk: "Ток күшін 1,5–2,5 А аралығына қойып, I мәнін енгіз (А).",
-                    en: "Set current to 1.5–2.5 A and enter current I (A)."
+                    ru: "Собери замкнутый контур, выстави ток 1,5–2,5 А и введи I (А).",
+                    kk: "Тұйық тізбек құрастырып, токты 1,5–2,5 А етіп қой және I мәнін енгіз (А).",
+                    en: "Build a closed loop, set current to 1.5–2.5 A and enter I (A)."
                 },
                 unit: "A",
                 tol: 0.08,
@@ -155,14 +156,20 @@
                 ],
                 compute(p) {
                     const Rtot = p.Rlamp + p.Rrheo;
-                    const Iraw = p.U / Rtot;
+                    const assembled = !!p.circuitComplete;
+                    const closed = !!p.switchClosed;
+                    const Iraw = assembled && closed ? p.U / Rtot : 0;
                     const blown = Iraw > 3.5;
                     const I = blown ? 0 : Iraw;
                     return {
                         expected: Number(I.toFixed(2)),
-                        pass: !blown && I >= 1.5 && I <= 2.5,
+                        pass: assembled && closed && !blown && I >= 1.5 && I <= 2.5,
                         I, Iraw, Rtot, blown,
-                        readout: blown
+                        readout: !assembled
+                            ? tr("Установи детали и соедини их проводами в один контур.", "Бөлшектерді орнатып, оларды сымдармен бір тізбекке қос.", "Place the parts and connect them with wires in one loop.")
+                            : !closed
+                            ? tr("Контур собран — замкни ключ, чтобы пошёл ток.", "Тізбек дайын — ток жүруі үшін кілтті тұйықта.", "The loop is ready — close the switch to start the current.")
+                            : blown
                             ? tr(`💥 Предохранитель сработал (${Iraw.toFixed(2)} А > 3,5 А)! Увеличь R₂ или снизь U.`, `💥 Сақтандырғыш күйді (${Iraw.toFixed(2)} А > 3,5 А)! R₂ арттыр немесе U азайт.`, `💥 Fuse blown (${Iraw.toFixed(2)} A > 3.5 A)! Increase R₂ or lower U.`)
                             : `R_общ = ${Rtot} Ω · I = ${I.toFixed(2)} A · P_ламп = ${(I * I * p.Rlamp).toFixed(1)} W`
                     };
@@ -1172,20 +1179,21 @@
             },
             {
                 id: "g9_induction",
+                interactive: "magnet",
                 topic: "electro9",
                 icon: "🧲",
                 para: "§ 37–44",
                 title: { ru: "ЭДС индукции в катушке", kk: "Орамадағы индукция ЭҚК", en: "Induced EMF in a Coil" },
                 chapter: { ru: "Электромагнитная индукция · ε = N·B·S/Δt", kk: "Электромагниттік индукция · ε = N·B·S/Δt", en: "Electromagnetic induction · ε = N·B·S/Δt" },
                 story: {
-                    ru: "Генератор аварийного щита Орбиты-9 наводит ЭДС в катушке: магнитное поле B исчезает за время Δt. Подбери индукцию, площадь витка, число витков и время так, чтобы ЭДС была 4–30 В!",
-                    kk: "Орбита-9 апаттық қалқанының генераторы орамада ЭҚК тудырады: B магнит өрісі Δt уақытта жоғалады. ЭҚК 4–30 В болуы үшін индукция, виток ауданы, виток саны мен уақытты таңда!",
-                    en: "The Orbit-9 emergency shield generator induces EMF in a coil: field B collapses in time Δt. Tune induction, turn area, number of turns and time so the EMF is 4–30 V!"
+                    ru: "Перетаскивай магнит через катушку генератора и наблюдай за вольтметром. Меняй полюсы, силу магнита, площадь и число витков: быстрое изменение магнитного потока создаёт ЭДС 4–30 В.",
+                    kk: "Магнитті генератор орамасы арқылы сүйреп, вольтметрді бақыла. Полюстерді, магнит күшін, аудан мен орам санын өзгерт: магнит ағынының жылдам өзгеруі 4–30 В ЭҚК тудырады.",
+                    en: "Drag the magnet through the generator coil and watch the voltmeter. Reverse the poles and change field strength, area and turns: a rapid change of magnetic flux produces 4–30 V EMF."
                 },
                 goal: {
-                    ru: "Получи ε = 4–30 В и введи ЭДС (В).",
-                    kk: "ε = 4–30 В алып, ЭҚК мәнін енгіз (В).",
-                    en: "Reach ε = 4–30 V and enter the EMF (V)."
+                    ru: "Проведи магнитом у катушки, получи ε = 4–30 В и введи ЭДС (В).",
+                    kk: "Магнитті ораманың жанына жүргізіп, ε = 4–30 В алып, ЭҚК мәнін енгіз (В).",
+                    en: "Move the magnet near the coil, reach ε = 4–30 V and enter the EMF (V)."
                 },
                 unit: "V",
                 tol: 0.2,
@@ -1201,13 +1209,15 @@
                     const emf = p.N * p.B * S / p.dt;
                     return {
                         expected: Number(emf.toFixed(2)),
-                        pass: emf >= 4 && emf <= 30,
+                        pass: !!p.experiment && emf >= 4 && emf <= 30,
                         emf, flux: p.B * S,
-                        readout: tr(
-                            `ε = ${p.N} · ${p.B} · ${p.S}·10⁻⁴ / ${p.dt} = ${emf.toFixed(2)} В`,
-                            `ε = ${p.N} · ${p.B} · ${p.S}·10⁻⁴ / ${p.dt} = ${emf.toFixed(2)} В`,
-                            `ε = ${p.N} · ${p.B} · ${p.S}·10⁻⁴ / ${p.dt} = ${emf.toFixed(2)} V`
-                        )
+                        readout: !p.experiment
+                            ? tr("Перетащи магнит рядом с катушкой, чтобы получить измерение.", "Өлшем алу үшін магнитті ораманың жанына сүйре.", "Drag the magnet near the coil to capture a measurement.")
+                            : tr(
+                                `ε = ${p.N} · ${p.B} · ${p.S}·10⁻⁴ / ${Number(p.dt).toFixed(2)} = ${emf.toFixed(2)} В`,
+                                `ε = ${p.N} · ${p.B} · ${p.S}·10⁻⁴ / ${Number(p.dt).toFixed(2)} = ${emf.toFixed(2)} В`,
+                                `ε = ${p.N} · ${p.B} · ${p.S}·10⁻⁴ / ${Number(p.dt).toFixed(2)} = ${emf.toFixed(2)} V`
+                            )
                     };
                 }
             },
@@ -2630,6 +2640,7 @@
 
     const Simulators89 = {
         activeLab: null,
+        interactiveLab: null,
 
         // Поиск элементов внутри модального окна: надёжнее, чем глобальный
         // getElementById (учитывает перерисовку innerHTML и вложенные документы).
@@ -2830,6 +2841,10 @@
             const labs = LABS_BY_GRADE[g] || [];
             const lab = labs.find(x => x.id === id);
             if (!lab) return;
+            if (this.interactiveLab) {
+                this.interactiveLab.destroy();
+                this.interactiveLab = null;
+            }
             this.activeLab = lab;
             if (!keepParams) this.params = { ...lab.defaults };
             const modal = this.ensureModal();
@@ -2848,11 +2863,13 @@
                         </div>
                     </div>
 
-                    <canvas id="pq-s89-canvas" class="pq-s89-canvas" width="760" height="270"></canvas>
+                    ${lab.interactive
+                        ? `<div id="pq-s89-interactive" class="pq-s89-interactive"></div>`
+                        : `<canvas id="pq-s89-canvas" class="pq-s89-canvas" width="760" height="270"></canvas>`}
                     <div id="pq-s89-telemetry" class="pq-s89-telemetry"></div>
 
-                    <div class="pq-s89-controls">
-                        ${lab.controls.map(c => {
+                    <div class="pq-s89-controls" ${lab.interactive ? "hidden" : ""}>
+                        ${lab.interactive ? "" : lab.controls.map(c => {
                             if (c.type === "select") {
                                 return `<div class="pq-s89-ctrl">
                                     <label><span>${loc(c.label)}</span></label>
@@ -2895,6 +2912,20 @@
             this.$("pq-s89-close").onclick = () => this.close();
             if (window.PQFullscreen) {
                 window.PQFullscreen.bind(modal, this.$("pq-s89-fullscreen"), modal.querySelector(".pq-s89-dialog"));
+            }
+            if (lab.interactive) {
+                const host = this.$("pq-s89-interactive");
+                if (host && window.PQInteractiveLabs) {
+                    this.interactiveLab = window.PQInteractiveLabs.mount(lab.interactive, host, {
+                        state: this.params,
+                        onChange: (next) => {
+                            Object.assign(this.params, next);
+                            this.updateTelemetry();
+                        }
+                    });
+                } else if (host) {
+                    host.textContent = tr("Интерактивный модуль не загрузился. Обнови страницу.", "Интерактивті модуль жүктелмеді. Парақшаны жаңарт.", "The interactive module did not load. Refresh the page.");
+                }
             }
 
             // select остаются списками, а числовые параметры — вращающимися ручками
@@ -2982,6 +3013,8 @@
 
         startLoop() {
             if (this.rafId) cancelAnimationFrame(this.rafId);
+            this.rafId = null;
+            if (this.activeLab && this.activeLab.interactive) return;
             const step = () => {
                 const canvas = this.$("pq-s89-canvas");
                 if (!canvas || !this.activeLab) return;
@@ -2998,6 +3031,10 @@
         close() {
             if (this.rafId) cancelAnimationFrame(this.rafId);
             this.rafId = null;
+            if (this.interactiveLab) {
+                this.interactiveLab.destroy();
+                this.interactiveLab = null;
+            }
             this.activeLab = null;
             const m = this.$("pq-sim89-modal");
             if (window.PQFullscreen) window.PQFullscreen.exit(m);
