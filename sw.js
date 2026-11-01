@@ -3,14 +3,17 @@
    Стратегия: shell-first для навигации, cache-first для ресурсов,
    докачка недостающих файлов из сети и сохранение в кэш.
    ============================================================ */
-const PQ_VERSION = "pq-v3.16.0";
+const PQ_VERSION = "pq-v3.17.0";
 const PQ_SHELL = [
     "./",
     "./index.html",
     "./play.html",
+    "./teacher-guide.html",
     "./screenshots.html",
     "./manifest.json",
     "./shared/styles.css",
+    "./shared/teacher-guide.css",
+    "./shared/teacher-guide.js",
     "./7/tasks-types.js",
     "./8/tasks-types.js",
     "./9/tasks-types.js",
@@ -130,7 +133,8 @@ self.addEventListener("fetch", (event) => {
                 caches.open(PQ_VERSION).then((cache) => cache.put(request, copy)).catch(() => {});
                 return response;
             }).catch(() => {
-                return caches.match(request).then((hit) => hit || caches.match("./play.html") || caches.match("./index.html"));
+                return caches.match(request).then((hit) => hit || caches.match(request, { ignoreSearch: true }))
+                    .then((cached) => cached || caches.match("./play.html") || caches.match("./index.html"));
             })
         );
         return;

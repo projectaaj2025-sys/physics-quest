@@ -254,6 +254,8 @@ window.PQ_OFFLINE_FILES = [
     "shared/storage.js",
     "shared/story-cast.js",
     "shared/styles.css",
+    "shared/teacher-guide.css",
+    "shared/teacher-guide.js",
     "shared/teacher.js",
     "shared/team-battle.js",
     "shared/theme.js",
@@ -263,5 +265,6 @@ window.PQ_OFFLINE_FILES = [
     "shared/vision-exercise.html",
     "shared/vision-exercise.js",
     "shared/vision-i18n.js",
-    "sw.js"
+    "sw.js",
+    "teacher-guide.html"
 ];
