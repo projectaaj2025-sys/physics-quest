@@ -1395,9 +1395,16 @@ html, body {
 }
 .task-feedback.show { display: block; }
 .task-feedback.correct {
-    background: rgba(0, 255, 136, 0.15);
-    border: 1px solid var(--success);
-    color: var(--success);
+    background: #f4faf6;
+    border: 2px solid #3d8b5c;
+    color: #14372a;
+    font-weight: 600;
+}
+.task-feedback.correct strong { color: inherit; }
+html[data-theme="dark"] .task-feedback.correct {
+    background: #112d24;
+    border-color: #69c78d;
+    color: #e2f7e9;
 }
 .task-feedback.wrong {
     background: rgba(255, 51, 102, 0.15);
@@ -5675,7 +5682,7 @@ html[data-theme="dark"] .rpg-maint-opt.wrong { background-color: var(--bg-card);
 html[data-theme="dark"] .rpg-maint-fill input { background-color: var(--bg-card); }
 html[data-theme="dark"] .rpg-maint-fill input.right { background-color: var(--bg-card); }
 html[data-theme="dark"] .rpg-maint-fill input.wrong { background-color: var(--bg-card); }
-html[data-theme="dark"] .rpg-maint-feedback.ok { background-color: var(--bg-card); }
+html[data-theme="dark"] .rpg-maint-feedback.ok { background-color: var(--bg-card); color: #c6f1d6; border-color: #69c78d; }
 html[data-theme="dark"] .rpg-maint-feedback.bad { background-color: var(--bg-card); }
 html[data-theme="dark"] .rpg-shield-hero { background: var(--bg-card); }
 html[data-theme="dark"] .rpg-shield-empty { background-color: var(--bg-card); }
