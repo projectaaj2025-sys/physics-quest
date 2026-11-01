@@ -223,6 +223,7 @@ window.PQ_OFFLINE_FILES = [
     "shared/game.js",
     "shared/home-experiments.js",
     "shared/i18n.js",
+    "shared/interactive-labs.js",
     "shared/lab-games.js",
     "shared/lab-workbench.js",
     "shared/level-themes.js",

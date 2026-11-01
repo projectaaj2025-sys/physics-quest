@@ -68,6 +68,13 @@ function sampleParams(lab) {
       ? c.options[Math.floor(Math.random() * c.options.length)].value
       : +(c.min + c.step * Math.floor(Math.random() * (Math.round((c.max - c.min) / c.step) + 1))).toFixed(6);
   }
+  // Формульный аудит проверяет достижимость цели после выполненного
+  // физического действия; само действие отдельно тестируется в Chromium.
+  if (lab.interactive === "circuit") {
+    p.circuitComplete = true;
+    p.switchClosed = true;
+  }
+  if (lab.interactive === "magnet") p.experiment = true;
   return p;
 }
 
@@ -110,7 +117,7 @@ function auditGames() {
     console.log(`  ${grade} класс: ${levels.length} мини-игр (уровни ${levels.join(", ")})`);
     for (const lvl of levels) {
       const c = cfg[lvl];
-      if (c.type === "circuit") { console.log(`  ✓ L${lvl} сборка цепи (4 элемента)`); continue; }
+      if (c.type === "circuit") { console.log(`  ✓ L${lvl} сборка цепи (детали, провода и ключ)`); continue; }
       const grids = c.sliders.map(gridFor);
       let best = null, solutions = 0;
       const walk = (i, cur) => {
