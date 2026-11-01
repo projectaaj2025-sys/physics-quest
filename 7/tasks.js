@@ -5776,9 +5776,9 @@ const TASKS_DATABASE_EXT = [
     "topic": "density",
     "difficulty": 1,
     "question": {
-      "ru": "Какой металл имеет плотность около 11300 кг/м³?",
-      "en": "Which metal has a density of about 11300 kg/m³?",
-      "kk": "Тығыздығы шамамен 11300 кг/м³ қай метал?"
+      "ru": "Используя таблицу, определите, какой металл имеет плотность около 11300 кг/м³.",
+      "en": "Use the table to identify the metal with a density of about 11300 kg/m³.",
+      "kk": "Кестені пайдаланып, тығыздығы шамамен 11300 кг/м³ болатын металды анықтаңыз."
     },
     "correctAnswer": {
       "ru": [
@@ -5802,9 +5802,9 @@ const TASKS_DATABASE_EXT = [
       "kk": "Қорғасын — тығыздығы ~11300 кг/м³ ауыр метал."
     },
     "hint": {
-      "ru": "Это тяжёлый мягкий металл серого цвета, из него делают дробины и грузила. Символ Pb.",
-      "en": "A heavy soft grey metal used for shots and sinkers; its symbol is Pb.",
-      "kk": "Бұл ауыр, жұмсақ сұр металл, одан оқ-дәрі мен жүк жасайды. Белгісі Pb."
+      "ru": "Найдите в таблице значение 11300 кг/м³ и прочитайте название металла в той же строке.",
+      "en": "Find 11300 kg/m³ in the table and read the metal name in the same row.",
+      "kk": "Кестеден 11300 кг/м³ мәнін тауып, сол жолдағы металл атауын оқыңыз."
     }
   },
   {

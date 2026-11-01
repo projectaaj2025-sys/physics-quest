@@ -1327,6 +1327,64 @@ html, body {
     border-radius: 6px;
     margin: 10px 0;
 }
+.task-reference {
+    width: 100%;
+    margin: 16px 0;
+    overflow-x: auto;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    background: var(--bg-card);
+    box-shadow: 0 2px 8px rgba(15, 35, 70, 0.06);
+}
+.task-reference-table {
+    width: 100%;
+    min-width: 300px;
+    border-collapse: collapse;
+    color: var(--text);
+    font-size: 14px;
+    line-height: 1.35;
+}
+.task-reference-table caption {
+    padding: 10px 12px;
+    background: rgba(0, 184, 212, 0.09);
+    color: var(--text-bright);
+    font-weight: 700;
+    text-align: left;
+}
+.task-reference-table th,
+.task-reference-table td {
+    padding: 8px 12px;
+    border-bottom: 1px solid var(--border-light);
+}
+.task-reference-table thead th {
+    background: rgba(0, 184, 212, 0.06);
+    color: var(--text-dim);
+    font-size: 12px;
+    font-weight: 700;
+    text-align: left;
+}
+.task-reference-table tbody th {
+    font-weight: 600;
+    text-align: left;
+}
+.task-reference-table tbody td {
+    font-variant-numeric: tabular-nums;
+    text-align: right;
+    white-space: nowrap;
+}
+.task-reference-table tbody tr:nth-child(even) {
+    background: rgba(0, 184, 212, 0.035);
+}
+.task-reference-table tbody tr:last-child th,
+.task-reference-table tbody tr:last-child td { border-bottom: 0; }
+.task-solution-formula { overflow-wrap: anywhere; }
+@media (max-width: 600px) {
+    .task-reference { margin: 12px 0; }
+    .task-reference-table { min-width: 270px; font-size: 13px; }
+    .task-reference-table th,
+    .task-reference-table td { padding: 7px 9px; }
+    .task-reference-table caption { padding: 9px; }
+}
 .task-feedback {
     display: none;
     padding: 12px;
