@@ -16,9 +16,9 @@ const report = await page.evaluate(async () => {
   const stats = { languages: 0, filters: 0, assets: 0, phetCards: 0, interfaceStat: '', labStat: '' };
   const add = (kind, detail) => failures.push({ kind, detail });
   const expected = {
-    ru: { section: 'PhET-каталог и задания внутри симуляторов', card: 'PhET-каталог 7 класса', dark: 'Верный ответ в тёмной теме' },
-    kk: { section: 'PhET каталогы және симулятор ішіндегі тапсырмалар', card: '7 сыныптың PhET каталогы', dark: 'Қараңғы тақырыптағы дұрыс жауап' },
-    en: { section: 'PhET catalog and tasks inside the simulations', card: 'Grade 7 PhET catalog', dark: 'Correct answer in the dark theme' }
+    ru: { section: 'PhET внутри мини-игр уровней', card: 'PhET в мини-игре 7 класса', dark: 'Верный ответ в тёмной теме' },
+    kk: { section: 'Деңгей мини-ойындарындағы PhET', card: '7 сынып мини-ойынындағы PhET', dark: 'Қараңғы тақырыптағы дұрыс жауап' },
+    en: { section: 'PhET inside level mini-games', card: 'PhET in a Grade 7 mini-game', dark: 'Correct answer in the dark theme' }
   };
   for (const lang of ['ru', 'kk', 'en']) {
     document.querySelector(`.langs button[data-lang="${lang}"]`).click();
@@ -67,7 +67,7 @@ const report = await page.evaluate(async () => {
 
   document.querySelector('#sec-phet .shot-card').click();
   if (!document.getElementById('lightbox').classList.contains('open')) add('lightbox-open');
-  if (!document.getElementById('lightbox-img').src.includes('phet-catalog-g7.png')) add('lightbox-image', document.getElementById('lightbox-img').src);
+  if (!document.getElementById('lightbox-img').src.includes('phet-level-g7.png')) add('lightbox-image', document.getElementById('lightbox-img').src);
   document.getElementById('lightbox-x').click();
   document.getElementById('theme-toggle').click();
   if (document.documentElement.dataset.theme !== 'dark') add('dark-theme-toggle');

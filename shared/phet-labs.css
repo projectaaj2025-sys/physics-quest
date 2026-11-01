@@ -1,7 +1,5 @@
-/* ===== Официальные PhET-симуляторы: входы и полноэкранная лаборатория ===== */
-.level-topbar { gap: 10px; flex-wrap: wrap; }
-.pq-phet-btn,
-.pq-phet-entry-button,
+/* ===== Официальные PhET-эксперименты внутри тематических мини-игр ===== */
+.pq-phet-level-open,
 .pq-phet-close {
     border: 1px solid #1769aa;
     background: linear-gradient(135deg, #0878c9, #1559b7);
@@ -9,13 +7,11 @@
     font-family: inherit;
     font-weight: 800;
     cursor: pointer;
-    box-shadow: 0 4px 14px rgba(21, 89, 183, .2);
+    box-shadow: 0 4px 14px rgba(21, 89, 183, .18);
 }
-.pq-phet-btn:hover,
-.pq-phet-entry-button:hover,
+.pq-phet-level-open:hover,
 .pq-phet-close:hover { background: linear-gradient(135deg, #0690e5, #1769cf); }
-.pq-phet-btn:focus-visible,
-.pq-phet-entry-button:focus-visible,
+.pq-phet-level-open:focus-visible,
 .pq-phet-close:focus-visible,
 .pq-phet-tool:focus-visible,
 .pq-phet-x:focus-visible,
@@ -23,85 +19,56 @@
     outline: 3px solid #f3b32b;
     outline-offset: 2px;
 }
-#btn-phet-level { padding: 10px 16px; border-radius: 10px; font-size: 13px; }
-#btn-phet { background: linear-gradient(135deg, #0878c9, #1559b7); }
 .lab-head-actions { display: flex; align-items: center; justify-content: flex-end; gap: 8px; flex-wrap: wrap; }
-#lab-phet,
-#field-sim-phet,
-#pq-s89-phet { padding: 8px 13px; border-radius: 10px; font-size: 12.5px; white-space: nowrap; }
-
-.pq-phet-entry {
-    box-sizing: border-box;
-    width: 100%;
-    margin: 18px 0 22px;
-    padding: 20px;
-    border: 2px solid #4fa8e8;
-    border-radius: 18px;
-    background: linear-gradient(120deg, #f7fcff 0%, #eaf6ff 63%, #fff8dd 100%);
-    box-shadow: 0 14px 34px rgba(0, 0, 0, .2), inset 0 1px 0 #fff;
-    color: #14344d;
-}
-.pq-phet-entry-head { display: flex; align-items: center; gap: 18px; }
-.pq-phet-entry-mark {
+.lab-phet-context { min-width: 0; max-width: 100%; }
+.lab-phet-context[hidden],
+.lab-phet-context:empty { display: none !important; }
+.pq-phet-level-card {
     display: grid;
-    flex: none;
-    place-items: center;
-    width: 76px;
-    height: 76px;
-    border: 3px solid #fff;
-    border-radius: 21px;
-    background: linear-gradient(145deg, #1b94d2, #2457b2);
-    color: #fff;
-    font-size: 21px;
-    font-weight: 950;
-    letter-spacing: -.04em;
-    box-shadow: 0 7px 18px rgba(26, 106, 174, .27), 0 0 0 3px #f4c542;
-}
-.pq-phet-entry-copy { min-width: 0; }
-.pq-phet-entry-copy > span {
-    display: block;
-    margin-bottom: 5px;
-    color: #176a9e;
-    font-size: 11px;
-    font-weight: 900;
-    letter-spacing: .075em;
-}
-.pq-phet-entry-copy h3 { margin: 0 0 6px; color: #102f49; font-size: 21px; line-height: 1.22; }
-.pq-phet-entry-copy p { margin: 0; color: #36566d; font-size: 13.5px; line-height: 1.5; }
-.pq-phet-entry-progress { display: block; margin-top: 8px; color: #154f72; font-size: 12.5px; }
-.pq-phet-entry-list { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; margin-top: 18px; }
-.pq-phet-sim-card {
-    display: flex;
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    align-items: center;
+    gap: 12px;
+    box-sizing: border-box;
     min-width: 0;
-    flex-direction: column;
-    align-items: stretch;
-    padding: 15px;
-    border: 1px solid #bdd7e7;
-    border-top: 4px solid var(--phet-accent, #1479b8);
+    max-width: 100%;
+    margin: 10px 0 14px;
+    padding: 13px;
+    border: 1px solid #b8d8eb;
+    border-left: 4px solid var(--phet-accent, #1479b8);
     border-radius: 13px;
-    background: rgba(255, 255, 255, .94);
+    background: linear-gradient(115deg, #f2faff, #fff);
+    color: #17364e;
     box-shadow: 0 4px 13px rgba(23, 68, 99, .08);
 }
-.pq-phet-sim-icon {
+.pq-phet-level-card.complete { border-left-color: #238a54; }
+.pq-phet-level-mark {
     display: grid;
     place-items: center;
-    width: 42px;
-    height: 42px;
-    margin-bottom: 10px;
-    border: 2px solid var(--phet-accent, #1479b8);
+    width: 48px;
+    height: 48px;
     border-radius: 12px;
-    background: #edf7fc;
-    color: var(--phet-accent, #1479b8);
-    font-size: 25px;
-    font-weight: 900;
-    line-height: 1;
+    background: var(--phet-accent, #1479b8);
+    color: #fff;
+    font-size: 13px;
+    font-weight: 950;
+    letter-spacing: -.04em;
 }
-.pq-phet-sim-card h4 { margin: 0 0 7px; color: #12344f; font-size: 16px; line-height: 1.28; }
-.pq-phet-sim-description { flex: 1; margin: 0 0 12px; color: #405e73; font-size: 12px; line-height: 1.48; }
-.pq-phet-sim-meta { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 11px; color: #49677c; font-size: 10.5px; line-height: 1.3; }
-.pq-phet-sim-meta strong { flex: none; padding: 3px 7px; border-radius: 999px; background: #e8f1f7; color: #28516b; font-size: 11px; }
-.pq-phet-sim-meta strong.complete { background: #e5f5ea; color: #075c32; }
-.pq-phet-entry-button { width: 100%; min-width: 0; margin-top: auto; padding: 11px 14px; border-radius: 11px; font-size: 13px; }
+.pq-phet-level-body { min-width: 0; }
+.pq-phet-level-kicker {
+    display: block;
+    margin-bottom: 4px;
+    color: #176a9e;
+    font-size: 9.5px;
+    font-weight: 900;
+    letter-spacing: .055em;
+    line-height: 1.35;
+}
+.pq-phet-level-title { margin: 0 0 6px; color: #12344f; font-size: 14px; line-height: 1.3; overflow-wrap: anywhere; }
+.pq-phet-level-description { margin: 0 0 9px; color: #405e73; font-size: 12px; line-height: 1.45; }
+.pq-phet-level-meta { display: flex; align-items: center; flex-wrap: wrap; gap: 6px 10px; color: #49677c; font-size: 11px; line-height: 1.35; }
+.pq-phet-level-progress { flex: none; padding: 2px 7px; border-radius: 999px; background: #e5f0f7; color: #28516b; font-size: 11px; }
+.pq-phet-level-card.complete .pq-phet-level-progress { background: #e0f3e7; color: #075c32; }
+.pq-phet-level-open { min-height: 40px; padding: 9px 12px; border-radius: 10px; font-size: 12px; white-space: nowrap; }
 
 .pq-phet-overlay {
     position: fixed;
@@ -314,14 +281,8 @@
     .pq-phet-guide { padding: 13px; }
 }
 @media (max-width: 720px) {
-    .pq-phet-entry { padding: 15px; }
-    .pq-phet-entry-head { align-items: flex-start; gap: 13px; }
-    .pq-phet-entry-mark { width: 58px; height: 58px; border-radius: 16px; font-size: 17px; }
-    .pq-phet-entry-copy h3 { font-size: 17px; }
-    .pq-phet-entry-copy p { font-size: 12px; }
-    .pq-phet-entry-list { grid-template-columns: 1fr; gap: 10px; margin-top: 14px; }
-    .pq-phet-sim-card { padding: 13px; }
-    .pq-phet-sim-description { font-size: 12.5px; }
+    .pq-phet-level-card { grid-template-columns: auto minmax(0, 1fr); gap: 10px; }
+    .pq-phet-level-open { grid-column: 1 / -1; width: 100%; }
     .pq-phet-overlay { padding: 0; }
     .pq-phet-panel { width: 100%; height: 100dvh; border: 0; border-radius: 0; }
     .pq-phet-header { gap: 8px; padding: 9px 10px; }

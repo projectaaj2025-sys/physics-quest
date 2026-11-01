@@ -251,7 +251,35 @@ const LabGames = {
         if (circuitEl) circuitEl.style.display = "none";
         if (content) content.innerHTML = "";
 
-        if (cfg.type === "home-experiment" && content && resultEl && window.PQHomeExperiments) {
+        const phetContext = document.getElementById("lab-phet-context");
+        if (phetContext) {
+            phetContext.replaceChildren();
+            phetContext.hidden = true;
+            const levelId = Number(baseCfg.levelId || (game && game.currentLevel) || this.activeLevel);
+            if (levelId && window.PQPhETLabs && typeof window.PQPhETLabs.createLevelCard === "function") {
+                const card = window.PQPhETLabs.createLevelCard(Number(window.CURRENT_GRADE), levelId, cfg.type === "phet");
+                if (card) {
+                    phetContext.appendChild(card);
+                    phetContext.hidden = false;
+                }
+            }
+        }
+
+        if (cfg.type === "phet") {
+            // PhET-only уровень: задания выполняются в официальном симуляторе,
+            // поэтому числовая проверка и бонус собственной мини-игры здесь не нужны.
+            if (check) check.style.display = "none";
+            if (close) {
+                const L = this.lang();
+                close.textContent = L === "kk" ? "← Деңгейге оралу" : L === "en" ? "← Return to level" : "← Вернуться к уровню";
+            }
+            if (hintEl) hintEl.style.display = "none";
+            if (resultEl) resultEl.style.display = "none";
+            if (content && phetContext?.hidden) {
+                const L = this.lang();
+                content.textContent = L === "kk" ? "PhET модулі жүктелмеді. Парақшаны жаңарт." : L === "en" ? "The PhET module did not load. Refresh the page." : "Модуль PhET не загрузился. Обнови страницу.";
+            }
+        } else if (cfg.type === "home-experiment" && content && resultEl && window.PQHomeExperiments) {
             resultEl.style.display = "block";
             window.PQHomeExperiments.render(content, cfg, resultEl, this.lang());
         } else if (cfg.type === "slider" && content && resultEl) {
@@ -321,7 +349,9 @@ const LabGames = {
         const formula = document.getElementById("lab-formula");
         const circuit = document.getElementById("lab-circuit");
         const hint = document.getElementById("lab-hint-text");
+        const phetContext = document.getElementById("lab-phet-context");
         if (content) content.style.display = "none";
+        if (phetContext) phetContext.hidden = true;
         if (formula) formula.style.display = "none";
         if (circuit) circuit.style.display = "none";
         if (hint) hint.style.display = "none";
@@ -410,5 +440,10 @@ const LabGames = {
         this.activeCfg = null;
         this.runtimeCfg = null;
         this.activeStage = 0;
+        const phetContext = document.getElementById("lab-phet-context");
+        if (phetContext) {
+            phetContext.replaceChildren();
+            phetContext.hidden = true;
+        }
     }
 };

@@ -369,6 +369,9 @@
             overallProgress: "Выполнено заданий: {done} из {total}",
             taskCount: "{count} задания в симуляторе",
             launch: "Запустить",
+            levelKicker: "УРОВЕНЬ {level} · ОФИЦИАЛЬНЫЙ PHET",
+            levelTasks: "{count} практических задания по теме уровня",
+            launchLevel: "Открыть лабораторию",
             official: "Официальный симулятор PhET",
             university: "Интерактивная лаборатория University of Colorado Boulder",
             guide: "Задания в симуляторе",
@@ -385,6 +388,7 @@
             loadError: "Симулятор долго загружается. Проверь интернет или открой его по прямой ссылке на сайте PhET.",
             online: "Для PhET нужен интернет. Отметки заданий и прогресс Физика-Квеста сохраняются.",
             grade: "{grade} класс · PhET",
+            gradeLevel: "{grade} класс · уровень {level} · PhET",
             dialog: "Официальный PhET-симулятор: {title}"
         },
         kk: {
@@ -395,6 +399,9 @@
             overallProgress: "Орындалған тапсырмалар: {total} ішінен {done}",
             taskCount: "Симулятордағы {count} тапсырма",
             launch: "Іске қосу",
+            levelKicker: "{level}-ДЕҢГЕЙ · РЕСМИ PHET",
+            levelTasks: "Деңгей тақырыбы бойынша {count} практикалық тапсырма",
+            launchLevel: "Зертхананы ашу",
             official: "Ресми PhET симуляторы",
             university: "University of Colorado Boulder интерактивті зертханасы",
             guide: "Симулятордағы тапсырмалар",
@@ -411,6 +418,7 @@
             loadError: "Симулятор ұзақ жүктелуде. Интернетті тексер немесе PhET сайтындағы тікелей сілтеме арқылы аш.",
             online: "PhET үшін интернет қажет. Тапсырма белгілері мен «Физика-Квест» прогресі сақталады.",
             grade: "{grade}-сынып · PhET",
+            gradeLevel: "{grade}-сынып · {level}-деңгей · PhET",
             dialog: "Ресми PhET симуляторы: {title}"
         },
         en: {
@@ -421,6 +429,9 @@
             overallProgress: "Tasks completed: {done} of {total}",
             taskCount: "{count} tasks in the simulation",
             launch: "Launch",
+            levelKicker: "LEVEL {level} · OFFICIAL PHET",
+            levelTasks: "{count} practical tasks on this level topic",
+            launchLevel: "Open laboratory",
             official: "Official PhET simulation",
             university: "Interactive laboratory by University of Colorado Boulder",
             guide: "Tasks in the simulation",
@@ -437,20 +448,45 @@
             loadError: "The simulation is taking a long time to load. Check your connection or use the direct PhET link.",
             online: "PhET requires an internet connection. Task checkmarks and Physics Quest progress are preserved.",
             grade: "Grade {grade} · PhET",
+            gradeLevel: "Grade {grade} · Level {level} · PhET",
             dialog: "Official PhET simulation: {title}"
         }
     };
 
+    // Официальные симуляторы живут только внутри тематических мини-игр.
+    // Общего каталога и отдельной кнопки PhET больше нет.
     const LEVEL_SIMULATIONS = {
-        7: { 10: "masses-and-springs", 14: "forces-and-motion-basics" },
-        8: { 54: "geometric-optics", 55: "geometric-optics" },
-        9: { 45: "projectile-motion", 46: "projectile-motion", 47: "pendulum-lab", 48: "waves-intro" }
+        7: {
+            16: "forces-and-motion-basics",
+            19: "masses-and-springs",
+            33: "energy-skate-park-basics"
+        },
+        8: {
+            8: "states-of-matter-basics",
+            25: "circuit-construction-kit-dc",
+            45: "states-of-matter-basics",
+            46: "states-of-matter-basics",
+            47: "circuit-construction-kit-dc",
+            48: "circuit-construction-kit-dc",
+            49: "circuit-construction-kit-dc",
+            50: "circuit-construction-kit-dc",
+            51: "circuit-construction-kit-dc",
+            55: "geometric-optics"
+        },
+        9: {
+            30: "waves-intro",
+            46: "projectile-motion",
+            47: "pendulum-lab",
+            48: "waves-intro"
+        }
     };
+    const PHET_ONLY_LEVELS = { 7: [16, 19, 33], 8: [], 9: [] };
 
     let initialized = false;
     let active = false;
     let activeGrade = null;
     let activeSimulation = null;
+    let activeLevelId = null;
     let returnFocus = null;
     let pausedByPhet = false;
     let previousBodyOverflow = "";
@@ -545,7 +581,7 @@
         all[activeSimulation] = [...done].sort((a, b) => a - b);
         writeStoredTasks(activeGrade, all);
         renderTasks(activeGrade, cfg);
-        renderEntry();
+        refreshLevelCards();
         document.dispatchEvent(new CustomEvent("pq:phet-task-changed", {
             detail: { grade: activeGrade, simulation: activeSimulation, taskIndex, done: done.has(taskIndex) }
         }));
@@ -608,83 +644,81 @@
         document.body.appendChild(overlay);
     }
 
-    function renderEntry() {
-        const currentGrade = grade();
-        const list = simulations(currentGrade);
-        setText("pq-phet-entry-kicker", text("entryKicker", { grade: currentGrade }));
-        setText("pq-phet-entry-title", text("entryTitle"));
-        setText("pq-phet-entry-description", text("entryDescription", { count: list.length }));
-        const host = byId("pq-phet-entry-list");
-        if (host) {
-            host.replaceChildren();
-            list.forEach((cfg, index) => {
-                const state = progress(currentGrade, cfg.id);
-                const card = element("article", "pq-phet-sim-card");
-                card.style.setProperty("--phet-accent", cfg.accent);
-                card.dataset.simulation = cfg.id;
-                const icon = element("div", "pq-phet-sim-icon", cfg.icon);
-                icon.setAttribute("aria-hidden", "true");
-                const title = element("h4", "", localized(cfg.title));
-                const description = element("p", "pq-phet-sim-description", localized(cfg.description));
-                const meta = element("div", "pq-phet-sim-meta");
-                meta.append(
-                    element("span", "", text("taskCount", { count: cfg.tasks.length })),
-                    element("strong", state.done === state.total ? "complete" : "", `${state.done}/${state.total}`)
-                );
-                const launch = element("button", "pq-phet-entry-button", "▶ " + text("launch"));
-                launch.type = "button";
-                launch.dataset.phetSim = cfg.id;
-                if (index === 0) launch.id = "pq-phet-entry-launch";
-                launch.setAttribute("aria-label", `${text("launch")}: ${localized(cfg.title)}`);
-                card.append(icon, title, description, meta, launch);
-                host.appendChild(card);
-            });
-        }
-        const totals = list.reduce((sum, cfg) => {
-            const state = progress(currentGrade, cfg.id);
-            sum.done += state.done;
-            sum.total += state.total;
-            return sum;
-        }, { done: 0, total: 0 });
-        setText("pq-phet-entry-progress", text("overallProgress", totals));
-        ["btn-phet-level", "btn-phet", "lab-phet"].forEach((id) => {
-            const button = byId(id);
-            if (!button) return;
-            button.title = text("open");
-            button.setAttribute("aria-label", button.title);
+    function levelSimulation(forGrade, levelId) {
+        const simulationId = LEVEL_SIMULATIONS[forGrade] && LEVEL_SIMULATIONS[forGrade][Number(levelId)];
+        return exactSimulation(forGrade, simulationId);
+    }
+
+    function createLevelCard(forGrade, levelId, expanded = false) {
+        const cfg = levelSimulation(forGrade, levelId);
+        if (!cfg) return null;
+        const state = progress(forGrade, cfg.id);
+        const card = element("section", "pq-phet-level-card" + (state.done === state.total ? " complete" : ""));
+        card.dataset.phetLevelCard = "true";
+        card.dataset.grade = String(forGrade);
+        card.dataset.levelId = String(levelId);
+        card.dataset.simulation = cfg.id;
+        card.dataset.expanded = expanded ? "true" : "false";
+        card.style.setProperty("--phet-accent", cfg.accent);
+        card.setAttribute("aria-labelledby", `pq-phet-level-title-${forGrade}-${levelId}`);
+
+        const mark = element("div", "pq-phet-level-mark", "PhET");
+        mark.setAttribute("aria-hidden", "true");
+        const body = element("div", "pq-phet-level-body");
+        const kicker = element("span", "pq-phet-level-kicker", text("levelKicker", { level: levelId }));
+        const title = element("h4", "pq-phet-level-title", localized(cfg.title));
+        title.id = `pq-phet-level-title-${forGrade}-${levelId}`;
+        const meta = element("div", "pq-phet-level-meta");
+        const taskCount = element("span", "", text("levelTasks", { count: cfg.tasks.length }));
+        const progressEl = element("strong", "pq-phet-level-progress", `${state.done}/${state.total}`);
+        progressEl.setAttribute("aria-label", text("taskProgress", state));
+        meta.append(taskCount, progressEl);
+        body.append(kicker, title);
+        if (expanded) body.appendChild(element("p", "pq-phet-level-description", localized(cfg.description)));
+        body.appendChild(meta);
+
+        const launch = element("button", "pq-phet-level-open", "▶ " + text("launchLevel"));
+        launch.type = "button";
+        launch.dataset.phetSim = cfg.id;
+        launch.dataset.levelId = String(levelId);
+        launch.setAttribute("aria-label", `${text("launchLevel")}: ${localized(cfg.title)}`);
+        launch.addEventListener("click", () => open(forGrade, launch, cfg.id, { levelId: Number(levelId) }));
+        card.append(mark, body, launch);
+        return card;
+    }
+
+    function refreshLevelCards() {
+        document.querySelectorAll("[data-phet-level-card]").forEach((card) => {
+            const fresh = createLevelCard(Number(card.dataset.grade), Number(card.dataset.levelId), card.dataset.expanded === "true");
+            if (fresh) card.replaceWith(fresh);
         });
     }
 
-    function mountEntry() {
+    function installLevelConfigs() {
+        const configs = window.GRADE_LAB_GAMES_CONFIG || {};
+        Object.entries(configs).forEach(([levelId, cfg]) => {
+            if (cfg && !cfg.levelId) cfg.levelId = Number(levelId);
+        });
         const currentGrade = grade();
-        const host = byId(currentGrade === 7 ? "field-simulations-section" : "pq-sim89-section");
-        if (!host) return false;
-        let entry = byId("pq-phet-entry");
-        if (!entry) {
-            entry = document.createElement("section");
-            entry.id = "pq-phet-entry";
-            entry.className = "pq-phet-entry";
-            entry.setAttribute("aria-labelledby", "pq-phet-entry-title");
-            entry.innerHTML = `
-                <div class="pq-phet-entry-head">
-                    <div class="pq-phet-entry-mark" aria-hidden="true">PhET</div>
-                    <div class="pq-phet-entry-copy">
-                        <span id="pq-phet-entry-kicker"></span>
-                        <h3 id="pq-phet-entry-title"></h3>
-                        <p id="pq-phet-entry-description"></p>
-                        <strong class="pq-phet-entry-progress" id="pq-phet-entry-progress"></strong>
-                    </div>
-                </div>
-                <div class="pq-phet-entry-list" id="pq-phet-entry-list"></div>`;
-            const grid = host.querySelector(".field-sim-grid, .pq-sim89-grid");
-            host.insertBefore(entry, grid || null);
-            entry.addEventListener("click", (event) => {
-                const button = event.target.closest("[data-phet-sim]");
-                if (button && entry.contains(button)) open(currentGrade, button, button.dataset.phetSim);
-            });
-        }
-        renderEntry();
-        return true;
+        (PHET_ONLY_LEVELS[currentGrade] || []).forEach((levelId) => {
+            if (configs[levelId]) return;
+            const cfg = levelSimulation(currentGrade, levelId);
+            if (!cfg) return;
+            configs[levelId] = {
+                type: "phet",
+                levelId,
+                phetSimulation: cfg.id,
+                title: "🌐 " + cfg.title.ru,
+                titleKk: "🌐 " + cfg.title.kk,
+                titleEn: "🌐 " + cfg.title.en,
+                desc: "Исследуй тему уровня в официальном симуляторе PhET и выполни три практических задания.",
+                descKk: "Деңгей тақырыбын ресми PhET симуляторында зерттеп, үш практикалық тапсырманы орында.",
+                descEn: "Explore the level topic in the official PhET simulation and complete three practical tasks."
+            };
+        });
+        window.GRADE_LAB_GAMES_CONFIG = configs;
+        // Удаляем каталог старой версии, если страница была перерисована без перезагрузки.
+        byId("pq-phet-entry")?.remove();
     }
 
     function renderTasks(forGrade, cfg) {
@@ -717,7 +751,9 @@
         const cfg = activeGrade ? selectedSimulation(currentGrade, activeSimulation) : suggestedSimulation(currentGrade);
         if (!cfg) return;
         const url = simulationUrl(currentGrade, cfg.id);
-        setText("pq-phet-grade", text("grade", { grade: currentGrade }));
+        setText("pq-phet-grade", activeLevelId
+            ? text("gradeLevel", { grade: currentGrade, level: activeLevelId })
+            : text("grade", { grade: currentGrade }));
         setText("pq-phet-title", localized(cfg.title));
         setText("pq-phet-university", text("university"));
         setText("pq-phet-official", "✓ " + text("official"));
@@ -778,7 +814,7 @@
         }, 20000);
     }
 
-    function open(forGrade, trigger, simulationId) {
+    function open(forGrade, trigger, simulationId, context = {}) {
         if (!SIMS[forGrade]) return;
         if (!initialized) init();
         if (active) return;
@@ -787,6 +823,7 @@
         active = true;
         activeGrade = forGrade;
         activeSimulation = cfg.id;
+        activeLevelId = Number(context.levelId || trigger?.dataset?.levelId) || null;
         returnFocus = trigger || document.activeElement;
         pausedByPhet = false;
 
@@ -808,7 +845,7 @@
         overlay.setAttribute("aria-hidden", "false");
         loadSimulation();
         window.setTimeout(() => byId("pq-phet-x")?.focus(), 0);
-        document.dispatchEvent(new CustomEvent("pq:phet-opened", { detail: { grade: activeGrade, simulation: activeSimulation } }));
+        document.dispatchEvent(new CustomEvent("pq:phet-opened", { detail: { grade: activeGrade, simulation: activeSimulation, levelId: activeLevelId } }));
     }
 
     function close() {
@@ -843,9 +880,10 @@
         if (window.PQFullscreen) {
             Promise.resolve(window.PQFullscreen.exit(overlay)).then(finish, finish);
         } else finish();
-        document.dispatchEvent(new CustomEvent("pq:phet-closed", { detail: { grade: activeGrade, simulation: activeSimulation } }));
+        document.dispatchEvent(new CustomEvent("pq:phet-closed", { detail: { grade: activeGrade, simulation: activeSimulation, levelId: activeLevelId } }));
         activeGrade = null;
         activeSimulation = null;
+        activeLevelId = null;
     }
 
     function trapFocus(event) {
@@ -866,12 +904,6 @@
     }
 
     function bind() {
-        ["btn-phet-level", "btn-phet", "lab-phet"].forEach((id) => {
-            const button = byId(id);
-            if (!button || button.dataset.phetBound) return;
-            button.dataset.phetBound = "true";
-            button.addEventListener("click", () => open(grade(), button));
-        });
         byId("pq-phet-close").addEventListener("click", close);
         byId("pq-phet-x").addEventListener("click", close);
         byId("pq-phet-reload").addEventListener("click", loadSimulation);
@@ -908,7 +940,7 @@
         }
         window.addEventListener("pq:lang-changed", () => {
             const previousLang = byId("pq-phet-frame")?.dataset.lang || "";
-            renderEntry();
+            refreshLevelCards();
             renderDialog();
             if (active && previousLang !== lang()) loadSimulation();
             const frame = byId("pq-phet-frame");
@@ -919,15 +951,13 @@
     function init() {
         if (initialized) return;
         initialized = true;
+        installLevelConfigs();
         ensureDOM();
         bind();
-        mountEntry();
-        renderEntry();
+        refreshLevelCards();
         renderDialog();
         const frame = byId("pq-phet-frame");
         if (frame) frame.dataset.lang = lang();
-        // На медленных устройствах галерея может быть создана после этого модуля.
-        if (!byId("pq-phet-entry")) window.setTimeout(mountEntry, 500);
     }
 
     window.PQPhETLabs = {
@@ -935,7 +965,9 @@
         open,
         close,
         reload: loadSimulation,
-        mountEntry,
+        createLevelCard,
+        getLevelSimulation: levelSimulation,
+        getLevelSimulations: () => LEVEL_SIMULATIONS,
         getUrl: (forGrade, simulationId) => simulationUrl(Number(forGrade) || grade(), simulationId),
         getSimulations: () => SIMS,
         getTaskProgress: (forGrade, simulationId) => progress(Number(forGrade) || grade(), simulationId),

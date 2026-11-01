@@ -5,9 +5,10 @@
   "type": "module",
   "description": "Reproducible browser audits and real-UI screenshot capture for Physics Quest",
   "scripts": {
-    "audit": "node audit-content.mjs && node audit-lessons.mjs && node audit-gallery.mjs",
+    "audit": "node audit-content.mjs && node audit-lessons.mjs && node audit-phet-levels.mjs && node audit-gallery.mjs",
     "audit:content": "node audit-content.mjs",
     "audit:lessons": "node audit-lessons.mjs",
+    "audit:phet": "node audit-phet-levels.mjs",
     "audit:gallery": "node audit-gallery.mjs",
     "capture": "node capture-current.mjs"
   },

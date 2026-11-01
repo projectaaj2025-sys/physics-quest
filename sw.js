@@ -3,7 +3,7 @@
    Стратегия: shell-first для навигации, cache-first для ресурсов,
    докачка недостающих файлов из сети и сохранение в кэш.
    ============================================================ */
-const PQ_VERSION = "pq-v3.21.0";
+const PQ_VERSION = "pq-v3.22.0";
 const PQ_SHELL = [
     "./",
     "./index.html",
@@ -13,9 +13,9 @@ const PQ_SHELL = [
     "./manifest.json",
     "./shared/styles.css",
     "./shared/phet-labs.css",
-    "./shared/phet-labs.css?v=2",
+    "./shared/phet-labs.css?v=3",
     "./shared/phet-labs.js",
-    "./shared/phet-labs.js?v=2",
+    "./shared/phet-labs.js?v=3",
     "./shared/teacher-guide.css",
     "./shared/teacher-guide.js",
     "./7/tasks-types.js",
@@ -61,7 +61,7 @@ const PQ_SHELL = [
     "./shared/home-experiments.js",
     "./shared/home-experiments.js?v=4",
     "./shared/inquiry-labs.js",
-    "./shared/lab-games.js?v=5",
+    "./shared/lab-games.js?v=6",
     "./shared/level-themes.js",
     "./shared/problem-solver.js",
     "./shared/battle-room.js",
@@ -87,9 +87,9 @@ const PQ_SHELL = [
     "./shared/sim-light.js",
     "./shared/sim-light-7.js",
     "./shared/simulators-89.js",
-    "./shared/simulators-89.js?v=6",
+    "./shared/simulators-89.js?v=7",
     "./7/simulators.js",
-    "./7/simulators.js?v=4",
+    "./7/simulators.js?v=5",
     "./7/content.js",
     "./8/content.js",
     "./9/content.js",
