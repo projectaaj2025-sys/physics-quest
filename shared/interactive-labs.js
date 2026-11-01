@@ -383,6 +383,7 @@
         }
         function draw() {
             if (destroyed || !ctx) return;
+            if (window.PQCanvasQuality) window.PQCanvasQuality.begin(canvas, W, H);
             const mx = state.x * W, my = state.y * H, coilX = W * 0.65, coilY = H * 0.52;
             ctx.clearRect(0, 0, W, H);
             const gradient = ctx.createLinearGradient(0, 0, 0, H); gradient.addColorStop(0, "#fbfeff"); gradient.addColorStop(1, "#e9f2f6"); ctx.fillStyle = gradient; ctx.fillRect(0, 0, W, H);

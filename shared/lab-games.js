@@ -49,6 +49,9 @@ const LabGames = {
                 if (this.circuitState) values.interactive = this.circuitState;
                 else values.on = [...document.querySelectorAll("#lab-circuit .circuit-cell.on")].map(c => Number(c.getAttribute("data-idx")));
             }
+            if (this.activeCfg.type === "inquiry" && this.interactiveLab && this.interactiveLab.getState) {
+                values.inquiry = this.interactiveLab.getState();
+            }
             const game = this.activeGame;
             this.activeGame = null;
             this.show(this.activeCfg, game, values);
@@ -164,16 +167,17 @@ const LabGames = {
                 resultEl.style.display = "";
                 update();
             }
-        } else if (cfg.type === "circuit" && content && resultEl) {
+        } else if ((cfg.type === "circuit" || cfg.type === "inquiry") && content && resultEl) {
             resultEl.style.display = "";
             resultEl._ok = false;
-            if (window.PQInteractiveLabs) {
-                this.interactiveLab = window.PQInteractiveLabs.mount("circuit", content, {
-                    simple: true,
-                    state: (values && values.interactive) || {},
+            const engine = cfg.type === "circuit" ? window.PQInteractiveLabs : window.PQInquiryLabs;
+            if (engine) {
+                this.interactiveLab = engine.mount(cfg.type === "circuit" ? "circuit" : cfg.inquiry, content, {
+                    simple: cfg.type === "circuit",
+                    state: (values && (cfg.type === "circuit" ? values.interactive : values.inquiry)) || {},
                     onChange: (next, metrics) => {
                         if (this.activeCfg !== cfg) return;
-                        this.circuitState = next;
+                        if (cfg.type === "circuit") this.circuitState = next;
                         resultEl._ok = !!metrics.success;
                         resultEl.className = "lab-result " + (metrics.success ? "ok" : "bad");
                         resultEl.textContent = metrics.message;

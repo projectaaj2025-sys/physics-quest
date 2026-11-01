@@ -514,9 +514,9 @@
     if ($("field-sim-kicker")) $("field-sim-kicker").textContent = tr("СЮЖЕТНЫЕ ПОЛЕВЫЕ ИСПЫТАНИЯ", "СЮЖЕТТІК ДАЛАЛЫҚ СЫНАҚТАР", "STORY FIELD TRIALS");
     if ($("field-sim-title")) $("field-sim-title").textContent = tr("🧪 Симуляторы экспедиции", "🧪 Экспедиция симуляторлары", "🧪 Expedition Simulators");
     if ($("field-sim-sub")) $("field-sim-sub").textContent = tr(
-      "15 интерактивных лабораторий и дополнительный домашний опыт по темам §3–§35 — открыты в любом порядке: меняй параметры, сравнивай результаты и собирай журнал экспедиции.",
-      "§3–§35 тақырыптары бойынша 15 интерактивті зертхана және қосымша үй тәжірибесі — кез келген ретпен ашық: параметрлерді өзгерт, нәтижелерді салыстыр және экспедиция журналын жина.",
-      "15 interactive laboratories and an extra home experiment across §3–§35 — open in any order: adjust parameters, compare trials, and build your expedition log."
+      "15 интерактивных лабораторий и практические домашние опыты по темам курса — открыты в любом порядке: проводи измерения, сравнивай результаты и собирай журнал экспедиции.",
+      "Курс тақырыптары бойынша 15 интерактивті зертхана және практикалық үй тәжірибелері — кез келген ретпен ашық: өлшемдер жүргіз, нәтижелерді салыстыр және экспедиция журналын жина.",
+      "15 interactive laboratories and hands-on home experiments across the course — open in any order: take measurements, compare trials, and build your expedition log."
     );
     if ($("field-sim-modal-kicker")) $("field-sim-modal-kicker").textContent = tr("ПОЛЕВОЙ ЖУРНАЛ · ФИЗИКА В ДЕЙСТВИИ", "ДАЛАЛЫҚ ЖУРНАЛ · ФИЗИКА ІС ҮСТІНДЕ", "FIELD LOG · PHYSICS IN ACTION");
     if ($("field-sim-run")) $("field-sim-run").textContent = tr("▶ Провести эксперимент", "▶ Тәжірибе жүргізу", "▶ Run Experiment");
@@ -547,6 +547,7 @@
     }).join("");
     host.querySelectorAll("[data-sim]").forEach(b => b.onclick = () => openMission(b.dataset.sim));
     if (window.PQHomeExperiments) window.PQHomeExperiments.mountGallery();
+    if (window.PQInquiryLabs) window.PQInquiryLabs.mountGallery();
     if (window.PQDiagramGames) window.PQDiagramGames.mountGallery();
     const count = missions.filter(m => state[m.id]).length;
     if ($("sim-key-progress")) $("sim-key-progress").textContent = tr(
@@ -1150,9 +1151,10 @@
     const step = () => {
       const cv = $("pq7-sim-canvas");
       if (!cv || !active) { lightRaf = null; return; }
-      const ctx = cv.getContext("2d");
+      const frame = window.PQCanvasQuality ? window.PQCanvasQuality.begin(cv, 760, 260) : null;
+      const ctx = frame ? frame.ctx : cv.getContext("2d");
       if (ctx) {
-        try { window.PQSimLight7.render(ctx, cv.width, cv.height, lightTick++); } catch (e) {}
+        try { window.PQSimLight7.render(ctx, frame ? frame.width : cv.width, frame ? frame.height : cv.height, lightTick++); } catch (e) {}
       }
       lightRaf = requestAnimationFrame(step);
     };

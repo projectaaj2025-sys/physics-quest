@@ -2821,6 +2821,7 @@
                 btn.onclick = () => this.openLab(btn.getAttribute("data-s89"));
             });
             if (window.PQHomeExperiments) window.PQHomeExperiments.mountGallery();
+            if (window.PQInquiryLabs) window.PQInquiryLabs.mountGallery();
             if (window.PQDiagramGames) window.PQDiagramGames.mountGallery();
             if (window.PQVisionExercise) window.PQVisionExercise.mountGallery();
         },
@@ -3018,10 +3019,11 @@
             const step = () => {
                 const canvas = this.$("pq-s89-canvas");
                 if (!canvas || !this.activeLab) return;
-                const ctx = canvas.getContext("2d");
+                const frame = window.PQCanvasQuality ? window.PQCanvasQuality.begin(canvas, 760, 270) : null;
+                const ctx = frame ? frame.ctx : canvas.getContext("2d");
                 if (ctx) {
                     const calc = this.activeLab.compute(this.params);
-                    drawCanvasFrame(ctx, canvas.width, canvas.height, this.activeLab, this.params, calc, this.tick++);
+                    drawCanvasFrame(ctx, frame ? frame.width : canvas.width, frame ? frame.height : canvas.height, this.activeLab, this.params, calc, this.tick++);
                 }
                 this.rafId = requestAnimationFrame(step);
             };

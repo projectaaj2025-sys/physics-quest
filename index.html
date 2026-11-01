@@ -974,6 +974,25 @@
         .hero-action { display: inline-flex; align-items: center; gap: 28px; padding: 14px 19px; border-radius: 12px; background: #75e5f5; color: #08233a; font-size: 14px; font-weight: 850; box-shadow: 0 8px 28px rgba(40,211,237,.25); transition: transform .2s, background .2s; }
         .hero-action:hover { background: #a7f4ff; transform: translateY(-2px); }
         .hero-action span { font-size: 20px; line-height: 1; }
+        .hero-tools { display: flex; align-items: center; flex-wrap: wrap; gap: 12px; }
+        .hero-qr-open { display: inline-flex; align-items: center; gap: 10px; padding: 6px 12px 6px 6px; border: 1px solid rgba(135,235,250,.48); border-radius: 13px; background: rgba(6,25,49,.76); color: #effaff; font: inherit; text-align: left; cursor: pointer; box-shadow: 0 8px 25px rgba(2,12,28,.2); }
+        .hero-qr-open:hover { border-color: #87ebfa; background: rgba(10,44,72,.92); }
+        .hero-qr-thumb { display: grid; place-items: center; width: 76px; height: 76px; padding: 2px; border-radius: 8px; background: #fff; flex: none; }
+        .hero-qr-thumb svg { display: block; width: 72px; height: 72px; }
+        .hero-qr-copy { display: flex; flex-direction: column; gap: 4px; max-width: 140px; }
+        .hero-qr-copy b { color: #a8eef9; font-size: 13px; }
+        .hero-qr-copy small { color: #d4e4ee; font-size: 11px; line-height: 1.35; }
+        .site-qr-dialog { width: min(92vw, 490px); max-height: 92vh; padding: 28px; border: 1px solid #8fd9e9; border-radius: 22px; background: #f8fdff; color: #123a52; text-align: center; box-shadow: 0 28px 90px rgba(0,0,0,.45); overflow: auto; }
+        .site-qr-dialog::backdrop { background: rgba(2,10,24,.82); backdrop-filter: blur(5px); }
+        .site-qr-dialog h2 { margin: 0 28px 8px; color: #123a52; font-size: 24px; }
+        .site-qr-dialog p { margin: 0 auto 16px; max-width: 380px; color: #46677a; line-height: 1.5; }
+        .site-qr-close { position: absolute; top: 10px; right: 12px; width: 40px; height: 40px; border: 0; border-radius: 50%; background: #e6f3f8; color: #17465e; font-size: 25px; cursor: pointer; }
+        .site-qr-large-link { display: block; width: fit-content; margin: 0 auto 16px; padding: 12px; border-radius: 14px; background: #fff; box-shadow: 0 5px 22px rgba(25,75,100,.12); }
+        .site-qr-large-link:hover { outline: 3px solid #20a6c8; }
+        .site-qr-large svg { display: block; width: min(68vw, 330px); height: auto; aspect-ratio: 1; }
+        .site-qr-url { display: block; margin: 12px 0; color: #087b9e; font-size: 13px; overflow-wrap: anywhere; }
+        .site-qr-open-link { display: inline-flex; min-height: 44px; align-items: center; justify-content: center; padding: 10px 18px; border-radius: 11px; background: #087ea4; color: #fff; font-weight: 850; }
+        .site-qr-dialog button:focus-visible, .site-qr-dialog a:focus-visible, .hero-qr-open:focus-visible { outline: 3px solid #e5a82d; outline-offset: 3px; }
         .hero-metrics { margin-top: 30px; gap: 9px; }
         .hero-metric, html[data-theme="light"] .hero-metric { padding: 0 12px 0 0; margin-right: 3px; border: 0; border-right: 1px solid rgba(255,255,255,.24); border-radius: 0; background: none; box-shadow: none; color: #d9e6f1; font-size: 11px; }
         .hero-metric:last-child { border-right: 0; }
@@ -1122,6 +1141,17 @@
 
     <main class="hub-wrap" id="hub-app"></main>
 
+    <dialog class="site-qr-dialog" id="site-qr-dialog" aria-labelledby="site-qr-title">
+        <button type="button" class="site-qr-close" id="site-qr-close" aria-label="Close">×</button>
+        <h2 id="site-qr-title"></h2>
+        <p id="site-qr-lead"></p>
+        <a class="site-qr-large-link" id="site-qr-link" target="_blank" rel="noopener">
+            <div class="site-qr-large" id="site-qr-large" role="img"></div>
+        </a>
+        <a class="site-qr-url" id="site-qr-url" target="_blank" rel="noopener"></a>
+        <a class="site-qr-open-link" id="site-qr-open-link" target="_blank" rel="noopener"></a>
+    </dialog>
+
     <script src="./shared/account.js"></script>
     <script src="./shared/theme.js"></script>
     <script src="./shared/catalog-789.js"></script>
@@ -1130,6 +1160,7 @@
     <script src="./shared/offline-manifest.js"></script>
     <script src="./shared/sound.js?v=9"></script>
     <script src="./shared/offline.js"></script>
+    <script src="./shared/qrcode.js"></script>
     <script>
     (function () {
         // Если на главную страницу пришли со ссылкой #a=… или #res=… — сразу направляем в нужную параллель!
@@ -1153,9 +1184,11 @@
                 heroAction: "Выбрать свою миссию", heroEyebrow: "ТРИ МИРА · ОДНА МИССИЯ", chooseKicker: "01 / ВЫБЕРИ СВОЮ ИСТОРИЮ",
                 heroTitle: "Твои знания — сила, которая спасёт мир.",
                 heroLead: "Стань пилотом защитного щита, исследуй три удивительных мира и открой силу физики в каждой миссии.",
+                qrButton: "QR-код на сайт", qrButtonHint: "Наведи камеру или открой", qrTitle: "Физика-Квест в твоём телефоне",
+                qrLead: "Наведи камеру на код или нажми на него, чтобы открыть этот сайт.", qrOpen: "Открыть сайт →", qrClose: "Закрыть", qrAlt: "QR-код публичного адреса Физика-Квест",
                 mLevels: "<b>153</b> игровых уровня",
                 mTasks: "<b>3 675</b> задач по программе",
-                mLabs: "<b>58</b> лаб. работ и интерактивных симуляторов",
+                mLabs: "<b>61</b> лаб. работ и интерактивных симуляторов",
                 mLangs: "<b>3 языка</b> (RU · ҚАЗ · EN)",
                 permCodeLabel: "Постоянный код ученика (7–9 кл.)",
                 copyBtn: "📋 Копировать",
@@ -1225,9 +1258,11 @@
                 heroAction: "Миссияңды таңда", heroEyebrow: "ҮШ ӘЛЕМ · БІР МИССИЯ", chooseKicker: "01 / ӨЗ ОҚИҒАҢДЫ ТАҢДА",
                 heroTitle: "Білімің — әлемді құтқаратын күш.",
                 heroLead: "Қорғаныс қалқанының ұшқышы бол, үш ғажайып әлемді зертте және әр миссияда физиканың күшін аш.",
+                qrButton: "Сайттың QR-коды", qrButtonHint: "Камераны бағытта немесе аш", qrTitle: "Физика-Квест телефоныңда",
+                qrLead: "Осы сайтты ашу үшін камераны кодқа бағытта немесе кодты бас.", qrOpen: "Сайтты ашу →", qrClose: "Жабу", qrAlt: "Физика-Квесттің жалпыға ортақ мекенжайының QR-коды",
                 mLevels: "<b>153</b> ойын деңгейі",
                 mTasks: "<b>3 675</b> оқу есебі",
-                mLabs: "<b>58</b> зертханалық жұмыс пен интерактивті симулятор",
+                mLabs: "<b>61</b> зертханалық жұмыс пен интерактивті симулятор",
                 mLangs: "<b>3 тіл</b> (ҚАЗ · RU · EN)",
                 permCodeLabel: "Оқушының тұрақты коды (7–9 сын.)",
                 copyBtn: "📋 Көшіру",
@@ -1297,9 +1332,11 @@
                 heroAction: "Choose your mission", heroEyebrow: "THREE WORLDS · ONE MISSION", chooseKicker: "01 / CHOOSE YOUR STORY",
                 heroTitle: "Your knowledge is the power to save the world.",
                 heroLead: "Become a shield pilot, explore three incredible worlds and discover the power of physics in every mission.",
+                qrButton: "Website QR code", qrButtonHint: "Scan or open", qrTitle: "Physics Quest on your phone",
+                qrLead: "Point your camera at the code or select it to open this website.", qrOpen: "Open website →", qrClose: "Close", qrAlt: "QR code for the public Physics Quest address",
                 mLevels: "<b>153</b> playable missions",
                 mTasks: "<b>3,675</b> physics problems",
-                mLabs: "<b>58</b> lab works & interactive simulators",
+                mLabs: "<b>61</b> lab works & interactive simulators",
                 mLangs: "<b>3 languages</b> (RU · ҚАЗ · EN)",
                 permCodeLabel: "Permanent Student Code (Gr. 7–9)",
                 copyBtn: "📋 Copy",
@@ -1384,6 +1421,38 @@
             return text;
         }
 
+        const PUBLIC_SITE_URL = "https://projectaaj2025-sys.github.io/physics-quest/";
+        function siteQrSvg(cellSize, margin) {
+            try {
+                if (typeof qrcode !== "function") return "";
+                const qr = qrcode(0, "M");
+                qr.addData(PUBLIC_SITE_URL);
+                qr.make();
+                return qr.createSvgTag({ cellSize, margin, scalable: true });
+            } catch (_) { return ""; }
+        }
+        function renderSiteQr() {
+            const mini = document.getElementById("hero-qr-mini");
+            if (mini) mini.innerHTML = siteQrSvg(2, 4);
+            const large = document.getElementById("site-qr-large");
+            if (large) {
+                large.innerHTML = siteQrSvg(7, 8);
+                large.setAttribute("aria-label", tr("qrAlt"));
+                large.querySelector("svg")?.setAttribute("aria-hidden", "true");
+            }
+            document.getElementById("site-qr-title").textContent = tr("qrTitle");
+            document.getElementById("site-qr-lead").textContent = tr("qrLead");
+            const close = document.getElementById("site-qr-close");
+            close.textContent = "×";
+            close.setAttribute("aria-label", tr("qrClose"));
+            ["site-qr-link", "site-qr-url", "site-qr-open-link"].forEach((id) => {
+                const link = document.getElementById(id);
+                link.href = PUBLIC_SITE_URL;
+            });
+            document.getElementById("site-qr-url").textContent = PUBLIC_SITE_URL;
+            document.getElementById("site-qr-open-link").textContent = tr("qrOpen");
+        }
+
         function countCompleted(g) {
             const prog = Storage.getProgressForGrade(g);
             const completed = (prog && prog.completedLevels) || {};
@@ -1466,7 +1535,13 @@
                         <div class="hero-kicker">${esc(tr("heroKicker"))}</div>
                         <h1 class="hero-title">${esc(tr("heroTitle"))}</h1>
                         <p class="hero-lead">${esc(tr("heroLead"))}</p>
-                        <a class="hero-action" href="#campaigns">${esc(tr("heroAction"))} <span aria-hidden="true">↗</span></a>
+                        <div class="hero-tools">
+                            <a class="hero-action" href="#campaigns">${esc(tr("heroAction"))} <span aria-hidden="true">↗</span></a>
+                            <button class="hero-qr-open" id="hero-qr-open" type="button" aria-haspopup="dialog" aria-controls="site-qr-dialog">
+                                <span class="hero-qr-thumb" id="hero-qr-mini" aria-hidden="true"></span>
+                                <span class="hero-qr-copy"><b>${esc(tr("qrButton"))}</b><small>${esc(tr("qrButtonHint"))}</small></span>
+                            </button>
+                        </div>
                         <div class="hero-metrics">
                             <div class="hero-metric">${tr("mLevels")}</div>
                             <div class="hero-metric">${tr("mTasks")}</div>
@@ -1717,6 +1792,13 @@
                 <footer class="hub-footer">${esc(tr("footer"))}</footer>
             `;
 
+            renderSiteQr();
+            document.getElementById("hero-qr-open")?.addEventListener("click", () => {
+                const dialog = document.getElementById("site-qr-dialog");
+                if (dialog.showModal) dialog.showModal();
+                else dialog.setAttribute("open", "");
+            });
+
             // Обработчики внутри портала
             document.getElementById("btn-switch-role")?.addEventListener("click", () => {
                 window.PQAccount.openModal({ onboarding: false, onComplete: renderPortal });
@@ -1766,6 +1848,15 @@
                 window.location.href = `./play.html?grade=${parsed.grade}&autostart=${encodeURIComponent(parsed.levelId)}&assign=${encodeURIComponent(attached.assignmentCode || raw)}`;
             });
         }
+
+        const siteQrDialog = document.getElementById("site-qr-dialog");
+        document.getElementById("site-qr-close")?.addEventListener("click", () => siteQrDialog.close());
+        siteQrDialog?.addEventListener("click", (event) => {
+            if (event.target !== siteQrDialog) return;
+            const rect = siteQrDialog.getBoundingClientRect();
+            const outside = event.clientX < rect.left || event.clientX > rect.right || event.clientY < rect.top || event.clientY > rect.bottom;
+            if (outside) siteQrDialog.close();
+        });
 
         // Языковые кнопки шапки
         document.querySelectorAll(".hub-langs button").forEach(btn => {

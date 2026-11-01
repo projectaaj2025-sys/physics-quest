@@ -847,7 +847,8 @@
             "./shared/game.js",
             "./shared/i18n.js",
             "./shared/fullscreen.js",
-            "./shared/interactive-labs.js",
+            "./shared/canvas-quality.js",
+            "./shared/interactive-labs.js?v=2",
             "./shared/main.js?v=3",
             "./shared/qrcode.js",
             "./shared/rpg-data.js",
@@ -870,14 +871,14 @@
             "./shared/rpg-boot.js"
         ];
         if (grade === 7) {
-            scripts.push("./shared/lab-workbench.js", "./shared/lab-games.js?v=3", "./shared/sim-light-7.js", "./7/simulators.js?v=3");
+            scripts.push("./shared/lab-workbench.js", "./shared/lab-games.js?v=4", "./shared/sim-light-7.js", "./7/simulators.js?v=4");
         } else if (grade === 8) {
             // Лабораторные мини-игры уровней 45–55 (конфиги — в 8/content.js)
-            scripts.push("./shared/lab-workbench.js", "./shared/lab-games.js?v=3");
+            scripts.push("./shared/lab-workbench.js", "./shared/lab-games.js?v=4");
         } else if (grade === 9) {
-            scripts.push("./shared/lab-workbench.js", "./shared/lab-games.js?v=3", "./9/extras.js");
+            scripts.push("./shared/lab-workbench.js", "./shared/lab-games.js?v=4", "./9/extras.js");
         }
-        scripts.push("./shared/extra-lab-games.js", "./shared/home-experiments.js?v=3");
+        scripts.push("./shared/extra-lab-games.js", "./shared/home-experiments.js?v=4", "./shared/inquiry-labs.js");
         // Знакомство с героями и общий сюжет — показывается в «Лор и сюжет» перед комиксом
         scripts.push("./shared/story-cast.js");
         // Единый визуальный комикс-дневник трилогии (7 → 8 → 9) для всех параллелей
@@ -886,7 +887,7 @@
         // Визуальные canvas-симуляторы для 8 и 9 классов:
         // сначала светлый фотореалистичный движок, затем сами лаборатории
         if (grade === 8 || grade === 9) {
-            scripts.push("./shared/sim-light.js", "./shared/simulators-89.js?v=5");
+            scripts.push("./shared/sim-light.js", "./shared/simulators-89.js?v=6");
         }
 
         scripts.push("./shared/diagram-games.js", "./shared/vision-exercise.js?v=2");
