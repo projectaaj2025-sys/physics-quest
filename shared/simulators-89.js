@@ -2859,6 +2859,7 @@
                             <p style="margin:0;font-size:13.5px;color:#cbd5e1;line-height:1.45;">${loc(lab.story)}</p>
                         </div>
                         <div class="pq-s89-head-actions">
+                            <button type="button" id="pq-s89-phet" class="pq-phet-btn">🌐 PhET</button>
                             <button type="button" id="pq-s89-fullscreen"></button>
                             <button type="button" class="pq-td-x" id="pq-s89-close" style="width:34px;height:34px;border-radius:50%;background:rgba(255,255,255,0.08);border:1px solid rgba(148,163,184,0.3);color:#fff;cursor:pointer;">✕</button>
                         </div>
@@ -2911,6 +2912,9 @@
 
             modal.classList.add("open");
             this.$("pq-s89-close").onclick = () => this.close();
+            this.$("pq-s89-phet").onclick = (event) => {
+                if (window.PQPhETLabs) window.PQPhETLabs.open(g, event.currentTarget);
+            };
             if (window.PQFullscreen) {
                 window.PQFullscreen.bind(modal, this.$("pq-s89-fullscreen"), modal.querySelector(".pq-s89-dialog"));
             }
