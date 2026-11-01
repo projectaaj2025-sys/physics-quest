@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Физика-Квест — скриншоты игры: механики, классы, лаборатории</title>
 <meta name="theme-color" content="#eef4fb">
-<meta name="description" content="Скриншоты «Физика-Квест»: карта кампании, окно задания, полный конспект, лор с комиксом, босс, профиль, битва команд, журнал учителя, техобслуживание, HUD, 7 типов заданий, 50 симуляторов и 15 мини-игр — с разделением по классам 7, 8 и 9.">
+<meta name="description" content="Скриншоты «Физика-Квест»: карта кампании, окно задания, полный конспект, лор с комиксом, босс, профиль, битва команд, журнал учителя, техобслуживание, HUD, 7 типов заданий, 50 собственных лабораторий, 9 официальных PhET и 15 мини-игр — с разделением по классам 7, 8 и 9.">
 <link rel="icon" type="image/png" sizes="192x192" href="./assets/icons/icon-192.png">
 <script>
     /* Тема применяется до первой отрисовки — без вспышки тёмного экрана.
@@ -286,10 +286,10 @@
     <header class="hero">
         <div class="kicker" data-i18n="kicker">СКРИНШОТЫ ИГРЫ · МЕХАНИКИ · 7–9 КЛАССЫ</div>
         <h1 data-i18n="title">Как выглядит «Физика-Квест»</h1>
-        <p class="lead" data-i18n="lead">Не только мини-игры: карта кампании, окно задания, полный конспект, лор с комиксом, босс, профиль с рангами, битва команд, журнал учителя и работа над ошибками. Семь типов заданий и 50 симуляторов — и всё это разделено по классам: выбери 7, 8 или 9 и смотри только его экраны.</p>
+        <p class="lead" data-i18n="lead">Не только мини-игры: карта кампании, окно задания, полный конспект, лор с комиксом, босс, профиль с рангами, битва команд, журнал учителя и работа над ошибками. Семь типов заданий, 50 собственных лабораторий и 9 официальных PhET с практическими заданиями — всё разделено по классам: выбери 7, 8 или 9 и смотри только его экраны.</p>
         <div class="stats">
-            <div class="stat"><b>24</b> <span data-i18n="sScreens">экрана механик</span></div>
-            <div class="stat"><b>50</b> <span data-i18n="sLabs">симуляторов и лабораторий</span></div>
+            <div class="stat"><b id="stat-screens">39</b> <span data-i18n="sScreens">экранов интерфейса</span></div>
+            <div class="stat"><b id="stat-labs">59</b> <span data-i18n="sLabs">симуляторов и лабораторий</span></div>
             <div class="stat"><b>15</b> <span data-i18n="sMini">мини-игр уровней</span></div>
             <div class="stat"><b>3</b> <span data-i18n="sGrades">класса в одной трилогии</span></div>
         </div>
@@ -1233,8 +1233,8 @@
             toPortal: "На портал",
             kicker: "СКРИНШОТЫ ИГРЫ · МЕХАНИКИ · 7–9 КЛАССЫ",
             title: "Как выглядит «Физика-Квест»",
-            lead: "Не только мини-игры: карта кампании, окно задания, полный конспект, лор с комиксом, босс, профиль с рангами, битва команд, журнал учителя и работа над ошибками. Семь типов заданий и 50 симуляторов — и всё это разделено по классам: выбери 7, 8 или 9 и смотри только его экраны.",
-            sScreens: "экрана механик", sLabs: "симуляторов и лабораторий", sMini: "мини-игр уровней", sGrades: "класса в одной трилогии",
+            lead: "Не только мини-игры: карта кампании, окно задания, полный конспект, лор с комиксом, босс, профиль с рангами, битва команд, журнал учителя и работа над ошибками. Семь типов заданий, 50 собственных лабораторий и 9 официальных PhET с практическими заданиями — всё разделено по классам: выбери 7, 8 или 9 и смотри только его экраны.",
+            sScreens: "экранов интерфейса", sLabs: "симуляторов и лабораторий", sMini: "мини-игр уровней", sGrades: "класса в одной трилогии",
             filterLabel: "КЛАСС:", gAll: "Все классы", gAllShort: "Все классы",
             filterCount: (n) => `Экранов: ${n}`,
             emptyNote: "Для этого класса кадров нет — выбери другой класс или «Все классы».",
@@ -1244,8 +1244,8 @@
                 start: { kicker: "ВХОД В ИГРУ", title: "Главное меню и «Как играть»", lead: "С главного экрана видно прогресс серии, свой класс и вход в кампанию; «Как играть» за минуту объясняет цель, управление и семь типов заданий." },
                 hud: { kicker: "ИГРОВОЙ ЭКРАН", title: "Щит, астероиды и энергия", lead: "Основная петля игры: к городу летят астероиды с заданиями, верный ответ отражает удар и возвращает энергию, ошибка снимает щит. Полный конспект и формулы — до уровня, в самом задании их нет." },
                 map: { kicker: "КАМПАНИЯ", title: "Карта уровней своего класса", lead: "Главы кампании с прогрессом, звёздами за точность и метриками щита. Пройденные главы открыты, следующая подсвечена, чужие классы в карту не попадают." },
-                task: { kicker: "МЕХАНИКА ЗАДАНИЙ", title: "Окно задания и семь типов", lead: "Тест, множественный выбор, соответствие, краткий ответ, числовой ответ, верно/неверно и заполнение пропуска — один и тот же набор в 7, 8 и 9 классе. На уровень попадает 20 случайных заданий, подсказки и попытки настраиваются." },
-                theory: { kicker: "ПОЛНЫЙ КОНСПЕКТ", title: "Теория до уровня", lead: "Перед миссией ученик открывает полный конспект параграфа: ключевые идеи, определения, карточку формул и разбор примера с оформлением «Дано — Решение — Ответ»." },
+                task: { kicker: "МЕХАНИКА ЗАДАНИЙ", title: "Окно задания и семь типов", lead: "Тест, множественный выбор, соответствие, краткий ответ, числовой ответ, верно/неверно и заполнение пропуска — один и тот же набор в 7, 8 и 9 классе. После ответа показываются пояснение и контрастный результат в светлой и тёмной темах." },
+                theory: { kicker: "ПОЛНЫЙ КОНСПЕКТ", title: "Теория до уровня", lead: "Перед миссией ученик открывает полный конспект параграфа: ключевые идеи, определения, формулы с настоящими индексами и степенями, разбор примера. На телефоне карточка остаётся внутри экрана." },
                 lore: { kicker: "ЛОР И КОМИКС", title: "История и комикс одной лентой", lead: "Сначала герои и общий сюжет трилогии, затем главы лора: под текстом каждой главы стоит её комикс-страница. Показываются только главы своего класса." },
                 boss: { kicker: "ИСПЫТАНИЕ", title: "Босс блока", lead: "Финальный уровень блока в 9 классе: сложнее вопросы, сильнее урон по щиту и отдельная награда. В 7 и 8 классе таких экранов нет — там обычные волны." },
                 profile: { kicker: "ПРОГРЕСС ПИЛОТА", title: "Профиль, достижения и задания", lead: "Имя, ранг и код пилота, 41 достижение и дни посещений с бонусом XP. Бейджи посещаемости считаются отдельно от бейджей за дни подряд; здесь же — настройки подсказок, девять навыков и три случайных задания недели." },
@@ -1253,9 +1253,10 @@
                 teacher: { kicker: "КАБИНЕТ УЧИТЕЛЯ", title: "Журнал учителя", lead: "Один журнал на 7–9 классы: назначения, результаты, 10-балльная оценка и автоматические сигналы о сроках, активности и сложных темах." },
                 maintenance: { kicker: "РАБОТА НАД ОШИБКАМИ", title: "Техобслуживание", lead: "Архив вопросов, где ответ разошёлся с верным: правило, разбор и повторный ответ — без астероидов и таймера, с возвратом части очков." },
                 minigames: { kicker: "МИНИ-ИГРЫ УРОВНЕЙ", title: "Лабораторные мини-игры 8 и 9 класса", lead: "У каждой мини-игры своя живая установка: тепловые, электрические, магнитные, оптические и механические сцены реагируют на детали и ручки. «Закон Ома» содержит 3 этапа, а после проверки открывается итог с переходом дальше или возвратом в миссию." },
+                phet: { kicker: "ОФИЦИАЛЬНЫЕ PHET · 9 СИМУЛЯТОРОВ", title: "PhET-каталог и задания внутри симуляторов", lead: "По 3 официальные симуляции в каждом классе. Для каждой — 3 практических задания с самоконтролем и сохранением результата; симулятор открывается на языке ученика." },
                 labs: { kicker: "CANVAS-СИМУЛЯТОРЫ", title: "35 лабораторий 8–9 классов", lead: "Отдельные canvas-симуляторы по темам параграфов: приборы, жидкости, свет и тени рисует движок. Телеметрия живая, опыты сгруппированы по темам курса." },
                 field7: { kicker: "7 КЛАСС · ПОЛЕВОЙ ЖУРНАЛ", title: "15 полевых опытов 7 класса", lead: "Измерения, плотность, давление, Архимед, рычаг и энергия — отдельный набор для 7 класса, полностью на трёх языках." },
-                galleries: { kicker: "ГАЛЕРЕИ ПО ТЕМАМ", title: "Лаборатории, собранные по темам", lead: "В 8 и 9 классе опыты сгруппированы по темам курса: у каждой темы своя карточка с параграфом, целью и подсказкой." },
+                galleries: { kicker: "ГАЛЕРЕИ ПО ТЕМАМ", title: "Лаборатории, собранные по темам", lead: "Полный полевой журнал 7 класса и тематические галереи 8–9 классов: PhET-каталог расположен перед собственными установками, у каждой карточки есть цель и подсказка." },
                 worlds: { kicker: "ОФОРМЛЕНИЕ УРОВНЕЙ", title: "Миры внутри игры", lead: "Фон уровня не один и тот же: каждая глава получает свой мир — небо, силуэты, частицы и свечение." },
                 cert: { kicker: "СЕРТИФИКАТЫ", title: "Паспорт пилота: восемь оформлений", lead: "Сертификат за свой класс и за всю трилогию: крупная круглая печать, код пилота и дата. Четыре оформления с иллюстрациями — «Космос», «Светлый», «Пергамент», «Небо» — и четыре прежних, нарисованных движком: их тоже можно выбрать в окне сертификата." }
             },
@@ -1278,13 +1279,20 @@
                 "map-g7": { t: "Карта кампании «Астерия»", d: "12 глав · звёзды за точность · щит города" },
                 "map-g8": { t: "Карта кампании «Эквилибриум»", d: "13 глав · тепло, электричество, оптика" },
                 "map-g9": { t: "Карта кампании «Орбита-9»", d: "10 глав полётной школы · боссы блоков" },
-                "task-g7": { t: "Задание 7 класса: тест", d: "§ 13 Плотность · 4 варианта · 1 попытка из 5" },
-                "task-g8": { t: "Задание 8 класса: числовой ответ", d: "§ 22–26 Закон Ома · только число" },
-                "task-g9": { t: "Задание 9 класса: краткий ответ", d: "§ 15–19 Орбита · формула на карточке теории" },
+                "task-g7": { t: "Задание 7 класса: верный числовой ответ", d: "Сила Архимеда · F_A = ρgV · 5 кН · решение после ответа" },
+                "task-g8": { t: "Задание 8 класса: верный ответ", d: "§ 24 Закон Ома · I = U/R = 2 А · светлая тема" },
+                "task-g9": { t: "Задание 9 класса: верный числовой ответ", d: "§ 11 Законы Кеплера · 4 в степени 3/2 = 8 · решение после ответа" },
+                "task-g8-dark": { t: "Верный ответ в тёмной теме", d: "Тёмный текст на светлом зелёном фоне · контраст 13,14:1 · пояснение читается" },
+                "phet-catalog-g7": { t: "PhET-каталог 7 класса", d: "Сила и движение · массы и пружины · скейт-парк · 9 заданий" },
+                "phet-catalog-g8": { t: "PhET-каталог 8 класса", d: "Цепь DC · состояния вещества · оптика · 9 заданий" },
+                "phet-catalog-g9": { t: "PhET-каталог 9 класса", d: "Маятник · снаряд · волны · 9 заданий" },
+                "phet-tasks-g7": { t: "PhET-задания 7 класса", d: "Energy Skate Park · 3 практических шага · сохранённый прогресс 3/3" },
+                "phet-tasks-g8": { t: "PhET-задания 8 класса", d: "Геометрическая оптика · 3 практических шага · прогресс 3/3" },
+                "phet-tasks-g9": { t: "PhET-задания 9 класса", d: "Движение снаряда · 3 практических шага · прогресс 3/3" },
                 "task-types": { t: "Семь типов заданий", d: "Один набор в 7, 8 и 9 классе — содержание меняется по параграфам" },
-                "theory-g7": { t: "Конспект: плотность вещества", d: "7 класс · § 13 · формулы и разбор примера" },
-                "theory-g8": { t: "Конспект: тепловой баланс", d: "8 класс · § 7–9 · Q = cmΔt и уравнение баланса" },
-                "theory-g9": { t: "Конспект: маятник и колебания", d: "9 класс · § 24–29 · T = 2π√(l/g)" },
+                "theory-g7": { t: "Учебник: плотность вещества", d: "7 класс · § 13 · формулы и разбор примера" },
+                "theory-g8": { t: "Учебник: количество теплоты", d: "8 класс · § 7 · Q = cmΔt и разбор решения" },
+                "theory-g9": { t: "Учебник: маятник и колебания", d: "9 класс · § 24–29 · T = 2π√(l/g)" },
                 "lore-g7": { t: "Лор и комикс: силы хребта", d: "7 класс · акт III · реплики героев и физический ключ" },
                 "lore-g8": { t: "Лор и комикс: электрическая сеть", d: "8 класс · акт III · закон Ома в сюжете" },
                 "lore-g9": { t: "Лор и комикс: орбита «Беркут»", d: "9 класс · акт V · первая космическая" },
@@ -1306,8 +1314,8 @@
             toPortal: "Порталға",
             kicker: "ОЙЫН СКРИНШОТТАРЫ · МЕХАНИКАЛАР · 7–9 СЫНЫПТАР",
             title: "«Физика-Квест» қалай көрінеді",
-            lead: "Тек мини-ойындар емес: кампания картасы, тапсырма терезесі, толық конспект, комикспен лор, босс, рангілері бар профиль, командалық сайыс, мұғалім журналы және қателермен жұмыс. Жеті тапсырма түрі мен 50 симулятор — барлығы сынып бойынша бөлінген: 7, 8 немесе 9-ды таңдап, тек соның экрандарын көр.",
-            sScreens: "механика экраны", sLabs: "симулятор мен зертхана", sMini: "деңгей мини-ойыны", sGrades: "сынып бір трилогияда",
+            lead: "Тек мини-ойындар емес: кампания картасы, тапсырма терезесі, толық конспект, комикспен лор, босс, рангілері бар профиль, командалық сайыс, мұғалім журналы және қателермен жұмыс. Жеті тапсырма түрі, 50 жергілікті зертхана және практикалық тапсырмалары бар 9 ресми PhET — барлығы сынып бойынша бөлінген: 7, 8 немесе 9-ды таңдап, тек соның экрандарын көр.",
+            sScreens: "интерфейс экраны", sLabs: "симулятор мен зертхана", sMini: "деңгей мини-ойыны", sGrades: "сынып бір трилогияда",
             filterLabel: "СЫНЫП:", gAll: "Барлық сыныптар", gAllShort: "Барлығы",
             filterCount: (n) => `Экрандар: ${n}`,
             emptyNote: "Бұл сынып үшін кадрлар жоқ — басқа сыныпты немесе «Барлық сыныптар»-ды таңда.",
@@ -1317,8 +1325,8 @@
                 start: { kicker: "ОЙЫНҒА КІРУ", title: "Басты мәзір және «Қалай ойнау керек»", lead: "Басты экранда серия прогресі, өз сыныбың және кампанияға кіру көрінеді; «Қалай ойнау керек» бір минутта мақсатты, басқаруды және жеті тапсырма түрін түсіндіреді." },
                 hud: { kicker: "ОЙЫН ЭКРАНЫ", title: "Қалқан, астероидтар және энергия", lead: "Ойынның негізгі циклі: қалаға тапсырмасы бар астероидтар ұшады, дұрыс жауап соққыны қайтарады және энергияны қайтарады, қате қалқанды азайтады. Толық конспект пен формулалар деңгейге дейін — тапсырманың ішінде олар жоқ." },
                 map: { kicker: "КАМПАНИЯ", title: "Өз сыныбыңның деңгей картасы", lead: "Прогрессі, дәлдік жұлдыздары және қалқан көрсеткіштері бар кампания тараулары. Өтілген тараулар ашық, келесісі ерекшеленеді, басқа сыныптар картаға түспейді." },
-                task: { kicker: "ТАПСЫРМА МЕХАНИКАСЫ", title: "Тапсырма терезесі және жеті түрі", lead: "Тест, бірнеше жауап, сәйкестендіру, қысқа жауап, сандық жауап, дұрыс/бұрыс және бос орынды толтыру — 7, 8 және 9 сыныпта бірдей жиынтық. Деңгейге 20 кездейсоқ тапсырма түседі." },
-                theory: { kicker: "ТОЛЫҚ КОНСПЕКТ", title: "Деңгейге дейінгі теория", lead: "Миссия алдында оқушы параграфтың толық конспектісін ашады: негізгі идеялар, анықтамалар, формула карточкасы және мысалды талдау." },
+                task: { kicker: "ТАПСЫРМА МЕХАНИКАСЫ", title: "Тапсырма терезесі және жеті түрі", lead: "Тест, бірнеше жауап, сәйкестендіру, қысқа жауап, сандық жауап, дұрыс/бұрыс және бос орынды толтыру — 7, 8 және 9 сыныпта бірдей жиынтық. Жауаптан кейін түсіндірме және ашық, қараңғы тақырыпта айқын нәтиже көрсетіледі." },
+                theory: { kicker: "ТОЛЫҚ КОНСПЕКТ", title: "Деңгейге дейінгі теория", lead: "Миссия алдында оқушы параграфтың толық конспектісін ашады: негізгі идеялар, анықтамалар, нақты индекс пен дәрежесі бар формулалар және мысалды талдау. Телефонда карточка экраннан шықпайды." },
                 lore: { kicker: "ЛОР ЖӘНЕ КОМИКС", title: "Тарих пен комикс бір лентада", lead: "Алдымен кейіпкерлер мен трилогияның жалпы сюжеті, содан кейін лор тараулары: әр тараудың мәтінінің астында оның комикс-беті тұрады. Тек өз сыныбыңның тараулары көрсетіледі." },
                 boss: { kicker: "СЫНАҚ", title: "Блок боссы", lead: "9 сыныптағы блоктың қорытынды деңгейі: күрделірек сұрақтар, қалқанға күштірек соққы және бөлек сыйақы." },
                 profile: { kicker: "ПИЛОТ ПРОГРЕСІ", title: "Профиль, жетістіктер және тапсырмалар", lead: "Пилоттың аты, рангі, коды, 41 жетістік және XP бонусы бар қатысу күндері. Қатысу белгілері қатарынан ойнау белгілерінен бөлек саналады; мұнда кеңестерді реттеу, тоғыз дағды және апта сайынғы үш тапсырма бар." },
@@ -1326,9 +1334,10 @@
                 teacher: { kicker: "МҰҒАЛІМ КАБИНЕТІ", title: "Мұғалім журналы", lead: "7–9 сыныптарға ортақ журнал: тапсырмалар, нәтижелер, 10 балдық баға және мерзім, белсенділік пен қиын тақырыптар бойынша автоматты ескертулер." },
                 maintenance: { kicker: "ҚАТЕЛЕРМЕН ЖҰМЫС", title: "Техникалық қызмет", lead: "Жауабы дұрысқа сәйкес келмеген сұрақтар архиві: ереже, талдау және қайта жауап — астероидсыз және таймерсіз." },
                 minigames: { kicker: "ДЕҢГЕЙ МИНИ-ОЙЫНДАРЫ", title: "8 және 9 сыныптың зертханалық мини-ойындары", lead: "Әр мини-ойынның өз жанды қондырғысы бар: жылу, электр, магнит, оптика және механика көріністері бөлшектер мен тұтқаларға жауап береді. «Ом заңы» 3 кезеңнен тұрады, ал тексеруден кейін келесі қадам немесе миссияға оралу көрсетілген қорытынды экран ашылады." },
+                phet: { kicker: "РЕСМИ PHET · 9 СИМУЛЯТОР", title: "PhET каталогы және симулятор ішіндегі тапсырмалар", lead: "Әр сыныпта 3 ресми симуляциядан. Әрқайсысына өзін-өзі тексеру және нәтижені сақтау мүмкіндігі бар 3 практикалық тапсырма берілген; симулятор оқушы тілінде ашылады." },
                 labs: { kicker: "CANVAS-СИМУЛЯТОРЛАР", title: "8–9 сыныптың 35 зертханасы", lead: "Параграф тақырыптары бойынша жеке canvas-симуляторлар: аспаптар, сұйықтықтар, жарық пен көлеңкені қозғалтқыш салады. Тәжірибелер курс тақырыптары бойынша топтастырылған." },
                 field7: { kicker: "7 СЫНЫП · ДАЛА ЖУРНАЛЫ", title: "7 сыныптың 15 далалық тәжірибесі", lead: "Өлшеу, тығыздық, қысым, Архимед, иінтірек және энергия — 7 сыныпқа арналған жеке жиынтық, үш тілде." },
-                galleries: { kicker: "ТАҚЫРЫП ГАЛЕРЕЯЛАРЫ", title: "Тақырып бойынша жиналған зертханалар", lead: "8 және 9 сыныпта тәжірибелер курс тақырыптары бойынша топтастырылған: әр тақырыптың параграфы, мақсаты және кеңесі бар карточкасы бар." },
+                galleries: { kicker: "ТАҚЫРЫП ГАЛЕРЕЯЛАРЫ", title: "Тақырып бойынша жиналған зертханалар", lead: "7 сыныптың толық дала журналы және 8–9 сыныптың тақырыптық галереялары: PhET каталогы жергілікті қондырғылардың алдында орналасқан, әр карточкада мақсат пен кеңес бар." },
                 worlds: { kicker: "ДЕҢГЕЙ БЕЗЕНДІРУІ", title: "Ойын ішіндегі әлемдер", lead: "Деңгей фоны бірдей емес: әр тарау өз әлемін алады — аспан, силуэттер, бөлшектер мен жарық." },
                 cert: { kicker: "СЕРТИФИКАТТАР", title: "Пилот паспорты: сегіз безендіру", lead: "Өз сыныбың және бүкіл трилогия үшін сертификат: үлкен дөңгелек мөр, пилот коды мен күні. Суреттері бар төрт безендіру — «Ғарыш», «Ашық», «Пергамент», «Аспан» — және қозғалтқыш салған төрт бұрынғы безендіру; оларды да сертификат терезесінде таңдауға болады." }
             },
@@ -1351,13 +1360,20 @@
                 "map-g7": { t: "«Астерия» кампания картасы", d: "12 тарау · дәлдік жұлдыздары · қала қалқаны" },
                 "map-g8": { t: "«Эквилибриум» кампания картасы", d: "13 тарау · жылу, электр, оптика" },
                 "map-g9": { t: "«Орбита-9» кампания картасы", d: "10 тарау · ұшу мектебі · блок босстары" },
-                "task-g7": { t: "7 сынып тапсырмасы: тест", d: "§ 13 Тығыздық · 4 нұсқа · 5 әрекеттің 1-і" },
-                "task-g8": { t: "8 сынып тапсырмасы: сандық жауап", d: "§ 22–26 Ом заңы · тек сан" },
-                "task-g9": { t: "9 сынып тапсырмасы: қысқа жауап", d: "§ 15–19 Орбита · теория карточкасындағы формула" },
+                "task-g7": { t: "7 сынып тапсырмасы: дұрыс сандық жауап", d: "Архимед күші · F_A = ρgV · 5 кН · жауаптан кейінгі шешім" },
+                "task-g8": { t: "8 сынып тапсырмасы: дұрыс жауап", d: "§ 24 Ом заңы · I = U/R = 2 А · ашық тақырып" },
+                "task-g9": { t: "9 сынып тапсырмасы: дұрыс сандық жауап", d: "§ 11 Кеплер заңдары · 4-тің 3/2 дәрежесі = 8 · жауаптан кейінгі шешім" },
+                "task-g8-dark": { t: "Қараңғы тақырыптағы дұрыс жауап", d: "Ашық жасыл фонда қою мәтін · контраст 13,14:1 · түсіндірме оқылады" },
+                "phet-catalog-g7": { t: "7 сыныптың PhET каталогы", d: "Күш және қозғалыс · массалар мен серіппелер · скейт-парк · 9 тапсырма" },
+                "phet-catalog-g8": { t: "8 сыныптың PhET каталогы", d: "DC тізбегі · заттың күйі · оптика · 9 тапсырма" },
+                "phet-catalog-g9": { t: "9 сыныптың PhET каталогы", d: "Маятник · снаряд · толқындар · 9 тапсырма" },
+                "phet-tasks-g7": { t: "7 сыныптың PhET тапсырмалары", d: "Energy Skate Park · 3 практикалық қадам · сақталған прогресс 3/3" },
+                "phet-tasks-g8": { t: "8 сыныптың PhET тапсырмалары", d: "Геометриялық оптика · 3 практикалық қадам · прогресс 3/3" },
+                "phet-tasks-g9": { t: "9 сыныптың PhET тапсырмалары", d: "Снаряд қозғалысы · 3 практикалық қадам · прогресс 3/3" },
                 "task-types": { t: "Жеті тапсырма түрі", d: "7, 8 және 9 сыныпта бір жиынтық — мазмұны параграф бойынша өзгереді" },
-                "theory-g7": { t: "Конспект: зат тығыздығы", d: "7 сынып · § 13 · формулалар мен мысал" },
-                "theory-g8": { t: "Конспект: жылу балансы", d: "8 сынып · § 7–9 · Q = cmΔt" },
-                "theory-g9": { t: "Конспект: маятник және тербелістер", d: "9 сынып · § 24–29 · T = 2π√(l/g)" },
+                "theory-g7": { t: "Оқулық: зат тығыздығы", d: "7 сынып · § 13 · формулалар мен мысал" },
+                "theory-g8": { t: "Оқулық: жылу мөлшері", d: "8 сынып · § 7 · Q = cmΔt және шешімді талдау" },
+                "theory-g9": { t: "Оқулық: маятник және тербелістер", d: "9 сынып · § 24–29 · T = 2π√(l/g)" },
                 "lore-g7": { t: "Лор мен комикс: жота күштері", d: "7 сынып · III акт · кейіпкерлер репликалары" },
                 "lore-g8": { t: "Лор мен комикс: электр желісі", d: "8 сынып · III акт · сюжеттегі Ом заңы" },
                 "lore-g9": { t: "Лор мен комикс: «Бүркіт» орбитасы", d: "9 сынып · V акт · бірінші ғарыштық" },
@@ -1379,8 +1395,8 @@
             toPortal: "Portal",
             kicker: "GAME SCREENSHOTS · MECHANICS · GRADES 7–9",
             title: "What Physics Quest looks like",
-            lead: "More than mini-games: the campaign map, the task window, the full study guide, the story with its comic, the boss screen, the pilot profile with ranks, the team battle, the teacher journal and error review. Seven task types and 50 simulators — all split by grade: pick 7, 8 or 9 and see only its screens.",
-            sScreens: "mechanics screens", sLabs: "simulators and labs", sMini: "level mini-games", sGrades: "grades in one trilogy",
+            lead: "More than mini-games: the campaign map, the task window, the full study guide, the story with its comic, the boss screen, the pilot profile with ranks, the team battle, the teacher journal and error review. Seven task types, 50 in-house labs and 9 official PhET simulations with practical tasks — all split by grade: pick 7, 8 or 9 and see only its screens.",
+            sScreens: "interface screens", sLabs: "simulators and labs", sMini: "level mini-games", sGrades: "grades in one trilogy",
             filterLabel: "GRADE:", gAll: "All grades", gAllShort: "All grades",
             filterCount: (n) => `Screens: ${n}`,
             emptyNote: "No frames for this grade — pick another grade or “All grades”.",
@@ -1390,8 +1406,8 @@
                 start: { kicker: "GETTING IN", title: "Main menu and “How to play”", lead: "The main screen shows series progress, your grade and the way into the campaign; “How to play” explains the goal, the controls and the seven task types in a minute." },
                 hud: { kicker: "GAME SCREEN", title: "Shield, asteroids and energy", lead: "The core loop: asteroids with tasks fly at the city, a correct answer deflects the hit and restores energy, a mistake drains the shield. The full guide and formulas live before the level, never inside the task." },
                 map: { kicker: "CAMPAIGN", title: "Your grade's level map", lead: "Campaign chapters with progress, accuracy stars and shield metrics. Finished chapters are open, the next one is highlighted, other grades never appear." },
-                task: { kicker: "TASK MECHANICS", title: "Task window and seven types", lead: "Single choice, multiple choice, matching, short answer, numeric answer, true/false and fill-in-the-blank — the same set in Grades 7, 8 and 9. Each level draws 20 random tasks; hints and attempts are configurable." },
-                theory: { kicker: "FULL STUDY GUIDE", title: "Theory before the level", lead: "Before a mission the student opens the chapter guide: key ideas, definitions, a formula card and a worked example laid out as Given — Solution — Answer." },
+                task: { kicker: "TASK MECHANICS", title: "Task window and seven types", lead: "Single choice, multiple choice, matching, short answer, numeric answer, true/false and fill-in-the-blank — the same set in Grades 7, 8 and 9. Answers include an explanation and high-contrast feedback in both light and dark themes." },
+                theory: { kicker: "FULL STUDY GUIDE", title: "Theory before the level", lead: "Before a mission the student opens the chapter guide: key ideas, definitions, formulas with proper indices and exponents, and a worked example. The card stays within a phone screen." },
                 lore: { kicker: "STORY AND COMIC", title: "Story and comic in one strip", lead: "First the characters and the trilogy plot, then the lore chapters: under every chapter text sits its comic page. Only your grade's chapters are shown." },
                 boss: { kicker: "CHALLENGE", title: "Block boss", lead: "The final level of a Grade 9 block: harder questions, heavier shield damage and a separate reward." },
                 profile: { kicker: "PILOT PROGRESS", title: "Profile, achievements and quests", lead: "Pilot name, rank, code, 41 achievements and attendance days with bonus XP. Attendance badges are tracked separately from consecutive-day badges; the profile also has hint settings, nine skills and three random weekly quests." },
@@ -1399,9 +1415,10 @@
                 teacher: { kicker: "TEACHER CABINET", title: "Teacher journal", lead: "One journal for Grades 7–9: assignments, results, 10-point marks and automatic alerts about deadlines, activity and challenging topics." },
                 maintenance: { kicker: "ERROR REVIEW", title: "Maintenance", lead: "An archive of questions where the answer went wrong: rule, explanation and a second attempt — no asteroids, no timer, partial points back." },
                 minigames: { kicker: "LEVEL MINI-GAMES", title: "Grade 8–9 lab mini-games", lead: "Every mini-game has its own live apparatus: thermal, electric, magnetic, optical and mechanics scenes respond to parts and knobs. Ohm's law includes 3 stages, and Check opens a completion screen with the next step or a clear return to the mission." },
+                phet: { kicker: "OFFICIAL PHET · 9 SIMULATORS", title: "PhET catalog and tasks inside the simulations", lead: "Three official simulations per grade, each with three practical tasks, self-checking and saved progress. The simulation opens in the student’s language." },
                 labs: { kicker: "CANVAS SIMULATORS", title: "35 labs for Grades 8–9", lead: "Separate canvas simulators for each chapter topic: instruments, fluids, light and shadows are drawn by the engine. Experiments are grouped by course topic." },
                 field7: { kicker: "GRADE 7 · FIELD LOG", title: "15 field experiments of Grade 7", lead: "Measurement, density, pressure, buoyancy, lever and energy — a dedicated Grade 7 set, fully trilingual." },
-                galleries: { kicker: "TOPIC GALLERIES", title: "Labs grouped by topic", lead: "In Grades 8 and 9 the experiments are grouped by course topic, each with its paragraph, goal and hint." },
+                galleries: { kicker: "TOPIC GALLERIES", title: "Labs grouped by topic", lead: "The complete Grade 7 field journal and the Grade 8–9 topic galleries: the PhET catalog appears before the in-house setups, and every card includes a goal and a hint." },
                 worlds: { kicker: "LEVEL ART", title: "Worlds inside the game", lead: "The level background is never the same: every chapter gets its own world — sky, silhouettes, particles and glow." },
                 cert: { kicker: "CERTIFICATES", title: "Pilot passport: eight designs", lead: "A certificate for your grade and for the whole trilogy: a large round seal, pilot code and date. Four illustrated designs — “Space”, “Light”, “Parchment”, “Sky” — plus four earlier engine-drawn ones, all selectable in the certificate window." }
             },
@@ -1424,13 +1441,20 @@
                 "map-g7": { t: "Asteria campaign map", d: "12 chapters · accuracy stars · city shield" },
                 "map-g8": { t: "Equilibrium campaign map", d: "13 chapters · heat, electricity, optics" },
                 "map-g9": { t: "Orbit-9 campaign map", d: "10 chapters · flight school · block bosses" },
-                "task-g7": { t: "Grade 7 task: single choice", d: "§ 13 Density · 4 options · attempt 1 of 5" },
-                "task-g8": { t: "Grade 8 task: numeric answer", d: "§ 22–26 Ohm's law · number only" },
-                "task-g9": { t: "Grade 9 task: short answer", d: "§ 15–19 Orbit · formula on the theory card" },
+                "task-g7": { t: "Grade 7 task: correct numeric answer", d: "Buoyant force · F_A = ρgV · 5 kN · solution after answering" },
+                "task-g8": { t: "Grade 8 task: correct answer", d: "§ 24 Ohm's law · I = U/R = 2 A · light theme" },
+                "task-g9": { t: "Grade 9 task: correct numeric answer", d: "§ 11 Kepler's laws · 4 to the power 3/2 = 8 · worked solution" },
+                "task-g8-dark": { t: "Correct answer in the dark theme", d: "Dark text on a light green background · 13.14:1 contrast · readable explanation" },
+                "phet-catalog-g7": { t: "Grade 7 PhET catalog", d: "Forces and motion · masses and springs · skate park · 9 tasks" },
+                "phet-catalog-g8": { t: "Grade 8 PhET catalog", d: "DC circuit · states of matter · optics · 9 tasks" },
+                "phet-catalog-g9": { t: "Grade 9 PhET catalog", d: "Pendulum · projectile · waves · 9 tasks" },
+                "phet-tasks-g7": { t: "Grade 7 PhET tasks", d: "Energy Skate Park · 3 practical steps · saved progress 3/3" },
+                "phet-tasks-g8": { t: "Grade 8 PhET tasks", d: "Geometric optics · 3 practical steps · progress 3/3" },
+                "phet-tasks-g9": { t: "Grade 9 PhET tasks", d: "Projectile motion · 3 practical steps · progress 3/3" },
                 "task-types": { t: "Seven task types", d: "One set across Grades 7, 8 and 9 — the content follows the paragraph" },
-                "theory-g7": { t: "Guide: density of matter", d: "Grade 7 · § 13 · formulas and a worked example" },
-                "theory-g8": { t: "Guide: thermal balance", d: "Grade 8 · § 7–9 · Q = cmΔt and the balance equation" },
-                "theory-g9": { t: "Guide: pendulum and oscillations", d: "Grade 9 · § 24–29 · T = 2π√(l/g)" },
+                "theory-g7": { t: "Textbook: density of matter", d: "Grade 7 · § 13 · formulas and a worked example" },
+                "theory-g8": { t: "Textbook: quantity of heat", d: "Grade 8 · § 7 · Q = cmΔt and a worked solution" },
+                "theory-g9": { t: "Textbook: pendulum and oscillations", d: "Grade 9 · § 24–29 · T = 2π√(l/g)" },
                 "lore-g7": { t: "Story and comic: forces of the ridge", d: "Grade 7 · Act III · hero lines and the physics key" },
                 "lore-g8": { t: "Story and comic: the electric grid", d: "Grade 8 · Act III · Ohm's law in the plot" },
                 "lore-g9": { t: "Story and comic: the Berkut orbit", d: "Grade 9 · Act V · orbital velocity" },
@@ -1464,6 +1488,7 @@
         { file: "ui-task-g7.png", grade: 7, key: "task-g7" },
         { file: "ui-task-g8.png", grade: 8, key: "task-g8" },
         { file: "ui-task-g9.png", grade: 9, key: "task-g9" },
+        { file: "ui-task-g8-dark.png", grade: 8, key: "task-g8-dark" },
         { file: "ui-task-types.png", grade: "all", key: "task-types" },
         { file: "ui-theory-g7.png", grade: 7, key: "theory-g7" },
         { file: "ui-theory-g8.png", grade: 8, key: "theory-g8" },
@@ -1490,6 +1515,15 @@
         { file: "ui-cert-picker.png", grade: "all", key: "cert-ui" }
     ];
 
+    const PHET_ITEMS = [
+        { file: "phet-catalog-g7.png", grade: 7, key: "phet-catalog-g7" },
+        { file: "phet-catalog-g8.png", grade: 8, key: "phet-catalog-g8" },
+        { file: "phet-catalog-g9.png", grade: 9, key: "phet-catalog-g9" },
+        { file: "phet-tasks-g7.png", grade: 7, key: "phet-tasks-g7" },
+        { file: "phet-tasks-g8.png", grade: 8, key: "phet-tasks-g8" },
+        { file: "phet-tasks-g9.png", grade: 9, key: "phet-tasks-g9" }
+    ];
+
     /* Разделы страницы: сначала механики, затем лаборатории */
     const SECTION_META = [
         { id: "start", icon: "🚀", grades: [7, 8, 9], kind: "ui" },
@@ -1504,9 +1538,10 @@
         { id: "teacher", icon: "🧑‍🏫", grades: [7, 8, 9], kind: "ui" },
         { id: "maintenance", icon: "🛠", grades: [7, 8, 9], kind: "ui" },
         { id: "minigames", icon: "🧪", grades: [8, 9], kind: "minigames" },
+        { id: "phet", icon: "🌐", grades: [7, 8, 9], kind: "phet" },
         { id: "labs", icon: "🔬", grades: [8, 9], kind: "labs" },
         { id: "field7", icon: "📐", grades: [7], kind: "field7" },
-        { id: "galleries", icon: "🖼", grades: [8, 9], kind: "galleries" },
+        { id: "galleries", icon: "🖼", grades: [7, 8, 9], kind: "galleries" },
         { id: "worlds", icon: "🌌", grades: [7, 8, 9], kind: "worlds" },
         { id: "cert", icon: "🏅", grades: [7, 8, 9], kind: "cert" }
     ];
@@ -1579,7 +1614,7 @@
             start: ["menu-g8", "howto"],
             hud: ["briefing-g7", "briefing-g8", "briefing-g9", "hud-g7", "hud-g8", "hud-g9"],
             map: ["map-g7", "map-g8", "map-g9"],
-            task: ["task-g7", "task-g8", "task-g9", "task-types"],
+            task: ["task-g7", "task-g8", "task-g9", "task-g8-dark", "task-types"],
             theory: ["theory-g7", "theory-g8", "theory-g9"],
             lore: ["lore-g7", "lore-g8", "lore-g9"],
             boss: ["boss-g9"],
@@ -1612,6 +1647,15 @@
                         file: g.file, grade: g.grade,
                         title: `${g.icon} ${g.t[lang] || g.t.ru}`,
                         desc: `${lang === "en" ? "level" : lang === "kk" ? "деңгей" : "уровень"} ${g.level} · ${g.goal[lang] || g.goal.ru}`
+                    }))
+                });
+            } else if (meta.kind === "phet") {
+                Object.assign(sec, {
+                    layout: "grid", cardClass: "wide",
+                    items: PHET_ITEMS.map((it) => ({
+                        file: it.file, grade: it.grade,
+                        title: itemText(it.key, "t") || it.key,
+                        desc: itemText(it.key, "d")
                     }))
                 });
             } else if (meta.kind === "labs") {
@@ -1658,6 +1702,7 @@
                 Object.assign(sec, {
                     layout: "gallery",
                     items: [
+                        { file: "field7-gallery.png", grade: 7, title: lang === "en" ? "Grade 7 field journal" : lang === "kk" ? "7 сыныптың дала журналы" : "Полевой журнал 7 класса" },
                         { file: "sim89-gallery-g8.png", grade: 8, title: (I18N[lang] || I18N.ru).galG8 || "8 класс" },
                         { file: "sim89-gallery-g9.png", grade: 9, title: (I18N[lang] || I18N.ru).galG9 || "9 класс" }
                     ]
@@ -1797,6 +1842,10 @@
         if (navEl) navEl.setAttribute("aria-label", d.nav || "");
         document.querySelectorAll(".langs button").forEach((b) => b.classList.toggle("active", b.dataset.lang === lang));
         SECTIONS = buildSections();
+        const screenStat = document.getElementById("stat-screens");
+        const labStat = document.getElementById("stat-labs");
+        if (screenStat) screenStat.textContent = String(UI_ITEMS.length);
+        if (labStat) labStat.textContent = String(CARDS.length + FIELD7.length + PHET_ITEMS.filter((it) => it.key.startsWith("phet-catalog-")).length * 3);
         renderContents();
         renderSections();
         applyFilter();

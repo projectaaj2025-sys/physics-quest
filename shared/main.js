@@ -205,7 +205,9 @@ function formatUnicodeIndices(html) {
     const subMap = {
         "₀":"0", "₁":"1", "₂":"2", "₃":"3", "₄":"4", "₅":"5",
         "₆":"6", "₇":"7", "₈":"8", "₉":"9", "₊":"+", "₋":"−",
-        "₌":"=", "₍":"(", "₎":")", "ₖ":"k", "ₚ":"p"
+        "₌":"=", "₍":"(", "₎":")", "ₐ":"a", "ₑ":"e", "ₒ":"o",
+        "ₓ":"x", "ₔ":"ə", "ₕ":"h", "ₖ":"k", "ₗ":"l", "ₘ":"m",
+        "ₙ":"n", "ₚ":"p", "ₛ":"s", "ₜ":"t"
     };
     const supMap = {
         "⁰":"0", "¹":"1", "²":"2", "³":"3", "⁴":"4", "⁵":"5",
@@ -213,17 +215,31 @@ function formatUnicodeIndices(html) {
         "⁼":"=", "⁽":"(", "⁾":")", "ⁿ":"n", "ⁱ":"i"
     };
     return html
-        .replace(/[₀₁₂₃₄₅₆₇₈₉₊₋₌₍₎ₖₚ]+/g, m => `<sub>${[...m].map(ch => subMap[ch]).join("")}</sub>`)
+        .replace(/[₀₁₂₃₄₅₆₇₈₉₊₋₌₍₎ₐₑₒₓₔₕₖₗₘₙₚₛₜ]+/g, m => `<sub>${[...m].map(ch => subMap[ch]).join("")}</sub>`)
         .replace(/[⁰¹²³⁴⁵⁶⁷⁸⁹⁺⁻⁼⁽⁾ⁿⁱ]+/g, m => `<sup>${[...m].map(ch => supMap[ch]).join("")}</sup>`);
 }
 
 function formatFormula(str) {
     if (str === null || str === undefined) return "";
-    const escaped = escapeHtml(str);
+    // В URL символы _ и ^ относятся к адресу, а не к формуле (например, ID видео).
+    // Временно выносим ссылки, чтобы formatter не исправлял их содержимое.
+    const urls = [];
+    const source = String(str).replace(/https?:\/\/[^\s<>)]+/g, url => {
+        const token = `PQURLTOKEN${urls.length}END`;
+        urls.push(url);
+        return token;
+    });
+    const escaped = escapeHtml(source);
     const withAsciiIndices = escaped
+        .replace(/_\{([^{}]+)\}/g, "<sub>$1</sub>")
         .replace(/_([A-Za-zА-Яа-яЁёӘәҒғҚқҢңӨөҰұҮүҺһІі0-9]+)/g, "<sub>$1</sub>")
-        .replace(/\^([A-Za-zА-Яа-яЁёӘәҒғҚқҢңӨөҰұҮүҺһІі0-9]+)/g, "<sup>$1</sup>");
-    return formatUnicodeIndices(withAsciiIndices);
+        // Степени в записи a^(3/2), a^{n+1}, 10^-4 и a^1,5.
+        // Группы обрабатываем до одиночных символов, чтобы не оставлять скобки/знаки на baseline.
+        .replace(/\^\{([^{}]+)\}/g, "<sup>$1</sup>")
+        .replace(/\^\(([^()]+)\)/g, "<sup>$1</sup>")
+        .replace(/\^([+\-−]?(?:\d+(?:[.,]\d+)?|[A-Za-zА-Яа-яЁёӘәҒғҚқҢңӨөҰұҮүҺһІі]+))/g, "<sup>$1</sup>");
+    return formatUnicodeIndices(withAsciiIndices)
+        .replace(/PQURLTOKEN(\d+)END/g, (_, index) => escapeHtml(urls[Number(index)] || ""));
 }
 
 // Форматирование времени
@@ -833,16 +849,16 @@ function labGoalLine(level, langKey) {
 }
 
 function renderTheoryText(text) {
-    const fmt = s => formatUnicodeIndices(s
-        .replace(/_([A-Za-zА-Яа-яЁёӘәҒғҚқҢңӨөҰұҮүҺһІі0-9]+)/g, "<sub>$1</sub>")
-        .replace(/\^([A-Za-zА-Яа-яЁёӘәҒғҚқҢңӨөҰұҮүҺһІі0-9]+)/g, "<sup>$1</sup>"));
+    // Единый formatter и для заданий, и для теории: иначе индексы/степени
+    // в конспекте неизбежно расходятся с отображением в окне ответа.
+    const fmt = s => formatFormula(s);
     return String(text || "").split("\n").map(raw => {
         const line = raw.replace(/\s+$/, "");
         if (!line.trim()) return "";
-        if (line.startsWith("## ")) return `<h4 class="theory-h">${fmt(escapeHtml(line.slice(3)))}</h4>`;
-        if (line.startsWith("> "))  return `<div class="t-formula">${fmt(escapeHtml(line.slice(2)))}</div>`;
-        if (line.startsWith("• "))  return `<div class="t-line t-bullet">${fmt(escapeHtml(line))}</div>`;
-        return `<div class="t-line">${fmt(escapeHtml(line))}</div>`;
+        if (line.startsWith("## ")) return `<h4 class="theory-h">${fmt(line.slice(3))}</h4>`;
+        if (line.startsWith("> "))  return `<div class="t-formula">${fmt(line.slice(2))}</div>`;
+        if (line.startsWith("• "))  return `<div class="t-line t-bullet">${fmt(line)}</div>`;
+        return `<div class="t-line">${fmt(line)}</div>`;
     }).join("");
 }
 

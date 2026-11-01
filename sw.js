@@ -3,7 +3,7 @@
    Стратегия: shell-first для навигации, cache-first для ресурсов,
    докачка недостающих файлов из сети и сохранение в кэш.
    ============================================================ */
-const PQ_VERSION = "pq-v3.20.0";
+const PQ_VERSION = "pq-v3.21.0";
 const PQ_SHELL = [
     "./",
     "./index.html",
@@ -38,7 +38,7 @@ const PQ_SHELL = [
     "./shared/task-references.js",
     "./shared/game.js",
     "./shared/main.js",
-    "./shared/main.js?v=3",
+    "./shared/main.js?v=4",
     "./shared/qrcode.js",
     "./shared/rpg-data.js",
     "./shared/rpg-core.js",
@@ -77,7 +77,7 @@ const PQ_SHELL = [
     "./shared/conspect-examples.js",
     "./shared/locales-base.js",
     "./shared/oformlenie.js",
-    "./shared/oformlenie.js?v=3",
+    "./shared/oformlenie.js?v=4",
     "./shared/story-cast.js",
     "./shared/trilogy-comics-extra.js",
     "./shared/trilogy-diary.js",
