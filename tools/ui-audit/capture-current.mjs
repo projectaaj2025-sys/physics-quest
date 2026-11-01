@@ -17,7 +17,8 @@ const browser = await puppeteer.launch({
   defaultViewport: { width: 1568, height: 980, deviceScaleFactor: 1 }
 });
 const manifest = [];
-const simForGrade = { 7: 'energy-skate-park-basics', 8: 'geometric-optics', 9: 'projectile-motion' };
+const levelForGrade = { 7: 19, 8: 48, 9: 47 };
+const miniGameLevels = { 7: [], 8: [45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55], 9: [45, 46, 47, 48] };
 const taskForGrade = { 7: 'p6', 8: 'p24q14', 9: 'p11-q11' };
 
 async function shotElement(page, selector, file) {
@@ -31,6 +32,58 @@ async function shotElement(page, selector, file) {
   const box = await el.boundingBox();
   manifest.push({ file, width: Math.round(box.width), height: Math.round(box.height), bytes: size });
   console.log('CAPTURE', file, Math.round(box.width) + 'x' + Math.round(box.height), size);
+}
+
+// Экран уровней имеет собственный scroll container. Chromium captureBeyondViewport
+// оставляет нижние ряды такой секции пустыми. Для финального кадра переносим точный
+// DOM-клон с теми же parent/body-классами в обычный document flow: содержимое,
+// тексты и стили остаются реальными, но вся галерея доступна для полного снимка.
+async function shotFullGallery(page, selector, file) {
+  const el = await page.$(selector);
+  if (!el) throw new Error(`Missing ${selector} for ${file}`);
+  await el.evaluate(section => {
+    const parent = section.parentElement;
+    const width = section.getBoundingClientRect().width || window.__pqGalleryCaptureWidth;
+    if (!width) throw new Error('Visible gallery width was not recorded');
+    const host = document.createElement('div');
+    host.id = 'pq-capture-gallery';
+    host.className = parent.className;
+    host.style.cssText = `display:block;box-sizing:border-box;width:${width}px;max-width:none;margin:0;padding:0;`;
+    const clone = section.cloneNode(true);
+    clone.style.display = 'block';
+    clone.style.visibility = 'visible';
+    host.appendChild(clone);
+    document.body.replaceChildren(host);
+    document.documentElement.style.height = 'auto';
+    document.documentElement.style.overflow = 'visible';
+    document.body.style.height = 'auto';
+    document.body.style.minHeight = '0';
+    document.body.style.overflow = 'visible';
+  });
+  await new Promise(r => setTimeout(r, 400));
+  const clone = await page.$(selector);
+  if (!clone) throw new Error(`Missing gallery clone ${selector}`);
+  const clip = await clone.evaluate(section => {
+    const rect = section.getBoundingClientRect();
+    let bottom = rect.bottom;
+    section.querySelectorAll('*').forEach(node => {
+      const style = getComputedStyle(node);
+      if (style.display === 'none' || style.visibility === 'hidden') return;
+      bottom = Math.max(bottom, node.getBoundingClientRect().bottom);
+    });
+    return {
+      x: rect.left + window.scrollX,
+      y: rect.top + window.scrollY,
+      width: rect.width,
+      height: Math.ceil(bottom - rect.top + 1)
+    };
+  });
+  if (clip.width <= 100 || clip.height <= 1000) throw new Error(`Invalid gallery bounds for ${file}: ${JSON.stringify(clip)}`);
+  const target = path.join(outDir, file);
+  await page.screenshot({ path: target, clip, captureBeyondViewport: true });
+  const size = fs.statSync(target).size;
+  manifest.push({ file, width: Math.round(clip.width), height: clip.height, bytes: size });
+  console.log('CAPTURE', file, Math.round(clip.width) + 'x' + clip.height, size, 'full-flow');
 }
 
 async function shotPage(page, file) {
@@ -58,7 +111,8 @@ for (const grade of [7, 8, 9]) {
     else req.continue().catch(() => {});
   });
   await page.goto(`${baseUrl}/play.html?grade=${grade}`, { waitUntil: 'domcontentloaded', timeout: 60000 });
-  await page.waitForFunction(() => typeof Teacher !== 'undefined' && Teacher.getAllTasks().length > 0 && typeof Game !== 'undefined' && typeof LEVELS_CONFIG !== 'undefined' && typeof openTheory === 'function' && window.PQPhETLabs && document.getElementById('pq-phet-entry'), { timeout: 60000 });
+  await page.waitForFunction(() => typeof Teacher !== 'undefined' && Teacher.getAllTasks().length > 0 && typeof Game !== 'undefined' && typeof LEVELS_CONFIG !== 'undefined' && typeof openTheory === 'function' && window.PQPhETLabs && window.PQPhETLabs.getLevelSimulations, { timeout: 60000 });
+  await page.waitForFunction(level => (window.GRADE_LAB_GAMES_CONFIG || {})[level], { timeout: 60000 }, levelForGrade[grade]);
   await page.evaluate(() => {
     I18n.setLanguage('ru');
     PQTheme.set('light');
@@ -67,23 +121,50 @@ for (const grade of [7, 8, 9]) {
     showLevelSelect();
     document.querySelectorAll('.modal.active').forEach(m => m.classList.remove('active'));
   });
-  await page.waitForFunction(() => document.querySelectorAll('#pq-phet-entry-list [data-simulation]').length === 3);
+  await page.evaluate(selector => {
+    const section = document.querySelector(selector);
+    if (!section) throw new Error('Missing gallery before capture: ' + selector);
+    window.__pqGalleryCaptureWidth = section.getBoundingClientRect().width;
+  }, grade === 7 ? '#field-simulations-section' : '#pq-sim89-section');
 
-  await shotElement(page, '#pq-phet-entry', `phet-catalog-g${grade}.png`);
-  await shotElement(page, grade === 7 ? '#field-simulations-section' : '#pq-sim89-section', grade === 7 ? 'field7-gallery.png' : `sim89-gallery-g${grade}.png`);
+  // Все 15 собственных мини-игр: без старой общей кнопки PhET,
+  // а на тематических уровнях — с новой связанной карточкой.
+  for (const level of miniGameLevels[grade]) {
+    await page.evaluate(levelId => {
+      const cfg = (window.GRADE_LAB_GAMES_CONFIG || {})[levelId];
+      if (!cfg) throw new Error('Missing mini-game config ' + levelId);
+      LabGames.show(cfg, null);
+      const panel = document.querySelector('#lab-overlay .lab-panel');
+      if (panel) panel.scrollTop = 0;
+    }, level);
+    await shotElement(page, '#lab-overlay .lab-panel', `lab-g${grade}-${level}.png`);
+  }
 
-  await page.evaluate(async (grade, simulationId) => {
-    PQPhETLabs.open(grade, null, simulationId);
+  // Карточка открывается из реальной мини-игры, а не из отдельного каталога.
+  await page.evaluate(levelId => {
+    LabGames.show((window.GRADE_LAB_GAMES_CONFIG || {})[levelId], null);
+    const panel = document.querySelector('#lab-overlay .lab-panel');
+    if (panel) panel.scrollTop = 0;
+  }, levelForGrade[grade]);
+  await page.waitForFunction(levelId => document.querySelector(`#lab-phet-context [data-phet-level-card][data-level-id="${levelId}"] .pq-phet-level-open`), { timeout: 10000 }, levelForGrade[grade]);
+  await shotElement(page, '#lab-phet-context .pq-phet-level-card', `phet-level-g${grade}.png`);
+  await page.evaluate(() => document.querySelector('#lab-phet-context .pq-phet-level-open').click());
+  await page.waitForFunction(() => window.PQPhETLabs.isOpen());
+  await page.evaluate(async () => {
     for (let i = 0; i < 3; i++) {
       const button = document.querySelector(`#pq-phet-tasks [data-task-index="${i}"]`);
       if (!button) throw new Error('Missing PhET task ' + i);
       button.click();
       await new Promise(r => setTimeout(r, 0));
     }
-  }, grade, simForGrade[grade]);
+  });
   await page.waitForFunction(() => document.querySelectorAll('#pq-phet-tasks .pq-phet-task.done').length === 3);
   await shotElement(page, '.pq-phet-guide', `phet-tasks-g${grade}.png`);
-  await page.evaluate(() => PQPhETLabs.close());
+  await page.evaluate(() => {
+    PQPhETLabs.close();
+    LabGames.hide(false);
+  });
+  await new Promise(r => setTimeout(r, 400));
 
   await page.evaluate((grade) => {
     let cfg;
@@ -135,6 +216,10 @@ for (const grade of [7, 8, 9]) {
     await page.evaluate(() => PQTheme.set('dark'));
     await shotPage(page, 'ui-task-g8-dark.png');
   }
+
+  // Галерею снимаем последней: capture-раскладка намеренно заменяет body этой вкладки.
+  await page.evaluate(() => PQTheme.set('light'));
+  await shotFullGallery(page, grade === 7 ? '#field-simulations-section' : '#pq-sim89-section', grade === 7 ? 'field7-gallery.png' : `sim89-gallery-g${grade}.png`);
   await page.close();
 }
 await browser.close();
