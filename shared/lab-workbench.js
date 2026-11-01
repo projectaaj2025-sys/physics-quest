@@ -170,8 +170,10 @@
             this._values = vals;
             this._onChange = onChange;
 
-            const dropTargets = sliders.filter((s) => stepsOf(s) <= 12);
-            const knobs = sliders.filter((s) => stepsOf(s) > 12);
+            // Короткие ряды удобно раскладывать на полке, длинные — крутить ручкой.
+            // Иначе два ряда по 9–12 деталей делали панель выше экрана.
+            const dropTargets = sliders.filter((s) => stepsOf(s) <= 8);
+            const knobs = sliders.filter((s) => stepsOf(s) > 8);
 
             content.innerHTML = `
                 <div class="pqw">
@@ -207,6 +209,8 @@
                     ${sliders.map((s) => `<input type="hidden" id="lab-${s.id}" value="${vals[s.id]}" data-min="${s.min}" data-max="${s.max}" data-step="${s.step}">`).join("")}
                 </div>`;
 
+            const initialDrop = content.querySelector("#pqw-drop");
+            if (initialDrop && !dropTargets.length) initialDrop.style.display = "none";
             content.querySelectorAll(".pqw-item").forEach((chip) => {
                 this.bindChip(chip, content);
             });
@@ -214,8 +218,9 @@
                 this.bindKnob(dial, content);
             });
             content.querySelector("#pqw-run").addEventListener("click", () => this.run(true));
-            // стартовые позиции стрелок
+            // Стартовые позиции стрелок и тематической установки.
             this.paintGauges(content, false);
+            if (window.PQLabScenes) window.PQLabScenes.update(content, cfg, vals, false);
         },
 
         chipsHtml(slider, value) {
@@ -234,8 +239,12 @@
             return out;
         },
 
-        // Простая, но узнаваемая установка: подставка, колба/щит/скамья и шкала
+        // Тематическая установка мини-игры; универсальный стенд остаётся
+        // только запасным вариантом для старых конфигураций без scene.
         rigHtml(cfg, vals) {
+            if (window.PQLabScenes && cfg.scene && window.PQLabScenes.has(cfg.scene)) {
+                return window.PQLabScenes.render(cfg, vals);
+            }
             const label = Object.entries(vals)
                 .slice(0, 2)
                 .map(([k, v]) => {
@@ -434,6 +443,7 @@
             if (dial) dial.setAttribute("aria-valuenow", String(v));
             if (dial) this.paintDial(dial, slider, v);
             this.paintGauges(content, false);
+            if (window.PQLabScenes) window.PQLabScenes.update(content, this._cfg, this._values, false);
             const hint = content.querySelector("#pqw-hint");
             if (hint) {
                 hint.innerHTML = esc(tr("Параметры изменились — проведи опыт заново.", "Параметрлер өзгерді — тәжірибені қайта жаса.", "Parameters changed — run the experiment again."));
@@ -478,6 +488,7 @@
                 }, 700);
             }
             this.paintGauges(content, true);
+            if (window.PQLabScenes) window.PQLabScenes.update(content, this._cfg, this._values, true);
             const hint = content.querySelector("#pqw-hint");
             if (hint) {
                 const cfg = this._cfg;

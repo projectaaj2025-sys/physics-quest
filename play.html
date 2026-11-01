@@ -770,9 +770,21 @@
                 <button type="button" id="lab-fullscreen" data-i18n="fullscreenEnter">⛶ На весь экран</button>
             </div>
             <p id="lab-desc" class="lab-desc">Проведи эксперимент — подбери параметры и получи результат!</p>
+            <div id="lab-stage" class="lab-stage" style="display:none" aria-live="polite"></div>
             <div id="lab-content"></div>
             <div id="lab-formula" class="lab-formula" style="display:none"></div>
             <div id="lab-result" class="lab-result" style="display:none"></div>
+            <div id="lab-complete" class="lab-complete" role="status" aria-live="polite">
+                <div class="lab-complete-icon" aria-hidden="true">✓</div>
+                <div class="lab-complete-copy">
+                    <h4 id="lab-complete-title"></h4>
+                    <p id="lab-complete-text"></p>
+                </div>
+                <div class="lab-complete-actions">
+                    <button type="button" class="btn btn-primary" id="lab-next"></button>
+                    <button type="button" class="btn btn-secondary" id="lab-replay"></button>
+                </div>
+            </div>
             <div id="lab-circuit" class="circuit-grid" style="display:none"></div>
             <p id="lab-hint-text" class="lab-hint"></p>
             <div class="lab-actions">
@@ -882,12 +894,12 @@
             "./shared/rpg-boot.js"
         ];
         if (grade === 7) {
-            scripts.push("./shared/lab-workbench.js", "./shared/lab-games.js?v=4", "./shared/sim-light-7.js", "./7/simulators.js?v=4");
+            scripts.push("./shared/lab-scenes.js", "./shared/lab-workbench.js", "./shared/lab-games.js?v=5", "./shared/sim-light-7.js", "./7/simulators.js?v=4");
         } else if (grade === 8) {
             // Лабораторные мини-игры уровней 45–55 (конфиги — в 8/content.js)
-            scripts.push("./shared/lab-workbench.js", "./shared/lab-games.js?v=4");
+            scripts.push("./shared/lab-scenes.js", "./shared/lab-workbench.js", "./shared/lab-games.js?v=5");
         } else if (grade === 9) {
-            scripts.push("./shared/lab-workbench.js", "./shared/lab-games.js?v=4", "./9/extras.js");
+            scripts.push("./shared/lab-scenes.js", "./shared/lab-workbench.js", "./shared/lab-games.js?v=5", "./9/extras.js");
         }
         scripts.push("./shared/extra-lab-games.js", "./shared/home-experiments.js?v=4", "./shared/inquiry-labs.js");
         // Знакомство с героями и общий сюжет — показывается в «Лор и сюжет» перед комиксом

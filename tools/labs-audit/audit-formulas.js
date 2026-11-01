@@ -118,27 +118,36 @@ function auditGames() {
     for (const lvl of levels) {
       const c = cfg[lvl];
       if (c.type === "circuit") { console.log(`  ✓ L${lvl} сборка цепи (детали, провода и ключ)`); continue; }
-      const grids = c.sliders.map(gridFor);
-      let best = null, solutions = 0;
-      const walk = (i, cur) => {
-        if (i === grids.length) {
-          const v = {}; c.sliders.forEach((s, j) => (v[s.id] = cur[j]));
-          const r = c.formula(v), d = Math.abs(r - c.target);
-          if (!best || d < best.d) best = { d, v, r };
-          if (d <= c.tol) solutions++;
-          return;
+      const stages = Array.isArray(c.stages) && c.stages.length ? c.stages : [null];
+      stages.forEach((stage, stageIndex) => {
+        const game = Object.assign({}, c, stage || {});
+        const grids = game.sliders.map(gridFor);
+        let best = null, solutions = 0;
+        const walk = (i, cur) => {
+          if (i === grids.length) {
+            const v = {}; game.sliders.forEach((s, j) => (v[s.id] = cur[j]));
+            const r = game.formula(v), d = Math.abs(r - game.target);
+            if (!best || d < best.d) best = { d, v, r };
+            if (d <= game.tol) solutions++;
+            return;
+          }
+          grids[i].forEach((x) => walk(i + 1, [...cur, x]));
+        };
+        walk(0, []);
+        const dv = {}; game.sliders.forEach((s) => (dv[s.id] = s.val));
+        const startSolved = Math.abs(game.formula(dv) - game.target) <= game.tol;
+        const issues = [];
+        if (!solutions) issues.push("цель недостижима");
+        if (startSolved) issues.push("старт уже решён");
+        if (!game.scene) issues.push("нет тематической сцены");
+        if (stage && ["name", "desc", "hint"].some((key) => !game[key] || !game[key + "En"] || !game[key + "Kk"])) {
+          issues.push("неполный перевод этапа RU/KK/EN");
         }
-        grids[i].forEach((x) => walk(i + 1, [...cur, x]));
-      };
-      walk(0, []);
-      const dv = {}; c.sliders.forEach((s) => (dv[s.id] = s.val));
-      const startSolved = Math.abs(c.formula(dv) - c.target) <= c.tol;
-      const issues = [];
-      if (!solutions) issues.push("цель недостижима");
-      if (startSolved) issues.push("старт уже решён");
-      const unit = c.unit || "";
-      if (issues.length) { problems++; console.log(`  ✗ L${lvl}: ${issues.join("; ")}`); }
-      else console.log(`  ✓ L${lvl} ${c.formulaStr} → ${c.target} ${unit} ±${c.tol} (решений: ${solutions})`);
+        const unit = game.unit || "";
+        const label = `L${lvl}${stages.length > 1 ? "." + (stageIndex + 1) : ""}`;
+        if (issues.length) { problems++; console.log(`  ✗ ${label}: ${issues.join("; ")}`); }
+        else console.log(`  ✓ ${label} ${game.formulaStr} → ${game.target} ${unit} ±${game.tol} (решений: ${solutions})`);
+      });
     }
   }
   return problems;
