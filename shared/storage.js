@@ -708,39 +708,39 @@ const Storage = {
         });
     },
 
-    // Полный сброс только игрового прогресса на этом устройстве.
-    // Аккаунт, код ученика, настройки, классы, назначения, журнал учителя,
-    // пользовательские уроки и оформление сертификатов намеренно сохраняются.
-    resetAllProgress() {
-        const keys = new Set([
-            "pq7_field_trials_v1",
-            "pq7_sim_badge",
-            "physicsquest9_diarySeen",
-            "physicsquest_rpg_v1"
-        ]);
+    // Полный сброс игрового прогресса только текущей параллели (7, 8 или 9).
+    // Прогресс остальных классов, аккаунт, код ученика, настройки, классы,
+    // назначения, журнал учителя, пользовательские уроки и оформление
+    // сертификатов намеренно сохраняются.
+    resetCurrentGradeProgress() {
+        const g = this.grade();
+        if (![7, 8, 9].includes(g)) return false;
+
+        const keys = new Set([`pq_canvas_sims_g${g}`]);
         const suffixes = ["progress", "stats", "records", "playthrough_history", "rpg_v1"];
-        for (const g of [7, 8, 9]) {
-            suffixes.forEach((suffix) => keys.add(`physicsquest${g}_${suffix}`));
-            keys.add(`pq_canvas_sims_g${g}`);
+        suffixes.forEach((suffix) => keys.add(`physicsquest${g}_${suffix}`));
+
+        if (g === 7) {
+            keys.add("pq7_field_trials_v1");
+            keys.add("pq7_sim_badge");
             // Старые ключи 7 класса без номера параллели тоже удаляем,
             // иначе миграция восстановит часть прогресса после перезагрузки.
-            if (g === 7) {
-                ["progress", "stats", "records", "playthrough_history"].forEach((suffix) => {
-                    keys.add(`physicsquest_${suffix}`);
-                });
-            }
+            ["progress", "stats", "records", "playthrough_history"].forEach((suffix) => {
+                keys.add(`physicsquest_${suffix}`);
+            });
         }
+        if (g === 9) keys.add("physicsquest9_diarySeen");
 
         let success = true;
         try {
             // Пройденные симуляторы и прочитанные главы комикса имеют
-            // составные ключи, поэтому собираем их из самого хранилища.
+            // составные ключи. Сканируем хранилище, но выбираем строго
+            // текущую параллель, не затрагивая две другие.
+            const trilogyKey = new RegExp(`^pq_trilogy_seen_g${g}_ep\\d+$`);
+            const canvasKey = new RegExp(`(?:^|_)pq_canvas_sims_g${g}$`);
             for (let i = 0; i < localStorage.length; i++) {
                 const key = localStorage.key(i);
-                if (!key) continue;
-                if (/^pq_trilogy_seen_g[789]_ep\d+$/.test(key) || /(?:^|_)pq_canvas_sims_g[789]$/.test(key)) {
-                    keys.add(key);
-                }
+                if (key && (trilogyKey.test(key) || canvasKey.test(key))) keys.add(key);
             }
         } catch (e) {
             console.error("Progress reset scan error:", e);
