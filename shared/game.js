@@ -1316,8 +1316,11 @@ const Game = {
                 if (!input) return false;
                 // Принимаем и точку, и запятую: 0.5 и 0,5 равнозначны
                 const raw = String(input.value).trim().replace(/\s+/g, "").replace(",", ".");
-                const val = parseFloat(raw);
-                if (isNaN(val)) return false;
+                // parseFloat принимал бы мусор после числа: например, «60xyz» как 60.
+                // Разрешаем только полноценную десятичную запись (и экспоненту), но не hex/Infinity.
+                if (!/^[+-]?(?:\d+(?:\.\d*)?|\.\d+)(?:[eE][+-]?\d+)?$/.test(raw)) return false;
+                const val = Number(raw);
+                if (!Number.isFinite(val)) return false;
                 const tol = typeof task.tolerance === "number" ? task.tolerance : 0.1;
                 return Math.abs(val - task.correctAnswer) <= tol;
             }

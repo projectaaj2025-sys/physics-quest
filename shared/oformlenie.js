@@ -315,6 +315,9 @@
     function esc(s) {
         return String(s == null ? "" : s).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
     }
+    function fmt(s) {
+        return typeof formatFormula === "function" ? formatFormula(String(s == null ? "" : s)) : esc(s);
+    }
     function gradeSamples() {
         const g = Number(window.CURRENT_GRADE) || 8;
         return SAMPLES[g] || SAMPLES[8];
@@ -334,6 +337,9 @@
             .pq-of-card {
                 margin: 16px 0 8px;
                 padding: 16px 18px;
+                box-sizing: border-box;
+                min-width: 0;
+                max-width: 100%;
                 border-radius: 16px;
                 background: linear-gradient(160deg, #ffffff 0%, #f2f7fd 100%);
                 border: 1px solid rgba(47, 125, 184, 0.28);
@@ -348,14 +354,16 @@
             .pq-of-intro { margin: 0 0 12px; font-size: 13px; line-height: 1.5; color: #46688c; }
             .pq-of-table {
                 display: grid;
-                grid-template-columns: 1.05fr 0.85fr 1.6fr;
+                grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.85fr) minmax(0, 1.6fr);
+                min-width: 0;
+                max-width: 100%;
                 gap: 0;
                 border: 1px solid rgba(120, 152, 186, 0.45);
                 border-radius: 12px;
                 overflow: hidden;
                 background: #fff;
             }
-            .pq-of-table > div { padding: 8px 10px; border-bottom: 1px solid rgba(120, 152, 186, 0.28); font-size: 13px; }
+            .pq-of-table > div { padding: 8px 10px; border-bottom: 1px solid rgba(120, 152, 186, 0.28); font-size: 13px; min-width: 0; overflow-wrap: anywhere; }
             .pq-of-table .pq-of-head {
                 font-weight: 900; font-size: 11.5px; letter-spacing: 0.04em; text-transform: uppercase;
                 background: rgba(47, 125, 184, 0.12); color: #1f5f8c;
@@ -373,7 +381,7 @@
                 background: rgba(226, 240, 252, 0.5);
             }
             .pq-of-blank b { display: block; margin-bottom: 6px; font-size: 12.5px; color: #1f5f8c; }
-            .pq-of-template-wrap { overflow-x:auto; }
+            .pq-of-template-wrap { overflow-x:auto; max-width:100%; min-width:0; }
             .pq-of-template { width:100%; min-width:360px; border-collapse:collapse; table-layout:fixed; background:#fff; color:#17324d; font-size:13px; }
             .pq-of-template th, .pq-of-template td { border:1px solid #789bac; padding:8px; vertical-align:top; text-align:left; overflow-wrap:anywhere; }
             .pq-of-template th { background:#e6f1f7; color:#173f56; font-weight:800; }
@@ -392,12 +400,12 @@
         injectCss();
         const t = T[lang()] || T.ru;
         const s = sampleFor(topic);
-        const givens = s.given.map(([sym, val]) => `<div><span class="pq-of-var">${esc(sym)}</span> = ${esc(val)}</div>`).join("");
-        const sis = s.si.map(([sym, val]) => `<div>${esc(sym)} = ${esc(val)}</div>`).join("");
+        const givens = s.given.map(([sym, val]) => `<div><span class="pq-of-var">${fmt(sym)}</span> = ${fmt(val)}</div>`).join("");
+        const sis = s.si.map(([sym, val]) => `<div>${fmt(sym)} = ${fmt(val)}</div>`).join("");
         const sol = [
-            `<div class="pq-of-row-eq">${esc(s.formula)}</div>`,
-            ...s.solution.map((line) => `<div class="pq-of-row-eq">${esc(line)}</div>`),
-            `<div class="pq-of-answer">${esc(t.answer)}: ${esc(s.answer)}</div>`
+            `<div class="pq-of-row-eq">${fmt(s.formula)}</div>`,
+            ...s.solution.map((line) => `<div class="pq-of-row-eq">${fmt(line)}</div>`),
+            `<div class="pq-of-answer">${esc(t.answer)}: ${fmt(s.answer)}</div>`
         ].join("");
         return `<section class="pq-of-card" data-sample="${esc(s.id)}">
             <div class="pq-of-kicker">📓 ${esc(t.kicker)}</div>
@@ -407,7 +415,7 @@
                 <div class="pq-of-head">${esc(t.given)}</div>
                 <div class="pq-of-head">${esc(t.si)}</div>
                 <div class="pq-of-head pq-of-main" style="grid-row:span 1;border-left:1px solid rgba(120,152,186,0.28);">${esc(t.solution)} — ${esc(pick(s.title))}</div>
-                <div>${givens}<div style="margin-top:10px;border-top:1px solid #a8c4d6;padding-top:5px"><strong>${esc(t.find)}:</strong> ${esc((s.answer.split(/[=≈]/)[0] || "").trim())} — ?</div></div>
+                <div>${givens}<div style="margin-top:10px;border-top:1px solid #a8c4d6;padding-top:5px"><strong>${esc(t.find)}:</strong> ${fmt((s.answer.split(/[=≈]/)[0] || "").trim())} — ?</div></div>
                 <div>${sis}</div>
                 <div class="pq-of-main">${sol}</div>
             </div>
