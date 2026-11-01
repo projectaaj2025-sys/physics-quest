@@ -720,6 +720,7 @@ Object.assign(RPG, {
             <div class="rpg-maint-progress">${progress}</div>
             <div class="rpg-maint-topic">${escapeHtml(rpgTopicLabel(task.topic))}</div>
             <div class="rpg-maint-question">${formatFormula(rpgPlain(I18n.getLocalized(task, "question")))}</div>
+            ${typeof PQTaskReferences !== "undefined" ? PQTaskReferences.render(task) : ""}
             ${hintHtml}
             ${inputHtml}
             <div class="rpg-maint-options" id="rpg-maint-options">${this.maintOptionsHtml(task)}</div>

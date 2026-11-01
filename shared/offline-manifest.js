@@ -254,6 +254,7 @@ window.PQ_OFFLINE_FILES = [
     "shared/storage.js",
     "shared/story-cast.js",
     "shared/styles.css",
+    "shared/task-references.js",
     "shared/teacher-guide.css",
     "shared/teacher-guide.js",
     "shared/teacher.js",

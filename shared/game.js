@@ -902,9 +902,11 @@ const Game = {
         const question = I18n.getLocalized(task, "question");
         let html = `<div>${formatFormula(question)}</div>`;
 
-        const formulaText = I18n.getLocalized(task, "formula");
-        if (formulaText) {
-            html += `<div class="formula">${formatFormula(formulaText)}</div>`;
+        // formula может содержать не только правило, но и готовое вычисление
+        // с ответом. До попытки показываем только условие и справочные данные;
+        // решение добавляется в feedback после ответа.
+        if (typeof PQTaskReferences !== "undefined") {
+            html += PQTaskReferences.render(task);
         }
 
         switch (task.type) {
@@ -1108,6 +1110,23 @@ const Game = {
         }
     },
 
+    // Разбор доступен только после завершения задания: формула может
+    // содержать подстановку чисел и правильный ответ, поэтому заранее
+    // её в условии не выводим.
+    getTaskReviewHtml(task) {
+        if (!task) return "";
+        let html = "";
+        const formulaText = I18n.getLocalized(task, "formula");
+        const explanationText = I18n.getLocalized(task, "explanation");
+        if (formulaText) {
+            html += `<br><strong>${escapeHtml(I18n.t("solution"))}</strong> <span class="task-solution-formula">${formatFormula(formulaText)}</span>`;
+        }
+        if (explanationText) {
+            html += `<br><strong>${escapeHtml(I18n.t("explanation"))}</strong> ${formatFormula(explanationText)}`;
+        }
+        return html;
+    },
+
     checkAnswer() {
         if (!this.currentTask) return;
         if (this.taskResolved) return; // задание уже решено или закрыто — не считаем дважды
@@ -1123,9 +1142,7 @@ const Game = {
             feedback.removeAttribute("style");
             feedback.className = "task-feedback show correct";
             feedback.innerHTML = `✓ ${I18n.t("correct")}`;
-            if (this.currentTask.explanation) {
-                feedback.innerHTML += `<br><strong>${I18n.t("explanation")}</strong> ${formatFormula(I18n.getLocalized(this.currentTask, "explanation"))}`;
-            }
+            feedback.innerHTML += this.getTaskReviewHtml(this.currentTask);
             this.tasksSolved++;
             this.taskResolved = true;
             this.recordTaskMetric(true, this.currentTask);
@@ -1166,9 +1183,7 @@ const Game = {
                 feedback.innerHTML =
                     `✗ ${I18n.t("outOfAttempts")}<br>` +
                     `<strong>${I18n.t("correctAnswerIs")}</strong> ${formatFormula(this.getCorrectAnswerText(this.currentTask))}`;
-                if (this.currentTask.explanation) {
-                    feedback.innerHTML += `<br><strong>${I18n.t("explanation")}</strong> ${formatFormula(I18n.getLocalized(this.currentTask, "explanation"))}`;
-                }
+                feedback.innerHTML += this.getTaskReviewHtml(this.currentTask);
                 this.taskResolved = true;
                 this.recordTaskMetric(false, this.currentTask);
                 if (!this.failedTaskIds.includes(this.currentTask.id)) {
