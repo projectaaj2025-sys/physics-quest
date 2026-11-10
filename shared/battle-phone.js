@@ -221,6 +221,7 @@
                 <div class="bp-meta"><span>${esc(fmt("question", q.i, q.total))}</span><span id="bp-left">${secs} с</span></div>
                 <div class="bp-timer"><i id="bp-bar"></i></div>
                 <p class="bp-question">${esc(q.question)}</p>
+                ${q.table || ""}
                 <div class="bp-options" id="bp-opts">
                     ${(q.options || []).map((o, i) => `
                         <button type="button" class="bp-opt" data-opt="${i}">

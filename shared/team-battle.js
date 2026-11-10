@@ -734,7 +734,8 @@
                 total: s.rounds,
                 question: loc(s.question.question),
                 options: this.optionsOf(s.question),
-                seconds: SECONDS
+                seconds: SECONDS,
+                table: typeof PQTaskReferences !== "undefined" ? PQTaskReferences.render(s.question) : ""
             });
         },
 
@@ -877,6 +878,7 @@
                 <div class="pq-battle-stage">
                     <div class="pq-battle-roundno">${esc(t("round"))} ${s.round} ${esc(t("of"))} ${s.rounds} · ${esc(this.shortTopic(task))}</div>
                     <div class="pq-battle-question">${esc(loc(task.question))}</div>
+                    ${typeof PQTaskReferences !== "undefined" ? PQTaskReferences.render(task) : ""}
                     <div class="pq-battle-answers${options.length <= 2 ? " single" : ""}" id="pq-battle-board">
                         ${options.map((o, i) => `
                             <div class="pq-battle-option" data-opt="${i}">
@@ -1057,6 +1059,7 @@
                 <div class="pq-battle-stage">
                     <div class="pq-battle-roundno">${esc(t("round"))} ${s.round} ${esc(t("of"))} ${s.rounds}</div>
                     <div class="pq-battle-question">${esc(loc(task.question))}</div>
+                    ${typeof PQTaskReferences !== "undefined" ? PQTaskReferences.render(task) : ""}
                     <div class="pq-battle-answers${options.length <= 2 ? " single" : ""}">
                         ${options.map((o, i) => `
                             <div class="pq-battle-option${i === correct ? " right" : ""}">

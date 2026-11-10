@@ -744,7 +744,8 @@ const LEVELS_CONFIG = [
   {
     "id": 41,
     "topics": [
-      "kinematics"
+      "kinematics",
+      "lab1"
     ],
     "asteroidInterval": 4500,
     "asteroidSpeed": 1,
@@ -763,7 +764,8 @@ const LEVELS_CONFIG = [
     "id": 42,
     "topics": [
       "kinematics",
-      "density"
+      "density",
+      "lab2"
     ],
     "asteroidInterval": 4500,
     "asteroidSpeed": 1,
@@ -781,7 +783,8 @@ const LEVELS_CONFIG = [
   {
     "id": 43,
     "topics": [
-      "density"
+      "density",
+      "lab3"
     ],
     "asteroidInterval": 4500,
     "asteroidSpeed": 1,
@@ -799,7 +802,8 @@ const LEVELS_CONFIG = [
   {
     "id": 44,
     "topics": [
-      "dynamics"
+      "dynamics",
+      "lab4"
     ],
     "asteroidInterval": 4500,
     "asteroidSpeed": 1,
@@ -817,7 +821,8 @@ const LEVELS_CONFIG = [
   {
     "id": 45,
     "topics": [
-      "dynamics"
+      "dynamics",
+      "lab5"
     ],
     "asteroidInterval": 4500,
     "asteroidSpeed": 1.05,
@@ -835,7 +840,8 @@ const LEVELS_CONFIG = [
   {
     "id": 46,
     "topics": [
-      "pressure"
+      "pressure",
+      "lab6"
     ],
     "asteroidInterval": 4000,
     "asteroidSpeed": 1.1,
@@ -854,7 +860,8 @@ const LEVELS_CONFIG = [
     "id": 47,
     "topics": [
       "density",
-      "pressure"
+      "pressure",
+      "lab7"
     ],
     "asteroidInterval": 4000,
     "asteroidSpeed": 1.1,
@@ -873,7 +880,8 @@ const LEVELS_CONFIG = [
     "id": 48,
     "topics": [
       "mechanical",
-      "dynamics"
+      "dynamics",
+      "lab8"
     ],
     "asteroidInterval": 4500,
     "asteroidSpeed": 1,
@@ -891,7 +899,8 @@ const LEVELS_CONFIG = [
   {
     "id": 49,
     "topics": [
-      "mechanical"
+      "mechanical",
+      "lab9"
     ],
     "asteroidInterval": 4000,
     "asteroidSpeed": 1.1,
@@ -910,7 +919,8 @@ const LEVELS_CONFIG = [
     "id": 50,
     "topics": [
       "mechanical",
-      "energy"
+      "energy",
+      "lab10"
     ],
     "asteroidInterval": 4000,
     "asteroidSpeed": 1.1,
