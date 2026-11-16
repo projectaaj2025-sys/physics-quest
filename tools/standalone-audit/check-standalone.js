@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /* ============================================================
-   ПРОВЕРКА АВТОНОМНЫХ ВЕРСИЙ ИГРЫ (downloads/physics-quest-8.html и -9.html)
+   ПРОВЕРКА АВТОНОМНЫХ ВЕРСИЙ ИГРЫ (physics-quest-8.html и physics-quest-9.html)
 
    Что проверяем:
    • в файле нет ни одного внешнего подресурса (все CSS/JS/картинки внутри);
@@ -112,7 +112,7 @@ function staticChecks(html, grade) {
 (async () => {
     for (const grade of [8, 9]) {
         console.log(`\n== Автономная версия: ${grade} класс ==`);
-        const file = path.join(ROOT, "downloads", `physics-quest-${grade}.html`);
+        const file = path.join(ROOT, `physics-quest-${grade}.html`);
         if (!fs.existsSync(file)) {
             ok(`[${grade}] файл собран`, false, "запустите node tools/build-standalone.js");
             continue;
@@ -209,7 +209,7 @@ function staticChecks(html, grade) {
     /* ---- отдельный прогон «как есть с диска»: открыт file:// без localStorage ---- */
     console.log("\n== Открытие файла с диска (file://, localStorage запрещён) ==");
     for (const grade of [8, 9]) {
-        const file = path.join(ROOT, "downloads", `physics-quest-${grade}.html`);
+        const file = path.join(ROOT, `physics-quest-${grade}.html`);
         if (!fs.existsSync(file)) continue;
         const { dom, errors } = await openBundle(file, "", `file://${file}`);
         const booted = await boot(dom, 30000);

@@ -10,8 +10,8 @@
    Запуск:  node tools/build-standalone.js           (8 и 9 классы)
             node tools/build-standalone.js 8         (только 8 класс)
 
-   Результат: downloads/physics-quest-8.html
-              downloads/physics-quest-9.html
+   Результат: physics-quest-8.html и physics-quest-9.html в корне репозитория
+              (их же раздаёт GitHub Pages: /physics-quest-8.html).
    ============================================================ */
 "use strict";
 
@@ -21,7 +21,7 @@ const os = require("os");
 const { execFileSync } = require("child_process");
 
 const ROOT = path.resolve(__dirname, "..");
-const OUT_DIR = path.join(ROOT, "downloads");
+const OUT_DIR = ROOT;
 const CACHE_DIR = path.join(os.tmpdir(), "pq-standalone-assets");
 
 /* Картинки крупнее этого размера ужимаются, чтобы файл не распухал. */
@@ -366,30 +366,4 @@ GRADES.forEach((grade) => {
     console.log(`OK  ${path.relative(ROOT, file)} · ${(Buffer.byteLength(html) / 1024 / 1024).toFixed(2)} МБ`);
 });
 
-fs.writeFileSync(
-    path.join(OUT_DIR, "README.md"),
-    [
-        "# Автономные версии игры (8 и 9 класс)",
-        "",
-        "Файлы собраны скриптом `node tools/build-standalone.js` из `play.html`.",
-        "Каждый `.html` самодостаточен: стили, скрипты и картинки внутри, интернет не нужен.",
-        "",
-        "| Файл | Класс | Размер |",
-        "| --- | --- | --- |",
-        ...report.map((r) => `| \`${path.basename(r.file)}\` | ${r.grade} | ${r.mb} МБ |`),
-        "",
-        "Как пользоваться: открыть файл в браузере (телефон, планшет, компьютер) —",
-        "прогресс сохраняется в браузере этого устройства. Чтобы отправить ученику,",
-        "перешлите сам файл (Telegram, WhatsApp, e-mail, флешка).",
-        "",
-        "Что работает: все уровни и задания своего класса, лаборатории и симуляторы,",
-        "режим учителя, классы и коды учеников, назначения, приём результатов по коду",
-        "`R2-…`, карточки с QR, сертификаты.",
-        "",
-        "Чего нет: переходов на другие страницы сайта (портал, методичка, экраны,",
-        "битва с телефонами), PDF для печати и комиксов других классов — вместо них",
-        "показывается подсказка «есть в полной версии».",
-        ""
-    ].join("\n")
-);
-console.log(`OK  ${path.relative(ROOT, path.join(OUT_DIR, "README.md"))}`);
+

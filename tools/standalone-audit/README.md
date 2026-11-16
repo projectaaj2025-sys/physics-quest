@@ -1,6 +1,6 @@
 # Проверка автономных однофайловых сборок
 
-`downloads/physics-quest-8.html` и `downloads/physics-quest-9.html` собираются скриптом
+`physics-quest-8.html` и `physics-quest-9.html` в корне репозитория собираются скриптом
 `tools/build-standalone.js` из `play.html` и проверяются этим аудитом.
 
 ```bash
