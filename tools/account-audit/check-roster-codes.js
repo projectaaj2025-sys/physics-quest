@@ -205,7 +205,13 @@ const ALPHABET_RE = /^[A-HJ-NP-Z2-9]{4}$/;
   const battle = read("shared/team-battle.js");
   const phone = read("shared/battle-phone.js");
   ok("доска сообщает телефонам число игроков", /broadcast\(\{ t: "lobby", n: players\.length \}\)/.test(battle));
-  ok("телефон показывает число игроков из комнаты", /msg\.t === "start"\) renderWait\(msg\.n\)/.test(phone));
+  ok("телефон показывает число игроков из комнаты",
+    /msg\.t === "welcome"\)[^\n]*renderWait\(msg\.n\)/.test(phone)
+    && /msg\.t === "start"\)[^\n]*renderWait\(msg\.n\)/.test(phone));
+  ok("телефон подтверждает приём и повторяет заявку",
+    /t: "welcome"/.test(read("shared/battle-room.js"))
+    && /startAnnounce\(\)/.test(read("shared/battle-room.js"))
+    && /announceTries > 25/.test(read("shared/battle-room.js")));
   ok("телефон не пишет «1 игрок» без данных", /Number\.isFinite\(players\) && players > 0/.test(phone));
   ok("fallback не создаёт вторую локальную комнату", /if \(!localRoom\) localRoom = createLocalRoom/.test(read("shared/battle-room.js")));
 }

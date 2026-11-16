@@ -1929,6 +1929,17 @@ html[data-theme="dark"] .pq-theory-question {
 .pq-lobby-status { font-size: 12.5px; font-weight: 800; color: var(--bt-dim); }
 .pq-lobby-status[data-mode="online"] { color: var(--bt-ok); }
 .pq-lobby-status[data-mode="error"] { color: var(--bt-bad); }
+.pq-lobby-localwarn {
+    margin-top: 8px;
+    padding: 10px 12px;
+    border-radius: 12px;
+    font-size: 12.5px;
+    line-height: 1.45;
+    color: #fde68a;
+    background: rgba(251, 191, 36, .12);
+    border: 1px solid rgba(251, 191, 36, .38);
+}
+.pq-lobby-localwarn[hidden] { display: none; }
 .pq-lobby-joined {
     background: var(--bt-card);
     border: 1px solid var(--bt-line);

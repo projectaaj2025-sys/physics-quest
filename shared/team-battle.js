@@ -210,6 +210,8 @@
             roomLocal: "Локальный режим — только это устройство",
             roomWaiting: "Соединяемся с сервером комнаты…",
             roomError: "Комната недоступна. Проверьте интернет и попробуйте снова.",
+            roomLocalWarn: "Локальный режим: доска не смогла выйти в интернет, поэтому телефоны с других устройств не подключатся. Включите интернет на доске и создайте комнату заново.",
+            lateJoin: "⚠ {0} подключился после старта — попадёт в следующую игру",
             newRoom: "Сменить код",
             answeredPhone: "Ответили: {0} из {1}",
             phoneWait: "Ученики отвечают на телефонах…",
@@ -243,6 +245,8 @@
             roomLocal: "Local mode — this device only",
             roomWaiting: "Connecting to the room server…",
             roomError: "The room is unavailable. Check the internet and try again.",
+            roomLocalWarn: "Local mode: the board could not reach the internet, so phones on other devices cannot join. Turn on the internet on the board and create the room again.",
+            lateJoin: "⚠ {0} joined after the start — will play in the next game",
             newRoom: "Change code",
             answeredPhone: "Answered: {0} of {1}",
             phoneWait: "Students are answering on their phones…",
@@ -276,6 +280,8 @@
             roomLocal: "Жергілікті режим — тек осы құрылғы",
             roomWaiting: "Бөлме серверіне қосылып жатырмыз…",
             roomError: "Бөлме қолжетімсіз. Интернетті тексеріп, қайталап көріңіз.",
+            roomLocalWarn: "Жергілікті режим: тақта интернетке шыға алмады, сондықтан басқа құрылғылардағы телефондар қосылмайды. Тақтадағы интернетті қосып, бөлмені қайта жасаңыз.",
+            lateJoin: "⚠ {0} старттан кейін қосылды — келесі ойынға қатысады",
             newRoom: "Кодты ауыстыру",
             answeredPhone: "Жауап берді: {1} ішінен {0}",
             phoneWait: "Оқушылар телефондарында жауап беріп жатыр…",
@@ -598,8 +604,20 @@
                 onJoin: (p) => {
                     if (!p || !p.id) return;
                     if (this.pendingPlayers.some((x) => x.id === p.id)) return;
-                    this.pendingPlayers.push({ id: p.id, name: p.name || `#${this.pendingPlayers.length + 1}` });
+                    // тот же телефон переподключился — заменяем старую запись, а не дублируем
+                    if (p.session) {
+                        this.pendingPlayers = this.pendingPlayers.filter((x) => x.session !== p.session);
+                    }
+                    this.pendingPlayers.push({
+                        id: p.id,
+                        name: p.name || `#${this.pendingPlayers.length + 1}`,
+                        session: p.session || ""
+                    });
                     this.refreshLobby();
+                    if (this.state && this.state.phone) {
+                        this.toast(fmt("lateJoin", (p.name || "?")), 5200);
+                        return;
+                    }
                     if (typeof PQSound !== "undefined") PQSound.play("click");
                 },
                 onLeave: (id) => {
@@ -614,6 +632,7 @@
                     else if (mode === "local") { el.textContent = t("roomLocal"); el.dataset.mode = "local"; }
                     else if (mode === "waiting" || mode === "connecting") { el.textContent = t("roomWaiting"); el.dataset.mode = "waiting"; }
                     else if (mode === "error") { el.textContent = t("roomError"); el.dataset.mode = "error"; }
+                    this.refreshLobby();
                 }
             });
 
@@ -645,6 +664,7 @@
                                 <code id="pq-lobby-link"></code>
                             </div>
                             <div class="pq-lobby-status" id="pq-lobby-status" data-mode="waiting">${esc(t("roomWaiting"))}</div>
+                            <div class="pq-lobby-localwarn" id="pq-lobby-localwarn" hidden>${esc(t("roomLocalWarn"))}</div>
                             <div class="pq-lobby-joined">
                                 <div class="pq-lobby-joined-head">${esc(t("joinedTitle"))} · <b id="pq-lobby-count">0</b></div>
                                 <div class="pq-lobby-list" id="pq-lobby-list">${esc(t("joinedNone"))}</div>
@@ -682,6 +702,8 @@
                     : `<span class="pq-lobby-empty">${esc(t("joinedNone"))}</span>`;
             }
             if (start) start.disabled = players.length < 2;
+            const warn = document.getElementById("pq-lobby-localwarn");
+            if (warn) warn.hidden = !(this.room && this.room.mode === "local");
             // Телефоны должны видеть, сколько игроков уже в комнате.
             if (this.room) {
                 try { this.room.broadcast({ t: "lobby", n: players.length }); } catch (_) {}
@@ -1197,15 +1219,14 @@
             return raw ? raw.replace(/^topic_/, "").toUpperCase() : "";
         },
 
-        toast(text) {
-            if (typeof showNotification === "function") {
-                try { showNotification(text, "warning"); return; } catch (_) {}
-            }
+        toast(text, ms) {
+            // Своё уведомление поверх доски: общий #notification остаётся
+            // под полноэкранным оверлеем битвы и учителю не виден.
             const el = document.createElement("div");
             el.className = "pq-battle-toast";
             el.textContent = text;
             document.body.appendChild(el);
-            setTimeout(() => el.remove(), 2200);
+            setTimeout(() => el.remove(), Number(ms) || 2200);
         }
     };
 

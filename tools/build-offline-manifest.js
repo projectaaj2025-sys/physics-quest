@@ -12,6 +12,9 @@ const path = require("path");
 const ROOT = path.resolve(__dirname, "..");
 const SKIP_DIRS = new Set([".git", "node_modules", "tools", ".github", "docs"]); // docs — отчёты и скриншоты, офлайн-игре не нужны
 const EXT = new Set([".html", ".js", ".css", ".json", ".png", ".jpg", ".jpeg", ".svg", ".webmanifest", ".pdf"]);
+/* Автономные однофайловые сборки (physics-quest-7/8/9.html) — по ~7 МБ каждая:
+   в офлайн-кэш сайта они не нужны. */
+const SKIP_FILES = /^physics-quest-\d+\.html$/;
 
 function walk(dir, out) {
     for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
@@ -20,7 +23,7 @@ function walk(dir, out) {
         if (entry.isDirectory()) {
             if (SKIP_DIRS.has(entry.name)) continue;
             walk(abs, out);
-        } else if (EXT.has(path.extname(entry.name).toLowerCase())) {
+        } else if (EXT.has(path.extname(entry.name).toLowerCase()) && !SKIP_FILES.test(entry.name)) {
             out.push(path.relative(ROOT, abs).split(path.sep).join("/"));
         }
     }

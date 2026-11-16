@@ -8397,6 +8397,17 @@ html[data-theme="dark"] .pq-theory-question {
 .pq-lobby-status { font-size: 12.5px; font-weight: 800; color: var(--bt-dim); }
 .pq-lobby-status[data-mode="online"] { color: var(--bt-ok); }
 .pq-lobby-status[data-mode="error"] { color: var(--bt-bad); }
+.pq-lobby-localwarn {
+    margin-top: 8px;
+    padding: 10px 12px;
+    border-radius: 12px;
+    font-size: 12.5px;
+    line-height: 1.45;
+    color: #fde68a;
+    background: rgba(251, 191, 36, .12);
+    border: 1px solid rgba(251, 191, 36, .38);
+}
+.pq-lobby-localwarn[hidden] { display: none; }
 .pq-lobby-joined {
     background: var(--bt-card);
     border: 1px solid var(--bt-line);
@@ -96823,9 +96834,25 @@ const AssignHQ = {
         return typeof BroadcastChannel === "function";
     }
 
+    function readSession() {
+        // Стабильный идентификатор телефона: переживает перезагрузку вкладки,
+        // чтобы доска узнавала ученика, а не считала его новым игроком.
+        try {
+            var s = window.sessionStorage.getItem("pq-battle-session");
+            if (!s) {
+                s = "S" + newCode(10);
+                window.sessionStorage.setItem("pq-battle-session", s);
+            }
+            return s;
+        } catch (_) {
+            return "S" + newCode(10);
+        }
+    }
+
     function createLocalRoom(code, cb) {
         const ch = new BroadcastChannel("pq-battle-" + code);
-        const players = new Map();
+        const players = new Map();    // id -> { name, session }
+        const sessions = new Map();   // session -> id
         const room = {
             mode: "local",
             code,
@@ -96837,13 +96864,31 @@ const AssignHQ = {
         ch.onmessage = (ev) => {
             const d = ev.data || {};
             if (d.t === "join" && d.id) {
-                if (!players.has(d.id)) {
-                    players.set(d.id, d.name || "");
-                    cb.onJoin && cb.onJoin({ id: d.id, name: d.name || "" });
+                const id = String(d.id);
+                const session = String(d.session || "");
+                const seen = players.get(id);
+                // повторная заявка того же телефона — просто подтверждаем приём
+                if (seen) {
+                    if (session) seen.session = session;
+                    room.send(id, { t: "welcome", n: players.size });
+                    return;
                 }
+                // телефон переподключился с новым id — заменяем старую запись
+                if (session && sessions.has(session) && sessions.get(session) !== id) {
+                    const oldId = sessions.get(session);
+                    players.delete(oldId);
+                    sessions.delete(session);
+                    cb.onLeave && cb.onLeave(oldId);
+                }
+                players.set(id, { name: d.name || "", session });
+                if (session) sessions.set(session, id);
+                cb.onJoin && cb.onJoin({ id, name: d.name || "", session });
+                room.send(id, { t: "welcome", n: players.size });
             } else if (d.t === "answer" && d.id) {
                 cb.onAnswer && cb.onAnswer(d.id, Number(d.opt));
             } else if (d.t === "leave" && d.id) {
+                const gone = players.get(d.id);
+                if (gone && gone.session && sessions.get(gone.session) === d.id) sessions.delete(gone.session);
                 players.delete(d.id);
                 cb.onLeave && cb.onLeave(d.id);
             }
@@ -96851,7 +96896,7 @@ const AssignHQ = {
         return room;
     }
 
-    function joinLocalRoom(code, name, cb, preferredId) {
+    function joinLocalRoom(code, name, cb, preferredId, session) {
         // Идентификатор должен совпадать с client.id: по нему доска шлёт
         // персональные сообщения (итог раунда конкретному игроку).
         const id = preferredId || ("P" + newCode(5));
@@ -96869,9 +96914,13 @@ const AssignHQ = {
         };
         // представимся доске — с небольшой задержкой, чтобы комната успела подняться
         setTimeout(() => {
-            try { ch.postMessage({ t: "join", id, name }); } catch (_) {}
+            try { ch.postMessage({ t: "join", id, name, session: session || "" }); } catch (_) {}
             cb.onStatus && cb.onStatus("online");
         }, 250);
+        // повторная заявка, если доска не подтвердила приём
+        client.announce = () => {
+            try { ch.postMessage({ t: "join", id, name, session: session || "" }); } catch (_) {}
+        };
         return client;
     }
 
@@ -96879,7 +96928,8 @@ const AssignHQ = {
 
     function createRoom(code, cb) {
         const state = { mode: "connecting", code, closed: false };
-        const conns = new Map();      // peerId -> {conn, name}
+        const conns = new Map();      // peerId -> {conn, name, session}
+        const sessions = new Map();   // session -> peerId
         const room = {
             get mode() { return state.mode; },
             get code() { return state.code; },
@@ -96951,15 +97001,38 @@ const AssignHQ = {
                 conn.on("data", (msg) => {
                     const d = msg || {};
                     if (d.t === "join") {
-                        conns.set(conn.peer, { conn, name: String(d.name || "").slice(0, 24) });
-                        cb.onJoin && cb.onJoin({ id: conn.peer, name: conns.get(conn.peer).name });
+                        const pid = conn.peer;
+                        const name = String(d.name || "").slice(0, 24);
+                        const session = String(d.session || "");
+                        const seen = conns.get(pid);
+                        // повторная заявка (телефон не получил подтверждение) — только ack
+                        if (seen) {
+                            if (session) seen.session = session;
+                            safeSend(conn, { t: "welcome", n: conns.size });
+                            return;
+                        }
+                        // переподключение с новым peer id и той же сессией
+                        if (session && sessions.has(session) && sessions.get(session) !== pid) {
+                            const oldId = sessions.get(session);
+                            const old = conns.get(oldId);
+                            conns.delete(oldId);
+                            sessions.delete(session);
+                            try { if (old) old.conn.close(); } catch (_) {}
+                            cb.onLeave && cb.onLeave(oldId);
+                        }
+                        conns.set(pid, { conn, name, session });
+                        if (session) sessions.set(session, pid);
+                        cb.onJoin && cb.onJoin({ id: pid, name, session });
+                        safeSend(conn, { t: "welcome", n: conns.size });
                         cb.onStatus && cb.onStatus(state.mode, "joined");
                     } else if (d.t === "answer") {
                         cb.onAnswer && cb.onAnswer(conn.peer, Number(d.opt));
                     }
                 });
                 conn.on("close", () => {
-                    if (!conns.has(conn.peer)) return;
+                    const gone = conns.get(conn.peer);
+                    if (!gone) return;
+                    if (gone.session && sessions.get(gone.session) === conn.peer) sessions.delete(gone.session);
                     conns.delete(conn.peer);
                     cb.onLeave && cb.onLeave(conn.peer);
                     cb.onStatus && cb.onStatus(state.mode, "left");
@@ -97000,29 +97073,96 @@ const AssignHQ = {
         let peer = null;
         let conn = null;
         let localClient = null;
+        let acked = false;
+        let announceTimer = null;
+        let announceTries = 0;
+        let hooksInstalled = false;
         const pending = [];
+        const SESSION = readSession();
 
         const api = {
             send(msg) {
                 if (localClient) localClient.send(msg);
                 if (conn && conn.open) { try { conn.send(msg); } catch (_) {} }
-                else pending.push(msg);
+                else if (!localClient) pending.push(msg);
             },
             close() {
                 closed = true;
+                stopAnnounce();
                 if (localClient) localClient.close();
                 try { if (conn) conn.close(); } catch (_) {}
                 try { if (peer) peer.destroy(); } catch (_) {}
             }
         };
 
+        function stopAnnounce() {
+            if (announceTimer) { clearInterval(announceTimer); announceTimer = null; }
+        }
+
+        function announceNow() {
+            if (closed || acked) return;
+            if (localClient && localClient.announce) { localClient.announce(); return; }
+            api.send({ t: "join", name, session: SESSION });
+        }
+
+        /* Телефон повторяет заявку, пока доска не подтвердит приём: в школьной
+           сети первый пакет теряется, и раньше такой игрок «исчезал» из списка. */
+        function startAnnounce() {
+            if (announceTimer || closed || acked) return;
+            announceNow();
+            announceTimer = setInterval(() => {
+                if (closed || acked) { stopAnnounce(); return; }
+                announceTries += 1;
+                if (announceTries > 25) { stopAnnounce(); return; }
+                announceNow();
+            }, 1200);
+        }
+
+        function markJoined() {
+            if (acked) return;
+            acked = true;
+            stopAnnounce();
+        }
+
+        function handleData(msg) {
+            if (!msg || !msg.t) return;
+            // подтверждение приёма шлёт доска лично игроку; общие рассылки
+            // (lobby/start/q) подтверждением не считаются
+            if (msg.t === "welcome") markJoined();
+            cb.onData && cb.onData(msg);
+        }
+
+        function installReconnectHooks() {
+            if (hooksInstalled) return;
+            hooksInstalled = true;
+            try {
+                document.addEventListener("visibilitychange", () => {
+                    if (!document.hidden) { markJoinedReset(); announceNow(); }
+                });
+                window.addEventListener("online", () => { markJoinedReset(); announceNow(); });
+                window.addEventListener("pagehide", () => { try { api.close(); } catch (_) {} });
+            } catch (_) {}
+        }
+
+        // после сворачивания вкладки связь могла отвалиться — заявляемся снова
+        function markJoinedReset() {
+            acked = false;
+            startAnnounce();
+        }
+
         function startLocal(reason) {
             if (closed) return;
             clientMode = "local";
             clientId = "local-" + newCode(4);
-            localClient = joinLocalRoom(code, name, cb, clientId);
+            localClient = joinLocalRoom(
+                code, name,
+                Object.assign({}, cb, { onData: handleData }),
+                clientId, SESSION
+            );
             clientId = localClient.id || clientId;
             cb.onMode && cb.onMode("local", reason);
+            installReconnectHooks();
+            startAnnounce();
         }
 
         // принудительно локальный режим (нужно для проверки на одном устройстве)
@@ -97031,6 +97171,7 @@ const AssignHQ = {
             return {
                 get mode() { return clientMode; },
                 get id() { return clientId; },
+                get acked() { return acked; },
                 send: api.send,
                 close: api.close
             };
@@ -97054,11 +97195,13 @@ const AssignHQ = {
                     if (closed) return;
                     clientMode = "online";
                     clientId = peer.id || conn.peer || "";
-                    try { conn.send({ t: "join", name }); } catch (_) {}
+                    try { conn.send({ t: "join", name, session: SESSION }); } catch (_) {}
+                    installReconnectHooks();
+                    startAnnounce();
                     pending.splice(0).forEach((m) => { try { conn.send(m); } catch (_) {} });
                     cb.onMode && cb.onMode("online");
                 });
-                conn.on("data", (msg) => { if (!closed) cb.onData && cb.onData(msg); });
+                conn.on("data", (msg) => { if (!closed) handleData(msg); });
                 conn.on("close", () => { cb.onStatus && cb.onStatus("closed"); });
             });
             peer.on("error", (err) => {
@@ -97076,6 +97219,7 @@ const AssignHQ = {
         return {
             get mode() { return clientMode; },
             get id() { return clientId; },
+            get acked() { return acked; },
             send: api.send,
             close: api.close
         };
@@ -97303,6 +97447,8 @@ const AssignHQ = {
             roomLocal: "Локальный режим — только это устройство",
             roomWaiting: "Соединяемся с сервером комнаты…",
             roomError: "Комната недоступна. Проверьте интернет и попробуйте снова.",
+            roomLocalWarn: "Локальный режим: доска не смогла выйти в интернет, поэтому телефоны с других устройств не подключатся. Включите интернет на доске и создайте комнату заново.",
+            lateJoin: "⚠ {0} подключился после старта — попадёт в следующую игру",
             newRoom: "Сменить код",
             answeredPhone: "Ответили: {0} из {1}",
             phoneWait: "Ученики отвечают на телефонах…",
@@ -97336,6 +97482,8 @@ const AssignHQ = {
             roomLocal: "Local mode — this device only",
             roomWaiting: "Connecting to the room server…",
             roomError: "The room is unavailable. Check the internet and try again.",
+            roomLocalWarn: "Local mode: the board could not reach the internet, so phones on other devices cannot join. Turn on the internet on the board and create the room again.",
+            lateJoin: "⚠ {0} joined after the start — will play in the next game",
             newRoom: "Change code",
             answeredPhone: "Answered: {0} of {1}",
             phoneWait: "Students are answering on their phones…",
@@ -97369,6 +97517,8 @@ const AssignHQ = {
             roomLocal: "Жергілікті режим — тек осы құрылғы",
             roomWaiting: "Бөлме серверіне қосылып жатырмыз…",
             roomError: "Бөлме қолжетімсіз. Интернетті тексеріп, қайталап көріңіз.",
+            roomLocalWarn: "Жергілікті режим: тақта интернетке шыға алмады, сондықтан басқа құрылғылардағы телефондар қосылмайды. Тақтадағы интернетті қосып, бөлмені қайта жасаңыз.",
+            lateJoin: "⚠ {0} старттан кейін қосылды — келесі ойынға қатысады",
             newRoom: "Кодты ауыстыру",
             answeredPhone: "Жауап берді: {1} ішінен {0}",
             phoneWait: "Оқушылар телефондарында жауап беріп жатыр…",
@@ -97691,8 +97841,20 @@ const AssignHQ = {
                 onJoin: (p) => {
                     if (!p || !p.id) return;
                     if (this.pendingPlayers.some((x) => x.id === p.id)) return;
-                    this.pendingPlayers.push({ id: p.id, name: p.name || `#${this.pendingPlayers.length + 1}` });
+                    // тот же телефон переподключился — заменяем старую запись, а не дублируем
+                    if (p.session) {
+                        this.pendingPlayers = this.pendingPlayers.filter((x) => x.session !== p.session);
+                    }
+                    this.pendingPlayers.push({
+                        id: p.id,
+                        name: p.name || `#${this.pendingPlayers.length + 1}`,
+                        session: p.session || ""
+                    });
                     this.refreshLobby();
+                    if (this.state && this.state.phone) {
+                        this.toast(fmt("lateJoin", (p.name || "?")), 5200);
+                        return;
+                    }
                     if (typeof PQSound !== "undefined") PQSound.play("click");
                 },
                 onLeave: (id) => {
@@ -97707,6 +97869,7 @@ const AssignHQ = {
                     else if (mode === "local") { el.textContent = t("roomLocal"); el.dataset.mode = "local"; }
                     else if (mode === "waiting" || mode === "connecting") { el.textContent = t("roomWaiting"); el.dataset.mode = "waiting"; }
                     else if (mode === "error") { el.textContent = t("roomError"); el.dataset.mode = "error"; }
+                    this.refreshLobby();
                 }
             });
 
@@ -97738,6 +97901,7 @@ const AssignHQ = {
                                 <code id="pq-lobby-link"></code>
                             </div>
                             <div class="pq-lobby-status" id="pq-lobby-status" data-mode="waiting">${esc(t("roomWaiting"))}</div>
+                            <div class="pq-lobby-localwarn" id="pq-lobby-localwarn" hidden>${esc(t("roomLocalWarn"))}</div>
                             <div class="pq-lobby-joined">
                                 <div class="pq-lobby-joined-head">${esc(t("joinedTitle"))} · <b id="pq-lobby-count">0</b></div>
                                 <div class="pq-lobby-list" id="pq-lobby-list">${esc(t("joinedNone"))}</div>
@@ -97775,6 +97939,8 @@ const AssignHQ = {
                     : `<span class="pq-lobby-empty">${esc(t("joinedNone"))}</span>`;
             }
             if (start) start.disabled = players.length < 2;
+            const warn = document.getElementById("pq-lobby-localwarn");
+            if (warn) warn.hidden = !(this.room && this.room.mode === "local");
             // Телефоны должны видеть, сколько игроков уже в комнате.
             if (this.room) {
                 try { this.room.broadcast({ t: "lobby", n: players.length }); } catch (_) {}
@@ -98290,15 +98456,14 @@ const AssignHQ = {
             return raw ? raw.replace(/^topic_/, "").toUpperCase() : "";
         },
 
-        toast(text) {
-            if (typeof showNotification === "function") {
-                try { showNotification(text, "warning"); return; } catch (_) {}
-            }
+        toast(text, ms) {
+            // Своё уведомление поверх доски: общий #notification остаётся
+            // под полноэкранным оверлеем битвы и учителю не виден.
             const el = document.createElement("div");
             el.className = "pq-battle-toast";
             el.textContent = text;
             document.body.appendChild(el);
-            setTimeout(() => el.remove(), 2200);
+            setTimeout(() => el.remove(), Number(ms) || 2200);
         }
     };
 
