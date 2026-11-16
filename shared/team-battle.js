@@ -212,6 +212,7 @@
             roomError: "Комната недоступна. Проверьте интернет и попробуйте снова.",
             roomLocalWarn: "Локальный режим: доска не смогла выйти в интернет, поэтому телефоны с других устройств не подключатся. Включите интернет на доске и создайте комнату заново.",
             roomCapacity: "До 40 телефонов из любых сетей: Wi-Fi класса, мобильный интернет, дом.",
+            checkLink: "🔌 Проверить связь",
             lateJoin: "⚠ {0} подключился после старта — попадёт в следующую игру",
             newRoom: "Сменить код",
             answeredPhone: "Ответили: {0} из {1}",
@@ -248,6 +249,7 @@
             roomError: "The room is unavailable. Check the internet and try again.",
             roomLocalWarn: "Local mode: the board could not reach the internet, so phones on other devices cannot join. Turn on the internet on the board and create the room again.",
             roomCapacity: "Up to 40 phones from any network: school Wi-Fi, mobile data, home.",
+            checkLink: "🔌 Check connection",
             lateJoin: "⚠ {0} joined after the start — will play in the next game",
             newRoom: "Change code",
             answeredPhone: "Answered: {0} of {1}",
@@ -284,6 +286,7 @@
             roomError: "Бөлме қолжетімсіз. Интернетті тексеріп, қайталап көріңіз.",
             roomLocalWarn: "Жергілікті режим: тақта интернетке шыға алмады, сондықтан басқа құрылғылардағы телефондар қосылмайды. Тақтадағы интернетті қосып, бөлмені қайта жасаңыз.",
             roomCapacity: "Кез келген желіден 40 телефонға дейін: сынып Wi-Fi, мобильді интернет, үй.",
+            checkLink: "🔌 Байланысты тексеру",
             lateJoin: "⚠ {0} старттан кейін қосылды — келесі ойынға қатысады",
             newRoom: "Кодты ауыстыру",
             answeredPhone: "Жауап берді: {1} ішінен {0}",
@@ -644,6 +647,10 @@
             if (start) start.addEventListener("click", () => this.startPhoneBattle());
             const cancel = document.getElementById("pq-lobby-cancel");
             if (cancel) cancel.addEventListener("click", () => { this.closeRoom(); this.renderSetup(); });
+            const check = document.getElementById("pq-lobby-check");
+            if (check) check.addEventListener("click", () => {
+                try { window.open("./battle-check.html", "_blank"); } catch (_) {}
+            });
         },
 
         lobbyHtml(code) {
@@ -675,6 +682,7 @@
                             </div>
                             <div class="pq-battle-actions">
                                 <button type="button" class="btn btn-primary" id="pq-lobby-start" disabled>${esc(t("startBattle"))}</button>
+                                <button type="button" class="btn btn-secondary" id="pq-lobby-check">${esc(t("checkLink"))}</button>
                                 <button type="button" class="btn btn-secondary" id="pq-lobby-cancel">${esc(t("exit"))}</button>
                             </div>
                             <div class="pq-lobby-note">${esc(t("phoneStartHint"))} · ${esc(t("needPlayers"))}</div>

@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="ru" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Проверка связи — Битва экипажей</title>
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%230284c7'/%3E%3Ctext x='32' y='44' font-size='34' text-anchor='middle'%3E%F0%9F%94%8C%3C/text%3E%3C/svg%3E">
+    <style>
+        :root { color-scheme: dark; }
+        * { box-sizing: border-box; }
+        body {
+            margin: 0; padding: 24px 16px 48px;
+            font: 15px/1.5 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+            color: #e2e8f0;
+            background: radial-gradient(900px 500px at 15% 0%, rgba(56, 189, 248, .18), transparent 60%), #070e1c;
+        }
+        .wrap { max-width: 760px; margin: 0 auto; }
+        h1 { font-size: 24px; margin: 0 0 6px; }
+        p { color: #94a3b8; margin: 0 0 18px; }
+        .row { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 18px; }
+        button {
+            font: inherit; font-weight: 700; padding: 11px 18px; border-radius: 12px;
+            border: 1px solid rgba(125, 211, 252, .35); background: #0e2038; color: #e2e8f0;
+            cursor: pointer;
+        }
+        button.primary { background: linear-gradient(135deg, #0284c7, #6366f1); border: 0; color: #fff; }
+        button:disabled { opacity: .55; cursor: default; }
+        ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
+        li {
+            display: flex; align-items: center; gap: 12px;
+            padding: 12px 14px; border-radius: 12px;
+            background: rgba(15, 27, 51, .82); border: 1px solid rgba(125, 211, 252, .18);
+        }
+        li .icon { font-size: 18px; width: 22px; text-align: center; }
+        li .name { flex: 1; font-weight: 600; }
+        li .meta { color: #94a3b8; font-size: 13px; }
+        li.ok { border-color: rgba(52, 211, 153, .55); }
+        li.bad { border-color: rgba(248, 113, 113, .45); }
+        pre {
+            white-space: pre-wrap; word-break: break-word;
+            background: rgba(2, 8, 23, .7); border: 1px solid rgba(125, 211, 252, .18);
+            border-radius: 12px; padding: 14px; color: #cbd5e1; font-size: 13px;
+        }
+        .note { margin-top: 22px; font-size: 13px; color: #94a3b8; }
+        .note b { color: #e2e8f0; }
+    </style>
+</head>
+<body>
+<div class="wrap">
+    <h1>🔌 Проверка связи «Битвы экипажей»</h1>
+    <p>Откройте эту страницу на доске и на телефоне ученика. Зелёный — этот канал проходит в вашей сети.</p>
+
+    <div class="row">
+        <button class="primary" id="run">Проверить связь</button>
+        <button id="copy" disabled>Копировать отчёт</button>
+    </div>
+
+    <ul id="mqtt"></ul>
+    <ul id="other" style="margin-top:10px"></ul>
+
+    <pre id="report" hidden></pre>
+
+    <div class="note">
+        <b>Что это значит.</b> «Сервер 443» — обычный HTTPS-порт, он разрешён почти везде.
+        Если на доске и на телефоне хотя бы один общий канал зелёный — телефоны подключатся.
+        Если всё красное — сеть блокирует и MQTT, и WebRTC: включите мобильный интернет
+        на доске или раздайте точку доступа с телефона.
+    </div>
+</div>
+
+<script src="shared/battle-mqtt.js"></script>
+<script src="shared/vendor/peerjs.min.js"></script>
+<script>
+(function () {
+    "use strict";
+    const mqttBox = document.getElementById("mqtt");
+    const otherBox = document.getElementById("other");
+    const report = document.getElementById("report");
+    const runBtn = document.getElementById("run");
+    const copyBtn = document.getElementById("copy");
+    let lastLines = [];
+
+    function row(icon, name, meta, state) {
+        const li = document.createElement("li");
+        if (state) li.className = state;
+        li.innerHTML = `<span class="icon">${icon}</span><span class="name"></span><span class="meta"></span>`;
+        li.querySelector(".name").textContent = name;
+        li.querySelector(".meta").textContent = meta || "";
+        return li;
+    }
+
+    function webrtcCheck() {
+        try {
+            const pc = new RTCPeerConnection({ iceServers: [{ urls: "stun:stun.l.google.com:19302" }] });
+            pc.close();
+            return { ok: true, label: "WebRTC доступен" };
+        } catch (e) {
+            return { ok: false, label: "WebRTC заблокирован" };
+        }
+    }
+
+    function peerCheck(timeout) {
+        return new Promise((resolve) => {
+            if (typeof Peer !== "function") return resolve({ ok: false, label: "PeerJS не загрузился" });
+            let done = false;
+            let peer = null;
+            const finish = (ok, label) => {
+                if (done) return;
+                done = true;
+                try { if (peer) peer.destroy(); } catch (_) {}
+                resolve({ ok, label });
+            };
+            const t = setTimeout(() => finish(false, "PeerJS: нет ответа за 8 с"), timeout || 8000);
+            try {
+                peer = new Peer({ debug: 0 });
+                peer.on("open", () => { clearTimeout(t); finish(true, "PeerJS доступен"); });
+                peer.on("error", (err) => { clearTimeout(t); finish(false, "PeerJS: " + ((err && err.type) || "ошибка")); });
+            } catch (e) {
+                clearTimeout(t);
+                finish(false, "PeerJS: ошибка запуска");
+            }
+        });
+    }
+
+    async function run() {
+        runBtn.disabled = true;
+        copyBtn.disabled = true;
+        mqttBox.innerHTML = "";
+        otherBox.innerHTML = "";
+        report.hidden = true;
+        lastLines = [];
+
+        const lib = window.PQBattleMqtt;
+        const brokers = (lib && lib.brokers) || [];
+        if (!lib || !lib.probe) {
+            mqttBox.appendChild(row("⛔", "Клиент MQTT не загрузился", "shared/battle-mqtt.js", "bad"));
+        }
+        brokers.forEach((b, i) => {
+            const li = row("⏳", `Сервер ${i + 1} · ${b.label || b.url}`, "проверяем…", "");
+            li.dataset.idx = String(i);
+            mqttBox.appendChild(li);
+        });
+
+        const rtc = webrtcCheck();
+        otherBox.appendChild(row(rtc.ok ? "✅" : "⛔", rtc.label, "", rtc.ok ? "ok" : "bad"));
+        const peerRow = row("⏳", "PeerJS (WebRTC-брокер)", "проверяем…", "");
+        otherBox.appendChild(peerRow);
+
+        let results = [];
+        try {
+            results = (lib && lib.probe) ? await lib.probe(7000) : [];
+        } catch (_) {
+            results = [];
+        }
+        results.forEach((r, i) => {
+            const li = mqttBox.querySelector(`li[data-idx="${i}"]`);
+            if (!li) return;
+            li.className = r.ok ? "ok" : "bad";
+            li.querySelector(".icon").textContent = r.ok ? "✅" : "⛔";
+            li.querySelector(".name").textContent = `Сервер ${i + 1} · ${r.label}`;
+            li.querySelector(".meta").textContent = r.ok ? `работает · ${r.ms} мс` : (r.why || "нет связи");
+            lastLines.push(`${r.ok ? "OK  " : "FAIL"} MQTT ${r.label} ${r.ok ? r.ms + " ms" : (r.why || "")}`);
+        });
+
+        const peer = await peerCheck(8000);
+        peerRow.className = peer.ok ? "ok" : "bad";
+        peerRow.querySelector(".icon").textContent = peer.ok ? "✅" : "⛔";
+        peerRow.querySelector(".meta").textContent = peer.label;
+        lastLines.push(`${peer.ok ? "OK  " : "FAIL"} ${peer.label}`);
+        lastLines.push(`${rtc.ok ? "OK  " : "FAIL"} ${rtc.label}`);
+
+        const anyOk = results.some((r) => r.ok) || peer.ok;
+        const head = anyOk ? "ИТОГ: связь есть" : "ИТОГ: ни один канал не работает";
+        report.hidden = false;
+        report.textContent = [
+            head,
+            "Сайт: " + location.origin,
+            "Время: " + new Date().toLocaleString("ru-RU"),
+            "",
+            ...lastLines,
+            "",
+            "Запустите ту же проверку на телефоне ученика."
+        ].join("\n");
+        copyBtn.disabled = false;
+        runBtn.disabled = false;
+    }
+
+    copyBtn.addEventListener("click", async () => {
+        try {
+            await navigator.clipboard.writeText(report.textContent);
+            copyBtn.textContent = "Скопировано";
+            setTimeout(() => { copyBtn.textContent = "Копировать отчёт"; }, 1800);
+        } catch (_) {
+            report.hidden = false;
+        }
+    });
+    runBtn.addEventListener("click", run);
+
+    // автозапуск: учителю не нужно ничего нажимать
+    setTimeout(run, 150);
+})();
+</script>
+</body>
+</html>
