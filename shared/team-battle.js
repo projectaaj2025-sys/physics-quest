@@ -1148,19 +1148,28 @@
             s.phase = "results";
             if (this.timer) { clearInterval(this.timer); this.timer = null; }
             const sorted = [...s.crews].sort((a, b) => b.score - a.score || b.shield - a.shield);
+            // Одинаковый счёт и щит — одно место (олимпийская система: 1, 1, 3).
+            let place = 1;
+            sorted.forEach((c, i) => {
+                if (i > 0) {
+                    const prev = sorted[i - 1];
+                    if (c.score !== prev.score || c.shield !== prev.shield) place = i + 1;
+                }
+                c.place = place;
+            });
             const best = sorted[0];
-            const tie = sorted.length > 1 && sorted[1].score === best.score && sorted[1].shield === best.shield;
+            const tie = sorted.length > 1 && sorted[1].place === best.place;
             if (s.phone && this.room) {
-                const table = sorted.map((c, i) => ({ name: c.name, score: c.score, place: i + 1 }));
+                const table = sorted.map((c) => ({ name: c.name, score: c.score, place: c.place }));
                 s.crews.forEach((c) => {
-                    const place = sorted.indexOf(c) + 1;
+                    const crewPlace = c.place;
                     c.players.forEach((p) => {
                         this.room.send(p.id, {
                             t: "end",
                             right: Number(p.correct) || 0,
                             total: s.rounds,
                             crew: c.name,
-                            place,
+                            place: crewPlace,
                             crews: table
                         });
                     });
@@ -1173,9 +1182,9 @@
                     <h1>${tie ? esc(t("tie")) : `${esc(t("winner"))}: ${esc(best.name)}`}</h1>
                     <p class="pq-battle-results-hint">${esc(t(s.phone ? "resultsHintPhone" : "resultsHint"))}</p>
                     <div class="pq-battle-podium">
-                        ${sorted.map((c, i) => `
-                            <div class="pq-battle-place place-${i + 1}" style="--crew-color:${c.color}">
-                                <div class="place-medal">${["🥇", "🥈", "🥉"][i] || "🎖"}</div>
+                        ${sorted.map((c) => `
+                            <div class="pq-battle-place place-${c.place}${tie && c.place === 1 ? " is-tie" : ""}" style="--crew-color:${c.color}">
+                                <div class="place-medal">${["🥇", "🥈", "🥉"][c.place - 1] || "🎖"}</div>
                                 <div class="place-name">${c.icon} ${esc(c.name)}</div>
                                 <div class="place-score">${c.score} ${esc(t("score"))}</div>
                                 <div class="place-shield">${esc(t("shield"))}: ${Math.round(c.shield)}% · ✅ ${c.correct} / ❌ ${c.wrong}</div>

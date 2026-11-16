@@ -20,7 +20,10 @@
 (function () {
     "use strict";
 
+    /* Первым идёт брокер на 443-м порту: в школьных и мобильных сетях
+       обычно разрешён только он, а 8084/8081/8884 часто закрыты. */
     const BROKERS = [
+        "wss://mqtt.eclipseprojects.io/mqtt",
         "wss://broker.emqx.io:8084/mqtt",
         "wss://test.mosquitto.org:8081/mqtt",
         "wss://broker.hivemq.com:8884/mqtt"
@@ -151,7 +154,11 @@
         const WS = (typeof window !== "undefined" && window.WebSocket) || WebSocket;
         let ws;
         try {
-            ws = new WS(this.currentUrl());
+            try {
+                ws = new WS(this.currentUrl(), "mqtt");
+            } catch (_) {
+                ws = new WS(this.currentUrl());
+            }
         } catch (_) {
             this.nextBroker();
             return;
@@ -181,21 +188,25 @@
             let chunk = ev.data;
             if (typeof chunk === "string") {
                 chunk = utf8(chunk);
+            } else if (typeof Blob !== "undefined" && chunk instanceof Blob) {
+                // некоторые браузеры присылают Blob, даже если binaryType = arraybuffer
+                const self = this;
+                chunk.arrayBuffer().then((buf) => self.onChunk(new Uint8Array(buf))).catch(() => {});
+                return;
             } else {
                 chunk = new Uint8Array(chunk);
             }
-            const merged = new Uint8Array(this.buffer.length + chunk.length);
-            merged.set(this.buffer, 0);
-            merged.set(chunk, this.buffer.length);
-            this.buffer = merged;
-            // разбираем все полные пакеты из буфера
-            for (;;) {
-                const frame = takeFrame(this.buffer);
-                if (!frame) break;
-                this.buffer = this.buffer.slice(frame.consumed);
-                this.handle(frame.bytes);
-            }
+            this.onChunk(chunk);
         };
+
+        this._takeFrame = takeFrame;
+
+        this._markOpened = () => {
+            if (opened) return;
+            opened = true;
+            clearTimeout(failTimer);
+        };
+        this._failTimer = failTimer;
 
         function takeFrame(buf) {
             if (buf.length < 2) return null;
@@ -214,13 +225,19 @@
             if (buf.length < total) return null;
             return { bytes: buf.slice(0, total), consumed: total };
         }
+    };
 
-        this._markOpened = () => {
-            if (opened) return;
-            opened = true;
-            clearTimeout(failTimer);
-        };
-        this._failTimer = failTimer;
+    Client.prototype.onChunk = function (chunk) {
+        const merged = new Uint8Array(this.buffer.length + chunk.length);
+        merged.set(this.buffer, 0);
+        merged.set(chunk, this.buffer.length);
+        this.buffer = merged;
+        for (;;) {
+            const frame = this._takeFrame(this.buffer);
+            if (!frame) break;
+            this.buffer = this.buffer.slice(frame.consumed);
+            this.handle(frame.bytes);
+        }
     };
 
     Client.prototype.nextBroker = function () {

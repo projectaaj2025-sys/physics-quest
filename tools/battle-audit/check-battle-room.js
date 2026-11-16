@@ -206,7 +206,22 @@ function fakeCanvasContext() {
 function baseStubs(w, errors, opts = {}) {
     installMockBroker(w);
     // PeerJS не нужен: сначала идёт MQTT, резерв проверяется отдельно
-    w.Peer = function PeerOffline() { throw new Error("peer-offline"); };
+    if (opts.peerUnavailable) {
+        w.Peer = function PeerMissing() {
+            const handlers = {};
+            this.open = false;
+            this.on = (ev, cb) => {
+                handlers[ev] = cb;
+                if (ev === "open") setTimeout(() => { this.open = true; cb(); }, 10);
+                return this;
+            };
+            this.connect = () => ({ open: true, peer: "host", on() { return this; }, send: noop, close: noop });
+            this.destroy = noop;
+            setTimeout(() => { if (handlers.error) handlers.error({ type: "peer-unavailable" }); }, 900);
+        };
+    } else {
+        w.Peer = function PeerOffline() { throw new Error("peer-offline"); };
+    }
     w.HTMLCanvasElement.prototype.getContext = () => fakeCanvasContext();
     w.HTMLCanvasElement.prototype.toDataURL = () => "data:image/png;base64,";
     w.matchMedia = w.matchMedia || (() => ({
@@ -373,6 +388,11 @@ async function scenarioPhones(base) {
         ok("доска дождалась ответов всех", /экипаж/i.test(bw.document.getElementById("pq-battle").textContent));
         ok("телефоны получили разбор", phones.slice(0, 7).every((p) => /Верно|Неверно/.test(p.w.document.getElementById("bp-body").textContent)));
 
+        console.log("\n== Ничья ==");
+        bw.eval("PQTeamBattle.state.crews.forEach(c => { c.score = 300; c.shield = 66; })");
+        const tieState = JSON.parse(bw.eval(`JSON.stringify(PQTeamBattle.state.crews.map(c => ({ score: c.score, shield: c.shield })))`));
+        ok("равные очки перед финалом", tieState.length === 2 && tieState[0].score === tieState[1].score, JSON.stringify(tieState));
+
         console.log("\n== Финал ==");
         bw.eval("PQTeamBattle.state.round = PQTeamBattle.state.rounds");
         const nextBtn = bw.document.getElementById("pq-battle-next");
@@ -383,6 +403,12 @@ async function scenarioPhones(base) {
         const placeNames = Array.from(res.querySelectorAll(".place-player b")).map((b) => b.textContent.trim());
         ok("финал показывает всех по именам", placeNames.length === 7, placeNames.join(", "));
         ok("в финале нет дублей", new Set(placeNames).size === placeNames.length);
+
+        const medals = Array.from(res.querySelectorAll(".place-medal")).map((m) => m.textContent.trim());
+        ok("при ничьей у обоих экипажей первое место", medals.length === 2 && medals.every((m) => m === "🥇"), medals.join(" "));
+        ok("при ничьей в заголовке «Ничья»", /Ничья/.test(res.textContent));
+        const phonePlaces = phones.slice(0, 7).map((p) => (p.w.document.getElementById("bp-body").textContent.match(/Итог команды: (.+)/) || [])[1] || "");
+        ok("телефоны видят одно и то же место", phonePlaces.every((x) => /^1\b/.test(x)), phonePlaces.slice(0, 2).join(" | "));
 
         const errors = board.errors.concat(...phones.map((p) => p.errors)).filter((e) => !/Not implemented|Could not parse CSS/.test(e));
         ok("ошибок консоли нет", errors.length === 0, errors.slice(0, 3).join(" | "));
@@ -473,6 +499,39 @@ async function scenarioLocalFallback(base) {
     }
 }
 
+/* ============================================================
+   Сценарий 4: доска недоступна — понятная ошибка и «Повторить»
+   ============================================================ */
+
+async function scenarioUnreachable(base) {
+    console.log("\n== Доска недоступна ==");
+    const errors = [];
+    const dom = await JSDOM.fromURL(`${base}/battle.html?room=ZZZZZZ&grade=8&lang=ru`, {
+        runScripts: "dangerously",
+        resources: "usable",
+        pretendToBeVisual: true,
+        beforeParse(w) { baseStubs(w, errors, { noMqtt: true, peerUnavailable: true }); }
+    });
+    try {
+        const w = dom.window;
+        await waitFor(() => w.document.getElementById("bp-join"), 15000);
+        w.document.getElementById("bp-name").value = "Тест";
+        w.document.getElementById("bp-join").click();
+        const shown = await waitFor(() => w.document.getElementById("bp-retry"), 20000);
+        const text = w.document.getElementById("bp-body").textContent;
+        ok("вместо «не найдена» — «Доска не отвечает»", shown && /Доска не отвечает/.test(text), text.slice(0, 70));
+        ok("есть кнопка «Повторить подключение»", shown);
+        if (shown) {
+            w.document.getElementById("bp-retry").click();
+            await wait(200);
+            ok("повтор запускает новые поиски комнаты", /Подключаемся|Ищем|Ждём/i.test(w.document.getElementById("bp-body").textContent),
+                w.document.getElementById("bp-body").textContent.slice(0, 50));
+        }
+    } finally {
+        try { dom.window.close(); } catch (_) {}
+    }
+}
+
 (async () => {
     const server = await startServer();
     const base = `http://127.0.0.1:${server.address().port}`;
@@ -480,6 +539,7 @@ async function scenarioLocalFallback(base) {
         await scenarioPhones(base);
         await scenarioCapacity(base);
         await scenarioLocalFallback(base);
+        await scenarioUnreachable(base);
     } catch (err) {
         ok("тест выполнился без исключений", false, String((err && err.message) || err));
     } finally {

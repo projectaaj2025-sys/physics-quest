@@ -59097,7 +59097,10 @@ const AssignHQ = {
 (function () {
     "use strict";
 
+    /* Первым идёт брокер на 443-м порту: в школьных и мобильных сетях
+       обычно разрешён только он, а 8084/8081/8884 часто закрыты. */
     const BROKERS = [
+        "wss://mqtt.eclipseprojects.io/mqtt",
         "wss://broker.emqx.io:8084/mqtt",
         "wss://test.mosquitto.org:8081/mqtt",
         "wss://broker.hivemq.com:8884/mqtt"
@@ -59228,7 +59231,11 @@ const AssignHQ = {
         const WS = (typeof window !== "undefined" && window.WebSocket) || WebSocket;
         let ws;
         try {
-            ws = new WS(this.currentUrl());
+            try {
+                ws = new WS(this.currentUrl(), "mqtt");
+            } catch (_) {
+                ws = new WS(this.currentUrl());
+            }
         } catch (_) {
             this.nextBroker();
             return;
@@ -59258,21 +59265,25 @@ const AssignHQ = {
             let chunk = ev.data;
             if (typeof chunk === "string") {
                 chunk = utf8(chunk);
+            } else if (typeof Blob !== "undefined" && chunk instanceof Blob) {
+                // некоторые браузеры присылают Blob, даже если binaryType = arraybuffer
+                const self = this;
+                chunk.arrayBuffer().then((buf) => self.onChunk(new Uint8Array(buf))).catch(() => {});
+                return;
             } else {
                 chunk = new Uint8Array(chunk);
             }
-            const merged = new Uint8Array(this.buffer.length + chunk.length);
-            merged.set(this.buffer, 0);
-            merged.set(chunk, this.buffer.length);
-            this.buffer = merged;
-            // разбираем все полные пакеты из буфера
-            for (;;) {
-                const frame = takeFrame(this.buffer);
-                if (!frame) break;
-                this.buffer = this.buffer.slice(frame.consumed);
-                this.handle(frame.bytes);
-            }
+            this.onChunk(chunk);
         };
+
+        this._takeFrame = takeFrame;
+
+        this._markOpened = () => {
+            if (opened) return;
+            opened = true;
+            clearTimeout(failTimer);
+        };
+        this._failTimer = failTimer;
 
         function takeFrame(buf) {
             if (buf.length < 2) return null;
@@ -59291,13 +59302,19 @@ const AssignHQ = {
             if (buf.length < total) return null;
             return { bytes: buf.slice(0, total), consumed: total };
         }
+    };
 
-        this._markOpened = () => {
-            if (opened) return;
-            opened = true;
-            clearTimeout(failTimer);
-        };
-        this._failTimer = failTimer;
+    Client.prototype.onChunk = function (chunk) {
+        const merged = new Uint8Array(this.buffer.length + chunk.length);
+        merged.set(this.buffer, 0);
+        merged.set(chunk, this.buffer.length);
+        this.buffer = merged;
+        for (;;) {
+            const frame = this._takeFrame(this.buffer);
+            if (!frame) break;
+            this.buffer = this.buffer.slice(frame.consumed);
+            this.handle(frame.bytes);
+        }
     };
 
     Client.prototype.nextBroker = function () {
@@ -59815,6 +59832,13 @@ const AssignHQ = {
 
         // Сначала публичный MQTT-брокер: он проходит из любых сетей и держит
         // десятки телефонов. PeerJS и локальная комната — резерв.
+        let peerStarted = false;
+        function startPeerOnce() {
+            if (peerStarted || state.closed) return;
+            peerStarted = true;
+            startPeer();
+        }
+
         if (window.PQBattleMqtt && window.PQBattleMqtt.available()) {
             try {
                 mqttRoom = window.PQBattleMqtt.create(state.code, cb);
@@ -59826,14 +59850,16 @@ const AssignHQ = {
                     const failed = mqttRoom;
                     mqttRoom = null;
                     if (failed) { try { failed.close(); } catch (_) {} }
-                    if (!state.closed) startPeer();
+                    if (!state.closed) startPeerOnce();
                 });
+                // доска тоже не ждёт: через 3,5 с поднимаем резервную комнату
+                setTimeout(() => { if (state.mode !== "mqtt") startPeerOnce(); }, 3500);
             } catch (_) {
                 mqttRoom = null;
-                startPeer();
+                startPeerOnce();
             }
         } else {
-            startPeer();
+            startPeerOnce();
         }
 
         return {
@@ -59868,6 +59894,32 @@ const AssignHQ = {
         const SESSION = readSession();
 
         let mqttClient = null;
+        let chosen = "";
+        let peerStarted = false;
+
+        function choose(kind) {
+            if (chosen) return chosen === kind;
+            chosen = kind;
+            return true;
+        }
+
+        function closeMqttAttempt() {
+            if (!mqttClient) return;
+            const c = mqttClient;
+            mqttClient = null;
+            try { c.close(); } catch (_) {}
+        }
+
+        function closePeerAttempt() {
+            try { if (conn) conn.close(); } catch (_) {}
+            try { if (peer) peer.destroy(); } catch (_) {}
+        }
+
+        function startPeerOnce() {
+            if (peerStarted || closed || chosen) return;
+            peerStarted = true;
+            startPeer();
+        }
 
         const api = {
             send(msg) {
@@ -59943,6 +59995,10 @@ const AssignHQ = {
 
         function startLocal(reason) {
             if (closed) return;
+            // пока MQTT ещё пытается — не сдаёмся и не уходим в локальный режим
+            if (mqttClient && !chosen) return;
+            if (!choose("local")) return;
+            closeMqttAttempt();
             clientMode = "local";
             clientId = "local-" + newCode(4);
             localClient = joinLocalRoom(
@@ -59985,6 +60041,8 @@ const AssignHQ = {
                 conn.on("open", () => {
                     clearTimeout(timer);
                     if (closed) return;
+                    if (!choose("peer")) { try { conn.close(); } catch (_) {} return; }
+                    closeMqttAttempt();
                     clientMode = "online";
                     clientId = peer.id || conn.peer || "";
                     try { conn.send({ t: "join", name, session: SESSION }); } catch (_) {}
@@ -60000,6 +60058,8 @@ const AssignHQ = {
                 const type = (err && err.type) || "peer-error";
                 if (type === "peer-unavailable") {
                     clearTimeout(timer);
+                    // пока MQTT ещё ищет комнату — не показываем ошибку раньше времени
+                    if (mqttClient && !chosen) return;
                     cb.onStatus && cb.onStatus("not-found");
                     return;
                 }
@@ -60009,7 +60069,7 @@ const AssignHQ = {
             }).catch(() => startLocal("lib"));
         }
 
-        // Тот же приоритет, что и у доски: MQTT → PeerJS → локальная комната
+        // MQTT — первый выбор, PeerJS пробуем параллельно, если брокер молчит
         if (window.PQBattleMqtt && window.PQBattleMqtt.available()) {
             try {
                 mqttClient = window.PQBattleMqtt.join(
@@ -60018,24 +60078,29 @@ const AssignHQ = {
                     { id: "pqp-" + newCode(8), session: SESSION }
                 );
                 mqttClient.ready.then(() => {
-                    if (closed) { try { mqttClient.close(); } catch (_) {} mqttClient = null; return; }
+                    if (closed) { closeMqttAttempt(); return; }
+                    if (!choose("mqtt")) { closeMqttAttempt(); return; }
+                    closePeerAttempt();
                     clientMode = "mqtt";
                     clientId = mqttClient.id;
                     installReconnectHooks();
                     startAnnounce();
                     cb.onMode && cb.onMode("mqtt");
                 }).catch(() => {
-                    const failed = mqttClient;
-                    mqttClient = null;
-                    if (failed) { try { failed.close(); } catch (_) {} }
-                    if (!closed) startPeer();
+                    closeMqttAttempt();
+                    if (closed || chosen) return;
+                    // PeerJS уже пробовали и он не смог — остаётся локальная комната
+                    if (peerStarted) startLocal("mqtt-failed");
+                    else startPeerOnce();
                 });
+                // брокер молчит 2,5 с — параллельно пробуем WebRTC
+                setTimeout(() => { if (!closed && !chosen) startPeerOnce(); }, 2500);
             } catch (_) {
-                mqttClient = null;
-                startPeer();
+                closeMqttAttempt();
+                startPeerOnce();
             }
         } else {
-            startPeer();
+            startPeerOnce();
         }
 
         return {
@@ -61207,19 +61272,28 @@ const AssignHQ = {
             s.phase = "results";
             if (this.timer) { clearInterval(this.timer); this.timer = null; }
             const sorted = [...s.crews].sort((a, b) => b.score - a.score || b.shield - a.shield);
+            // Одинаковый счёт и щит — одно место (олимпийская система: 1, 1, 3).
+            let place = 1;
+            sorted.forEach((c, i) => {
+                if (i > 0) {
+                    const prev = sorted[i - 1];
+                    if (c.score !== prev.score || c.shield !== prev.shield) place = i + 1;
+                }
+                c.place = place;
+            });
             const best = sorted[0];
-            const tie = sorted.length > 1 && sorted[1].score === best.score && sorted[1].shield === best.shield;
+            const tie = sorted.length > 1 && sorted[1].place === best.place;
             if (s.phone && this.room) {
-                const table = sorted.map((c, i) => ({ name: c.name, score: c.score, place: i + 1 }));
+                const table = sorted.map((c) => ({ name: c.name, score: c.score, place: c.place }));
                 s.crews.forEach((c) => {
-                    const place = sorted.indexOf(c) + 1;
+                    const crewPlace = c.place;
                     c.players.forEach((p) => {
                         this.room.send(p.id, {
                             t: "end",
                             right: Number(p.correct) || 0,
                             total: s.rounds,
                             crew: c.name,
-                            place,
+                            place: crewPlace,
                             crews: table
                         });
                     });
@@ -61232,9 +61306,9 @@ const AssignHQ = {
                     <h1>${tie ? esc(t("tie")) : `${esc(t("winner"))}: ${esc(best.name)}`}</h1>
                     <p class="pq-battle-results-hint">${esc(t(s.phone ? "resultsHintPhone" : "resultsHint"))}</p>
                     <div class="pq-battle-podium">
-                        ${sorted.map((c, i) => `
-                            <div class="pq-battle-place place-${i + 1}" style="--crew-color:${c.color}">
-                                <div class="place-medal">${["🥇", "🥈", "🥉"][i] || "🎖"}</div>
+                        ${sorted.map((c) => `
+                            <div class="pq-battle-place place-${c.place}${tie && c.place === 1 ? " is-tie" : ""}" style="--crew-color:${c.color}">
+                                <div class="place-medal">${["🥇", "🥈", "🥉"][c.place - 1] || "🎖"}</div>
                                 <div class="place-name">${c.icon} ${esc(c.name)}</div>
                                 <div class="place-score">${c.score} ${esc(t("score"))}</div>
                                 <div class="place-shield">${esc(t("shield"))}: ${Math.round(c.shield)}% · ✅ ${c.correct} / ❌ ${c.wrong}</div>

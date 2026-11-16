@@ -42,6 +42,11 @@
             offline: "Нет связи с доской. Проверь интернет и попробуй ещё раз.",
             localNote: "Локальный режим: доска в этом же браузере.",
             waitingTeacher: "Ждём учителя…",
+            retry: "Повторить подключение",
+            boardUnreachable: "Доска не отвечает",
+            boardUnreachableLead: "Проверьте интернет на телефоне, убедитесь, что учитель открыл комнату, и нажмите «Повторить». Если не помогает — попросите новый QR.",
+            viaServer: "Связь через интернет-сервер",
+            viaBoard: "Связь напрямую с доской",
             you: "ты"
         },
         kk: {
@@ -78,6 +83,11 @@
             offline: "Тақтамен байланыс жоқ. Интернетті тексеріп, қайталап көр.",
             localNote: "Жергілікті режим: тақта осы браузерде.",
             waitingTeacher: "Мұғалімді күтіп отырмыз…",
+            retry: "Қайта қосылу",
+            boardUnreachable: "Тақта жауап бермейді",
+            boardUnreachableLead: "Телефондағы интернетті тексеріңіз, мұғалім бөлмені ашқанына көз жеткізіп, «Қайта қосу» түймесін басыңыз. Көмектеспесе — жаңа QR сұраңыз.",
+            viaServer: "Байланыс интернет-сервер арқылы",
+            viaBoard: "Тақтамен тікелей байланыс",
             you: "сен"
         },
         en: {
@@ -114,6 +124,11 @@
             offline: "No connection to the board. Check the internet and try again.",
             localNote: "Local mode: the board is in this same browser.",
             waitingTeacher: "Waiting for the teacher…",
+            retry: "Try again",
+            boardUnreachable: "The board is not responding",
+            boardUnreachableLead: "Check the internet on the phone, make sure the teacher opened the room, then tap “Try again”. If it does not help, ask for a new QR.",
+            viaServer: "Connected via the internet server",
+            viaBoard: "Connected directly to the board",
             you: "you"
         }
     };
@@ -147,6 +162,9 @@
     let answers = { right: 0, total: 0 };
     let timerId = null;
     let current = null;
+    let lastName = "";
+    let transport = "";
+    let lastCount = 0;
 
     function esc(s) {
         return String(s == null ? "" : s).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
@@ -204,8 +222,12 @@
     function renderWait(count) {
         screen = "wait";
         const players = Number(count);
+        if (Number.isFinite(players) && players > 0) lastCount = players;
         const playersLine = Number.isFinite(players) && players > 0
             ? `<p class="bp-note">${esc(fmt("playersOnBoard", players))}</p>`
+            : "";
+        const transportLine = transport
+            ? `<p class="bp-note">${esc(transport === "mqtt" ? t("viaServer") : t("viaBoard"))}</p>`
             : "";
         body.innerHTML = `
             <div class="bp-card bp-center">
@@ -213,6 +235,7 @@
                 <h1>${esc(t("waitTitle"))}</h1>
                 <p class="bp-big">${esc(t("waitLead"))}</p>
                 ${playersLine}
+                ${transportLine}
                 <p class="bp-note">${esc(t("teamHidden"))}</p>
             </div>`;
     }
@@ -310,13 +333,13 @@
             </div>
             ${crews.length ? `<div class="bp-card">
                 ${crews.map((c) => `
-                    <div class="bp-crew${c.place === msg.place ? " mine" : ""}">
+                    <div class="bp-crew${c.name === msg.crew ? " mine" : ""}">
                         <span>${esc(c.name)}</span><b>${c.score}</b>
                     </div>`).join("")}
             </div>` : ""}`;
     }
 
-    function renderError(title, lead) {
+    function renderError(title, lead, canRetry) {
         screen = "error";
         stopTimer();
         body.innerHTML = `
@@ -324,25 +347,33 @@
                 <div class="bp-emoji">📵</div>
                 <h1>${esc(title)}</h1>
                 <p>${esc(lead)}</p>
-            </div>`;
+            </div>
+            ${canRetry ? `<button type="button" class="bp-btn" id="bp-retry">${esc(t("retry"))}</button>` : ""}`;
+        const retry = document.getElementById("bp-retry");
+        if (retry) retry.addEventListener("click", () => startJoin(lastName));
     }
 
     /* ---------- связь с доской ---------- */
 
     function startJoin(name) {
+        lastName = name || lastName;
+        if (client) { try { client.close(); } catch (_) {} client = null; }
+        transport = "";
         renderConnecting();
         const room = code || "";
         if (!room) { renderJoin(t("offline")); return; }
-        client = window.PQBattleRoom.join(room, name, {
+        client = window.PQBattleRoom.join(room, lastName, {
             onMode(mode) {
+                transport = mode === "mqtt" ? "mqtt" : mode === "local" ? "local" : "peer";
                 if (mode === "local") {
                     const wait = document.querySelector(".bp-card .bp-note");
                     if (wait && screen === "connecting") wait.textContent = t("localNote");
                 }
+                if (screen === "wait") renderWait(lastCount);
             },
             onStatus(status) {
-                if (status === "not-found") renderError(t("notFound"), t("notFoundLead"));
-                else if (status === "closed") renderError(t("lost"), t("lostLead"));
+                if (status === "not-found") renderError(t("boardUnreachable"), t("boardUnreachableLead"), true);
+                else if (status === "closed") renderError(t("lost"), t("lostLead"), true);
             },
             onData(msg) {
                 if (!msg || !msg.t) return;

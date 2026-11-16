@@ -275,6 +275,13 @@
 
         // Сначала публичный MQTT-брокер: он проходит из любых сетей и держит
         // десятки телефонов. PeerJS и локальная комната — резерв.
+        let peerStarted = false;
+        function startPeerOnce() {
+            if (peerStarted || state.closed) return;
+            peerStarted = true;
+            startPeer();
+        }
+
         if (window.PQBattleMqtt && window.PQBattleMqtt.available()) {
             try {
                 mqttRoom = window.PQBattleMqtt.create(state.code, cb);
@@ -286,14 +293,16 @@
                     const failed = mqttRoom;
                     mqttRoom = null;
                     if (failed) { try { failed.close(); } catch (_) {} }
-                    if (!state.closed) startPeer();
+                    if (!state.closed) startPeerOnce();
                 });
+                // доска тоже не ждёт: через 3,5 с поднимаем резервную комнату
+                setTimeout(() => { if (state.mode !== "mqtt") startPeerOnce(); }, 3500);
             } catch (_) {
                 mqttRoom = null;
-                startPeer();
+                startPeerOnce();
             }
         } else {
-            startPeer();
+            startPeerOnce();
         }
 
         return {
@@ -328,6 +337,32 @@
         const SESSION = readSession();
 
         let mqttClient = null;
+        let chosen = "";
+        let peerStarted = false;
+
+        function choose(kind) {
+            if (chosen) return chosen === kind;
+            chosen = kind;
+            return true;
+        }
+
+        function closeMqttAttempt() {
+            if (!mqttClient) return;
+            const c = mqttClient;
+            mqttClient = null;
+            try { c.close(); } catch (_) {}
+        }
+
+        function closePeerAttempt() {
+            try { if (conn) conn.close(); } catch (_) {}
+            try { if (peer) peer.destroy(); } catch (_) {}
+        }
+
+        function startPeerOnce() {
+            if (peerStarted || closed || chosen) return;
+            peerStarted = true;
+            startPeer();
+        }
 
         const api = {
             send(msg) {
@@ -403,6 +438,10 @@
 
         function startLocal(reason) {
             if (closed) return;
+            // пока MQTT ещё пытается — не сдаёмся и не уходим в локальный режим
+            if (mqttClient && !chosen) return;
+            if (!choose("local")) return;
+            closeMqttAttempt();
             clientMode = "local";
             clientId = "local-" + newCode(4);
             localClient = joinLocalRoom(
@@ -445,6 +484,8 @@
                 conn.on("open", () => {
                     clearTimeout(timer);
                     if (closed) return;
+                    if (!choose("peer")) { try { conn.close(); } catch (_) {} return; }
+                    closeMqttAttempt();
                     clientMode = "online";
                     clientId = peer.id || conn.peer || "";
                     try { conn.send({ t: "join", name, session: SESSION }); } catch (_) {}
@@ -460,6 +501,8 @@
                 const type = (err && err.type) || "peer-error";
                 if (type === "peer-unavailable") {
                     clearTimeout(timer);
+                    // пока MQTT ещё ищет комнату — не показываем ошибку раньше времени
+                    if (mqttClient && !chosen) return;
                     cb.onStatus && cb.onStatus("not-found");
                     return;
                 }
@@ -469,7 +512,7 @@
             }).catch(() => startLocal("lib"));
         }
 
-        // Тот же приоритет, что и у доски: MQTT → PeerJS → локальная комната
+        // MQTT — первый выбор, PeerJS пробуем параллельно, если брокер молчит
         if (window.PQBattleMqtt && window.PQBattleMqtt.available()) {
             try {
                 mqttClient = window.PQBattleMqtt.join(
@@ -478,24 +521,29 @@
                     { id: "pqp-" + newCode(8), session: SESSION }
                 );
                 mqttClient.ready.then(() => {
-                    if (closed) { try { mqttClient.close(); } catch (_) {} mqttClient = null; return; }
+                    if (closed) { closeMqttAttempt(); return; }
+                    if (!choose("mqtt")) { closeMqttAttempt(); return; }
+                    closePeerAttempt();
                     clientMode = "mqtt";
                     clientId = mqttClient.id;
                     installReconnectHooks();
                     startAnnounce();
                     cb.onMode && cb.onMode("mqtt");
                 }).catch(() => {
-                    const failed = mqttClient;
-                    mqttClient = null;
-                    if (failed) { try { failed.close(); } catch (_) {} }
-                    if (!closed) startPeer();
+                    closeMqttAttempt();
+                    if (closed || chosen) return;
+                    // PeerJS уже пробовали и он не смог — остаётся локальная комната
+                    if (peerStarted) startLocal("mqtt-failed");
+                    else startPeerOnce();
                 });
+                // брокер молчит 2,5 с — параллельно пробуем WebRTC
+                setTimeout(() => { if (!closed && !chosen) startPeerOnce(); }, 2500);
             } catch (_) {
-                mqttClient = null;
-                startPeer();
+                closeMqttAttempt();
+                startPeerOnce();
             }
         } else {
-            startPeer();
+            startPeerOnce();
         }
 
         return {
