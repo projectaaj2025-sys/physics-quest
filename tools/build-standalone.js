@@ -7,11 +7,11 @@
    Полученный файл работает без интернета и без соседних папок:
    достаточно открыть его двойным щелчком или отправить ученику.
 
-   Запуск:  node tools/build-standalone.js           (8 и 9 классы)
+   Запуск:  node tools/build-standalone.js           (7, 8 и 9 классы)
             node tools/build-standalone.js 8         (только 8 класс)
 
-   Результат: physics-quest-8.html и physics-quest-9.html в корне репозитория
-              (их же раздаёт GitHub Pages: /physics-quest-8.html).
+   Результат: physics-quest-7.html, physics-quest-8.html, physics-quest-9.html
+              в корне репозитория (их же раздаёт GitHub Pages).
    ============================================================ */
 "use strict";
 
@@ -30,7 +30,7 @@ const IMAGE_MAX_SIDE = 1000;
 const IMAGE_QUALITY = 70;
 
 const args = process.argv.slice(2).filter((a) => /^[789]$/.test(a)).map(Number);
-const GRADES = args.length ? args : [8, 9];
+const GRADES = args.length ? args : [7, 8, 9];
 
 function read(file) {
     return fs.readFileSync(file, "utf8");
@@ -297,7 +297,9 @@ function standaloneRuntime(grade) {
         e.preventDefault();
         e.stopPropagation();
         var m = href.match(/play\\.html\\?grade=([789])/);
-        if (m) {
+        if (m && Number(m[1]) === GRADE) {
+            toast("Это автономная версия для " + GRADE + " класса — переключать класс не нужно.");
+        } else if (m) {
             toast("Это автономная версия для " + GRADE + " класса. Для " + m[1] +
                   " класса откройте отдельный файл physics-quest-" + m[1] + ".html.");
         } else if (/\\.pdf($|\\?)/i.test(href)) {

@@ -36,7 +36,7 @@
 | 🎖 Паспорт пилота | `shared/certificate.js` | Именной сертификат за каждый класс и за всю трилогию (PNG/печать), 8 оформлений: 4 с рисунками из `assets/certs/` и 4 классических |
 | 📖 Лор и комикс | `shared/main.js`, `trilogy-diary.js`, `trilogy-comics-extra.js`, `story-cast.js` | Одно окно: герои → общий сюжет → хроника глав → комикс из 22 глав по 2 страницы |
 | 🔊 Звук | `shared/sound.js` | Web Audio SFX и эмбиент, переключатель 🔊 / 🔇 |
-| 📦 Автономные файлы по классам | `tools/build-standalone.js` | `node tools/build-standalone.js` собирает по одному самодостаточному `.html` на класс (8 и 9, опционально 7) в корень репозитория: стили, скрипты и картинки внутри, интернет не нужен — файл можно просто переслать ученику или дать ссылку с GitHub Pages |
+| 📦 Автономные файлы по классам | `tools/build-standalone.js` | `node tools/build-standalone.js` собирает по одному самодостаточному `.html` на класс (7, 8 и 9) в корень репозитория: стили, скрипты и картинки внутри, интернет не нужен — файл можно просто переслать ученику или дать ссылку с GitHub Pages |
 | 📥 Офлайн-режим | `shared/offline.js`, `sw.js` | PWA-кэш (`pq-v3.25.0`, 275 файлов в манифесте) и ZIP всей платформы; внешние PhET-симуляторы в offline-кэш не входят |
 | 🌌 Миры уровней | `shared/level-themes.js` | 14 разных фонов внутри уровней (небо, силуэты, частицы, свечение) |
 | 🎨 Тема | `shared/theme.js` | Светлая тема по умолчанию, один переключатель-слайдер ☀️/🌙, выбор сохраняется |
@@ -115,8 +115,8 @@ node tools/build-offline-manifest.js
 Отдельные автономные файлы для учеников (один `.html` на класс, всё внутри):
 
 ```bash
-node tools/build-standalone.js        # 8 и 9 классы → physics-quest-{8,9}.html
-node tools/build-standalone.js 7      # только 7 класс
+node tools/build-standalone.js        # 7, 8 и 9 классы → physics-quest-{7,8,9}.html
+node tools/build-standalone.js 7      # только один класс
 node tools/standalone-audit/check-standalone.js   # проверка собранных файлов
 ```
 

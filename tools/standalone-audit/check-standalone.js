@@ -110,7 +110,7 @@ function staticChecks(html, grade) {
 }
 
 (async () => {
-    for (const grade of [8, 9]) {
+    for (const grade of [7, 8, 9]) {
         console.log(`\n== Автономная версия: ${grade} класс ==`);
         const file = path.join(ROOT, `physics-quest-${grade}.html`);
         if (!fs.existsSync(file)) {
@@ -194,13 +194,15 @@ function staticChecks(html, grade) {
             }
 
             /* Ссылка «другой класс» ведёт к понятной подсказке */
-            const gradeLink = w.document.querySelector('a[href*="play.html?grade="]');
+            const otherGrade = [7, 8, 9].find((g) => g !== grade);
+            const gradeLink = w.document.querySelector(`a[href*="play.html?grade=${otherGrade}"]`);
             if (gradeLink) {
                 gradeLink.dispatchEvent(new w.MouseEvent("click", { bubbles: true, cancelable: true }));
                 await wait(60);
                 const toast = w.document.querySelector(".pq-standalone-toast.show");
-                ok(`[${grade}] подсказка про другой класс`, !!toast && /класс/.test(toast.textContent || ""),
-                    toast ? toast.textContent.slice(0, 70) : "—");
+                const text = toast ? toast.textContent : "";
+                ok(`[${grade}] подсказка про другой класс`, text.includes(`${otherGrade} класса`) && text.includes(`physics-quest-${otherGrade}`),
+                    text.slice(0, 80) || "—");
             }
         }
         w.close();
@@ -208,7 +210,7 @@ function staticChecks(html, grade) {
 
     /* ---- отдельный прогон «как есть с диска»: открыт file:// без localStorage ---- */
     console.log("\n== Открытие файла с диска (file://, localStorage запрещён) ==");
-    for (const grade of [8, 9]) {
+    for (const grade of [7, 8, 9]) {
         const file = path.join(ROOT, `physics-quest-${grade}.html`);
         if (!fs.existsSync(file)) continue;
         const { dom, errors } = await openBundle(file, "", `file://${file}`);
