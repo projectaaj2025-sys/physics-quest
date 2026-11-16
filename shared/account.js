@@ -194,6 +194,39 @@
         return "player_" + Date.now().toString(36) + "_" + Math.random().toString(36).slice(2, 8);
     }
 
+    function canonicalName(name) {
+        return String(name || "").trim().toLocaleLowerCase().replace(/\s+/g, " ");
+    }
+
+    /* Ученик вошёл по карточке с кодом, который выдал учитель, но на этом
+       устройстве уже есть история под прежним кодом. Переносим её на новый
+       код, чтобы результаты попали в журнал учителя к этому ученику. */
+    function migrateLocalHistoryCode(fromCode, toCode) {
+        const from = canonicalShortCode(fromCode);
+        const to = canonicalShortCode(toCode);
+        if (!from || !to || from === to) return 0;
+        let moved = 0;
+        const keys = [];
+        for (const g of [7, 8, 9]) {
+            keys.push(`physicsquest${g}_playthrough_history`, `physicsquest${g}_records`);
+        }
+        keys.push("physicsquest_playthrough_history", "physicsquest_records");
+        keys.forEach(key => {
+            const list = safeJsonLoad(key, null);
+            if (!Array.isArray(list)) return;
+            let changed = false;
+            const next = list.map(row => {
+                if (!row || typeof row !== "object") return row;
+                if (canonicalShortCode(row.playerCode || "") !== from) return row;
+                changed = true;
+                moved += 1;
+                return Object.assign({}, row, { playerCode: to });
+            });
+            if (changed) safeJsonSave(key, next);
+        });
+        return moved;
+    }
+
     function readLegacySettings() {
         const sGlobal = safeJsonLoad(GLOBAL_SETTINGS_KEY, null);
         if (sGlobal && typeof sGlobal === "object") return sGlobal;
@@ -227,8 +260,15 @@
                 studentCode,
                 playerId,
                 grade: Number((saved && saved.student && saved.student.grade) || window.CURRENT_GRADE || 8),
-                className: String((saved && saved.student && saved.student.className) || "").trim()
+                className: String((saved && saved.student && saved.student.className) || "").trim(),
+                // Прежние коды ученика: по ним в журнале узнаются уже сданные
+                // работы после перехода на код, выданный учителем.
+                previousCodes: Array.isArray(saved && saved.student && saved.student.previousCodes)
+                    ? saved.student.previousCodes.map(canonicalShortCode).filter(Boolean).slice(-8)
+                    : []
             },
+            codeSwitched: (saved && saved.codeSwitched) || null,
+            codeConflict: (saved && saved.codeConflict) || null,
             teacher: {
                 name: String((saved && saved.teacher && saved.teacher.name) || "").trim(),
                 pin: String((saved && saved.teacher && saved.teacher.pin) || ""),
@@ -247,13 +287,45 @@
                 linkName = decodeURIComponent(hashMatch[2] || "");
             }
             linkCode = canonicalShortCode(linkCode);
-            if (linkCode.length === 4 && !(saved && saved.onboarded)) {
+            if (linkCode.length === 4) {
                 const gParam = Number(params.get("grade"));
-                acc.student.studentCode = linkCode;
-                if (linkName) acc.student.name = linkName.slice(0, 60);
-                if ([7, 8, 9].includes(gParam)) acc.student.grade = gParam;
-                acc.onboarded = true;
-                acc.role = "student";
+                const onboarded = !!(saved && saved.onboarded);
+                const currentCode = canonicalShortCode(acc.student.studentCode);
+                const incomingName = linkName ? linkName.slice(0, 60) : "";
+                // Карточка принадлежит этому же ученику, если имя совпадает
+                // (или в ссылке имени нет — тогда это просто код от учителя).
+                const nameMatches = !acc.student.name || !incomingName
+                    || canonicalName(acc.student.name) === canonicalName(incomingName);
+                if (!onboarded) {
+                    acc.student.studentCode = linkCode;
+                    if (incomingName) acc.student.name = incomingName;
+                    if ([7, 8, 9].includes(gParam)) acc.student.grade = gParam;
+                    acc.onboarded = true;
+                    acc.role = "student";
+                } else if (currentCode !== linkCode && nameMatches && acc.role !== "teacher") {
+                    // Учитель выдал код, а устройство уже играло под прежним:
+                    // переходим на код учителя и переносим локальную историю.
+                    const moved = migrateLocalHistoryCode(currentCode, linkCode);
+                    acc.student.studentCode = linkCode;
+                    if (incomingName) acc.student.name = incomingName;
+                    if (currentCode) {
+                        const previous = Array.isArray(acc.student.previousCodes) ? acc.student.previousCodes : [];
+                        acc.student.previousCodes = previous
+                            .concat([currentCode])
+                            .filter((code, i, all) => !!code && all.indexOf(code) === i && code !== linkCode)
+                            .slice(-8);
+                    }
+                    acc.codeSwitched = { from: currentCode || "", to: linkCode, results: moved };
+                    delete acc.codeConflict;
+                } else if (currentCode && currentCode !== linkCode && !nameMatches) {
+                    // Чужая карточка: профиль не меняем, но запоминаем конфликт.
+                    acc.codeConflict = {
+                        current: currentCode,
+                        incoming: linkCode,
+                        incomingName,
+                        at: new Date().toISOString()
+                    };
+                }
                 if (window.history && history.replaceState) {
                     const keep = [7, 8, 9].includes(gParam) ? "?grade=" + gParam : location.pathname;
                     history.replaceState(null, "", keep);

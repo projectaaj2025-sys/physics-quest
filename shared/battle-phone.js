@@ -157,7 +157,9 @@
             const raw = localStorage.getItem("physicsquest_account_v1");
             if (!raw) return "";
             const acc = JSON.parse(raw);
-            return acc && acc.name ? String(acc.name) : "";
+            if (!acc) return "";
+            if (acc.student && acc.student.name) return String(acc.student.name);
+            return acc.name ? String(acc.name) : "";
         } catch (_) { return ""; }
     }
 
@@ -201,12 +203,16 @@
 
     function renderWait(count) {
         screen = "wait";
+        const players = Number(count);
+        const playersLine = Number.isFinite(players) && players > 0
+            ? `<p class="bp-note">${esc(fmt("playersOnBoard", players))}</p>`
+            : "";
         body.innerHTML = `
             <div class="bp-card bp-center">
                 <div class="bp-emoji">✅</div>
                 <h1>${esc(t("waitTitle"))}</h1>
                 <p class="bp-big">${esc(t("waitLead"))}</p>
-                <p class="bp-note">${esc(fmt("playersOnBoard", count != null ? count : 1))}</p>
+                ${playersLine}
                 <p class="bp-note">${esc(t("teamHidden"))}</p>
             </div>`;
     }
@@ -340,8 +346,11 @@
             },
             onData(msg) {
                 if (!msg || !msg.t) return;
-                if (msg.t === "lobby") renderWait(msg.n);
-                else if (msg.t === "start") renderWait(null);
+                const waiting = screen === "connecting" || screen === "wait";
+                // «welcome» — доска подтвердила, что видит этого игрока
+                if (msg.t === "welcome") { if (waiting) renderWait(msg.n); }
+                else if (msg.t === "lobby") { if (waiting) renderWait(msg.n); }
+                else if (msg.t === "start") { if (waiting) renderWait(msg.n); }
                 else if (msg.t === "q") renderQuestion(msg);
                 else if (msg.t === "reveal") renderReveal(msg);
                 else if (msg.t === "end") renderResult(msg);

@@ -45,6 +45,8 @@ const Teacher = {
         // Назначения ученикам и классам
         document.getElementById("btn-add-assignment").addEventListener("click", () => this.addAssignment());
         document.getElementById("btn-save-class").addEventListener("click", () => this.addClass());
+        const fillCodesBtn = document.getElementById("btn-fill-class-codes");
+        if (fillCodesBtn) fillCodesBtn.addEventListener("click", () => this.fillStudentCodes());
         document.getElementById("btn-assign-class").addEventListener("click", () => this.assignToClass());
         document.getElementById("btn-export-assignments").addEventListener("click", () => this.exportAssignments());
         document.getElementById("assignment-import-file").addEventListener("change", (event) => this.importAssignments(event));
@@ -101,15 +103,40 @@ const Teacher = {
 
     parseClassStudents(text) {
         return String(text || "").split(/\r?\n/).map(line => line.trim()).filter(Boolean).map(line => {
-            const parts = line.split("|");
-            const name = String(parts.shift() || "").trim();
-            const studentCode = parts.join("|").trim();
+            const parts = line.split(/[|\t;]+/).map(part => part.trim()).filter(Boolean);
+            let name = parts.length ? parts[0] : line;
+            let studentCode = parts.length > 1 ? parts[1] : "";
+            if (parts.length < 2) {
+                // «Айдана K7M2» — код, вписанный через пробел.
+                const tail = line.match(/^(.*\S)\s+([A-Za-z0-9]{4,6})$/);
+                if (tail) {
+                    name = tail[1].trim();
+                    studentCode = tail[2];
+                }
+            }
             return {
                 name,
-                playerId: studentCode,
-                studentCode
+                playerId: "",
+                studentCode: Storage.canonicalStudentCode(studentCode)
             };
-        }).filter(student => student.name || student.playerId);
+        }).filter(student => student.name || student.studentCode);
+    },
+
+    /** Вписать в поле коды для всего списка (до сохранения класса). */
+    fillStudentCodes() {
+        const studentsInput = document.getElementById("class-students");
+        if (!studentsInput) return;
+        const parsed = this.parseClassStudents(studentsInput.value);
+        if (!parsed.length) {
+            showNotification(I18n.t("classNeedStudents"), "warning");
+            return;
+        }
+        const students = Storage.assignStudentCodes(parsed);
+        studentsInput.value = students
+            .map(student => (student.name ? `${student.name} | ${student.studentCode}` : student.studentCode))
+            .join("\n");
+        studentsInput.focus();
+        showNotification(I18n.t("fillStudentCodesDone", students.length), "success");
     },
 
     addClass() {
@@ -162,7 +189,7 @@ const Teacher = {
         }
         container.innerHTML = classes.map(item => {
             const students = item.students.map(student => {
-                const studentCode = student.studentCode || student.playerId;
+                const studentCode = Storage.canonicalStudentCode(student.studentCode || student.playerId || "");
                 const label = student.name || studentCode;
                 return studentCode && student.name
                     ? `${escapeHtml(label)} <span class="class-student-id">(${escapeHtml(studentCode)})</span>`

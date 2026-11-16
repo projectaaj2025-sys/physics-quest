@@ -124,6 +124,98 @@ const Storage = {
         return !!x && !!y && x === y;
     },
 
+    /* ---------- КОДЫ УЧЕНИКОВ КЛАССА ----------
+       Учитель может вписать в класс только имена — коды выдаются здесь.
+       Код должен быть уникальным: иначе результаты двух учеников с разных
+       устройств попадут в одну строку журнала. */
+
+    /** Коды всех классов: code → нормализованное имя владельца. */
+    studentCodeOwners(exceptClassId = null) {
+        const map = new Map();
+        (this.getClasses() || []).forEach(cls => {
+            if (!cls) return;
+            if (exceptClassId && cls.id === exceptClassId) return;
+            (cls.students || []).forEach(st => {
+                if (!st) return;
+                const code = this.canonicalStudentCode(st.studentCode || st.playerCode || "");
+                if (!code) return;
+                const name = this.normalizeName(st.name || "");
+                if (map.has(code) && !name) return;
+                map.set(code, name);
+            });
+        });
+        return map;
+    },
+
+    /** Похожи ли имена настолько, чтобы считать это одним учеником
+        («Айдана» и «Айдана Серикова»), а не разными людьми. */
+    sameStudentName(a, b) {
+        const x = this.normalizeName(a);
+        const y = this.normalizeName(b);
+        if (!x || !y) return true;
+        return x === y || x.indexOf(y + " ") === 0 || y.indexOf(x + " ") === 0;
+    },
+
+    /** Свободный 4-символьный код; `taken` пополняется выданным кодом. */
+    makeUniqueStudentCode(taken) {
+        const used = taken instanceof Set ? taken : new Set(taken || []);
+        for (let i = 0; i < 300; i += 1) {
+            const code = this.makePlayerCode();
+            if (code && !used.has(code)) {
+                used.add(code);
+                return code;
+            }
+        }
+        const alphabet = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
+        for (let a = 0; a < alphabet.length; a += 1) {
+            for (let b = 0; b < alphabet.length; b += 1) {
+                for (let c = 0; c < alphabet.length; c += 1) {
+                    for (let d = 0; d < alphabet.length; d += 1) {
+                        const code = alphabet[a] + alphabet[b] + alphabet[c] + alphabet[d];
+                        if (!used.has(code)) {
+                            used.add(code);
+                            return code;
+                        }
+                    }
+                }
+            }
+        }
+        return "";
+    },
+
+    /**
+     * Выдаёт код каждому ученику списка.
+     *  • уже введённый код сохраняется;
+     *  • повтор кода внутри списка или конфликт с другим именем в других
+     *    классах → выдаётся новый уникальный код;
+     *  • одинаковые имена без кодов — это разные ученики (две «Айданы»).
+     */
+    assignStudentCodes(students, options = {}) {
+        const owners = this.studentCodeOwners(options.exceptClassId || null);
+        const taken = new Set(owners.keys());
+        const rosterCodes = new Set();
+        return (Array.isArray(students) ? students : []).map(student => {
+            const st = student && typeof student === "object" ? student : {};
+            const name = String(st.name || "").trim();
+            const norm = this.normalizeName(name);
+            let code = this.canonicalStudentCode(st.studentCode || st.playerCode || "");
+            const ownerName = code ? owners.get(code) : undefined;
+            const duplicateInRoster = !!code && rosterCodes.has(code);
+            const ownerConflict = !!code && ownerName !== undefined && !!ownerName && !!norm
+                && !this.sameStudentName(ownerName, norm);
+            if (!code || duplicateInRoster || ownerConflict) code = "";
+            if (!code) code = this.makeUniqueStudentCode(taken);
+            else taken.add(code);
+            if (code) rosterCodes.add(code);
+            return {
+                ...st,
+                name,
+                playerId: String(st.playerId || "").trim(),
+                studentCode: code
+            };
+        });
+    },
+
     // Короткий код назначения: Q + двухсимвольный номер уровня + 3 символа.
     // Для пользовательского урока используется ZZ; если данные есть на устройстве
     // учителя, такой код всё равно подключается через экспорт/импорт назначений.
@@ -200,7 +292,7 @@ const Storage = {
         const settings = this.getSettings();
         return {
             playerId: settings.playerId,
-            playerCode: settings.playerCode || "",
+            playerCode: this.canonicalStudentCode(settings.playerCode || ""),
             name: String(settings.playerName || "").trim()
         };
     },
@@ -226,7 +318,9 @@ const Storage = {
             tasksAttempted: Number(record.tasksAttempted) || 0,
             tasksTotal: Number(record.tasksTotal) || 0,
             asteroidsDeflected: Number(record.asteroidsDeflected) || 0,
-            playerCode: String(record.playerCode || settings.playerCode || "").trim().toUpperCase(),
+            // Старые коды «P7X4K» приводим к 4 символам, чтобы назначения и
+            // журнал узнавали ученика и по прежним прогонам.
+            playerCode: this.canonicalStudentCode(record.playerCode || settings.playerCode || ""),
             assignmentCode: this.normalizeAssignmentCode(record.assignmentCode),
             victory: !!record.victory,
             // Метрики вовлечённости пишутся только по назначениям с флагом metrics.
@@ -333,21 +427,26 @@ const Storage = {
         this.ensureMigrated();
         const classes = this.getClasses();
         const students = Array.isArray(classData.students) ? classData.students : [];
-        const seen = new Set();
-        const cleanStudents = students.map(student => {
+        // Один и тот же код, вписанный дважды, — это одна строка. А вот
+        // одинаковые имена без кодов — разные ученики: две «Айданы» в классе
+        // должны сохраниться обе (раньше вторая молча терялась).
+        const seenCodes = new Set();
+        const rows = students.map(student => {
             const rawCode = this.canonicalStudentCode(student.studentCode || student.playerCode || "");
             return {
                 name: String(student.name || "").trim(),
                 playerId: String(student.playerId || "").trim(),
-                studentCode: rawCode || this.makePlayerCode()
+                studentCode: rawCode
             };
         }).filter(student => {
             if (!student.name && !student.playerId && !student.studentCode) return false;
-            const key = student.studentCode || student.playerId || this.normalizeName(student.name);
-            if (seen.has(key)) return false;
-            seen.add(key);
+            if (!student.studentCode) return true;
+            if (seenCodes.has(student.studentCode)) return false;
+            seenCodes.add(student.studentCode);
             return true;
         });
+        const cleanStudents = this.assignStudentCodes(rows, { exceptClassId: classData.id || null })
+            .filter(student => student.name || student.playerId || student.studentCode);
         const trimmedName = String(classData.name || "").trim();
         const gm = trimmedName.match(/([789])/);
         const inferredGrade = Number(classData.grade) || (gm ? Number(gm[1]) : this.grade());
@@ -551,10 +650,10 @@ const Storage = {
         const playedAt = new Date(r.date || 0).getTime();
         if (Number.isFinite(assignedAt) && assignedAt > 0 && Number.isFinite(playedAt) && playedAt < assignedAt) return false;
         const sameId = !!assignment.playerId && !!r.playerId && String(r.playerId) === String(assignment.playerId);
-        const samePlayerCode = !!assignment.studentCode && !!r.playerCode && String(r.playerCode).toUpperCase() === String(assignment.studentCode).toUpperCase();
+        const samePlayerCode = !!assignment.studentCode && !!r.playerCode && this.sameStudentCode(assignment.studentCode, r.playerCode);
         const sameName = !!assignment.studentName && this.normalizeName(r.name) === this.normalizeName(assignment.studentName);
         const conflictingId = !!assignment.playerId && !!r.playerId && String(r.playerId) !== String(assignment.playerId);
-        const conflictingCode = !!assignment.studentCode && !!r.playerCode && String(r.playerCode).toUpperCase() !== String(assignment.studentCode).toUpperCase();
+        const conflictingCode = !!assignment.studentCode && !!r.playerCode && !this.sameStudentCode(assignment.studentCode, r.playerCode);
         const samePerson = sameId || samePlayerCode || (!conflictingId && !conflictingCode && sameName);
         const sameCode = !!assignmentCode && assignmentCode === this.normalizeAssignmentCode(r.assignmentCode);
         // A code limits the result to this teacher's assignment. For an

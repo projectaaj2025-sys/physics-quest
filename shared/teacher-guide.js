@@ -20,7 +20,7 @@
             quickHint: "Если нужно провести первый урок как можно скорее, начните здесь. Подробности каждого действия — ниже.",
             quickSteps: [
                 { section: "start", text: "Войдите как учитель и задайте ПИН на своём устройстве." },
-                { section: "class", text: "Создайте класс и добавьте учеников вместе с их короткими кодами." },
+                { section: "class", text: "Создайте класс, вставьте список учеников и нажмите «🎲 Выдать коды всем»." },
                 { section: "assignment", text: "Откройте подробное назначение и выберите класс и урок." },
                 { section: "assignment", text: "Передайте классу QR-код, ссылку или короткий код назначения." },
                 { section: "student", text: "После работы получите от учеников коды результатов или JSON-отчёты." },
@@ -49,18 +49,18 @@
                     note: "ПИН нужен для входа учителя только в этом браузере. Это не серверный аккаунт: другой браузер или другое устройство настраивается отдельно."
                 },
                 {
-                    id: "class", icon: "👥", title: "Создание класса и списка учеников",
-                    lead: "Список с правильными кодами — основа точного журнала. Сначала соберите коды учеников, затем создавайте назначения.",
+                    id: "class", icon: "👥", title: "Создание класса и кодов учеников",
+                    lead: "Список с кодами — основа точного журнала. Коды можно не собирать у учеников: учитель выдаёт их сам, сразу на весь список класса.",
                     steps: [
-                        { title: "Соберите короткие коды", text: "Попросите каждого ученика открыть «Профиль» и переписать четыре символа из поля кода. Код не является паролем — его можно передать учителю." },
-                        { title: "Откройте создание класса", text: "В кабинете перейдите «Назначения» → «+ Класс». Эта кнопка есть и наверху, и под списком назначений." },
+                        { title: "Вставьте список учеников", text: "В кабинете перейдите «Назначения» → «+ Класс». Вставьте имена — по одному в строке: список можно скопировать из классного журнала или Excel." },
+                        { title: "Выдайте коды", text: "Нажмите «🎲 Выдать коды всем». Каждый ученик получит уникальный 4-символьный код; уже вписанные коды сохраняются." },
                         { title: "Назовите класс", text: "Введите понятное название, например «7А», «8Б» или «9А». Цифра в названии помогает мастеру сразу предложить уроки нужной параллели." },
-                        { title: "Добавьте учеников", text: "Записывайте одного ученика в строке в формате «Имя | код». Не ставьте лишние вертикальные линии и проверьте код по профилю ученика." },
-                        { title: "Сохраните и повторите", text: "Нажмите «Сохранить класс». Для другой параллели снова нажмите «+ Класс» и заполните отдельный список." },
-                        { title: "Проверьте состав", text: "Откройте блок «Классы» на вкладке «Назначения». Используйте редактирование, если изменилось имя, состав или код; удаление требует подтверждения." }
+                        { title: "Сохраните класс", text: "После «Сохранить класс» откроется окно «Коды класса»: имя, код и ссылка входа каждого ученика." },
+                        { title: "Раздайте коды", text: "Скопируйте список, скачайте CSV или напечатайте карточки с QR («Карточки»). Ученик сканирует карточку и входит сразу под своим кодом." },
+                        { title: "Проверьте состав", text: "Откройте блок «Классы» на вкладке «Назначения». Кнопка «🔑 Коды» снова покажет список; редактирование меняет имена и состав, удаление требует подтверждения." }
                     ],
-                    example: "Айдана Серикова | K7M2\nДанияр Нурланов | LBA6",
-                    note: "Если код не указан, сайт создаёт служебный код в списке, но он может не совпасть с профилем ученика. Всегда переносите настоящий код — особенно при одинаковых именах."
+                    example: "Айдана Серикова\nДанияр Нурланов\nМеруерт Оспанова",
+                    note: "Если ученик уже играл под прежним кодом и открывает карточку с кодом учителя, история этого устройства переносится на новый код, и работы попадут в журнал к этому ученику. Кнопка «Новые коды» перевыпускает коды всему классу — уже сданные работы при этом остаются в журнале."
                 },
                 {
                     id: "assignment", icon: "📌", title: "Назначение готового урока",
@@ -189,7 +189,7 @@
             quickHint: "If you need to run your first lesson soon, start here. Each action is explained in detail below.",
             quickSteps: [
                 { section: "start", text: "Sign in as a teacher and create a PIN on your device." },
-                { section: "class", text: "Create a class and add students with their short profile codes." },
+                { section: "class", text: "Create a class, paste the student list and press “🎲 Give codes to all”." },
                 { section: "assignment", text: "Open the detailed assignment wizard and choose a class and lesson." },
                 { section: "assignment", text: "Share the QR code, link, or short assignment code with the class." },
                 { section: "student", text: "Collect result codes or JSON reports after students finish." },
@@ -218,18 +218,18 @@
                     note: "The PIN signs the teacher in only in this browser. It is not a server account: another browser or device must be set up separately."
                 },
                 {
-                    id: "class", icon: "👥", title: "Creating a class and student roster",
-                    lead: "A roster with the correct codes is the foundation of an accurate journal. Collect student codes before creating assignments.",
+                    id: "class", icon: "👥", title: "Creating a class and student codes",
+                    lead: "A roster with codes is the foundation of an accurate journal. You no longer need to collect codes from students — the teacher issues them for the whole class at once.",
                     steps: [
-                        { title: "Collect short codes", text: "Ask every student to open Profile and copy the four characters in the code field. This code is not a password and can safely be shared with the teacher." },
-                        { title: "Open class creation", text: "In the cabinet, go to Assignments → + Class. This button is available both at the top and below the assignment list." },
+                        { title: "Paste the student list", text: "In the cabinet, go to Assignments → + Class. Paste names, one per line; you can copy the list from the class register or Excel." },
+                        { title: "Issue codes", text: "Press “🎲 Give codes to all”. Every student gets a unique 4-character code; codes already typed in are kept." },
                         { title: "Name the class", text: "Enter a clear name such as 7A, 8B, or 9A. A grade digit in the name helps the wizard suggest lessons for the right grade." },
-                        { title: "Add students", text: "Enter one student per line as Name | code. Do not add extra vertical bars, and check every code against the student's profile." },
-                        { title: "Save and repeat", text: "Select Save Class. For another grade or group, select + Class again and create a separate roster." },
-                        { title: "Check the roster", text: "Open the Classes block on the Assignments tab. Edit the roster if a name, student, or code changes; deletion requires confirmation." }
+                        { title: "Save the class", text: "After “Save class” the “Class codes” window opens: each student's name, code and login link." },
+                        { title: "Hand out the codes", text: "Copy the list, download CSV or print QR cards (“Cards”). A student scans the card and signs in with their own code immediately." },
+                        { title: "Check the roster", text: "Open the Classes block on the Assignments tab. The “🔑 Codes” button shows the list again; editing changes names and composition, deletion requires confirmation." }
                     ],
-                    example: "Aidana Serikova | K7M2\nDaniyar Nurlanov | LBA6",
-                    note: "If no code is entered, the site generates an internal roster code, but it may not match the student's profile. Always use the real code, especially when names are identical."
+                    example: "Aidana Serikova\nDaniyar Nurlanov\nMeruert Ospanova",
+                    note: "If a student already played under an older code and opens a card with the teacher's code, that device's history is moved to the new code and appears in the journal under that student. “New codes” reissues codes for the whole class; submitted work stays in the journal."
                 },
                 {
                     id: "assignment", icon: "📌", title: "Assigning a ready-made lesson",
@@ -358,7 +358,7 @@
             quickHint: "Алғашқы сабағыңызды жақын уақытта өткізу керек болса, осы жерден бастаңыз. Әр әрекеттің толық түсініктемесі төменде берілген.",
             quickSteps: [
                 { section: "start", text: "Мұғалім ретінде кіріп, құрылғыңызда ПИН-код жасаңыз." },
-                { section: "class", text: "Сынып құрып, оқушыларды қысқа профиль кодтарымен қосыңыз." },
+                { section: "class", text: "Сынып құрып, оқушылар тізімін қойыңыз да, «🎲 Барлығына код беру» басыңыз." },
                 { section: "assignment", text: "Толық тағайындау шеберін ашып, сынып пен сабақты таңдаңыз." },
                 { section: "assignment", text: "Сыныпқа QR кодты, сілтемені немесе қысқа тағайындау кодын жіберіңіз." },
                 { section: "student", text: "Оқушылар аяқтағаннан кейін нәтиже кодтарын немесе JSON есептерін жинаңыз." },
@@ -387,18 +387,18 @@
                     note: "ПИН-код тек осы браузерде мұғалімнің кіруі үшін қажет. Бұл серверлік аккаунт емес: басқа браузерді немесе құрылғыны жеке баптау керек."
                 },
                 {
-                    id: "class", icon: "👥", title: "Сынып және оқушылар тізімін құру",
-                    lead: "Кодтары дұрыс тізім — дәл журналдың негізі. Тағайындау жасамас бұрын оқушылардың кодтарын жинаңыз.",
+                    id: "class", icon: "👥", title: "Сынып және оқушылар кодтарын құру",
+                    lead: "Кодтары бар тізім — дәл журналдың негізі. Енді оқушылардан код жинаудың қажеті жоқ: мұғалім бүкіл сыныпқа бірден өзі береді.",
                     steps: [
-                        { title: "Қысқа кодтарды жинаңыз", text: "Әр оқушыдан «Профиль» бөлімін ашып, код өрісіндегі төрт таңбаны көшіріп беруді сұраңыз. Бұл код құпиясөз емес, оны мұғалімге беруге болады." },
-                        { title: "Сынып құру терезесін ашыңыз", text: "Кабинетте «Тағайындаулар» → «+ Сынып» жолын таңдаңыз. Бұл батырма жоғарыда да, тағайындаулар тізімінің астында да бар." },
+                        { title: "Оқушылар тізімін қойыңыз", text: "Кабинетте «Тағайындаулар» → «+ Сынып» жолын ашыңыз. Аттарды әр жолға бір-бірден қойыңыз: тізімді сынып журналынан немесе Excel-ден көшіруге болады." },
+                        { title: "Кодтарды беріңіз", text: "«🎲 Барлығына код беру» батырмасын басыңыз. Әр оқушы бірегей 4 таңбалы код алады; бұрын жазылған кодтар сақталады." },
                         { title: "Сыныпқа ат беріңіз", text: "«7А», «8Б» немесе «9А» сияқты түсінікті ат енгізіңіз. Аттағы сынып саны шеберге қажетті параллельдің сабақтарын бірден ұсынуға көмектеседі." },
-                        { title: "Оқушыларды қосыңыз", text: "Әр жолға бір оқушыны «Аты | коды» пішімінде жазыңыз. Артық тік сызықша қоймаңыз және әр кодты оқушы профилімен салыстырыңыз." },
-                        { title: "Сақтап, қайталаңыз", text: "«Сыныпты сақтау» батырмасын басыңыз. Басқа параллель үшін «+ Сынып» батырмасын қайта басып, жеке тізім құрыңыз." },
-                        { title: "Құрамды тексеріңіз", text: "«Тағайындаулар» қойындысындағы «Сыныптар» блогын ашыңыз. Аты, құрамы немесе коды өзгерсе, тізімді өңдеңіз; жою әрекеті растауды қажет етеді." }
+                        { title: "Сыныпты сақтаңыз", text: "«Сыныпты сақтау» басылған соң «Сынып кодтары» терезесі ашылады: әр оқушының аты, коды және кіру сілтемесі." },
+                        { title: "Кодтарды таратыңыз", text: "Тізімді көшіріңіз, CSV жүктеңіз немесе QR карточкаларды басып шығарыңыз («Карточкалар»). Оқушы карточканы сканерлеп, өз кодымен бірден кіреді." },
+                        { title: "Құрамды тексеріңіз", text: "«Тағайындаулар» қойындысындағы «Сыныптар» блогын ашыңыз. «🔑 Кодтар» батырмасы тізімді қайта көрсетеді; өңдеу ат пен құрамды өзгертеді, жою растауды қажет етеді." }
                     ],
-                    example: "Әйдана Серікова | K7M2\nДанияр Нұрланов | LBA6",
-                    note: "Код енгізілмесе, сайт тізімге қызметтік код жасайды, бірақ ол оқушы профиліне сәйкес келмеуі мүмкін. Әсіресе аты бірдей оқушыларда нақты кодты міндетті түрде жазыңыз."
+                    example: "Әйдана Серікова\nДанияр Нұрланов\nМеруерт Оспанова",
+                    note: "Оқушы бұрынғы кодымен ойнап, мұғалім коды бар карточканы ашса, осы құрылғының тарихы жаңа кодқа көшеді және журналда сол оқушыда көрінеді. «Жаңа кодтар» бүкіл сыныпқа кодтарды қайта береді — тапсырылған жұмыстар журналда қалады."
                 },
                 {
                     id: "assignment", icon: "📌", title: "Дайын сабақты тағайындау",
