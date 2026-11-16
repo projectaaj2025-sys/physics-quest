@@ -21,12 +21,14 @@
     "use strict";
 
     /* Первым идёт брокер на 443-м порту: в школьных и мобильных сетях
-       обычно разрешён только он, а 8084/8081/8884 часто закрыты. */
+       обычно разрешён только он, а 8084/8081/8884 часто закрыты.
+       Порядок проверен вручную: 443 → 8084 → 8081 → 443 (без пути). */
     const BROKERS = [
-        "wss://mqtt.eclipseprojects.io/mqtt",
-        "wss://broker.emqx.io:8084/mqtt",
-        "wss://test.mosquitto.org:8081/mqtt",
-        "wss://broker.hivemq.com:8884/mqtt"
+        { url: "wss://demo.tbmq.io:443/mqtt", username: "demo", label: "TBMQ · 443" },
+        { url: "wss://demo.tbmq.io:443", username: "demo", label: "TBMQ · 443 (без пути)" },
+        { url: "wss://broker.emqx.io:8084/mqtt", label: "EMQX · 8084" },
+        { url: "wss://test.mosquitto.org:8081/mqtt", label: "Mosquitto · 8081" },
+        { url: "wss://mqtt.eclipseprojects.io/mqtt", label: "Eclipse · 443" }
     ];
 
     const ALPHABET = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
@@ -78,10 +80,15 @@
         return new Uint8Array([header].concat(varLen(body.length), body));
     }
 
-    function encodeConnect(clientId) {
+    function encodeConnect(clientId, username, password) {
+        let flags = 0x02; // clean session
+        if (username) flags |= 0x80;
+        if (password) flags |= 0x40;
         const body = bytesField("MQTT")
-            .concat([4, 0x02, (KEEPALIVE >> 8) & 255, KEEPALIVE & 255])
+            .concat([4, flags, (KEEPALIVE >> 8) & 255, KEEPALIVE & 255])
             .concat(bytesField(clientId));
+        if (username) body.push(...bytesField(username));
+        if (password) body.push(...bytesField(password));
         return packet(0x10, body);
     }
 
@@ -145,8 +152,12 @@
         this.packetId = 1;
     }
 
-    Client.prototype.currentUrl = function () {
+    Client.prototype.currentBroker = function () {
         return BROKERS[this.brokerIndex % BROKERS.length];
+    };
+
+    Client.prototype.currentUrl = function () {
+        return this.currentBroker().url;
     };
 
     Client.prototype.connect = function () {
@@ -154,10 +165,11 @@
         const WS = (typeof window !== "undefined" && window.WebSocket) || WebSocket;
         let ws;
         try {
+            const broker = this.currentBroker();
             try {
-                ws = new WS(this.currentUrl(), "mqtt");
+                ws = new WS(broker.url, "mqtt");
             } catch (_) {
-                ws = new WS(this.currentUrl());
+                ws = new WS(broker.url);
             }
         } catch (_) {
             this.nextBroker();
@@ -172,7 +184,8 @@
         }, CONNECT_TIMEOUT);
 
         ws.onopen = () => {
-            try { ws.send(encodeConnect(this.clientId)); } catch (_) {}
+            const broker = this.currentBroker();
+            try { ws.send(encodeConnect(this.clientId, broker.username, broker.password)); } catch (_) {}
         };
         ws.onerror = () => {};
         ws.onclose = () => {
@@ -258,6 +271,12 @@
         const frame = parseFrame(raw);
         if (!frame) return;
         if (frame.type === "connack") {
+            // код 0 = принято; иначе брокер не пустил (нужен логин, перегрузка и т. п.)
+            if (frame.code !== 0) {
+                this.lastError = "connack-" + frame.code;
+                try { if (this.ws) this.ws.close(); } catch (_) {}
+                return;
+            }
             this._markOpened();
             this.connected = true;
             this.attempt = 0;
@@ -467,11 +486,62 @@
         return api;
     }
 
+    /* Проверка связи: по очереди подключается к каждому брокеру.
+       Возвращает [{ url, label, ok, ms, why }] — используется в battle-check.html. */
+    function probeOne(broker, timeout) {
+        return new Promise((resolve) => {
+            const started = Date.now();
+            let done = false;
+            let ws = null;
+            let timer = 0;
+            function finish(ok, why) {
+                if (done) return;
+                done = true;
+                clearTimeout(timer);
+                try { if (ws) ws.close(); } catch (_) {}
+                resolve({
+                    url: broker.url,
+                    label: broker.label || broker.url,
+                    ok,
+                    ms: Date.now() - started,
+                    why: why || ""
+                });
+            }
+            try {
+                const WS = (typeof window !== "undefined" && window.WebSocket) || WebSocket;
+                try { ws = new WS(broker.url, "mqtt"); } catch (_) { ws = new WS(broker.url); }
+            } catch (_) {
+                finish(false, "no-websocket");
+                return;
+            }
+            ws.binaryType = "arraybuffer";
+            timer = setTimeout(() => finish(false, "timeout"), timeout || 6000);
+            ws.onopen = () => {
+                try { ws.send(encodeConnect("pqprobe" + rand(8), broker.username, broker.password)); } catch (_) {}
+            };
+            ws.onerror = () => finish(false, "error");
+            ws.onclose = () => finish(false, "closed");
+            ws.onmessage = (ev) => {
+                let chunk = ev.data;
+                if (typeof chunk === "string") chunk = utf8(chunk);
+                else if (typeof Blob !== "undefined" && chunk instanceof Blob) return;
+                else chunk = new Uint8Array(chunk);
+                const frame = parseFrame(chunk);
+                if (frame && frame.type === "connack") finish(frame.code === 0, frame.code ? "connack " + frame.code : "");
+            };
+        });
+    }
+
+    function probe(timeout) {
+        return Promise.all(BROKERS.map((broker) => probeOne(broker, timeout)));
+    }
+
     window.PQBattleMqtt = {
         available,
         create,
         join,
-        brokers: BROKERS.slice(),
+        probe,
+        brokers: BROKERS.map((b) => ({ url: b.url, label: b.label, username: b.username || "" })),
         _debug: { encodeConnect, encodeSubscribe, encodePublish, parseFrame, varLen }
     };
 })();

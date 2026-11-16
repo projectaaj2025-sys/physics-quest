@@ -25,5 +25,5 @@ node tools/battle-audit/check-battle-room.js
 4. **Ничья** — равные очки дают обоим экипажам первое место.
 5. **Доска недоступна** — ошибка «Доска не отвечает» и рабочая кнопка «Повторить подключение».
 
-Текущий результат: **38/38**. Описания — `docs/playthrough/lesson43-battle-roster.md`
+Текущий результат: **48/48**. Описания — `docs/playthrough/lesson43-battle-roster.md`
 (надёжность списка) и `docs/playthrough/lesson44-battle-mqtt.md` (MQTT-комната, 40 телефонов).

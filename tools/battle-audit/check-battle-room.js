@@ -111,6 +111,14 @@ function installMockBroker(w) {
             this.binaryType = "arraybuffer";
             this.dropJoins = w.__pqDropJoins || 0;
             if (this.dropJoins) w.__pqDropJoins = 0;
+            if (!w.__pqTried) w.__pqTried = [];
+            w.__pqTried.push(url);
+            const deadHosts = w.__pqDeadHosts || [];
+            if (deadHosts.some((host) => url.indexOf(host) !== -1)) {
+                this.readyState = 3;
+                setTimeout(() => { if (this.onclose) this.onclose(); }, 5);
+                return;
+            }
             broker.clients.add(this);
             setTimeout(() => {
                 this.readyState = 1;
@@ -124,6 +132,8 @@ function installMockBroker(w) {
         }
         send(data) {
             if (this.readyState !== 1) return;
+            // строкой говорит только PeerJS — в тесте он не нужен
+            if (typeof data === "string") return;
             const frame = mqttParse(data);
             if (frame.type === 1) { // CONNECT → CONNACK
                 this.reply(mqttPacket(0x20, Buffer.from([0, 0])));
@@ -238,6 +248,7 @@ function baseStubs(w, errors, opts = {}) {
     w.console.log = noop;
     if (opts.dropFirstJoin) w.__pqDropJoins = opts.dropFirstJoin;
     if (opts.noMqtt) w.PQ_BATTLE_NO_MQTT = true;
+    if (opts.deadHosts) w.__pqDeadHosts = opts.deadHosts;
     if (opts.session) {
         try { w.sessionStorage.setItem("pq-battle-session", opts.session); } catch (_) {}
     }
@@ -319,6 +330,12 @@ async function scenarioPhones(base) {
         ok("доска показывает «Комната в интернете»",
             /интернете|online/i.test(String((bw.document.getElementById("pq-lobby-status") || {}).textContent || "")));
         ok("кнопка старта заблокирована без игроков", lobbyState(bw).startDisabled === true);
+        ok("в лобби есть кнопка проверки связи", !!bw.document.getElementById("pq-lobby-check"));
+
+        const probe = await bw.eval("PQBattleMqtt.probe(1500)");
+        const brokerCount = bw.eval("PQBattleMqtt.brokers.length");
+        ok("диагностика проверяет все брокеры", Array.isArray(probe) && probe.length === brokerCount && probe.every((r) => r.ok),
+            probe.map((r) => `${r.label}:${r.ok ? "ok" : r.why}`).join(" | "));
 
         console.log("\n== 6 телефонов заходят в игру ==");
         const names = ["Айдана", "Данияр", "Меруерт", "Ерасыл", "Алия", "Нурлан"];
@@ -532,6 +549,77 @@ async function scenarioUnreachable(base) {
     }
 }
 
+/* ============================================================
+   Сценарий 6: страница диагностики battle-check.html
+   ============================================================ */
+
+async function scenarioCheckPage(base) {
+    console.log("\n== Страница «Проверить связь» ==");
+    const errors = [];
+    const dom = await JSDOM.fromURL(`${base}/battle-check.html`, {
+        runScripts: "dangerously",
+        resources: "usable",
+        pretendToBeVisual: true,
+        beforeParse(w) {
+            baseStubs(w, errors);
+            w.RTCPeerConnection = function RTCPeerConnectionStub() { this.close = noop; };
+        }
+    });
+    try {
+        const w = dom.window;
+        const rows = await waitFor(() => w.document.querySelectorAll("#mqtt li.ok").length >= 5, 20000);
+        const total = w.document.querySelectorAll("#mqtt li").length;
+        ok("диагностика показывает все брокеры", rows && total >= 5, `${total} строк`);
+        ok("хотя бы один канал зелёный", rows, String(w.document.querySelectorAll("#mqtt li.ok").length));
+        const text = w.document.getElementById("report").textContent || "";
+        ok("есть итог и отчёт для копирования", /ИТОГ/.test(text) && /MQTT/.test(text), text.split("\n")[0] || "");
+        ok("ошибок в консоли нет", errors.length === 0, errors.slice(0, 2).join(" | "));
+    } finally {
+        try { dom.window.close(); } catch (_) {}
+    }
+}
+
+/* ============================================================
+   Сценарий 5: первые брокеры мертвы — клиент уходит на запасной
+   ============================================================ */
+
+async function scenarioBrokerFailover(base) {
+    console.log("\n== Отказ первых брокеров ==");
+    const deadHosts = ["demo.tbmq.io", "broker.emqx.io"];
+    const errors = [];
+    const dom = await JSDOM.fromURL(`${base}/play.html?grade=8`, {
+        runScripts: "dangerously",
+        resources: "usable",
+        pretendToBeVisual: true,
+        beforeParse(w) { baseStubs(w, errors, { deadHosts }); }
+    });
+    let phone = null;
+    try {
+        const bw = dom.window;
+        if (!await bootBoard(dom)) throw new Error("play.html не загрузился");
+        bw.eval("PQTeamBattle.open()");
+        bw.document.querySelector('#pq-battle-mode [data-mode="phones"]').click();
+        bw.document.getElementById("pq-battle-start").click();
+        const gotMqtt = await waitFor(() => bw.eval('PQTeamBattle.room && PQTeamBattle.room.mode === "mqtt"'), 15000);
+        ok("при двух мёртвых брокерах комната всё равно в интернете", gotMqtt,
+            String(bw.eval("PQTeamBattle.room && PQTeamBattle.room.mode")));
+        const tried = bw.eval("JSON.stringify(window.__pqTried || [])");
+        const triedList = JSON.parse(tried || "[]");
+        ok("клиент перебрал брокеров до рабочего", triedList.length >= 3 && /tbmq|emqx/.test(triedList[0]),
+            triedList.join(" → "));
+
+        const code = String((bw.document.getElementById("pq-lobby-code") || {}).textContent || "").trim();
+        ok("код комнаты выдан", /^[A-Z0-9]{4,6}$/.test(code), code);
+
+        phone = await openPhone(base, code, "Резерв", { deadHosts });
+        const joined = await waitFor(() => lobbyState(bw).chips.includes("Резерв"), 12000);
+        ok("телефон вошёл через запасной брокер", joined, lobbyState(bw).chips.join(", "));
+    } finally {
+        try { if (phone) phone.dom.window.close(); } catch (_) {}
+        try { dom.window.close(); } catch (_) {}
+    }
+}
+
 (async () => {
     const server = await startServer();
     const base = `http://127.0.0.1:${server.address().port}`;
@@ -540,6 +628,8 @@ async function scenarioUnreachable(base) {
         await scenarioCapacity(base);
         await scenarioLocalFallback(base);
         await scenarioUnreachable(base);
+        await scenarioBrokerFailover(base);
+        await scenarioCheckPage(base);
     } catch (err) {
         ok("тест выполнился без исключений", false, String((err && err.message) || err));
     } finally {

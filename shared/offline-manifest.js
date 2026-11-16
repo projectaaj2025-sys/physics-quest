@@ -210,6 +210,7 @@ window.PQ_OFFLINE_FILES = [
     "assets/screenshots/world-g8-30.png",
     "assets/screenshots/world-g8-37.png",
     "assets/screenshots/world-g8-8.png",
+    "battle-check.html",
     "battle.html",
     "index.html",
     "manifest.json",
