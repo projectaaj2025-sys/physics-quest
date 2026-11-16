@@ -4885,7 +4885,35 @@ html[data-theme="dark"] .rpg-maint-pair select { background: rgba(255,255,255,.0
     color: var(--text);
 }
 .as-st-pill i { font-style: normal; color: var(--text-dim); margin-left: 4px; }
-.as-class-actions { display: flex; gap: 6px; }
+.as-class-actions { display: flex; gap: 6px; flex-wrap: wrap; }
+.as-class-tools {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin: -2px 0 12px;
+}
+.as-class-tools .as-hint { margin: 0; flex: 1 1 240px; }
+.as-code-table-wrap { max-height: 46vh; overflow: auto; border: 1px solid var(--border-light); border-radius: 10px; }
+.as-code-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+.as-code-table th,
+.as-code-table td { padding: 7px 9px; border-bottom: 1px solid var(--border-light); text-align: left; vertical-align: middle; }
+.as-code-table th {
+    position: sticky;
+    top: 0;
+    background: #f4fbff;
+    color: var(--text-dim);
+    font-size: 11.5px;
+    text-transform: uppercase;
+    letter-spacing: .04em;
+}
+.as-code-table tr:last-child td { border-bottom: 0; }
+.as-code-table .as-btn { padding: 4px 8px; font-size: 12px; }
+.as-code-cell {
+    font-family: ui-monospace, Consolas, monospace;
+    letter-spacing: .08em;
+    color: var(--primary-dark);
+}
 
 .as-legacy { margin-top: 20px; }
 .as-legacy summary {
@@ -5732,6 +5760,8 @@ html[data-theme="dark"] .as-card { background-color: var(--bg-card); }
 html[data-theme="dark"] .as-btn { background-color: var(--bg-card); }
 html[data-theme="dark"] .as-empty { background-color: var(--bg-card); }
 html[data-theme="dark"] .as-class-card { background-color: var(--bg-card); }
+html[data-theme="dark"] .as-code-table th { background: var(--bg-card); }
+html[data-theme="dark"] .as-code-cell { color: var(--cyan); }
 html[data-theme="dark"] .as-mode { background-color: var(--bg-card); }
 html[data-theme="dark"] .as-pick { background-color: var(--bg-card); }
 html[data-theme="dark"] .as-field input, html[data-theme="dark"] .as-field select, html[data-theme="dark"] .as-field textarea { background-color: var(--bg-card); }

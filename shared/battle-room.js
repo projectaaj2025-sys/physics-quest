@@ -75,8 +75,10 @@
         return room;
     }
 
-    function joinLocalRoom(code, name, cb) {
-        const id = newCode(6);
+    function joinLocalRoom(code, name, cb, preferredId) {
+        // Идентификатор должен совпадать с client.id: по нему доска шлёт
+        // персональные сообщения (итог раунда конкретному игроку).
+        const id = preferredId || ("P" + newCode(5));
         const ch = new BroadcastChannel("pq-battle-" + code);
         const client = {
             mode: "local",
@@ -130,7 +132,9 @@
             }
             state.mode = "local";
             cb.onStatus && cb.onStatus("local", reason);
-            localRoom = createLocalRoom(state.code, cb);
+            // Локальная «комната» могла быть создана ещё до подключения PeerJS:
+            // второй BroadcastChannel давал бы двойные события join/answer.
+            if (!localRoom) localRoom = createLocalRoom(state.code, cb);
         }
 
         let localRoom = null;
@@ -240,7 +244,8 @@
             if (closed) return;
             clientMode = "local";
             clientId = "local-" + newCode(4);
-            localClient = joinLocalRoom(code, name, cb);
+            localClient = joinLocalRoom(code, name, cb, clientId);
+            clientId = localClient.id || clientId;
             cb.onMode && cb.onMode("local", reason);
         }
 

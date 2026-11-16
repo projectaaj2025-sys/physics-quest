@@ -530,6 +530,7 @@ const AssignHQ = {
                     `<span class="as-st-pill">${asEscape(st.name || "")}${st.studentCode ? `<i>${asEscape(st.studentCode)}</i>` : ""}</span>`
                 ).join("")}</div>
                 <div class="as-class-actions">
+                    <button type="button" class="as-btn" data-as-action="class-codes" data-key="${asAttr(cls.id)}">🔑 ${escapeHtml(rpgT("asCodesBtn"))}</button>
                     <button type="button" class="as-btn" data-as-action="edit-class" data-key="${asAttr(cls.id)}">✎ ${escapeHtml(rpgT("asEdit"))}</button>
                     <button type="button" class="as-btn danger" data-as-action="delete-class" data-key="${asAttr(cls.id)}" title="${asAttr(rpgT("asDeleteBtn"))}" aria-label="${asAttr(rpgT("asDeleteBtn"))}">🗑 ${escapeHtml(rpgT("asDeleteBtn"))}</button>
                 </div>
@@ -614,6 +615,37 @@ const AssignHQ = {
             case "save-class":
                 this.saveClass();
                 break;
+            case "fill-codes":
+                this.fillClassCodes();
+                break;
+            case "class-codes":
+                this.openClassCodes(key);
+                break;
+            case "copy-class-codes":
+                this.copyClassCodes(key);
+                break;
+            case "copy-class-links":
+                this.copyClassLinks(key);
+                break;
+            case "csv-class-codes":
+                this.downloadClassCodes(key);
+                break;
+            case "print-class-codes": {
+                const cls = this.classes().find(c => c.id === key);
+                const cards = window.PQPrintCards || window.PrintCards;
+                if (cls && cards) {
+                    this.close();
+                    try { cards.open(cls.id); } catch (e) { console.warn("PrintCards", e); }
+                }
+                break;
+            }
+            case "copy-student-link":
+                hqCopy(target.getAttribute("data-link") || "");
+                if (typeof RPG !== "undefined") RPG.toast("🔗", rpgT("asCopied"), "", "tier-gold");
+                break;
+            case "regen-class-codes":
+                this.regenerateClassCodes(key);
+                break;
             case "transfer":
                 this.openTransfer();
                 break;
@@ -661,6 +693,18 @@ const AssignHQ = {
                 this.wizard.due = target.getAttribute("data-due") || "";
                 this.renderWizard();
                 break;
+            case "wiz-gen-code": {
+                const w = this.wizard;
+                if (!w) break;
+                const used = new Set(Storage.studentCodeOwners().keys());
+                (Storage.getAssignments() || []).forEach(item => {
+                    const code = Storage.canonicalStudentCode(item && item.studentCode || "");
+                    if (code) used.add(code);
+                });
+                w.code = Storage.makeUniqueStudentCode(used);
+                this.renderWizard();
+                break;
+            }
             case "wiz-next":
                 this.wizardStep(1);
                 break;
@@ -911,7 +955,10 @@ const AssignHQ = {
                     <input type="text" id="as-wiz-name" maxlength="80" value="${asAttr(w.name)}" placeholder="${escapeHtml(rpgT("asStudentNamePh"))}">
                 </label>
                 <label class="as-field"><span>${escapeHtml(rpgT("asStudentCode"))}</span>
-                    <input type="text" id="as-wiz-code" maxlength="6" value="${asAttr(w.code)}" placeholder="K7M2">
+                    <div style="display:flex;gap:8px;">
+                        <input type="text" id="as-wiz-code" maxlength="6" value="${asAttr(w.code)}" placeholder="K7M2" style="flex:1;min-width:0;">
+                        <button type="button" class="btn btn-secondary" data-as-action="wiz-gen-code">🎲 ${escapeHtml(rpgT("asGiveCode"))}</button>
+                    </div>
                 </label>
             `}`;
     },
@@ -1367,9 +1414,12 @@ const AssignHQ = {
                 <input type="text" id="as-class-name" maxlength="40" value="${asAttr(cls ? cls.name : "")}" placeholder="8А">
             </label>
             <label class="as-field"><span>${escapeHtml(rpgT("asClassStudents"))}</span>
-                <textarea id="as-class-students" rows="6" spellcheck="false" placeholder="Айдана | K7M2&#10;Данияр | LBA6">${asEscape(studentsText)}</textarea>
+                <textarea id="as-class-students" rows="6" spellcheck="false" placeholder="Айдана&#10;Данияр&#10;Меруерт">${asEscape(studentsText)}</textarea>
             </label>
-            <p class="as-hint">${escapeHtml(rpgT("asClassStudentsHint"))}</p>
+            <div class="as-class-tools">
+                <button type="button" class="as-btn primary" data-as-action="fill-codes">🎲 ${escapeHtml(rpgT("asGiveCodes"))}</button>
+                <span class="as-hint">${escapeHtml(rpgT("asClassStudentsHint"))}</span>
+            </div>
             <div class="as-wiz-foot">
                 <button type="button" class="btn btn-secondary" data-as-action="close">${escapeHtml(rpgT("asCancel"))}</button>
                 <button type="button" class="btn btn-primary" data-as-action="save-class" data-key="${asAttr(cls ? cls.id : "")}">${escapeHtml(rpgT("asClassSave"))}</button>
@@ -1378,13 +1428,40 @@ const AssignHQ = {
         modal.dataset.classId = cls ? cls.id : "";
     },
 
+    /* Учитель может вставить список из дневника/Excel: «Имя», «Имя | КОД»,
+       «Имя<TAB>КОД», «Имя; КОД». Строка без кода — код выдаст игра. */
     parseStudents(text) {
-        return String(text || "").split(/\n/).map(line => line.trim()).filter(Boolean).map(line => {
-            const parts = line.split("|");
-            const name = parts[0].trim();
-            const code = Storage.canonicalStudentCode((parts[1] || "").trim());
+        return String(text || "").split(/\r?\n/).map(line => line.trim()).filter(Boolean).map(line => {
+            let name = line;
+            let code = "";
+            const parts = line.split(/[|\t;]+/).map(part => part.trim()).filter(Boolean);
+            if (parts.length >= 2) {
+                name = parts[0];
+                code = Storage.canonicalStudentCode(parts[1]);
+            } else {
+                const tail = line.match(/^(.*\S)\s+([A-Za-z0-9]{4,6})$/);
+                if (tail) {
+                    name = tail[1].trim();
+                    code = Storage.canonicalStudentCode(tail[2]);
+                }
+            }
             return { name, playerId: "", studentCode: code || "" };
         }).filter(st => st.name || st.studentCode);
+    },
+
+    /** Выдаёт коды прямо в поле формы (до сохранения) — с проверкой уникальности. */
+    fillClassCodes() {
+        const modal = document.getElementById("as-modal");
+        const input = document.getElementById("as-class-students");
+        if (!input) return;
+        const editingId = (modal && modal.dataset.classId) || "";
+        const students = Storage.assignStudentCodes(this.parseStudents(input.value), { exceptClassId: editingId });
+        if (!students.length) {
+            this.warn(rpgT("asClassEmpty"));
+            return;
+        }
+        input.value = students.map(st => (st.name ? `${st.name} | ${st.studentCode}` : st.studentCode)).join("\n");
+        if (typeof RPG !== "undefined") RPG.toast("🎲", rpgT("asCodesFilled"), `${students.length} ${rpgT("asPeople")}`, "tier-gold");
     },
 
     saveClass() {
@@ -1397,24 +1474,233 @@ const AssignHQ = {
             this.warn(rpgT("asClassEmpty"));
             return;
         }
-        const studentsWithCodes = students.map(st => ({
-            ...st,
-            studentCode: Storage.canonicalStudentCode(st.studentCode) || Storage.makePlayerCode()
-        }));
+        const studentsWithCodes = Storage.assignStudentCodes(students, { exceptClassId: editingId || null });
+        if (!studentsWithCodes.some(st => st.studentCode)) {
+            this.warn(rpgT("asClassEmpty"));
+            return;
+        }
         const gm = name.match(/([789])/);
         const inferredGrade = gm ? Number(gm[1]) : Storage.grade();
+        let savedId = editingId;
         if (editingId) {
+            const oldClass = this.classes().find(cls => cls.id === editingId);
+            // Если учитель вручную поменял код ученику, назначения и сданные
+            // работы переводим на новый код, чтобы журнал не потерял ученика.
+            const mapping = [];
+            const usedNow = new Set();
+            (oldClass && oldClass.students || []).forEach(oldStudent => {
+                const oldCode = Storage.canonicalStudentCode(oldStudent.studentCode || oldStudent.playerCode || "");
+                if (!oldCode) return;
+                // Сначала ищем ту же строку по коду, затем по имени — чтобы
+                // полные тёзки не «склеились» и не забрали чужой код.
+                let still = studentsWithCodes.find(st => !usedNow.has(st) && st.studentCode === oldCode);
+                if (!still) still = studentsWithCodes.find(st => !usedNow.has(st) && Storage.sameStudentName(st.name, oldStudent.name));
+                if (!still) return;
+                usedNow.add(still);
+                if (still.studentCode && still.studentCode !== oldCode) {
+                    mapping.push({ old: oldCode, code: still.studentCode, name: still.name });
+                }
+            });
             const list = this.classes().map(cls => cls.id === editingId ? Object.assign({}, cls, { name, grade: inferredGrade, students: studentsWithCodes }) : cls);
             Storage.save(Storage.KEYS.CLASSES, list);
+            this.syncClassCodes(editingId, mapping);
         } else {
-            Storage.addClass({ name, students });
+            const saved = Storage.addClass({ name, students: studentsWithCodes });
+            if (!saved) {
+                this.warn(rpgT("asClassEmpty"));
+                return;
+            }
+            savedId = saved.id;
         }
-        this.close();
         this.refresh();
         try { Teacher.populateClassSelect(false); } catch (e) {}
         try { Teacher.renderClasses(); } catch (e) {}
         try { TeacherHQ.render(); } catch (e) {}
         if (typeof RPG !== "undefined") RPG.toast("👥", rpgT("asClassSaved"), name, "tier-gold");
+        // Сразу показываем коды: учителю нужно раздать их ученикам.
+        this.openClassCodes(savedId);
+    },
+
+    /* ---------- КОДЫ КЛАССА ---------- */
+
+    /** Класс с гарантированно выданными кодами (старые классы тоже). */
+    ensureClassCodes(id) {
+        const classes = this.classes();
+        const cls = classes.find(item => item.id === id);
+        if (!cls) return null;
+        const students = Storage.assignStudentCodes(cls.students || [], { exceptClassId: cls.id });
+        const mapping = students
+            .map((st, i) => ({
+                old: Storage.canonicalStudentCode(((cls.students || [])[i] || {}).studentCode || ""),
+                code: st.studentCode,
+                name: st.name
+            }))
+            .filter(item => item.code && item.old !== item.code);
+        const changed = students.some((st, i) => st.studentCode !== ((cls.students || [])[i] || {}).studentCode);
+        if (changed) {
+            Storage.save(Storage.KEYS.CLASSES, classes.map(item => item.id === id ? Object.assign({}, item, { students }) : item));
+            this.syncClassCodes(id, mapping);
+            this.refresh();
+            try { Teacher.renderClasses(); } catch (e) {}
+            try { TeacherHQ.render(); } catch (e) {}
+        }
+        return Object.assign({}, cls, { students });
+    },
+
+    /** Перевыпуск кодов не должен «терять» уже созданные назначения и
+        сданные работы: переносим их на новые коды того же ученика. */
+    syncClassCodes(classId, mapping) {
+        const pairs = (mapping || []).filter(item => item && item.old && item.code && item.old !== item.code);
+        if (!pairs.length) return;
+        const byOld = new Map(pairs.map(item => [item.old, item.code]));
+        const assignments = Storage.getAssignments();
+        let changed = false;
+        assignments.forEach(a => {
+            if (!a || a.classId !== classId) return;
+            const old = Storage.canonicalStudentCode(a.studentCode || a.playerId || "");
+            const next = old ? byOld.get(old) : null;
+            if (next) {
+                a.studentCode = next;
+                changed = true;
+            }
+        });
+        if (changed) Storage.save(Storage.KEYS.ASSIGNMENTS, assignments);
+        try {
+            const results = TeacherHQ.allResults();
+            let moved = 0;
+            results.forEach(r => {
+                const old = Storage.canonicalStudentCode(r.studentCode || "");
+                const next = old ? byOld.get(old) : null;
+                if (next) {
+                    r.studentCode = next;
+                    moved += 1;
+                }
+            });
+            if (moved) TeacherHQ.saveResults(results);
+        } catch (e) { console.warn("class codes sync", e); }
+    },
+
+    classLoginBase(grade) {
+        const g = [7, 8, 9].includes(Number(grade)) ? Number(grade) : Storage.grade();
+        const base = this.baseUrl(g);
+        if (base) return base;
+        // Без интернета (file://) относительная ссылка всё равно полезна.
+        const dir = String(location.pathname || "/").replace(/[^/]*$/, "");
+        return `${dir}play.html?grade=${g}`;
+    },
+
+    studentLoginLink(cls, student) {
+        const base = this.classLoginBase(cls && cls.grade);
+        const code = Storage.canonicalStudentCode(student && student.studentCode || "");
+        const name = String((student && student.name) || "").trim();
+        return `${base}&code=${encodeURIComponent(code)}${name ? "&name=" + encodeURIComponent(name) : ""}`;
+    },
+
+    classCodeRows(cls) {
+        return ((cls && cls.students) || []).map((st, i) => ({
+            n: i + 1,
+            name: st.name || "—",
+            code: Storage.canonicalStudentCode(st.studentCode || st.playerId || ""),
+            link: this.studentLoginLink(cls, st)
+        }));
+    },
+
+    openClassCodes(id) {
+        const cls = this.ensureClassCodes(id);
+        const modal = document.getElementById("as-modal");
+        const body = document.getElementById("as-modal-body");
+        if (!cls || !modal || !body) return;
+        const rows = this.classCodeRows(cls);
+        body.innerHTML = `
+            <h2>🔑 ${escapeHtml(rpgT("asCodesTitle"))} · ${asEscape(cls.name)}</h2>
+            <p class="as-hint">${escapeHtml(rpgT("asCodesScreenHint"))}</p>
+            <div class="as-code-table-wrap">
+                <table class="as-code-table">
+                    <thead><tr>
+                        <th>${escapeHtml(rpgT("asCodesNo"))}</th>
+                        <th>${escapeHtml(rpgT("asCodesStudent"))}</th>
+                        <th>${escapeHtml(rpgT("asCodesCode"))}</th>
+                        <th>${escapeHtml(rpgT("asCodesLink"))}</th>
+                    </tr></thead>
+                    <tbody>${rows.map(row => `
+                        <tr>
+                            <td>${row.n}</td>
+                            <td>${asEscape(row.name)}</td>
+                            <td><b class="as-code-cell">${asEscape(row.code || "—")}</b></td>
+                            <td><button type="button" class="as-btn" data-as-action="copy-student-link" data-link="${asAttr(row.link)}">🔗 ${escapeHtml(rpgT("asCopyLink"))}</button></td>
+                        </tr>`).join("")}
+                    </tbody>
+                </table>
+            </div>
+            <p class="as-hint">${escapeHtml(rpgT("asCodesPrintHint"))}</p>
+            <div class="as-wiz-foot start">
+                <button type="button" class="btn btn-secondary" data-as-action="copy-class-codes" data-key="${asAttr(cls.id)}">📋 ${escapeHtml(rpgT("asCopyCodes"))}</button>
+                <button type="button" class="btn btn-secondary" data-as-action="copy-class-links" data-key="${asAttr(cls.id)}">🔗 ${escapeHtml(rpgT("asCopyLinks"))}</button>
+                <button type="button" class="btn btn-secondary" data-as-action="csv-class-codes" data-key="${asAttr(cls.id)}">⬇ ${escapeHtml(rpgT("asCsvCodes"))}</button>
+                <button type="button" class="btn btn-secondary" data-as-action="print-class-codes" data-key="${asAttr(cls.id)}">🖨 ${escapeHtml(rpgT("asPrintCodes"))}</button>
+                <button type="button" class="btn btn-secondary" data-as-action="regen-class-codes" data-key="${asAttr(cls.id)}">🎲 ${escapeHtml(rpgT("asRegenCodes"))}</button>
+                <button type="button" class="btn btn-primary" data-as-action="close">${escapeHtml(rpgT("asClose"))}</button>
+            </div>`;
+        modal.hidden = false;
+    },
+
+    classCodeLines(id) {
+        const cls = this.ensureClassCodes(id);
+        if (!cls) return [];
+        return this.classCodeRows(cls);
+    },
+
+    copyClassCodes(id) {
+        const rows = this.classCodeLines(id);
+        if (!rows.length) return;
+        hqCopy(rows.map(row => `${row.name} | ${row.code}`).join("\n"));
+        if (typeof RPG !== "undefined") RPG.toast("📋", rpgT("asCodesCopied"), "", "tier-gold");
+    },
+
+    copyClassLinks(id) {
+        const rows = this.classCodeLines(id);
+        if (!rows.length) return;
+        hqCopy(rows.map(row => `${row.name}: ${row.link}`).join("\n"));
+        if (typeof RPG !== "undefined") RPG.toast("🔗", rpgT("asCodesCopied"), "", "tier-gold");
+    },
+
+    downloadClassCodes(id) {
+        const cls = this.ensureClassCodes(id);
+        const rows = this.classCodeRows(cls);
+        if (!cls || !rows.length) return;
+        const csvCell = value => `"${String(value == null ? "" : value).replace(/"/g, '""')}"`;
+        const lines = [[rpgT("asCodesNo"), rpgT("asCodesStudent"), rpgT("asCodesCode"), rpgT("asCodesLink")]]
+            .concat(rows.map(row => [row.n, row.name, row.code, row.link]));
+        const csv = "\ufeff" + lines.map(line => line.map(csvCell).join(";")).join("\r\n");
+        const safe = String(cls.name || "class").replace(/[^\w\u0400-\u04ff-]+/g, "_");
+        hqDownload(`physics-quest-codes-${safe}.csv`, csv, "text/csv;charset=utf-8");
+        if (typeof RPG !== "undefined") RPG.toast("⬇", rpgT("asCodesCsvDone"), cls.name, "tier-gold");
+    },
+
+    regenerateClassCodes(id) {
+        if (!confirm(rpgT("asRegenConfirm"))) return;
+        const classes = this.classes();
+        const cls = classes.find(item => item.id === id);
+        if (!cls) return;
+        const used = new Set();
+        classes.forEach(item => (item.students || []).forEach(st => {
+            const code = Storage.canonicalStudentCode(st.studentCode || st.playerCode || "");
+            if (code) used.add(code);
+        }));
+        const mapping = [];
+        const students = (cls.students || []).map(st => {
+            const old = Storage.canonicalStudentCode(st.studentCode || st.playerCode || "");
+            const code = Storage.makeUniqueStudentCode(used);
+            mapping.push({ old, code, name: st.name });
+            return Object.assign({}, st, { studentCode: code });
+        });
+        Storage.save(Storage.KEYS.CLASSES, classes.map(item => item.id === id ? Object.assign({}, item, { students }) : item));
+        this.syncClassCodes(id, mapping);
+        this.refresh();
+        try { Teacher.renderClasses(); } catch (e) {}
+        try { TeacherHQ.render(); } catch (e) {}
+        if (typeof RPG !== "undefined") RPG.toast("🎲", rpgT("asCodesRegenerated"), cls.name, "tier-gold");
+        this.openClassCodes(id);
     },
 
     deleteClass(id) {

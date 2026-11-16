@@ -201,12 +201,16 @@
 
     function renderWait(count) {
         screen = "wait";
+        const players = Number(count);
+        const playersLine = Number.isFinite(players) && players > 0
+            ? `<p class="bp-note">${esc(fmt("playersOnBoard", players))}</p>`
+            : "";
         body.innerHTML = `
             <div class="bp-card bp-center">
                 <div class="bp-emoji">✅</div>
                 <h1>${esc(t("waitTitle"))}</h1>
                 <p class="bp-big">${esc(t("waitLead"))}</p>
-                <p class="bp-note">${esc(fmt("playersOnBoard", count != null ? count : 1))}</p>
+                ${playersLine}
                 <p class="bp-note">${esc(t("teamHidden"))}</p>
             </div>`;
     }
@@ -341,7 +345,7 @@
             onData(msg) {
                 if (!msg || !msg.t) return;
                 if (msg.t === "lobby") renderWait(msg.n);
-                else if (msg.t === "start") renderWait(null);
+                else if (msg.t === "start") renderWait(msg.n);
                 else if (msg.t === "q") renderQuestion(msg);
                 else if (msg.t === "reveal") renderReveal(msg);
                 else if (msg.t === "end") renderResult(msg);

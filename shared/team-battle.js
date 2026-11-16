@@ -682,6 +682,10 @@
                     : `<span class="pq-lobby-empty">${esc(t("joinedNone"))}</span>`;
             }
             if (start) start.disabled = players.length < 2;
+            // Телефоны должны видеть, сколько игроков уже в комнате.
+            if (this.room) {
+                try { this.room.broadcast({ t: "lobby", n: players.length }); } catch (_) {}
+            }
         },
 
         closeRoom() {
@@ -720,7 +724,7 @@
                 question: (cfg.pool || [])[0],
                 crews
             };
-            if (this.room) this.room.broadcast({ t: "start", rounds: this.state.rounds });
+            if (this.room) this.room.broadcast({ t: "start", rounds: this.state.rounds, n: players.length });
             this.renderQuestion();
             if (typeof PQSound !== "undefined") PQSound.play("open");
         },

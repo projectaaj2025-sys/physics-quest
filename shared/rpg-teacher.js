@@ -963,12 +963,13 @@ const TeacherHQ = {
         const sameCode = row => !!code && !!row && Storage.sameStudentCode(row, code);
         return rows.filter(a => {
             if (!a) return false;
-            if (a.classId) return a.classId === cls.id && (
-                sameCode(a.studentCode || a.playerId || "")
-                || (!!name && hqNorm(a.studentName) === name)
-            );
-            return sameCode(a.studentCode || a.playerId || "")
-                || (!!name && hqNorm(a.studentName) === name);
+            const rowCode = String(a.studentCode || a.playerId || "");
+            const codeDecides = !!code && !!Storage.canonicalStudentCode(rowCode);
+            const matchesStudent = codeDecides
+                ? sameCode(rowCode)
+                : (!!name && hqNorm(a.studentName) === name);
+            if (a.classId) return a.classId === cls.id && matchesStudent;
+            return matchesStudent;
         });
     },
 
@@ -1023,7 +1024,7 @@ const TeacherHQ = {
                     classId: cls.id,
                     className: cls.name,
                     name: student.name || student.studentCode || "—",
-                    code: String(student.studentCode || student.playerId || "").toUpperCase(),
+                    code: Storage.canonicalStudentCode(student.studentCode || student.playerId || ""),
                     results: own,
                     assignments,
                     solved,
@@ -1047,6 +1048,18 @@ const TeacherHQ = {
             return String(a.name).localeCompare(String(b.name), "ru");
         });
         return rows;
+    },
+
+    /* Один и тот же результат относится к строке назначения:
+       код ученика важнее имени (в классе бывают полные тёзки), а имя
+       остаётся запасным вариантом для старых результатов без кода. */
+    resultMatchesAssignmentStudent(assignment, result) {
+        if (!assignment || !result) return false;
+        const assignmentCode = Storage.canonicalStudentCode(assignment.studentCode || assignment.playerId || "");
+        const resultCode = Storage.canonicalStudentCode(result.studentCode || "");
+        if (assignmentCode && resultCode) return Storage.sameStudentCode(assignmentCode, resultCode);
+        if (assignment.studentName && result.nameHash && result.nameHash === hqNameHash(assignment.studentName)) return true;
+        return false;
     },
 
     batches(classId) {
@@ -1083,11 +1096,7 @@ const TeacherHQ = {
             let started = 0;
             let pending = 0;
             batch.rows.forEach(a => {
-                const own = all.filter(r => {
-                    if (a.studentCode && r.studentCode && String(r.studentCode).toUpperCase() === String(a.studentCode).toUpperCase()) return true;
-                    if (a.studentName && r.nameHash && r.nameHash === hqNameHash(a.studentName)) return true;
-                    return false;
-                });
+                const own = all.filter(r => this.resultMatchesAssignmentStudent(a, r));
                 const st = this.assignmentStatus(a, own);
                 if (st.status === "done") done += 1;
                 else if (st.status === "overdue") overdue += 1;
@@ -1833,11 +1842,7 @@ const TeacherHQ = {
         const all = this.allResults();
         const missing = [];
         batch.rows.forEach(a => {
-            const own = all.filter(r => {
-                if (a.studentCode && r.studentCode && String(r.studentCode).toUpperCase() === String(a.studentCode).toUpperCase()) return true;
-                if (a.studentName && r.nameHash && r.nameHash === hqNameHash(a.studentName)) return true;
-                return false;
-            });
+            const own = all.filter(r => this.resultMatchesAssignmentStudent(a, r));
             const st = this.assignmentStatus(a, own);
             if (st.status !== "done") missing.push(a.studentName || a.studentCode || "—");
         });
