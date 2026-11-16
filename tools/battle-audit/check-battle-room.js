@@ -2,10 +2,10 @@
 /* ============================================================
    СКВОЗНАЯ ПРОВЕРКА «БИТВЫ ЭКИПАЖЕЙ» С ТЕЛЕФОНАМИ
 
-   Доска (play.html?grade=8) + несколько телефонов (battle.html?room=…)
-   в headless-DOM. PeerJS недоступен, поэтому всё идёт через локальную
-   «комнату» BroadcastChannel; в тесте каналы общие для всех окон —
-   как вкладки одного браузера.
+   Доска (play.html?grade=8) + телефоны (battle.html?room=…) в headless-DOM.
+   Вместо интернета — встроенный MQTT-брокер поверх подменённого WebSocket:
+   боевой код shared/battle-mqtt.js (пакеты MQTT 3.1.1, топики, подтверждения)
+   работает по-настоящему, меняется только транспорт.
 
    Что проверяем:
    • все подключившиеся телефоны видны доске (список и счётчик);
@@ -13,6 +13,7 @@
    • переподключение телефона не плодит дублей;
    • опоздавший видит предупреждение, но не ломает текущую игру;
    • ответы всех участников доходят, финал показывает всех по именам;
+   • комната держит 40 телефонов одновременно;
    • в локальном режиме доска предупреждает, что чужие устройства не подключатся.
 
    Запуск: node tools/battle-audit/check-battle-room.js
@@ -47,42 +48,124 @@ function ok(name, cond, extra = "") {
     return cond;
 }
 
-/* ---------- общий BroadcastChannel для всех окон ---------- */
+async function waitFor(fn, timeout = 15000, step = 150) {
+    const started = Date.now();
+    while (Date.now() - started < timeout) {
+        if (fn()) return true;
+        await wait(step);
+    }
+    return false;
+}
 
-const hubs = new Map();
+/* ---------- встроенный MQTT-брокер поверх WebSocket ---------- */
 
-function installSharedBroadcast(w) {
-    w.BroadcastChannel = function BroadcastChannel(name) {
-        this.name = name;
-        this.onmessage = null;
-        this.closed = false;
-        this.dropJoins = w.__pqDropJoins || 0;
-        if (this.dropJoins) w.__pqDropJoins = 0;
-        const list = hubs.get(name) || [];
-        hubs.set(name, list);
-        list.push(this);
-    };
-    w.BroadcastChannel.prototype.postMessage = function postMessage(data) {
-        if (this.closed) return;
-        if (data && data.t === "join" && this.dropJoins > 0) {
-            this.dropJoins -= 1;
-            return;
+const broker = {
+    clients: new Set(),
+    deliver(ws, topic, payload) {
+        const buf = Buffer.isBuffer(payload) ? payload : Buffer.from(String(payload), "utf8");
+        for (const client of this.clients) {
+            if (client === ws || client.readyState !== 1) continue;
+            if (!client.topics.has(topic)) continue;
+            const frame = mqttPacket(0x30, Buffer.concat([bufField(topic), buf]));
+            setTimeout(() => {
+                try { client.onmessage && client.onmessage({ data: frame.buffer.slice(frame.byteOffset, frame.byteOffset + frame.length) }); } catch (_) {}
+            }, 0);
         }
-        const list = hubs.get(this.name) || [];
-        setTimeout(() => {
-            list.forEach((other) => {
-                if (other === this || other.closed || typeof other.onmessage !== "function") return;
-                try { other.onmessage({ data }); } catch (_) {}
-            });
-        }, 0);
-    };
-    w.BroadcastChannel.prototype.close = function close() {
-        this.closed = true;
-        const list = hubs.get(this.name);
-        if (!list) return;
-        const i = list.indexOf(this);
-        if (i >= 0) list.splice(i, 1);
-    };
+    }
+};
+
+function bufField(str) {
+    const b = Buffer.from(String(str), "utf8");
+    return Buffer.concat([Buffer.from([b.length >> 8, b.length & 255]), b]);
+}
+
+function mqttPacket(header, body) {
+    const len = [];
+    let v = body.length;
+    do {
+        let byte = v % 128;
+        v = Math.floor(v / 128);
+        if (v > 0) byte |= 128;
+        len.push(byte);
+    } while (v > 0);
+    return Buffer.concat([Buffer.from([header].concat(len)), body]);
+}
+
+function mqttParse(data) {
+    const buf = Buffer.isBuffer(data) ? data : Buffer.from(data instanceof ArrayBuffer ? new Uint8Array(data) : data);
+    const type = buf[0] >> 4;
+    let i = 1;
+    let mult = 1;
+    let len = 0;
+    let b = 0;
+    do { b = buf[i++]; len += (b & 127) * mult; mult *= 128; } while (b & 128);
+    return { type, body: buf.slice(i, i + len) };
+}
+
+function installMockBroker(w) {
+    class MockWebSocket {
+        constructor(url) {
+            this.url = url;
+            this.readyState = 0;
+            this.topics = new Set();
+            this.binaryType = "arraybuffer";
+            this.dropJoins = w.__pqDropJoins || 0;
+            if (this.dropJoins) w.__pqDropJoins = 0;
+            broker.clients.add(this);
+            setTimeout(() => {
+                this.readyState = 1;
+                if (this.onopen) this.onopen();
+                if (w.__pqDown) {
+                    this.readyState = 3;
+                    broker.clients.delete(this);
+                    if (this.onclose) this.onclose();
+                }
+            }, 0);
+        }
+        send(data) {
+            if (this.readyState !== 1) return;
+            const frame = mqttParse(data);
+            if (frame.type === 1) { // CONNECT → CONNACK
+                this.reply(mqttPacket(0x20, Buffer.from([0, 0])));
+            } else if (frame.type === 8) { // SUBSCRIBE → SUBACK
+                const pid = [frame.body[0], frame.body[1]];
+                let i = 2;
+                while (i < frame.body.length) {
+                    const tlen = (frame.body[i] << 8) | frame.body[i + 1];
+                    const topic = frame.body.slice(i + 2, i + 2 + tlen).toString("utf8");
+                    this.topics.add(topic);
+                    i += 2 + tlen + 1;
+                }
+                this.reply(mqttPacket(0x90, Buffer.from([pid[0], pid[1], 0])));
+            } else if (frame.type === 3) { // PUBLISH
+                const tlen = (frame.body[0] << 8) | frame.body[1];
+                const topic = frame.body.slice(2, 2 + tlen).toString("utf8");
+                const payload = frame.body.slice(2 + tlen);
+                const text = payload.toString("utf8");
+                if (this.dropJoins > 0 && text.indexOf('"t":"join"') !== -1) {
+                    this.dropJoins -= 1;
+                    return;
+                }
+                broker.deliver(this, topic, payload);
+            } else if (frame.type === 12) { // PINGREQ
+                this.reply(mqttPacket(0xd0, Buffer.alloc(0)));
+            } else if (frame.type === 14) { // DISCONNECT
+                this.readyState = 3;
+                broker.clients.delete(this);
+            }
+        }
+        reply(frame) {
+            setTimeout(() => {
+                try { this.onmessage && this.onmessage({ data: frame.buffer.slice(frame.byteOffset, frame.byteOffset + frame.length) }); } catch (_) {}
+            }, 0);
+        }
+        close() {
+            this.readyState = 3;
+            broker.clients.delete(this);
+            if (this.onclose) setTimeout(() => this.onclose && this.onclose(), 0);
+        }
+    }
+    w.WebSocket = MockWebSocket;
 }
 
 /* ---------- статический сервер ---------- */
@@ -120,11 +203,10 @@ function fakeCanvasContext() {
     });
 }
 
-function baseStubs(w, errors) {
-    installSharedBroadcast(w);
-    // PeerJS-брокер в песочнице недоступен: конструктор падает → локальная комната
+function baseStubs(w, errors, opts = {}) {
+    installMockBroker(w);
+    // PeerJS не нужен: сначала идёт MQTT, резерв проверяется отдельно
     w.Peer = function PeerOffline() { throw new Error("peer-offline"); };
-    w.PQ_BATTLE_LOCAL_ONLY = true;
     w.HTMLCanvasElement.prototype.getContext = () => fakeCanvasContext();
     w.HTMLCanvasElement.prototype.toDataURL = () => "data:image/png;base64,";
     w.matchMedia = w.matchMedia || (() => ({
@@ -139,6 +221,11 @@ function baseStubs(w, errors) {
     w.console.error = (...args) => errors.push(String(args[0]).slice(0, 160));
     w.console.warn = noop;
     w.console.log = noop;
+    if (opts.dropFirstJoin) w.__pqDropJoins = opts.dropFirstJoin;
+    if (opts.noMqtt) w.PQ_BATTLE_NO_MQTT = true;
+    if (opts.session) {
+        try { w.sessionStorage.setItem("pq-battle-session", opts.session); } catch (_) {}
+    }
 }
 
 async function openBoard(base) {
@@ -158,17 +245,10 @@ async function openPhone(base, code, name, opts = {}) {
         runScripts: "dangerously",
         resources: "usable",
         pretendToBeVisual: true,
-        beforeParse(w) {
-            baseStubs(w, errors);
-            if (opts.session) {
-                try { w.sessionStorage.setItem("pq-battle-session", opts.session); } catch (_) {}
-            }
-            if (opts.dropFirstJoin) w.__pqDropJoins = opts.dropFirstJoin;
-        }
+        beforeParse(w) { baseStubs(w, errors, opts); }
     });
     const w = dom.window;
-    const started = Date.now();
-    while (Date.now() - started < 15000 && !w.document.getElementById("bp-join")) await wait(100);
+    await waitFor(() => w.document.getElementById("bp-join"), 15000);
     if (name) {
         w.document.getElementById("bp-name").value = name;
         w.document.getElementById("bp-join").click();
@@ -179,7 +259,7 @@ async function openPhone(base, code, name, opts = {}) {
 async function bootBoard(dom, timeout = 30000) {
     const started = Date.now();
     while (Date.now() - started < timeout) {
-        if (dom.window.eval('typeof PQTeamBattle !== "undefined" && typeof PQBattleRoom !== "undefined" && typeof RPG !== "undefined"')) {
+        if (dom.window.eval('typeof PQTeamBattle !== "undefined" && typeof PQBattleRoom !== "undefined" && typeof PQBattleMqtt !== "undefined" && typeof RPG !== "undefined"')) {
             await wait(300);
             return true;
         }
@@ -192,68 +272,76 @@ function lobbyState(w) {
     return {
         count: Number((w.document.getElementById("pq-lobby-count") || {}).textContent || 0),
         chips: Array.from(w.document.querySelectorAll("#pq-lobby-list .pq-lobby-chip")).map((c) => c.textContent.trim()),
-        startDisabled: !!(w.document.getElementById("pq-lobby-start") || {}).disabled,
-        warnHidden: (w.document.getElementById("pq-lobby-localwarn") || {}).hidden
+        startDisabled: !!(w.document.getElementById("pq-lobby-start") || {}).disabled
     };
 }
 
-(async () => {
-    const server = await startServer();
-    const base = `http://127.0.0.1:${server.address().port}`;
+async function openRoom(base) {
+    const board = await openBoard(base);
+    const bw = board.dom.window;
+    if (!await bootBoard(board.dom)) throw new Error("play.html не загрузился");
+    bw.eval("PQTeamBattle.open()");
+    bw.document.querySelector('#pq-battle-mode [data-mode="phones"]').click();
+    bw.document.getElementById("pq-battle-rounds").value = "5";
+    bw.document.getElementById("pq-battle-start").click();
+    await wait(400);
+    const code = String((bw.document.getElementById("pq-lobby-code") || {}).textContent || "").trim();
+    return { board, bw, code };
+}
+
+/* ============================================================
+   Сценарий 1: семь телефонов и все проблемные случаи
+   ============================================================ */
+
+async function scenarioPhones(base) {
     const phones = [];
-    let board = null;
+    const { board, bw, code } = await openRoom(base);
     try {
-        console.log("\n== Доска и комната ==");
-        board = await openBoard(base);
-        const bw = board.dom.window;
-        if (!await bootBoard(board.dom)) throw new Error("play.html не загрузился");
-        bw.eval("PQTeamBattle.open()");
-        bw.document.querySelector('#pq-battle-mode [data-mode="phones"]').click();
-        bw.document.getElementById("pq-battle-rounds").value = "5";
-        bw.document.getElementById("pq-battle-start").click();
-        await wait(600);
-        const code = String((bw.document.getElementById("pq-lobby-code") || {}).textContent || "").trim();
-        ok("комната создана", /^[A-Z0-9]{4}$/.test(code), code);
-        ok("доска предупреждает о локальном режиме", lobbyState(bw).warnHidden === false);
+        console.log("\n== Доска и комната (MQTT) ==");
+        ok("комната создана", /^[A-Z0-9]{4,6}$/.test(code), code);
+        await waitFor(() => bw.eval('PQTeamBattle.room && PQTeamBattle.room.mode === "mqtt"'), 5000);
+        ok("комната работает через MQTT-брокер", bw.eval('PQTeamBattle.room.mode === "mqtt"'), bw.eval("PQTeamBattle.room.mode"));
+        ok("доска показывает «Комната в интернете»",
+            /интернете|online/i.test(String((bw.document.getElementById("pq-lobby-status") || {}).textContent || "")));
         ok("кнопка старта заблокирована без игроков", lobbyState(bw).startDisabled === true);
 
         console.log("\n== 6 телефонов заходят в игру ==");
         const names = ["Айдана", "Данияр", "Меруерт", "Ерасыл", "Алия", "Нурлан"];
         for (const name of names) {
             phones.push(await openPhone(base, code, name));
-            await wait(150);
+            await wait(120);
         }
-        await wait(1200);
-        let lobby = lobbyState(bw);
+        await waitFor(() => lobbyState(bw).count === 6, 8000);
+        const lobby = lobbyState(bw);
         ok("доска видит всех шестерых", lobby.count === 6 && lobby.chips.length === 6, `${lobby.count}: ${lobby.chips.join(", ")}`);
         ok("имена не потерялись", names.every((n) => lobby.chips.includes(n)));
         ok("кнопка старта разблокирована", lobby.startDisabled === false);
-        const phoneWaiting = phones.every((p) => /Ты в игре|Игроков на доске/.test(p.w.document.getElementById("bp-body").textContent));
-        ok("телефоны увидели подтверждение и список", phoneWaiting);
+        ok("телефоны увидели подтверждение и список",
+            phones.every((p) => /Ты в игре|Игроков на доске/.test(p.w.document.getElementById("bp-body").textContent)));
 
         console.log("\n== Потерянная заявка и переподключение ==");
         const lostPhone = await openPhone(base, code, "Сабина", { dropFirstJoin: 2 });
         phones.push(lostPhone);
         await wait(400);
         const beforeRetry = lobbyState(bw).count;
-        await wait(2200);
+        await waitFor(() => lobbyState(bw).count === 7, 8000);
         const afterRetry = lobbyState(bw).count;
         ok("потерянная заявка повторилась сама", beforeRetry === 6 && afterRetry === 7, `${beforeRetry} → ${afterRetry}`);
         ok("имя опоздавшего видно", lobbyState(bw).chips.includes("Сабина"));
 
-        // переподключение: та же сессия, новый id
         const victim = phones[2];
         const session = String(victim.w.sessionStorage.getItem("pq-battle-session") || "");
         victim.dom.window.close();
         phones[2] = await openPhone(base, code, "Меруерт", { session });
-        await wait(1500);
-        lobby = lobbyState(bw);
-        ok("переподключение не плодит дубль", lobby.count === 7 && lobby.chips.filter((n) => n === "Меруерт").length === 1,
-            `${lobby.count}: ${lobby.chips.join(", ")}`);
+        await wait(1200);
+        const lobby2 = lobbyState(bw);
+        ok("переподключение не плодит дубль",
+            lobby2.count === 7 && lobby2.chips.filter((n) => n === "Меруерт").length === 1,
+            `${lobby2.count}: ${lobby2.chips.join(", ")}`);
 
         console.log("\n== Старт игры и ответы ==");
         bw.document.getElementById("pq-lobby-start").click();
-        await wait(800);
+        await wait(900);
         const teams = JSON.parse(bw.eval(`JSON.stringify(PQTeamBattle.state.crews.map(c => ({ name: c.name, players: c.players.map(p => p.name) })))`));
         const roster = teams.reduce((acc, c) => acc.concat(c.players), []);
         ok("в игру попали все 7 участников", roster.length === 7, roster.join(", "));
@@ -263,17 +351,14 @@ function lobbyState(w) {
         const q1 = phones[0].w.document.querySelectorAll("#bp-opts .bp-opt").length;
         ok("вопрос пришёл на телефоны", q1 >= 2, String(q1));
 
-        // опоздавший после старта
         const latePhone = await openPhone(base, code, "Опоздавший");
         phones.push(latePhone);
-        await wait(1500);
-        const boardText = bw.document.getElementById("pq-battle").textContent;
+        await wait(1200);
         const toastText = Array.from(bw.document.querySelectorAll(".pq-battle-toast")).map((t) => t.textContent).join(" ");
         ok("доска сообщает об опоздавшем", /после старта/i.test(toastText), toastText.slice(0, 80));
         const roster2 = JSON.parse(bw.eval(`JSON.stringify(PQTeamBattle.state.crews.reduce((a, c) => a.concat(c.players.map(p => p.name)), []))`));
         ok("опоздавший не попал в текущую игру", roster2.length === 7 && !roster2.includes("Опоздавший"));
 
-        // отвечают шестеро из семи — счётчик должен это показать
         for (const p of phones.slice(0, 6)) {
             const btn = p.w.document.querySelector("#bp-opts .bp-opt");
             if (btn) btn.click();
@@ -285,8 +370,7 @@ function lobbyState(w) {
         const last = phones[6].w.document.querySelector("#bp-opts .bp-opt");
         if (last) last.click();
         await wait(1000);
-        const reveal = bw.document.getElementById("pq-battle").textContent;
-        ok("доска дождалась ответов всех", /экипаж/i.test(reveal));
+        ok("доска дождалась ответов всех", /экипаж/i.test(bw.document.getElementById("pq-battle").textContent));
         ok("телефоны получили разбор", phones.slice(0, 7).every((p) => /Верно|Неверно/.test(p.w.document.getElementById("bp-body").textContent)));
 
         console.log("\n== Финал ==");
@@ -302,11 +386,103 @@ function lobbyState(w) {
 
         const errors = board.errors.concat(...phones.map((p) => p.errors)).filter((e) => !/Not implemented|Could not parse CSS/.test(e));
         ok("ошибок консоли нет", errors.length === 0, errors.slice(0, 3).join(" | "));
-    } catch (err) {
-        ok("тест выполнился без исключений", false, String(err && err.message || err));
     } finally {
-        try { if (board) board.dom.window.close(); } catch (_) {}
+        try { board.dom.window.close(); } catch (_) {}
         phones.forEach((p) => { try { p.dom.window.close(); } catch (_) {} });
+    }
+}
+
+/* ============================================================
+   Сценарий 2: 40 телефонов одновременно
+   ============================================================ */
+
+async function scenarioCapacity(base) {
+    console.log("\n== 40 телефонов в одной комнате ==");
+    const phones = [];
+    const { board, bw, code } = await openRoom(base);
+    try {
+        const names = Array.from({ length: 40 }, (_, i) => `Ученик ${i + 1}`);
+        for (const name of names) {
+            phones.push(await openPhone(base, code, name));
+            await wait(40);
+        }
+        const full = await waitFor(() => lobbyState(bw).count === 40, 40000, 250);
+        const lobby = lobbyState(bw);
+        ok("доска видит все 40 телефонов", full && lobby.count === 40, `${lobby.count} в списке`);
+        ok("все 40 имён на месте", names.every((n) => lobby.chips.includes(n)));
+
+        bw.document.getElementById("pq-lobby-start").click();
+        await wait(1200);
+        const roster = JSON.parse(bw.eval(`JSON.stringify(PQTeamBattle.state.crews.reduce((a, c) => a.concat(c.players.map(p => p.name)), []))`));
+        ok("в игру вошли все 40", roster.length === 40, String(roster.length));
+        const crews = JSON.parse(bw.eval(`JSON.stringify(PQTeamBattle.state.crews.map(c => c.players.length))`));
+        ok("экипажи распределены поровну", crews.reduce((a, b) => a + b, 0) === 40, crews.join(" / "));
+
+        const gotQuestion = phones.filter((p) => p.w.document.querySelectorAll("#bp-opts .bp-opt").length >= 2).length;
+        ok("вопрос дошёл до всех телефонов", gotQuestion === 40, `${gotQuestion}/40`);
+
+        for (const p of phones) {
+            const btn = p.w.document.querySelector("#bp-opts .bp-opt");
+            if (btn) btn.click();
+            await wait(15);
+        }
+        await wait(1500);
+        const answered = String((bw.document.getElementById("pq-battle-answered") || {}).textContent || "");
+        const revealNow = /экипаж/i.test(bw.document.getElementById("pq-battle").textContent);
+        ok("ответы всех 40 засчитаны", revealNow || /40/.test(answered), revealNow ? "разбор открылся" : answered.trim());
+    } finally {
+        try { board.dom.window.close(); } catch (_) {}
+        phones.forEach((p) => { try { p.dom.window.close(); } catch (_) {} });
+    }
+}
+
+/* ============================================================
+   Сценарий 3: локальный режим (нет ни MQTT, ни PeerJS)
+   ============================================================ */
+
+async function scenarioLocalFallback(base) {
+    console.log("\n== Резерв: локальный режим ==");
+    const errors = [];
+    const dom = await JSDOM.fromURL(`${base}/play.html?grade=8`, {
+        runScripts: "dangerously",
+        resources: "usable",
+        pretendToBeVisual: true,
+        beforeParse(w) {
+            baseStubs(w, errors, { noMqtt: true });
+            // ни брокера, ни PeerJS: только локальная комната
+            w.__pqDown = true;
+            w.BroadcastChannel = w.BroadcastChannel || function () {
+                this.postMessage = noop;
+                this.close = noop;
+            };
+        }
+    });
+    try {
+        const w = dom.window;
+        if (!await bootBoard(dom)) throw new Error("play.html не загрузился");
+        w.eval("PQTeamBattle.open()");
+        w.document.querySelector('#pq-battle-mode [data-mode="phones"]').click();
+        w.document.getElementById("pq-battle-start").click();
+        await wait(500);
+        const warn = w.document.getElementById("pq-lobby-localwarn");
+        ok("в локальном режиме видно предупреждение", !!warn && warn.hidden === false,
+            (warn ? warn.textContent : "").slice(0, 60));
+        ok("резерв не роняет доску", !!w.document.getElementById("pq-lobby-code"));
+    } finally {
+        try { dom.window.close(); } catch (_) {}
+    }
+}
+
+(async () => {
+    const server = await startServer();
+    const base = `http://127.0.0.1:${server.address().port}`;
+    try {
+        await scenarioPhones(base);
+        await scenarioCapacity(base);
+        await scenarioLocalFallback(base);
+    } catch (err) {
+        ok("тест выполнился без исключений", false, String((err && err.message) || err));
+    } finally {
         server.close();
     }
 

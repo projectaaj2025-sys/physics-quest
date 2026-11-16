@@ -216,6 +216,7 @@ window.PQ_OFFLINE_FILES = [
     "play.html",
     "screenshots.html",
     "shared/account.js",
+    "shared/battle-mqtt.js",
     "shared/battle-phone.css",
     "shared/battle-phone.js",
     "shared/battle-room.js",

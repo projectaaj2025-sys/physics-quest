@@ -211,6 +211,7 @@
             roomWaiting: "Соединяемся с сервером комнаты…",
             roomError: "Комната недоступна. Проверьте интернет и попробуйте снова.",
             roomLocalWarn: "Локальный режим: доска не смогла выйти в интернет, поэтому телефоны с других устройств не подключатся. Включите интернет на доске и создайте комнату заново.",
+            roomCapacity: "До 40 телефонов из любых сетей: Wi-Fi класса, мобильный интернет, дом.",
             lateJoin: "⚠ {0} подключился после старта — попадёт в следующую игру",
             newRoom: "Сменить код",
             answeredPhone: "Ответили: {0} из {1}",
@@ -246,6 +247,7 @@
             roomWaiting: "Connecting to the room server…",
             roomError: "The room is unavailable. Check the internet and try again.",
             roomLocalWarn: "Local mode: the board could not reach the internet, so phones on other devices cannot join. Turn on the internet on the board and create the room again.",
+            roomCapacity: "Up to 40 phones from any network: school Wi-Fi, mobile data, home.",
             lateJoin: "⚠ {0} joined after the start — will play in the next game",
             newRoom: "Change code",
             answeredPhone: "Answered: {0} of {1}",
@@ -281,6 +283,7 @@
             roomWaiting: "Бөлме серверіне қосылып жатырмыз…",
             roomError: "Бөлме қолжетімсіз. Интернетті тексеріп, қайталап көріңіз.",
             roomLocalWarn: "Жергілікті режим: тақта интернетке шыға алмады, сондықтан басқа құрылғылардағы телефондар қосылмайды. Тақтадағы интернетті қосып, бөлмені қайта жасаңыз.",
+            roomCapacity: "Кез келген желіден 40 телефонға дейін: сынып Wi-Fi, мобильді интернет, үй.",
             lateJoin: "⚠ {0} старттан кейін қосылды — келесі ойынға қатысады",
             newRoom: "Кодты ауыстыру",
             answeredPhone: "Жауап берді: {1} ішінен {0}",
@@ -590,7 +593,8 @@
             const pool = this.buildPool(topic);
             if (!pool.length) { this.toast(t("noTasks")); return; }
 
-            const code = window.PQBattleRoom.newCode(4);
+            // 6 символов: комнаты в общем MQTT-брокере не должны пересекаться
+            const code = window.PQBattleRoom.newCode(6);
             this.pendingPlayers = [];
             this.pendingCfg = { count, rounds, pool, topic };
 
@@ -674,6 +678,7 @@
                                 <button type="button" class="btn btn-secondary" id="pq-lobby-cancel">${esc(t("exit"))}</button>
                             </div>
                             <div class="pq-lobby-note">${esc(t("phoneStartHint"))} · ${esc(t("needPlayers"))}</div>
+                            <div class="pq-lobby-note pq-lobby-capacity">${esc(t("roomCapacity"))}</div>
                         </div>
                     </div>
                 </div>`;
